@@ -1,0 +1,92 @@
+@import '../_variables';
+
+/*
+  Modal Styling Component ✏️
+  ----
+  - Super small, but styles the labels
+*/
+
+.modal {
+    position: fixed;
+    z-index: 1000;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100%;
+    background: #FFF;
+}
+
+.modal-header {
+    display: flex;
+    width: 100%;
+    height: 80px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    flex-shrink: 0;
+    box-shadow:  0 6px 20px rgba(0,0,0,.04);
+    z-index: 1;
+    background: #FFF;
+}
+
+.modal-header h1 {
+    flex-grow: 1;
+    font-weight: 200;
+    font-size: 1.6em;
+    opacity: .2;
+    text-align: center;
+
+}
+
+.modal-btn-close {
+    position: fixed;
+    z-index: 100010;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px !important
+
+}
+
+.modal-btn-close-icon,
+.modal-btn-close-icon svg {
+    width: 42px;
+    height: 42px;
+}
+
+.modal-content {
+    overflow: auto;
+    width: 100%;
+    font-weight: 200;
+}
+
+.modal-content h1 {
+    font-size: 2.8em;
+    font-weight: 200;
+    margin: 0 0 .5em 0;
+}
+
+.modal-icon {
+    position: fixed;
+    transform: scale(21);
+    opacity: .04;
+    pointer-events: none
+}
+
+.modal-icon svg {
+    width: 100px;
+    height: 100px;
+    fill: #FFF;
+}
+
+
+/* animation state */
+.modal {
+    bottom: -100vh;
+    transition: all .32s ease-in-out;
+    will-change: all;
+}
+.modal.modal-open { bottom: 0 }

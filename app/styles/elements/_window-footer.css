@@ -1,0 +1,80 @@
+@import '../_variables';
+@import '../_helpers';
+
+/*
+  Window Header Component
+  ----
+  - Use for any window header
+  - Can be changed into light version with `.is-light` class
+*/
+
+
+.window-footer {
+    width: 100%;
+    height: $footer-height;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    color: white;
+    font-size: $font-size-default;
+    /*@extend .webkit-drag;
+    -webkit-app-region: drag;
+    cursor: -webkit-grab;*/
+    pointer-events: none
+}
+
+.window-footer ul {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    list-style: none;
+
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: $footer-height;
+    -webkit-user-select: none !important;
+}
+
+.window-footer:not(.window-footer__visible) {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+
+.window-footer:hover ul {
+    opacity: 1;
+    transform: translateY(0px);
+}
+
+/* CONTROLS */
+
+.window-footer .window__controls {
+    margin-left: auto;
+    transform: scale(.5);
+}
+
+.window-footer .window__controls button {
+    width: $action-size;
+    height: $action-size;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border-radius: 50%;
+    pointer-events: all;
+}
+
+.window-footer .window__controls button svg {
+    width: $action-size;
+    height: $action-size;
+}
+
+.window-footer .window__controls button:hover svg {
+    transform: scale(1.1);
+    opacity: .8;
+}

@@ -1,0 +1,661 @@
+@import '_variables';
+
+/*
+  Helper classes
+  ----
+  - A collection of classes that can be reused to accomplish the same effect on any element
+*/
+
+/* Allow element to be held down to drag the current window */
+.webkit-drag {
+  -webkit-app-region: drag;
+  cursor: -webkit-grab;
+}
+
+.a-width--full { width: 100%!important; }
+
+/* Hide element */
+.hidden { display: none !important!important; }
+
+/* Make current element a circle */
+.circle { border-radius: 50%!important; }
+
+.breakWord {
+    overflow-wrap: break-word;
+}
+
+.note { opacity: .8 }
+.note b { color: $red }
+
+.coin-icon-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-style: normal;
+    border: 2px solid $color-primary;
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    font-weight: 600
+}
+
+[class*='amount'] {
+    font-family: 'Unica One', sans-serif;
+}
+
+.large-number {
+    letter-spacing: -2px
+}
+
+.xtra-large-number {
+    letter-spacing: -4px
+}
+
+.amount-positive,
+.amount-negative {
+    padding: 0px 2px;
+    border-radius: 6px;
+}
+
+.amount-positive {
+    color: rgba(102, 215, 155, 1);
+    background-color: rgba(102, 215, 155, .1);
+}
+
+.amount-negative {
+    color: #E24E40;
+    background-color: rgba(226, 78, 64, .1)
+}
+
+.shadow {
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.95);
+}
+
+code {
+    margin: 20px 0;
+    color: inherit;
+    background: $background-primary;
+    border-radius: 3px;
+    padding: 10px;
+}
+
+/* Make child vertical and horizontal centered */
+
+.flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flexColumnCenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.txt {
+    -webkit-app-region: none !important;
+    -webkit-user-select: none !important;
+    cursor: default !important;
+}
+
+/* crypto colors*/
+
+.ADC .coin-colorized { color: #3CB0E5!important; }
+.AEON .coin-colorized { color: #164450!important; }
+.AMP .coin-colorized { color: #048DD2!important; }
+.ANC .coin-colorized { color: #000!important; }
+.ARCH .coin-colorized { color: #002652!important; }
+.ARDR .coin-colorized { color: #1162a1!important; }
+.AUR .coin-colorized { color: #136c5e!important; }
+.BANX .coin-colorized { color: #225BA6!important; }
+.BAT .coin-colorized { color: #9e1f63!important; }
+.BAY .coin-colorized { color: #584ba1!important; }
+.BC .coin-colorized { color: #202121!important; }
+.BCN .coin-colorized { color: #964F51!important; }
+.BFT .coin-colorized { color: #4fc3f7!important; }
+.BRK .coin-colorized { color: #194fa0!important; }
+.BRX .coin-colorized { color: #a8c300!important; }
+.BSD .coin-colorized { color: #1186E7!important; }
+.BTA .coin-colorized { color: #210094!important; }
+.BTC .coin-colorized, .BCC .coin-colorized { color: #F7931A!important; }
+.BTCD .coin-colorized { color: #2A72DC!important; }
+.BTS .coin-colorized { color: #03A9E0!important; }
+.CLAM .coin-colorized { color: #D6AB31!important; }
+.CLOAK .coin-colorized { color: #DF3F1E!important; }
+.DAO .coin-colorized { color: #FF3B3B!important; }
+.DASH .coin-colorized { color: #1c75bc!important; }
+.DCR .coin-colorized { color: #3b7cfb!important; }
+.DCT .coin-colorized { color: #008770!important; }
+.DGB .coin-colorized { color: #0066cc!important; }
+.DGD .coin-colorized, .DGX .coin-colorized { color: #D8A24A!important; }
+.DMD .coin-colorized { color: #5497b2!important; }
+.DOGE .coin-colorized { color: #BA9F33!important; }
+.EMC .coin-colorized { color: #674c8c!important; }
+.EOS .coin-colorized { color: #19191A!important; }
+.ERC .coin-colorized { color: #101E84!important; }
+.ETC .coin-colorized { color: #669073!important; }
+.ETH .coin-colorized { color: #282828!important; }
+.FC2 .coin-colorized { color: #040405!important; }
+.FCT .coin-colorized { color: #2175BB!important; }
+.FLO .coin-colorized { color: #1358C8!important; }
+.FRK .coin-colorized { color: #0633cd!important; }
+.FTC .coin-colorized { color: #679EF1!important; }
+.GAME .coin-colorized { color: #ed1b24!important; }
+.GDC .coin-colorized { color: #E9A226!important; }
+.GEMZ .coin-colorized { color: #e86060!important; }
+.GLD .coin-colorized { color: #E8BE24!important; }
+.GNO .coin-colorized { color: #00A6C4!important; }
+.GNT .coin-colorized { color: #00d6e3!important; }
+.GOLOS .coin-colorized { color: #2670B7!important; }
+.GRC .coin-colorized { color: #88A13C!important; }
+.GRS .coin-colorized { color: #648FA0!important; }
+.HEAT .coin-colorized { color: #ff5606!important; }
+.ICN .coin-colorized { color: #4c6f8c!important; }
+.IFC .coin-colorized { color: #ed272d!important; }
+.INCNT .coin-colorized { color: #f2932f!important; }
+.IOC .coin-colorized { color: #2fa3de!important; }
+.IOTA .coin-colorized { color: #FFFFFF!important; }
+.JBS .coin-colorized { color: #1A8BCD!important; }
+.KMD .coin-colorized { color: #326464!important; }
+.KOBO .coin-colorized { color: #80C342!important; }
+.KORE .coin-colorized { color: #DF4124!important; }
+.LBC .coin-colorized { color: #015C47!important; }
+.LDOGE .coin-colorized { color: #ffcc00!important; }
+.LISK .coin-colorized { color: #1A6896!important; }
+.LTC .coin-colorized { color: #838383!important; }
+.MAID .coin-colorized { color: #5492D6!important; }
+.MCO .coin-colorized { color: #0D3459!important; }
+.MINT .coin-colorized { color: #006835!important; }
+.MONA .coin-colorized { color: #a99364!important; }
+.MRC .coin-colorized { color: #4279bd!important; }
+.MSC .coin-colorized { color: #1D4983!important; }
+.MTR .coin-colorized { color: #b92429!important; }
+.MUE .coin-colorized { color: #f5a10e!important; }
+.NBT .coin-colorized { color: #FFC93D!important; }
+.NEO .coin-colorized { color: #58BF00!important; }
+.NEOS .coin-colorized { color: #1d1d1b!important; }
+.NEU .coin-colorized { color: #2983c0!important; }
+.NLG .coin-colorized { color: #003E7E!important; }
+.NMC .coin-colorized { color: #6787B7!important; }
+.NOTE .coin-colorized { color: #42daff!important; }
+.NVC .coin-colorized { color: #ecab41!important; }
+.NXT .coin-colorized { color: #008FBB!important; }
+.OK .coin-colorized { color: #0165A4!important; }
+.OMG .coin-colorized { color: #1A53F0!important; }
+.OMNI .coin-colorized { color: #18347E!important; }
+.OPAL .coin-colorized { color: #7193AA!important; }
+.PART .coin-colorized { color: #05D5A3!important; }
+.PIGGY .coin-colorized { color: #F27A7A!important; }
+.PINK .coin-colorized { color: #ED31CA!important; }
+.PIVX .coin-colorized { color: #3b2f4d!important; }
+.POT .coin-colorized { color: #105B2F!important; }
+.PPC .coin-colorized { color: #3FA30C!important; }
+.QRK .coin-colorized { color: #22AABF!important; }
+.RADS .coin-colorized { color: #924cea!important; }
+.RBIES .coin-colorized { color: #C62436!important; }
+.RBT .coin-colorized { color: #0d4982!important; }
+.RBY .coin-colorized { color: #D31F26!important; }
+.RDD .coin-colorized { color: #ED1C24!important; }
+.REP .coin-colorized { color: #40a2cb!important; }
+.RISE .coin-colorized { color: #43CEA2!important; }
+.SAR .coin-colorized { color: #1B72B8!important; }
+.SCOT .coin-colorized { color: #3498DB!important; }
+.SDC .coin-colorized { color: #981D2D!important; }
+.SIA .coin-colorized { color: #00CBA0!important; }
+.SJCX .coin-colorized { color: #003366!important; }
+.SLG .coin-colorized { color: #5A6875!important; }
+.SLS .coin-colorized { color: #1EB549!important; }
+.SNRG .coin-colorized { color: #160363!important; }
+.START .coin-colorized { color: #01AEF0!important; }
+.STEEM .coin-colorized { color: #1A5099!important; }
+.STR .coin-colorized { color: #08B5E5!important; }
+.STRAT .coin-colorized { color: #2398dd!important; }
+.SWIFT .coin-colorized { color: #428BCA!important; }
+.SYNC .coin-colorized { color: #008DD2!important; }
+.SYS .coin-colorized { color: #0098DA!important; }
+.TRIG .coin-colorized { color: #1fbff4!important; }
+.TX .coin-colorized { color: #1F8BCC!important; }
+.UBQ .coin-colorized { color: #00ec8d!important; }
+.UNITY .coin-colorized { color: #ED8527!important; }
+.USDT .coin-colorized { color: #2CA07A!important; }
+.VIOR .coin-colorized { color: #1F52A4!important; }
+.VNL .coin-colorized { color: #404249!important; }
+.VPN .coin-colorized { color: #589700!important; }
+.VRC .coin-colorized { color: #418bca!important; }
+.VTC .coin-colorized { color: #1b5c2e!important; }
+.WAVES .coin-colorized { color: #24aad6!important; }
+.XAI .coin-colorized { color: #2ef99f!important; }
+.XBS .coin-colorized { color: #d3261d!important; }
+.XCP .coin-colorized { color: #EC1550!important; }
+.XEM .coin-colorized { color: #41bf76!important; }
+.XMR .coin-colorized { color: #FF6600!important; }
+.XPM .coin-colorized { color: #e5b625!important; }
+.XRP .coin-colorized { color: #346AA9!important; }
+.XTZ .coin-colorized { color: #A6DF00!important; }
+.XVG .coin-colorized { color: #42AFB2!important; }
+.YBC .coin-colorized { color: #D6C154!important; }
+.ZEC .coin-colorized { color: #e5a93d!important; }
+.ZEIT .coin-colorized { color: #ACACAC!important; }
+
+
+
+
+.ADC .coin-colorized svg { fill: #3CB0E5!important; }
+.AEON .coin-colorized svg { fill: #164450!important; }
+.AMP .coin-colorized svg { fill: #048DD2!important; }
+.ANC .coin-colorized svg { fill: #000!important; }
+.ARCH .coin-colorized svg { fill: #002652!important; }
+.ARDR .coin-colorized svg { fill: #1162a1!important; }
+.AUR .coin-colorized svg { fill: #136c5e!important; }
+.BANX .coin-colorized svg { fill: #225BA6!important; }
+.BAT .coin-colorized svg { fill: #9e1f63!important; }
+.BAY .coin-colorized svg { fill: #584ba1!important; }
+.BC .coin-colorized svg { fill: #202121!important; }
+.BCN .coin-colorized svg { fill: #964F51!important; }
+.BFT .coin-colorized svg { fill: #4fc3f7!important; }
+.BRK .coin-colorized svg { fill: #194fa0!important; }
+.BRX .coin-colorized svg { fill: #a8c300!important; }
+.BSD .coin-colorized svg { fill: #1186E7!important; }
+.BTA .coin-colorized svg { fill: #210094!important; }
+.BTC .coin-colorized svg , .BCC .coin-colorized svg { fill: #F7931A!important; }
+.BTCD .coin-colorized svg { fill: #2A72DC!important; }
+.BTS .coin-colorized svg { fill: #03A9E0!important; }
+.CLAM .coin-colorized svg { fill: #D6AB31!important; }
+.CLOAK .coin-colorized svg { fill: #DF3F1E!important; }
+.DAO .coin-colorized svg { fill: #FF3B3B!important; }
+.DASH .coin-colorized svg { fill: #1c75bc!important; }
+.DCR .coin-colorized svg { fill: #3b7cfb!important; }
+.DCT .coin-colorized svg { fill: #008770!important; }
+.DGB .coin-colorized svg { fill: #0066cc!important; }
+.DGD .coin-colorized svg, .DGX .coin-colorized svg { fill: #D8A24A!important; }
+.DMD .coin-colorized svg { fill: #5497b2!important; }
+.DOGE .coin-colorized svg { fill: #BA9F33!important; }
+.EMC .coin-colorized svg { fill: #674c8c!important; }
+.EOS .coin-colorized svg { fill: #19191A!important; }
+.ERC .coin-colorized svg { fill: #101E84!important; }
+.ETC .coin-colorized svg { fill: #669073!important; }
+.ETH .coin-colorized svg { fill: #282828!important; }
+.FC2 .coin-colorized svg { fill: #040405!important; }
+.FCT .coin-colorized svg { fill: #2175BB!important; }
+.FLO .coin-colorized svg { fill: #1358C8!important; }
+.FRK .coin-colorized svg { fill: #0633cd!important; }
+.FTC .coin-colorized svg { fill: #679EF1!important; }
+.GAME .coin-colorized svg { fill: #ed1b24!important; }
+.GDC .coin-colorized svg { fill: #E9A226!important; }
+.GEMZ .coin-colorized svg { fill: #e86060!important; }
+.GLD .coin-colorized svg { fill: #E8BE24!important; }
+.GNO .coin-colorized svg { fill: #00A6C4!important; }
+.GNT .coin-colorized svg { fill: #00d6e3!important; }
+.GOLOS .coin-colorized svg { fill: #2670B7!important; }
+.GRC .coin-colorized svg { fill: #88A13C!important; }
+.GRS .coin-colorized svg { fill: #648FA0!important; }
+.HEAT .coin-colorized svg { fill: #ff5606!important; }
+.ICN .coin-colorized svg { fill: #4c6f8c!important; }
+.IFC .coin-colorized svg { fill: #ed272d!important; }
+.INCNT .coin-colorized svg { fill: #f2932f!important; }
+.IOC .coin-colorized svg { fill: #2fa3de!important; }
+.IOTA .coin-colorized svg { fill: #FFFFFF!important; }
+.JBS .coin-colorized svg { fill: #1A8BCD!important; }
+.KMD .coin-colorized svg { fill: #326464!important; }
+.KOBO .coin-colorized svg { fill: #80C342!important; }
+.KORE .coin-colorized svg { fill: #DF4124!important; }
+.LBC .coin-colorized svg { fill: #015C47!important; }
+.LDOGE .coin-colorized svg { fill: #ffcc00!important; }
+.LISK .coin-colorized svg { fill: #1A6896!important; }
+.LTC .coin-colorized svg { fill: #838383!important; }
+.MAID .coin-colorized svg { fill: #5492D6!important; }
+.MCO .coin-colorized svg { fill: #0D3459!important; }
+.MINT .coin-colorized svg { fill: #006835!important; }
+.MONA .coin-colorized svg { fill: #a99364!important; }
+.MRC .coin-colorized svg { fill: #4279bd!important; }
+.MSC .coin-colorized svg { fill: #1D4983!important; }
+.MTR .coin-colorized svg { fill: #b92429!important; }
+.MUE .coin-colorized svg { fill: #f5a10e!important; }
+.NBT .coin-colorized svg { fill: #FFC93D!important; }
+.NEO .coin-colorized svg { fill: #58BF00!important; }
+.NEOS .coin-colorized svg { fill: #1d1d1b!important; }
+.NEU .coin-colorized svg { fill: #2983c0!important; }
+.NLG .coin-colorized svg { fill: #003E7E!important; }
+.NMC .coin-colorized svg { fill: #6787B7!important; }
+.NOTE .coin-colorized svg { fill: #42daff!important; }
+.NVC .coin-colorized svg { fill: #ecab41!important; }
+.NXT .coin-colorized svg { fill: #008FBB!important; }
+.OK .coin-colorized svg { fill: #0165A4!important; }
+.OMG .coin-colorized svg { fill: #1A53F0!important; }
+.OMNI .coin-colorized svg { fill: #18347E!important; }
+.OPAL .coin-colorized svg { fill: #7193AA!important; }
+.PART .coin-colorized svg { fill: #05D5A3!important; }
+.PIGGY .coin-colorized svg { fill: #F27A7A!important; }
+.PINK .coin-colorized svg { fill: #ED31CA!important; }
+.PIVX .coin-colorized svg { fill: #3b2f4d!important; }
+.POT .coin-colorized svg { fill: #105B2F!important; }
+.PPC .coin-colorized svg { fill: #3FA30C!important; }
+.QRK .coin-colorized svg { fill: #22AABF!important; }
+.RADS .coin-colorized svg { fill: #924cea!important; }
+.RBIES .coin-colorized svg { fill: #C62436!important; }
+.RBT .coin-colorized svg { fill: #0d4982!important; }
+.RBY .coin-colorized svg { fill: #D31F26!important; }
+.RDD .coin-colorized svg { fill: #ED1C24!important; }
+.REP .coin-colorized svg { fill: #40a2cb!important; }
+.RISE .coin-colorized svg { fill: #43CEA2!important; }
+.SAR .coin-colorized svg { fill: #1B72B8!important; }
+.SCOT .coin-colorized svg { fill: #3498DB!important; }
+.SDC .coin-colorized svg { fill: #981D2D!important; }
+.SIA .coin-colorized svg { fill: #00CBA0!important; }
+.SJCX .coin-colorized svg { fill: #003366!important; }
+.SLG .coin-colorized svg { fill: #5A6875!important; }
+.SLS .coin-colorized svg { fill: #1EB549!important; }
+.SNRG .coin-colorized svg { fill: #160363!important; }
+.START .coin-colorized svg { fill: #01AEF0!important; }
+.STEEM .coin-colorized svg { fill: #1A5099!important; }
+.STR .coin-colorized svg { fill: #08B5E5!important; }
+.STRAT .coin-colorized svg { fill: #2398dd!important; }
+.SWIFT .coin-colorized svg { fill: #428BCA!important; }
+.SYNC .coin-colorized svg { fill: #008DD2!important; }
+.SYS .coin-colorized svg { fill: #0098DA!important; }
+.TRIG .coin-colorized svg { fill: #1fbff4!important; }
+.TX .coin-colorized svg { fill: #1F8BCC!important; }
+.UBQ .coin-colorized svg { fill: #00ec8d!important; }
+.UNITY .coin-colorized svg { fill: #ED8527!important; }
+.USDT .coin-colorized svg { fill: #2CA07A!important; }
+.VIOR .coin-colorized svg { fill: #1F52A4!important; }
+.VNL .coin-colorized svg { fill: #404249!important; }
+.VPN .coin-colorized svg { fill: #589700!important; }
+.VRC .coin-colorized svg { fill: #418bca!important; }
+.VTC .coin-colorized svg { fill: #1b5c2e!important; }
+.WAVES .coin-colorized svg { fill: #24aad6!important; }
+.XAI .coin-colorized svg { fill: #2ef99f!important; }
+.XBS .coin-colorized svg { fill: #d3261d!important; }
+.XCP .coin-colorized svg { fill: #EC1550!important; }
+.XEM .coin-colorized svg { fill: #41bf76!important; }
+.XMR .coin-colorized svg { fill: #FF6600!important; }
+.XPM .coin-colorized svg { fill: #e5b625!important; }
+.XRP .coin-colorized svg { fill: #346AA9!important; }
+.XTZ .coin-colorized svg { fill: #A6DF00!important; }
+.XVG .coin-colorized svg { fill: #42AFB2!important; }
+.YBC .coin-colorized svg { fill: #D6C154!important; }
+.ZEC .coin-colorized svg { fill: #e5a93d!important; }
+.ZEIT .coin-colorized svg { fill: #ACACAC!important; }
+
+
+
+
+.ADC .coin-bg { background-color: #3CB0E5!important; }
+.AEON .coin-bg { background-color: #164450!important; }
+.AMP .coin-bg { background-color: #048DD2!important; }
+.ANC .coin-bg { background-color: #000!important; }
+.ARCH .coin-bg { background-color: #002652!important; }
+.ARDR .coin-bg { background-color: #1162a1!important; }
+.AUR .coin-bg { background-color: #136c5e!important; }
+.BANX .coin-bg { background-color: #225BA6!important; }
+.BAT .coin-bg { background-color: #9e1f63!important; }
+.BAY .coin-bg { background-color: #584ba1!important; }
+.BC .coin-bg { background-color: #202121!important; }
+.BCN .coin-bg { background-color: #964F51!important; }
+.BFT .coin-bg { background-color: #4fc3f7!important; }
+.BRK .coin-bg { background-color: #194fa0!important; }
+.BRX .coin-bg { background-color: #a8c300!important; }
+.BSD .coin-bg { background-color: #1186E7!important; }
+.BTA .coin-bg { background-color: #210094!important; }
+.BTC .coin-bg, .BCC .coin-bg { background-color: #F7931A!important; }
+.BTCD .coin-bg { background-color: #2A72DC!important; }
+.BTS .coin-bg { background-color: #03A9E0!important; }
+.CLAM .coin-bg { background-color: #D6AB31!important; }
+.CLOAK .coin-bg { background-color: #DF3F1E!important; }
+.DAO .coin-bg { background-color: #FF3B3B!important; }
+.DASH .coin-bg { background-color: #1c75bc!important; }
+.DCR .coin-bg { background-color: #3b7cfb!important; }
+.DCT .coin-bg { background-color: #008770!important; }
+.DGB .coin-bg { background-color: #0066cc!important; }
+.DGD .coin-bg, .DGX .coin-bg { background-color: #D8A24A!important; }
+.DMD .coin-bg { background-color: #5497b2!important; }
+.DOGE .coin-bg { background-color: #BA9F33!important; }
+.EMC .coin-bg { background-color: #674c8c!important; }
+.EOS .coin-bg { background-color: #19191A!important; }
+.ERC .coin-bg { background-color: #101E84!important; }
+.ETC .coin-bg { background-color: #669073!important; }
+.ETH .coin-bg { background-color: #282828!important; }
+.FC2 .coin-bg { background-color: #040405!important; }
+.FCT .coin-bg { background-color: #2175BB!important; }
+.FLO .coin-bg { background-color: #1358C8!important; }
+.FRK .coin-bg { background-color: #0633cd!important; }
+.FTC .coin-bg { background-color: #679EF1!important; }
+.GAME .coin-bg { background-color: #ed1b24!important; }
+.GDC .coin-bg { background-color: #E9A226!important; }
+.GEMZ .coin-bg { background-color: #e86060!important; }
+.GLD .coin-bg { background-color: #E8BE24!important; }
+.GNO .coin-bg { background-color: #00A6C4!important; }
+.GNT .coin-bg { background-color: #00d6e3!important; }
+.GOLOS .coin-bg { background-color: #2670B7!important; }
+.GRC .coin-bg { background-color: #88A13C!important; }
+.GRS .coin-bg { background-color: #648FA0!important; }
+.HEAT .coin-bg { background-color: #ff5606!important; }
+.ICN .coin-bg { background-color: #4c6f8c!important; }
+.IFC .coin-bg { background-color: #ed272d!important; }
+.INCNT .coin-bg { background-color: #f2932f!important; }
+.IOC .coin-bg { background-color: #2fa3de!important; }
+.IOTA .coin-bg { background-color: #FFFFFF!important; }
+.JBS .coin-bg { background-color: #1A8BCD!important; }
+.KMD .coin-bg { background-color: #326464!important; }
+.KOBO .coin-bg { background-color: #80C342!important; }
+.KORE .coin-bg { background-color: #DF4124!important; }
+.LBC .coin-bg { background-color: #015C47!important; }
+.LDOGE .coin-bg { background-color: #ffcc00!important; }
+.LISK .coin-bg { background-color: #1A6896!important; }
+.LTC .coin-bg { background-color: #838383!important; }
+.MAID .coin-bg { background-color: #5492D6!important; }
+.MCO .coin-bg { background-color: #0D3459!important; }
+.MINT .coin-bg { background-color: #006835!important; }
+.MONA .coin-bg { background-color: #a99364!important; }
+.MRC .coin-bg { background-color: #4279bd!important; }
+.MSC .coin-bg { background-color: #1D4983!important; }
+.MTR .coin-bg { background-color: #b92429!important; }
+.MUE .coin-bg { background-color: #f5a10e!important; }
+.NBT .coin-bg { background-color: #FFC93D!important; }
+.NEO .coin-bg { background-color: #58BF00!important; }
+.NEOS .coin-bg { background-color: #1d1d1b!important; }
+.NEU .coin-bg { background-color: #2983c0!important; }
+.NLG .coin-bg { background-color: #003E7E!important; }
+.NMC .coin-bg { background-color: #6787B7!important; }
+.NOTE .coin-bg { background-color: #42daff!important; }
+.NVC .coin-bg { background-color: #ecab41!important; }
+.NXT .coin-bg { background-color: #008FBB!important; }
+.OK .coin-bg { background-color: #0165A4!important; }
+.OMG .coin-bg { background-color: #1A53F0!important; }
+.OMNI .coin-bg { background-color: #18347E!important; }
+.OPAL .coin-bg { background-color: #7193AA!important; }
+.PART .coin-bg { background-color: #05D5A3!important; }
+.PIGGY .coin-bg { background-color: #F27A7A!important; }
+.PINK .coin-bg { background-color: #ED31CA!important; }
+.PIVX .coin-bg { background-color: #3b2f4d!important; }
+.POT .coin-bg { background-color: #105B2F!important; }
+.PPC .coin-bg { background-color: #3FA30C!important; }
+.QRK .coin-bg { background-color: #22AABF!important; }
+.RADS .coin-bg { background-color: #924cea!important; }
+.RBIES .coin-bg { background-color: #C62436!important; }
+.RBT .coin-bg { background-color: #0d4982!important; }
+.RBY .coin-bg { background-color: #D31F26!important; }
+.RDD .coin-bg { background-color: #ED1C24!important; }
+.REP .coin-bg { background-color: #40a2cb!important; }
+.RISE .coin-bg { background-color: #43CEA2!important; }
+.SAR .coin-bg { background-color: #1B72B8!important; }
+.SCOT .coin-bg { background-color: #3498DB!important; }
+.SDC .coin-bg { background-color: #981D2D!important; }
+.SIA .coin-bg { background-color: #00CBA0!important; }
+.SJCX .coin-bg { background-color: #003366!important; }
+.SLG .coin-bg { background-color: #5A6875!important; }
+.SLS .coin-bg { background-color: #1EB549!important; }
+.SNRG .coin-bg { background-color: #160363!important; }
+.START .coin-bg { background-color: #01AEF0!important; }
+.STEEM .coin-bg { background-color: #1A5099!important; }
+.STR .coin-bg { background-color: #08B5E5!important; }
+.STRAT .coin-bg { background-color: #2398dd!important; }
+.SWIFT .coin-bg { background-color: #428BCA!important; }
+.SYNC .coin-bg { background-color: #008DD2!important; }
+.SYS .coin-bg { background-color: #0098DA!important; }
+.TRIG .coin-bg { background-color: #1fbff4!important; }
+.TX .coin-bg { background-color: #1F8BCC!important; }
+.UBQ .coin-bg { background-color: #00ec8d!important; }
+.UNITY .coin-bg { background-color: #ED8527!important; }
+.USDT .coin-bg { background-color: #2CA07A!important; }
+.VIOR .coin-bg { background-color: #1F52A4!important; }
+.VNL .coin-bg { background-color: #404249!important; }
+.VPN .coin-bg { background-color: #589700!important; }
+.VRC .coin-bg { background-color: #418bca!important; }
+.VTC .coin-bg { background-color: #1b5c2e!important; }
+.WAVES .coin-bg { background-color: #24aad6!important; }
+.XAI .coin-bg { background-color: #2ef99f!important; }
+.XBS .coin-bg { background-color: #d3261d!important; }
+.XCP .coin-bg { background-color: #EC1550!important; }
+.XEM .coin-bg { background-color: #41bf76!important; }
+.XMR .coin-bg { background-color: #FF6600!important; }
+.XPM .coin-bg { background-color: #e5b625!important; }
+.XRP .coin-bg { background-color: #346AA9!important; }
+.XTZ .coin-bg { background-color: #A6DF00!important; }
+.XVG .coin-bg { background-color: #42AFB2!important; }
+.YBC .coin-bg { background-color: #D6C154!important; }
+.ZEC .coin-bg { background-color: #e5a93d!important; }
+.ZEIT .coin-bg { background-color: #ACACAC!important; }
+
+
+
+button.ADC:hover { box-shadow: 0 12px 40px #3CB0E5!important; }
+button.AEON:hover { box-shadow: 0 12px 40px #164450!important; }
+button.AMP:hover { box-shadow: 0 12px 40px #048DD2!important; }
+button.ANC:hover { box-shadow: 0 12px 40px #000!important; }
+button.ARCH:hover { box-shadow: 0 12px 40px #002652!important; }
+button.ARDR:hover { box-shadow: 0 12px 40px #1162a1!important; }
+button.AUR:hover { box-shadow: 0 12px 40px #136c5e!important; }
+button.BANX:hover { box-shadow: 0 12px 40px #225BA6!important; }
+button.BAT:hover { box-shadow: 0 12px 40px #9e1f63!important; }
+button.BAY:hover { box-shadow: 0 12px 40px #584ba1!important; }
+button.BC:hover { box-shadow: 0 12px 40px #202121!important; }
+button.BCN:hover { box-shadow: 0 12px 40px #964F51!important; }
+button.BFT:hover { box-shadow: 0 12px 40px #4fc3f7!important; }
+button.BRK:hover { box-shadow: 0 12px 40px #194fa0!important; }
+button.BRX:hover { box-shadow: 0 12px 40px #a8c300!important; }
+button.BSD:hover { box-shadow: 0 12px 40px #1186E7!important; }
+button.BTA:hover { box-shadow: 0 12px 40px #210094!important; }
+button.BTC:hover,  button.BCC:hover { box-shadow: 0 12px 40px #F7931A!important; }
+button.BTCD:hover { box-shadow: 0 12px 40px #2A72DC!important; }
+button.BTS:hover { box-shadow: 0 12px 40px #03A9E0!important; }
+button.CLAM:hover { box-shadow: 0 12px 40px #D6AB31!important; }
+button.CLOAK:hover { box-shadow: 0 12px 40px #DF3F1E!important; }
+button.DAO:hover { box-shadow: 0 12px 40px #FF3B3B!important; }
+button.DASH:hover { box-shadow: 0 12px 40px #1c75bc!important; }
+button.DCR:hover { box-shadow: 0 12px 40px #3b7cfb!important; }
+button.DCT:hover { box-shadow: 0 12px 40px #008770!important; }
+button.DGB:hover { box-shadow: 0 12px 40px #0066cc!important; }
+button.DGD:hover,  button.DGX:hover { box-shadow: 0 12px 40px #D8A24A!important; }
+button.DMD:hover { box-shadow: 0 12px 40px #5497b2!important; }
+button.DOGE:hover { box-shadow: 0 12px 40px #BA9F33!important; }
+button.EMC:hover { box-shadow: 0 12px 40px #674c8c!important; }
+button.EOS:hover { box-shadow: 0 12px 40px #19191A!important; }
+button.ERC:hover { box-shadow: 0 12px 40px #101E84!important; }
+button.ETC:hover { box-shadow: 0 12px 40px #669073!important; }
+button.ETH:hover { box-shadow: 0 12px 40px #282828!important; }
+button.FC2:hover { box-shadow: 0 12px 40px #040405!important; }
+button.FCT:hover { box-shadow: 0 12px 40px #2175BB!important; }
+button.FLO:hover { box-shadow: 0 12px 40px #1358C8!important; }
+button.FRK:hover { box-shadow: 0 12px 40px #0633cd!important; }
+button.FTC:hover { box-shadow: 0 12px 40px #679EF1!important; }
+button.GAME:hover { box-shadow: 0 12px 40px #ed1b24!important; }
+button.GDC:hover { box-shadow: 0 12px 40px #E9A226!important; }
+button.GEMZ:hover { box-shadow: 0 12px 40px #e86060!important; }
+button.GLD:hover { box-shadow: 0 12px 40px #E8BE24!important; }
+button.GNO:hover { box-shadow: 0 12px 40px #00A6C4!important; }
+button.GNT:hover { box-shadow: 0 12px 40px #00d6e3!important; }
+button.GOLOS:hover { box-shadow: 0 12px 40px #2670B7!important; }
+button.GRC:hover { box-shadow: 0 12px 40px #88A13C!important; }
+button.GRS:hover { box-shadow: 0 12px 40px #648FA0!important; }
+button.HEAT:hover { box-shadow: 0 12px 40px #ff5606!important; }
+button.ICN:hover { box-shadow: 0 12px 40px #4c6f8c!important; }
+button.IFC:hover { box-shadow: 0 12px 40px #ed272d!important; }
+button.INCNT:hover { box-shadow: 0 12px 40px #f2932f!important; }
+button.IOC:hover { box-shadow: 0 12px 40px #2fa3de!important; }
+button.IOTA:hover { box-shadow: 0 12px 40px #FFFFFF!important; }
+button.JBS:hover { box-shadow: 0 12px 40px #1A8BCD!important; }
+button.KMD:hover { box-shadow: 0 12px 40px #326464!important; }
+button.KOBO:hover { box-shadow: 0 12px 40px #80C342!important; }
+button.KORE:hover { box-shadow: 0 12px 40px #DF4124!important; }
+button.LBC:hover { box-shadow: 0 12px 40px #015C47!important; }
+button.LDOGE:hover { box-shadow: 0 12px 40px #ffcc00!important; }
+button.LISK:hover { box-shadow: 0 12px 40px #1A6896!important; }
+button.LTC:hover { box-shadow: 0 12px 40px #838383!important; }
+button.MAID:hover { box-shadow: 0 12px 40px #5492D6!important; }
+button.MCO:hover { box-shadow: 0 12px 40px #0D3459!important; }
+button.MINT:hover { box-shadow: 0 12px 40px #006835!important; }
+button.MONA:hover { box-shadow: 0 12px 40px #a99364!important; }
+button.MRC:hover { box-shadow: 0 12px 40px #4279bd!important; }
+button.MSC:hover { box-shadow: 0 12px 40px #1D4983!important; }
+button.MTR:hover { box-shadow: 0 12px 40px #b92429!important; }
+button.MUE:hover { box-shadow: 0 12px 40px #f5a10e!important; }
+button.NBT:hover { box-shadow: 0 12px 40px #FFC93D!important; }
+button.NEO:hover { box-shadow: 0 12px 40px #58BF00!important; }
+button.NEOS:hover { box-shadow: 0 12px 40px #1d1d1b!important; }
+button.NEU:hover { box-shadow: 0 12px 40px #2983c0!important; }
+button.NLG:hover { box-shadow: 0 12px 40px #003E7E!important; }
+button.NMC:hover { box-shadow: 0 12px 40px #6787B7!important; }
+button.NOTE:hover { box-shadow: 0 12px 40px #42daff!important; }
+button.NVC:hover { box-shadow: 0 12px 40px #ecab41!important; }
+button.NXT:hover { box-shadow: 0 12px 40px #008FBB!important; }
+button.OK:hover { box-shadow: 0 12px 40px #0165A4!important; }
+button.OMG:hover { box-shadow: 0 12px 40px #1A53F0!important; }
+button.OMNI:hover { box-shadow: 0 12px 40px #18347E!important; }
+button.OPAL:hover { box-shadow: 0 12px 40px #7193AA!important; }
+button.PART:hover { box-shadow: 0 12px 40px #05D5A3!important; }
+button.PIGGY:hover { box-shadow: 0 12px 40px #F27A7A!important; }
+button.PINK:hover { box-shadow: 0 12px 40px #ED31CA!important; }
+button.PIVX:hover { box-shadow: 0 12px 40px #3b2f4d!important; }
+button.POT:hover { box-shadow: 0 12px 40px #105B2F!important; }
+button.PPC:hover { box-shadow: 0 12px 40px #3FA30C!important; }
+button.QRK:hover { box-shadow: 0 12px 40px #22AABF!important; }
+button.RADS:hover { box-shadow: 0 12px 40px #924cea!important; }
+button.RBIES:hover { box-shadow: 0 12px 40px #C62436!important; }
+button.RBT:hover { box-shadow: 0 12px 40px #0d4982!important; }
+button.RBY:hover { box-shadow: 0 12px 40px #D31F26!important; }
+button.RDD:hover { box-shadow: 0 12px 40px #ED1C24!important; }
+button.REP:hover { box-shadow: 0 12px 40px #40a2cb!important; }
+button.RISE:hover { box-shadow: 0 12px 40px #43CEA2!important; }
+button.SAR:hover { box-shadow: 0 12px 40px #1B72B8!important; }
+button.SCOT:hover { box-shadow: 0 12px 40px #3498DB!important; }
+button.SDC:hover { box-shadow: 0 12px 40px #981D2D!important; }
+button.SIA:hover { box-shadow: 0 12px 40px #00CBA0!important; }
+button.SJCX:hover { box-shadow: 0 12px 40px #003366!important; }
+button.SLG:hover { box-shadow: 0 12px 40px #5A6875!important; }
+button.SLS:hover { box-shadow: 0 12px 40px #1EB549!important; }
+button.SNRG:hover { box-shadow: 0 12px 40px #160363!important; }
+button.START:hover { box-shadow: 0 12px 40px #01AEF0!important; }
+button.STEEM:hover { box-shadow: 0 12px 40px #1A5099!important; }
+button.STR:hover { box-shadow: 0 12px 40px #08B5E5!important; }
+button.STRAT:hover { box-shadow: 0 12px 40px #2398dd!important; }
+button.SWIFT:hover { box-shadow: 0 12px 40px #428BCA!important; }
+button.SYNC:hover { box-shadow: 0 12px 40px #008DD2!important; }
+button.SYS:hover { box-shadow: 0 12px 40px #0098DA!important; }
+button.TRIG:hover { box-shadow: 0 12px 40px #1fbff4!important; }
+button.TX:hover { box-shadow: 0 12px 40px #1F8BCC!important; }
+button.UBQ:hover { box-shadow: 0 12px 40px #00ec8d!important; }
+button.UNITY:hover { box-shadow: 0 12px 40px #ED8527!important; }
+button.USDT:hover { box-shadow: 0 12px 40px #2CA07A!important; }
+button.VIOR:hover { box-shadow: 0 12px 40px #1F52A4!important; }
+button.VNL:hover { box-shadow: 0 12px 40px #404249!important; }
+button.VPN:hover { box-shadow: 0 12px 40px #589700!important; }
+button.VRC:hover { box-shadow: 0 12px 40px #418bca!important; }
+button.VTC:hover { box-shadow: 0 12px 40px #1b5c2e!important; }
+button.WAVES:hover { box-shadow: 0 12px 40px #24aad6!important; }
+button.XAI:hover { box-shadow: 0 12px 40px #2ef99f!important; }
+button.XBS:hover { box-shadow: 0 12px 40px #d3261d!important; }
+button.XCP:hover { box-shadow: 0 12px 40px #EC1550!important; }
+button.XEM:hover { box-shadow: 0 12px 40px #41bf76!important; }
+button.XMR:hover { box-shadow: 0 12px 40px #FF6600!important; }
+button.XPM:hover { box-shadow: 0 12px 40px #e5b625!important; }
+button.XRP:hover { box-shadow: 0 12px 40px #346AA9!important; }
+button.XTZ:hover { box-shadow: 0 12px 40px #A6DF00!important; }
+button.XVG:hover { box-shadow: 0 12px 40px #42AFB2!important; }
+button.YBC:hover { box-shadow: 0 12px 40px #D6C154!important; }
+button.ZEC:hover { box-shadow: 0 12px 40px #e5a93d!important; }
+button.ZEIT:hover { box-shadow: 0 12px 40px #ACACAC!important; }

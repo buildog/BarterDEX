@@ -1,0 +1,131 @@
+@import '../_variables';
+@import '../_helpers';
+
+/*
+  Window Header Component
+  ----
+  - Use for any window header
+  - Can be changed into light version with `.is-light` class
+*/
+
+
+.window-header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+    font-size: $font-size-default;
+    @extend .webkit-drag;
+    -webkit-app-region: drag;
+    cursor: -webkit-grab;
+    z-index: 10000;
+}
+
+
+.window-header-logo {
+    @extend .flexCenter;
+}
+
+.window-header-logo,
+.window-header-logo svg {
+    display: inline-block;
+    width: 30px;
+    height: 40px;
+}
+
+.window-header-logo svg {
+    transform: scale(5);
+    transform-origin: 55% 76%;
+    opacity: .2
+
+}
+
+.window-header-logo svg g { fill: $color-secondary }
+
+
+
+.window-header ul {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    list-style: none;
+    transition: transform .12s ease-in-out, opacity .12s ease-in-out;
+    will-change: transform, opacity;
+    border-radius: 5px 5px 0 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    padding: 20px 10px;
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    -webkit-user-select: none !important;
+    background: #FFF;
+    box-shadow: 0px 0px 100px 100px #FFF;
+
+}
+
+
+.window-header:hover ul {
+    opacity: 1;
+    transform: translateY(0px);
+}
+
+/* TITLE */
+.window__title {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 0;
+}
+
+.window__title h1 {
+    font-size: 1em;
+    margin: -10px 0 0;
+    color: $color-secondary
+}
+
+/* RIGHT SIDE */
+
+.window__controls_right {
+    margin-left: auto
+}
+
+/* CONTROLS */
+
+.window-header .window__controls {
+    position: absolute;
+    left: 10px;
+    z-index: 1;
+}
+
+.window-header .window__controls a {
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(256,256,256,0.1);
+    border-radius: 50%;
+    margin-left: 5px;
+    cursor: pointer;
+    pointer-events: all;
+}
+
+.window-header .window__controls a svg {
+    width: 14px;
+    height: 14px;
+}

@@ -1,0 +1,59 @@
+.coinList {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+.coinList .coinList-coin {
+    position: relative;
+    padding: 0;
+    margin-bottom: 1px;
+}
+
+.coinList .coinList-coin:hover {
+    z-index: 2
+}
+
+.coinList-wrapper {
+    display: flex;
+    align-items: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,.04);
+    border-radius: 4px;
+    padding: 10px;
+    background: #FFF;
+}
+
+
+.coinList-coin-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 100px;
+}
+
+.coinList-coin-logo .coin-icon-placeholder {
+    transform: scale(.5);
+}
+
+
+.coinList .coinList-coin .coinList-coin-name {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.coinList .coinList-coin .coinList-coin-name h2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 1.4em;
+    margin: 0 20px 0 0
+}
+
+.coinList .coinList-coin .coinList-coin-name h2 small {
+    font-size: .6em;
+    font-weight: 200;
+}

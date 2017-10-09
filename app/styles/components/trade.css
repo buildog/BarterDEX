@@ -1,0 +1,384 @@
+.trade {
+    display: flex;
+    align-items: flex-start;
+    height: 100%;
+    width: 100%;
+    padding: 10px
+}
+
+.step1 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.step1 a { opacity: .4 }
+.step1 a:hover { opacity: 1 }
+
+.step1 > section {
+    display: flex;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.step1 .step1-picker {
+    flex-grow: 1;
+}
+
+
+.step1-coin > * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+.step1-deposit,
+.step1-receive,
+.step1-private {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    background: #FFF;
+    box-shadow: 0 6px 20px rgba(0,0,0,.04);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+
+.coin-custom-logo svg {
+    height: 160px;
+}
+
+.private-icon {
+    position: relative;
+    top: -2px;
+    transform: scale(1.1);
+}
+
+.private-icon svg path {
+    fill: #FFF
+}
+
+.step1-coin  {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.step1-coin-item {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.step1-coin-adr-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    font-weight: bold;
+    flex-grow: 1;
+    padding: 20px 20px;
+}
+
+.step1-coin-adr-bg {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    opacity: 1;
+    pointer-events: none;
+}
+
+
+.step1-coin-code  {
+    padding: 2px 4px;
+    font-size: .9em;
+    margin: 0px 4px
+}
+
+.step1-coin-balance {
+    z-index: 1;
+    width: 100%;
+    text-align: left;
+}
+
+.step1-coin-adr {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 40px;
+    border: 0;
+    font-size: .9em;
+    outline: none;
+    resize: none;
+    text-align: center;
+}
+
+
+.step1-coin-amount {
+    font-size: 1.1em;
+    width: 100%;
+    text-align: right;
+    padding: 20px;
+}
+
+
+
+.step1-coin-adr::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+
+.step1-coin-adr:focus {
+    font-weight: bold;
+}
+
+
+.step1-coin-logo {
+    position: relative;
+    top: -12px;
+}
+
+
+.step1-coin-logo-name {
+    position: relative;
+    font-size: 1.2em;
+}
+
+.step1-coin-picked {
+    display: flex;
+    width: 100%;
+    padding: 10px 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.1em
+}
+
+.step1-coin-switch-helper {
+    margin: 0 5px;
+    color: $purple;
+    font-size: .9em;
+    font-weight: 100;
+    text-decoration: underline;
+}
+
+.step1 strong {
+    color: $color-secondary;
+}
+
+.step1-coin-item-to {
+    position: relative;
+    padding-top: 10px;
+    background: #FFF;
+}
+
+
+.step1-invert {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 30px;
+    z-index: 2;
+    font-weight: 100;
+    font-size: .9em;
+    background: transparent;
+    padding: 8px 14px 0px;
+    margin-top: -24px;
+}
+
+
+.step1-invert svg {
+    margin: 0 10px;
+    width: 40px;
+    height: 40px;
+    background: #FFF;
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.04);
+
+}
+
+.step1-invert svg path {
+    fill: $color-secondary;
+}
+
+.step1-invert .step1-coin-rate {
+     font-size: 1em;
+     background: #FFF;
+     border-radius: 6px;
+     padding: 4px 6px;
+     box-shadow: 0 6px 20px rgba(0,0,0,.04);
+     color: rgba(0,0,0,0.4)
+ }
+
+
+.step1-coin-item {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.step1-coin-item-head {
+    flex-direction: column;
+    background: #FFF;
+    box-shadow:  0 2px 8px rgba(0,0,0,.04);
+    border-bottom: 1px solid rgba(0,0,0,.12);
+    z-index: 2;
+    justify-content: center;
+}
+
+.step1-coin-item-head .coin-icon-placeholder {
+    width: 130px;
+    height: 130px;
+    border-width: 4px;
+    font-size: 1.4em;
+}
+
+.step1-coin-adr-wrapper .coin-icon-placeholder  { display: none }
+
+.step1-coin-item-head-icon svg {
+    width: 180px;
+    height: 180px;
+}
+
+.step1-coin-item-body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: #FFF;
+    overflow: hidden;
+}
+
+.trade-bg-inside {
+    content:"";
+    position: absolute;
+    left: 0px;
+    width: 130%;
+    height: 130%;
+    background: linear-gradient(180grad,$color-KMD,$color-MNZ);
+    z-index: 0;
+    filter: blur(30px);
+    opacity: .2
+}
+
+.trade-bg-outside {
+    content:"";
+    position: absolute;
+    left: 0px;
+    width: 110%;
+    height: 100%;
+    background: linear-gradient(180grad,$color-KMD,$color-MNZ);
+    z-index: -10;
+    filter: blur(100px);
+    opacity: .1
+}
+
+.step1-coin-item-amount {
+    display: flex;
+    align-items: center;
+    background: #FFF;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow:  0 6px 20px rgba(0,0,0,.14);
+}
+
+
+.step1-coin-item-to .step1-coin-item-amount { box-shadow: none }
+
+
+.step1-coin-item .amount {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+}
+
+.step1-coin-item label {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+}
+
+.step1-coin-item label small {
+    font-weight: 200
+
+}
+
+
+.step1-coin-item code {
+    display: flex;
+    align-items: center;
+}
+
+.step1-coin-item code > *:last-child {
+    margin-left: 4px;
+}
+
+.step1-coin-item input {
+    min-width: 100px;
+    height: 22px;
+    left: 0;
+    width: 100%;
+    padding: 0;
+    text-align: right;
+    background: transparent;
+    color: inherit;
+    font-family: 'Unica One', sans-serif;
+    appearance: textfield; /* bug autosize input and arrow...*/
+}
+
+::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+}
+
+.step1-private {
+    margin: 10px 0 0;
+    padding: 10px 10px;
+}
+
+.step1-private-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.step1-private-label .react-toggle {
+    transform: scale(1.3);
+    margin: 10px;
+}
+
+.step1-private-label-title {
+    font-size: 1.1em;
+    padding: 10px 0;
+    margin: 0
+}
+
+.step1-action {
+    margin-top: auto;
+    font-size: 1.1em;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.step1-action > * { flex-grow: 1 }

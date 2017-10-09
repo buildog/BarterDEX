@@ -1,0 +1,30 @@
+/*
+  Animations classes
+  ----
+  - A collection of animations that can be reused to accomplish the same effect on any element
+*/
+@-webkit-keyframes pulse {
+  0% {
+      opacity: 1
+  }
+  100% {
+      opacity: .4
+  }
+}
+
+@-webkit-keyframes fadeInFromNone {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    1% {
+        display: block;
+        opacity: 0;
+    }
+
+    100% {
+        display: block;
+        opacity: 1;
+    }
+}

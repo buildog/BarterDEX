@@ -1,0 +1,7 @@
+.window__controls {
+  height: 28px;
+  display: flex;
+  align-items: center;
+}
+.window__controls a svg { transition: all .3s ease }
+.window__controls:hover a svg .hidden { display: inherit !important }

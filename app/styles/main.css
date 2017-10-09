@@ -1,0 +1,83 @@
+/*
+  main styling
+*/
+
+/* Imports */
+
+@import '_variables';
+@import '_helpers';
+@import '_animations';
+@import '_base';
+
+
+@import 'elements/_window-controls';
+@import 'elements/_window-header';
+@import 'elements/_window-footer';
+@import 'elements/_link';
+@import 'elements/_loader';
+@import 'elements/_notifier';
+@import 'elements/_inputs';
+@import 'elements/_buttons';
+@import 'elements/_forms';
+@import 'elements/_progress';
+@import 'elements/_toggler';
+@import 'elements/_tooltip';
+@import 'elements/_controls';
+@import 'elements/_video';
+@import 'elements/_modal';
+@import 'elements/_tables';
+
+
+@import 'components/dashboard';
+@import 'components/trade';
+@import 'components/login';
+@import 'components/coinList';
+
+
+body {
+  transition: all .2s ease;
+  background-color: $background-jaguar;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+* { box-sizing: border-box }
+
+.content-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.app.content-container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.app.content-container .Placeholder { flex: 1 }
+.app.content-container .app-view {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    height: 100vh;
+    width: 100%;
+    pointer-events: none;
+}
+
+.app.content-container .app-view > * {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    pointer-events: all;
+}
+
+.app.content-container .window-footer { z-index: 0 }
+
+/* states */
+.app.recording.content-container,
+.app.playing.content-container  { justify-content: flex-end }
+
+.app:not(.recording) .player-container { display: none }

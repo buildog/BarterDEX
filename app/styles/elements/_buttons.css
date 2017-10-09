@@ -1,0 +1,72 @@
+@import '../_variables';
+
+/*
+  Input Styling Component ✏️
+  ----
+  - Stylesheet Partial, for inclusion where inputs are used
+  - Any extensions to input styling should go in this file
+*/
+
+button {
+    font: inherit;
+    outline: none;
+    background: #FFF;
+    border: none;
+    color: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s ease;
+    padding: 10px 20px;
+}
+
+button.primary {
+    font-size: 1.2em;
+    padding: 15px 30px;
+    background: $color-primary;
+    color: #FFF;
+}
+
+button.transparent {
+    background: transparent
+}
+
+button[disabled] {
+    color: $grey;
+    pointer-events: none;
+    cursor: default;
+}
+
+button.primary {  padding: 20px 40px 24px }
+
+button.withBorder {
+    position: relative;
+    border-radius: 60px;
+}
+
+button.withBorder[disabled] {
+    background-color: inherit;
+    color: rgba(0,0,0,0.2)
+}
+
+button.withBorder.danger {
+    background: $danger
+}
+
+button:not([disabled]).withBorder:hover {
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: 0 12px 40px #FFF;
+}
+
+button:not([disabled]).withBorder.danger:hover {
+    box-shadow: 0 12px 40px #FFF
+}
+
+.Clipboard,
+.Openexternal {
+    display: flex;
+    align-items: center;
+    font-size: .8em;
+}
+
+
+.Openexternal-icon { margin-right: 5px }

@@ -1,0 +1,36 @@
+.ReactTable {
+    border: 0;
+    background: $background-jaguar;
+    color: #FFF;
+}
+
+.rt-thead  {
+    background: rgba(256,256,256,0.1);
+    font-weight: 600;
+    color: #FFF;
+}
+
+.ReactTable.-striped .rt-tr.-odd {
+    background: rgba(256,256,256,0.05);
+}
+.ReactTable .rt-thead .rt-th.-sort-asc,
+.ReactTable .rt-thead .rt-td.-sort-asc{
+    box-shadow: inset 0 3px 0 0 $color-primary;
+}
+
+.ReactTable .rt-thead .rt-th.-sort-desc,
+.ReactTable .rt-thead .rt-td.-sort-desc {
+    box-shadow:  $color-primary 0px -3px 0px 0px inset;
+}
+
+.ReactTable .-pagination .-btn,
+.ReactTable .-pageJump input,
+.ReactTable .-pageSizeOptions select {
+    background-color: rgba(256,256,256,0.1);
+    color: #FFF
+}
+
+.ReactTable .-previous,
+.ReactTable .-next {
+    padding: 5px 10px
+}

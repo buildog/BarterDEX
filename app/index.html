@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>BarterDEX</title>
+    <!-- vendor stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Unica+One:400,700" rel="stylesheet">
+    <link href="http://vjs.zencdn.net/6.2.4/video-js.css" rel="stylesheet">
+    <!-- HRM or production stylesheet (see ./app/index.jsx) -->
+    <link id="css-bundle" rel="stylesheet" type="text/css" href="../dist/style.css">
+    <!-- vendor JavaScript -->
+  </head>
+  <body style="-webkit-app-region: drag">
+    <div class="tray-arrow"></div>
+    <div id="root"></div>
+    <script>
+      /*
+        HRM or production bundle
+      */
+      (function() {
+        const port = process.env.PORT || 3000
+        const script = document.createElement('script');
+        script.setAttribute('src', (process.env.HOT) ? `http://localhost:${port}/dist/bundle.js` : '../dist/bundle.js');
+        document.head.appendChild(script);
+      }());
+    </script>
+  </body>
+</html>

@@ -1,0 +1,64 @@
+@import '../_variables';
+
+/*
+  Form Styling Component ✏️
+  ----
+  - Super small, but styles the labels
+*/
+
+.fieldset {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.legend {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: .5em;
+}
+
+.legend > * { margin-right: 10px }
+
+.legend u {
+    text-decoration: none;
+    border-bottom: 2px solid $blue;
+}
+
+.react-toggle--checked .react-toggle-track {
+    background: $purple
+}
+
+.react-toggle--checked .react-toggle-thumb {
+    border-color: $purple
+}
+
+.react-toggle-track {
+    background-color: #E0DCE9
+}
+
+
+.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
+  background-color: #E0DCE9
+}
+
+.react-toggle--checked .react-toggle-track {
+  background-color: $purple;
+}
+
+.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+  background-color: $purple;
+}
+
+.react-toggle--focus .react-toggle-thumb {
+  box-shadow: none
+}
+
+.react-toggle-thumb { border: 0 }

@@ -1,0 +1,80 @@
+@import '../_variables';
+
+/*
+  Notifier Styling Component ✏️
+
+*/
+.notifier {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100vw;
+    padding: 5vh 20px;
+    left: 0;
+    z-index: 1000;
+}
+
+.notifier-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.notifier-title-icon {
+    opacity: .05;
+    position: absolute;
+    transform: scale(10);
+    pointer-events: none;
+
+}
+
+.notifier-title-icon svg {
+    width: 200px;
+    height: 150px;
+}
+
+.notifier-title-text {
+    font-size: 2.8em;
+    font-weight: 200;
+    margin: 0 0 .5em 0;
+}
+
+.notifier button {
+    pointer-events: all;
+}
+
+.notifier-list {
+    @extend .flexColumnCenter;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.notifier-list li {
+    text-align: center;
+}
+
+.notifier-list-close {
+    width: 200px;
+    background: #04050A;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 30px;
+}
+
+/* animation state */
+.notifier {
+    bottom: -100vh;
+    transition: all .32s ease-in-out;
+    will-change: all;
+}
+.notifier.notifier-error {
+    bottom: 0;
+    background: $danger;
+    box-shadow: 0px 0px 100px 100px $danger;
+    color: #FFF
+}

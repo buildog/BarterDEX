@@ -1,0 +1,10 @@
+@import '../_variables';
+
+/*
+  Range Styling Component ✏️
+  ----
+  - Styles the range input in HTML
+  - Includes a custom element to display labels for either end of the range
+*/
+
+.c-range { }

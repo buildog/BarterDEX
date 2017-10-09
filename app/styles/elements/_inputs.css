@@ -1,0 +1,34 @@
+@import '../_variables';
+
+/*
+  Input Styling Component ✏️
+  ----
+  - Stylesheet Partial, for inclusion where inputs are used
+  - Any extensions to input styling should go in this file
+*/
+
+input,
+[contenteditable=true],
+select,
+textarea {
+    font: inherit;
+    outline: none;
+    border: 0;
+    /* Ensure focus on inputs doesn't allow app dragging */
+    -webkit-app-region: no-drag;
+    border-radius: 4px;
+}
+
+[contenteditable=true] { max-width: 100% }
+[contenteditable=true] + button { display: none !important }
+[contenteditable=true]:not(:empty) + button { display: flex !important }
+[contenteditable=true]:empty::before {
+  content: attr(data-tooltip);
+  max-width: inherit;
+  overflow-wrap: break-word;
+}
+
+[contenteditable=true]:focus:empty::before {
+    opacity: .1;
+    content: attr(placeholder);
+}

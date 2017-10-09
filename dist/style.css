@@ -1,0 +1,3679 @@
+.react-toggle {
+  -ms-touch-action: pan-x;
+      touch-action: pan-x;
+
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.react-toggle-screenreader-only {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.react-toggle--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  -webkit-transition: opacity 0.25s;
+  transition: opacity 0.25s;
+}
+
+.react-toggle-track {
+  width: 50px;
+  height: 24px;
+  padding: 0;
+  border-radius: 30px;
+  background-color: #4D4D4D;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
+  background-color: #000000;
+}
+
+.react-toggle--checked .react-toggle-track {
+  background-color: #19AB27;
+}
+
+.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+  background-color: #128D15;
+}
+
+.react-toggle-track-check {
+  position: absolute;
+  width: 14px;
+  height: 10px;
+  top: 0px;
+  bottom: 0px;
+  margin-top: auto;
+  margin-bottom: auto;
+  line-height: 0;
+  left: 8px;
+  opacity: 0;
+  -webkit-transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease;
+}
+
+.react-toggle--checked .react-toggle-track-check {
+  opacity: 1;
+  -webkit-transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease;
+}
+
+.react-toggle-track-x {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: 0px;
+  bottom: 0px;
+  margin-top: auto;
+  margin-bottom: auto;
+  line-height: 0;
+  right: 10px;
+  opacity: 1;
+  -webkit-transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease;
+}
+
+.react-toggle--checked .react-toggle-track-x {
+  opacity: 0;
+}
+
+.react-toggle-thumb {
+  -webkit-transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #4D4D4D;
+  border-radius: 50%;
+  background-color: #FAFAFA;
+
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+
+  -webkit-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+}
+
+.react-toggle--checked .react-toggle-thumb {
+  left: 27px;
+  border-color: #19AB27;
+}
+
+.react-toggle--focus .react-toggle-thumb {
+  -webkit-box-shadow: 0px 0px 3px 2px #0099E0;
+  box-shadow: 0px 0px 2px 3px #0099E0;
+}
+
+.react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
+  -webkit-box-shadow: 0px 0px 5px 5px #0099E0;
+  box-shadow: 0px 0px 5px 5px #0099E0;
+}
+.ReactTable{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;border:1px solid rgba(0, 0, 0, .1);}.ReactTable *{-webkit-box-sizing:border-box;box-sizing:border-box}.ReactTable .rt-table{-webkit-box-flex:1;-ms-flex:1;flex:1;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:stretch;-ms-flex-align:stretch;align-items:stretch;width:100%;border-collapse:collapse;overflow:auto}.ReactTable .rt-thead{-webkit-box-flex:1;-ms-flex:1 0 auto;flex:1 0 auto;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}.ReactTable .rt-thead.-headerGroups{background:rgba(0, 0, 0, .03);border-bottom:1px solid rgba(0, 0, 0, .05)}.ReactTable .rt-thead.-filters{border-bottom:1px solid rgba(0, 0, 0, .05);}.ReactTable .rt-thead.-filters .rt-th{border-right:1px solid rgba(0, 0, 0, .02)}.ReactTable .rt-thead.-header{-webkit-box-shadow:0 2px 15px 0 rgba(0, 0, 0, .15);box-shadow:0 2px 15px 0 rgba(0, 0, 0, .15)}.ReactTable .rt-thead .rt-tr{text-align:center}.ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td{padding:5px 5px;line-height:normal;position:relative;border-right:1px solid rgba(0, 0, 0, .05);-webkit-transition:box-shadow .3s cubic-bezier(.175,.885,.32,1.275);-webkit-transition:-webkit-box-shadow .3s cubic-bezier(.175,.885,.32,1.275);transition:-webkit-box-shadow .3s cubic-bezier(.175,.885,.32,1.275);transition:box-shadow .3s cubic-bezier(.175,.885,.32,1.275);transition:box-shadow .3s cubic-bezier(.175,.885,.32,1.275), -webkit-box-shadow .3s cubic-bezier(.175,.885,.32,1.275);-webkit-box-shadow:inset 0 0 0 0 transparent;box-shadow:inset 0 0 0 0 transparent;}.ReactTable .rt-thead .rt-th.-sort-asc, .ReactTable .rt-thead .rt-td.-sort-asc{-webkit-box-shadow:inset 0 3px 0 0 rgba(0, 0, 0, .6);box-shadow:inset 0 3px 0 0 rgba(0, 0, 0, .6)}.ReactTable .rt-thead .rt-th.-sort-desc, .ReactTable .rt-thead .rt-td.-sort-desc{-webkit-box-shadow:inset 0 -3px 0 0 rgba(0, 0, 0, .6);box-shadow:inset 0 -3px 0 0 rgba(0, 0, 0, .6)}.ReactTable .rt-thead .rt-th.-cursor-pointer, .ReactTable .rt-thead .rt-td.-cursor-pointer{cursor:pointer}.ReactTable .rt-thead .rt-th:last-child, .ReactTable .rt-thead .rt-td:last-child{border-right:0}.ReactTable .rt-thead .rt-resizable-header{overflow:visible;}.ReactTable .rt-thead .rt-resizable-header:last-child{overflow:hidden}.ReactTable .rt-thead .rt-resizable-header-content{overflow:hidden;text-overflow:ellipsis}.ReactTable .rt-thead .rt-header-pivot{border-right-color:#f7f7f7}.ReactTable .rt-thead .rt-header-pivot:after, .ReactTable .rt-thead .rt-header-pivot:before{left:100%;top:50%;border:solid transparent;content:" ";height:0;width:0;position:absolute;pointer-events:none}.ReactTable .rt-thead .rt-header-pivot:after{border-color:rgba(255, 255, 255, 0);border-left-color:#fff;border-width:8px;margin-top:-8px}.ReactTable .rt-thead .rt-header-pivot:before{border-color:rgba(102, 102, 102, 0);border-left-color:#f7f7f7;border-width:10px;margin-top:-10px}.ReactTable .rt-tbody{-webkit-box-flex:99999;-ms-flex:99999 1 auto;flex:99999 1 auto;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;overflow:auto;}.ReactTable .rt-tbody .rt-tr-group{border-bottom:solid 1px rgba(0, 0, 0, .05);}.ReactTable .rt-tbody .rt-tr-group:last-child{border-bottom:0}.ReactTable .rt-tbody .rt-td{border-right:1px solid rgba(0, 0, 0, .02);}.ReactTable .rt-tbody .rt-td:last-child{border-right:0}.ReactTable .rt-tbody .rt-expandable{cursor:pointer}.ReactTable .rt-tr-group{-webkit-box-flex:1;-ms-flex:1 0 auto;flex:1 0 auto;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:stretch;-ms-flex-align:stretch;align-items:stretch}.ReactTable .rt-tr{-webkit-box-flex:1;-ms-flex:1 0 auto;flex:1 0 auto;display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex}.ReactTable .rt-th, .ReactTable .rt-td{-webkit-box-flex:1;-ms-flex:1 0 0px;flex:1 0 0;white-space:nowrap;text-overflow:ellipsis;padding:7px 5px;overflow:hidden;-webkit-transition:.3s ease;transition:.3s ease;-webkit-transition-property:width,min-width,padding,opacity;transition-property:width,min-width,padding,opacity;}.ReactTable .rt-th.-hidden, .ReactTable .rt-td.-hidden{width:0 !important;min-width:0 !important;padding:0 !important;border:0 !important;opacity:0 !important}.ReactTable .rt-expander{display:inline-block;position:relative;margin:0;color:transparent;margin:0 10px;}.ReactTable .rt-expander:after{content:'';position:absolute;width:0;height:0;top:50%;left:50%;-webkit-transform:translate(-50%,-50%) rotate(-90deg);transform:translate(-50%,-50%) rotate(-90deg);border-left:5.04px solid transparent;border-right:5.04px solid transparent;border-top:7px solid rgba(0, 0, 0, .8);-webkit-transition:all .3s cubic-bezier(.175,.885,.32,1.275);transition:all .3s cubic-bezier(.175,.885,.32,1.275);cursor:pointer}.ReactTable .rt-expander.-open:after{-webkit-transform:translate(-50%,-50%) rotate(0);transform:translate(-50%,-50%) rotate(0)}.ReactTable .rt-resizer{display:inline-block;position:absolute;width:36px;top:0;bottom:0;right:-18px;cursor:col-resize;z-index:10}.ReactTable .rt-tfoot{-webkit-box-flex:1;-ms-flex:1 0 auto;flex:1 0 auto;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-shadow:0 0 15px 0 rgba(0, 0, 0, .15);box-shadow:0 0 15px 0 rgba(0, 0, 0, .15);}.ReactTable .rt-tfoot .rt-td{border-right:1px solid rgba(0, 0, 0, .05);}.ReactTable .rt-tfoot .rt-td:last-child{border-right:0}.ReactTable.-striped .rt-tr.-odd{background:rgba(0, 0, 0, .03)}.ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover{background:rgba(0, 0, 0, .05)}.ReactTable .-pagination{z-index:1;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-webkit-box-align:stretch;-ms-flex-align:stretch;align-items:stretch;-ms-flex-wrap:wrap;flex-wrap:wrap;padding:3px;-webkit-box-shadow:0 0 15px 0 rgba(0, 0, 0, .1);box-shadow:0 0 15px 0 rgba(0, 0, 0, .1);border-top:2px solid rgba(0, 0, 0, .1);}.ReactTable .-pagination input, .ReactTable .-pagination select{border:1px solid rgba(0, 0, 0, .1);background:#fff;padding:5px 7px;font-size:inherit;border-radius:3px;font-weight:normal;outline:none}.ReactTable .-pagination .-btn{-webkit-appearance:none;-moz-appearance:none;appearance:none;display:block;width:100%;height:100%;border:0;border-radius:3px;padding:6px;font-size:1em;color:rgba(0, 0, 0, .6);background:rgba(0, 0, 0, .1);-webkit-transition:all .1s ease;transition:all .1s ease;cursor:pointer;outline:none;}.ReactTable .-pagination .-btn[disabled]{opacity:.5;cursor:default}.ReactTable .-pagination .-btn:not([disabled]):hover{background:rgba(0, 0, 0, .3);color:#fff}.ReactTable .-pagination .-previous, .ReactTable .-pagination .-next{-webkit-box-flex:1;-ms-flex:1;flex:1;text-align:center}.ReactTable .-pagination .-center{-webkit-box-flex:1.5;-ms-flex:1.5;flex:1.5;text-align:center;margin-bottom:0;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-pack:distribute;justify-content:space-around}.ReactTable .-pagination .-pageInfo{display:inline-block;margin:3px 10px;white-space:nowrap}.ReactTable .-pagination .-pageJump{display:inline-block;}.ReactTable .-pagination .-pageJump input{width:70px;text-align:center}.ReactTable .-pagination .-pageSizeOptions{margin:3px 10px}.ReactTable .rt-noData{display:block;position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:rgba(255, 255, 255, .8);-webkit-transition:all .3s ease;transition:all .3s ease;z-index:1;pointer-events:none;padding:20px;color:rgba(0, 0, 0, .5)}.ReactTable .-loading{display:block;position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(255, 255, 255, .8);-webkit-transition:all .3s ease;transition:all .3s ease;z-index:-1;opacity:0;pointer-events:none;}.ReactTable .-loading > div{position:absolute;display:block;text-align:center;width:100%;top:50%;left:0;font-size:15px;color:rgba(0, 0, 0, .6);-webkit-transform:translateY(-52%);transform:translateY(-52%);-webkit-transition:all .3s cubic-bezier(.25,.46,.45,.94);transition:all .3s cubic-bezier(.25,.46,.45,.94)}.ReactTable .-loading.-active{opacity:1;z-index:2;pointer-events:all;}.ReactTable .-loading.-active > div{-webkit-transform:translateY(50%);transform:translateY(50%)}.ReactTable .rt-resizing .rt-th, .ReactTable .rt-resizing .rt-td{-webkit-transition:none !important;transition:none !important;cursor:col-resize;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}/*
+  main styling
+*/
+
+/* Imports */
+
+/*
+  Styling Variables ✏️
+  ----
+  - Stylesheet Partial, for inclusion where common variables are needed
+  - If a window needs to overwrite variables, it should be done in that window's stylesheet
+*/
+
+/* Colors */
+
+/* Typography */
+
+/* Backgrounds */
+
+/* Typography */
+
+/* Borders */
+
+/* height */
+
+.ADC { color: #3CB0E5; }
+
+.AEON { color: #164450; }
+
+.AMP { color: #048DD2; }
+
+.ANC { color: #000; }
+
+.ARCH { color: #002652; }
+
+.ARDR { color: #1162a1; }
+
+.AUR { color: #136c5e; }
+
+.BANX { color: #225BA6; }
+
+.BAT { color: #9e1f63; }
+
+.BAY { color: #584ba1; }
+
+.BC { color: #202121; }
+
+.BCN { color: #964F51; }
+
+.BFT { color: #4fc3f7; }
+
+.BRK { color: #194fa0; }
+
+.BRX { color: #a8c300; }
+
+.BSD { color: #1186E7; }
+
+.BTA { color: #210094; }
+
+.BTC, .BCC { color: #F7931A; }
+
+.BTCD { color: #2A72DC; }
+
+.BTS { color: #03A9E0; }
+
+.CLAM { color: #D6AB31; }
+
+.CLOAK { color: #DF3F1E; }
+
+.DAO { color: #FF3B3B; }
+
+.DASH { color: #1c75bc; }
+
+.DCR { color: #3b7cfb; }
+
+.DCT { color: #008770; }
+
+.DGB { color: #0066cc; }
+
+.DGD, .DGX { color: #D8A24A; }
+
+.DMD { color: #5497b2; }
+
+.DOGE { color: #BA9F33; }
+
+.EMC { color: #674c8c; }
+
+.EOS { color: #19191A; }
+
+.ERC { color: #101E84; }
+
+.ETC { color: #669073; }
+
+.ETH { color: #282828; }
+
+.FC2 { color: #040405; }
+
+.FCT { color: #2175BB; }
+
+.FLO { color: #1358C8; }
+
+.FRK { color: #0633cd; }
+
+.FTC { color: #679EF1; }
+
+.GAME { color: #ed1b24; }
+
+.GDC { color: #E9A226; }
+
+.GEMZ { color: #e86060; }
+
+.GLD { color: #E8BE24; }
+
+.GNO { color: #00A6C4; }
+
+.GNT { color: #00d6e3; }
+
+.GOLOS { color: #2670B7; }
+
+.GRC { color: #88A13C; }
+
+.GRS { color: #648FA0; }
+
+.HEAT { color: #ff5606; }
+
+.ICN { color: #4c6f8c; }
+
+.IFC { color: #ed272d; }
+
+.INCNT { color: #f2932f; }
+
+.IOC { color: #2fa3de; }
+
+.IOTA { color: #FFFFFF; }
+
+.JBS { color: #1A8BCD; }
+
+.KMD { color: #326464; }
+
+.KOBO { color: #80C342; }
+
+.KORE { color: #DF4124; }
+
+.LBC { color: #015C47; }
+
+.LDOGE { color: #ffcc00; }
+
+.LISK { color: #1A6896; }
+
+.LTC { color: #838383; }
+
+.MAID { color: #5492D6; }
+
+.MCO { color: #0D3459; }
+
+.MINT { color: #006835; }
+
+.MONA { color: #a99364; }
+
+.MRC { color: #4279bd; }
+
+.MSC { color: #1D4983; }
+
+.MTR { color: #b92429; }
+
+.MUE { color: #f5a10e; }
+
+.NBT { color: #FFC93D; }
+
+.NEO { color: #58BF00; }
+
+.NEOS { color: #1d1d1b; }
+
+.NEU { color: #2983c0; }
+
+.NLG { color: #003E7E; }
+
+.NMC { color: #6787B7; }
+
+.NOTE { color: #42daff; }
+
+.NVC { color: #ecab41; }
+
+.NXT { color: #008FBB; }
+
+.OK { color: #0165A4; }
+
+.OMG { color: #1A53F0; }
+
+.OMNI { color: #18347E; }
+
+.OPAL { color: #7193AA; }
+
+.PART { color: #05D5A3; }
+
+.PIGGY { color: #F27A7A; }
+
+.PINK { color: #ED31CA; }
+
+.PIVX { color: #3b2f4d; }
+
+.POT { color: #105B2F; }
+
+.PPC { color: #3FA30C; }
+
+.QRK { color: #22AABF; }
+
+.RADS { color: #924cea; }
+
+.RBIES { color: #C62436; }
+
+.RBT { color: #0d4982; }
+
+.RBY { color: #D31F26; }
+
+.RDD { color: #ED1C24; }
+
+.REP { color: #40a2cb; }
+
+.RISE { color: #43CEA2; }
+
+.SAR { color: #1B72B8; }
+
+.SCOT { color: #3498DB; }
+
+.SDC { color: #981D2D; }
+
+.SIA { color: #00CBA0; }
+
+.SJCX { color: #003366; }
+
+.SLG { color: #5A6875; }
+
+.SLS { color: #1EB549; }
+
+.SNRG { color: #160363; }
+
+.START { color: #01AEF0; }
+
+.STEEM { color: #1A5099; }
+
+.STR { color: #08B5E5; }
+
+.STRAT { color: #2398dd; }
+
+.SWIFT { color: #428BCA; }
+
+.SYNC { color: #008DD2; }
+
+.SYS { color: #0098DA; }
+
+.TRIG { color: #1fbff4; }
+
+.TX { color: #1F8BCC; }
+
+.UBQ { color: #00ec8d; }
+
+.UNITY { color: #ED8527; }
+
+.USDT { color: #2CA07A; }
+
+.VIOR { color: #1F52A4; }
+
+.VNL { color: #404249; }
+
+.VPN { color: #589700; }
+
+.VRC { color: #418bca; }
+
+.VTC { color: #1b5c2e; }
+
+.WAVES { color: #24aad6; }
+
+.XAI { color: #2ef99f; }
+
+.XBS { color: #d3261d; }
+
+.XCP { color: #EC1550; }
+
+.XEM { color: #41bf76; }
+
+.XMR { color: #FF6600; }
+
+.XPM { color: #e5b625; }
+
+.XRP { color: #346AA9; }
+
+.XTZ { color: #A6DF00; }
+
+.XVG { color: #42AFB2; }
+
+.YBC { color: #D6C154; }
+
+.ZEC { color: #e5a93d; }
+
+.ZEIT { color: #ACACAC; }
+
+/*
+  Helper classes
+  ----
+  - A collection of classes that can be reused to accomplish the same effect on any element
+*/
+
+/* Allow element to be held down to drag the current window */
+
+.webkit-drag, .window-header {
+  -webkit-app-region: drag;
+  cursor: -webkit-grab;
+}
+
+.a-width--full { width: 100%!important; }
+
+/* Hide element */
+
+.hidden { display: none !important!important; }
+
+/* Make current element a circle */
+
+.circle, .toggler__broadcaster { border-radius: 50%!important; }
+
+.breakWord {
+    word-wrap: break-word;
+}
+
+.note { opacity: .8 }
+
+.note b { color: #FF6159 }
+
+.coin-icon-placeholder {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    font-style: normal;
+    border: 2px solid #000000;
+    width: 80px;
+    height: 80px;
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
+    border-radius: 50%;
+    font-weight: 600
+}
+
+[class*='amount'] {
+    font-family: 'Unica One', sans-serif;
+}
+
+.large-number {
+    letter-spacing: -2px
+}
+
+.xtra-large-number {
+    letter-spacing: -4px
+}
+
+.amount-positive, .amount-negative {
+    padding: 0px 2px;
+    border-radius: 6px;
+}
+
+.amount-positive {
+    color: rgba(102, 215, 155, 1);
+    background-color: rgba(102, 215, 155, .1);
+}
+
+.amount-negative {
+    color: #E24E40;
+    background-color: rgba(226, 78, 64, .1)
+}
+
+.shadow {
+    -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, .95);
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, .95);
+}
+
+code {
+    margin: 20px 0;
+    color: inherit;
+    background: #FAFAFA;
+    border-radius: 3px;
+    padding: 10px;
+}
+
+/* Make child vertical and horizontal centered */
+
+.flexCenter, .window-header-logo, .toggler__wrapper, .toggler__broadcaster, .toggler__player, [class*='toggler__player-button'], .control-actions, .control-action, .control-action > *, .control-action > * > [class*='-icon'], .Placeholder-logo {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+.flexColumnCenter, .notifier-list, .controls-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+.txt {
+    -webkit-app-region: none !important;
+    -webkit-user-select: none !important;
+    cursor: default !important;
+}
+
+/* crypto colors*/
+
+.ADC .coin-colorized { color: #3CB0E5!important; }
+
+.AEON .coin-colorized { color: #164450!important; }
+
+.AMP .coin-colorized { color: #048DD2!important; }
+
+.ANC .coin-colorized { color: #000!important; }
+
+.ARCH .coin-colorized { color: #002652!important; }
+
+.ARDR .coin-colorized { color: #1162a1!important; }
+
+.AUR .coin-colorized { color: #136c5e!important; }
+
+.BANX .coin-colorized { color: #225BA6!important; }
+
+.BAT .coin-colorized { color: #9e1f63!important; }
+
+.BAY .coin-colorized { color: #584ba1!important; }
+
+.BC .coin-colorized { color: #202121!important; }
+
+.BCN .coin-colorized { color: #964F51!important; }
+
+.BFT .coin-colorized { color: #4fc3f7!important; }
+
+.BRK .coin-colorized { color: #194fa0!important; }
+
+.BRX .coin-colorized { color: #a8c300!important; }
+
+.BSD .coin-colorized { color: #1186E7!important; }
+
+.BTA .coin-colorized { color: #210094!important; }
+
+.BTC .coin-colorized, .BCC .coin-colorized { color: #F7931A!important; }
+
+.BTCD .coin-colorized { color: #2A72DC!important; }
+
+.BTS .coin-colorized { color: #03A9E0!important; }
+
+.CLAM .coin-colorized { color: #D6AB31!important; }
+
+.CLOAK .coin-colorized { color: #DF3F1E!important; }
+
+.DAO .coin-colorized { color: #FF3B3B!important; }
+
+.DASH .coin-colorized { color: #1c75bc!important; }
+
+.DCR .coin-colorized { color: #3b7cfb!important; }
+
+.DCT .coin-colorized { color: #008770!important; }
+
+.DGB .coin-colorized { color: #0066cc!important; }
+
+.DGD .coin-colorized, .DGX .coin-colorized { color: #D8A24A!important; }
+
+.DMD .coin-colorized { color: #5497b2!important; }
+
+.DOGE .coin-colorized { color: #BA9F33!important; }
+
+.EMC .coin-colorized { color: #674c8c!important; }
+
+.EOS .coin-colorized { color: #19191A!important; }
+
+.ERC .coin-colorized { color: #101E84!important; }
+
+.ETC .coin-colorized { color: #669073!important; }
+
+.ETH .coin-colorized { color: #282828!important; }
+
+.FC2 .coin-colorized { color: #040405!important; }
+
+.FCT .coin-colorized { color: #2175BB!important; }
+
+.FLO .coin-colorized { color: #1358C8!important; }
+
+.FRK .coin-colorized { color: #0633cd!important; }
+
+.FTC .coin-colorized { color: #679EF1!important; }
+
+.GAME .coin-colorized { color: #ed1b24!important; }
+
+.GDC .coin-colorized { color: #E9A226!important; }
+
+.GEMZ .coin-colorized { color: #e86060!important; }
+
+.GLD .coin-colorized { color: #E8BE24!important; }
+
+.GNO .coin-colorized { color: #00A6C4!important; }
+
+.GNT .coin-colorized { color: #00d6e3!important; }
+
+.GOLOS .coin-colorized { color: #2670B7!important; }
+
+.GRC .coin-colorized { color: #88A13C!important; }
+
+.GRS .coin-colorized { color: #648FA0!important; }
+
+.HEAT .coin-colorized { color: #ff5606!important; }
+
+.ICN .coin-colorized { color: #4c6f8c!important; }
+
+.IFC .coin-colorized { color: #ed272d!important; }
+
+.INCNT .coin-colorized { color: #f2932f!important; }
+
+.IOC .coin-colorized { color: #2fa3de!important; }
+
+.IOTA .coin-colorized { color: #FFFFFF!important; }
+
+.JBS .coin-colorized { color: #1A8BCD!important; }
+
+.KMD .coin-colorized { color: #326464!important; }
+
+.KOBO .coin-colorized { color: #80C342!important; }
+
+.KORE .coin-colorized { color: #DF4124!important; }
+
+.LBC .coin-colorized { color: #015C47!important; }
+
+.LDOGE .coin-colorized { color: #ffcc00!important; }
+
+.LISK .coin-colorized { color: #1A6896!important; }
+
+.LTC .coin-colorized { color: #838383!important; }
+
+.MAID .coin-colorized { color: #5492D6!important; }
+
+.MCO .coin-colorized { color: #0D3459!important; }
+
+.MINT .coin-colorized { color: #006835!important; }
+
+.MONA .coin-colorized { color: #a99364!important; }
+
+.MRC .coin-colorized { color: #4279bd!important; }
+
+.MSC .coin-colorized { color: #1D4983!important; }
+
+.MTR .coin-colorized { color: #b92429!important; }
+
+.MUE .coin-colorized { color: #f5a10e!important; }
+
+.NBT .coin-colorized { color: #FFC93D!important; }
+
+.NEO .coin-colorized { color: #58BF00!important; }
+
+.NEOS .coin-colorized { color: #1d1d1b!important; }
+
+.NEU .coin-colorized { color: #2983c0!important; }
+
+.NLG .coin-colorized { color: #003E7E!important; }
+
+.NMC .coin-colorized { color: #6787B7!important; }
+
+.NOTE .coin-colorized { color: #42daff!important; }
+
+.NVC .coin-colorized { color: #ecab41!important; }
+
+.NXT .coin-colorized { color: #008FBB!important; }
+
+.OK .coin-colorized { color: #0165A4!important; }
+
+.OMG .coin-colorized { color: #1A53F0!important; }
+
+.OMNI .coin-colorized { color: #18347E!important; }
+
+.OPAL .coin-colorized { color: #7193AA!important; }
+
+.PART .coin-colorized { color: #05D5A3!important; }
+
+.PIGGY .coin-colorized { color: #F27A7A!important; }
+
+.PINK .coin-colorized { color: #ED31CA!important; }
+
+.PIVX .coin-colorized { color: #3b2f4d!important; }
+
+.POT .coin-colorized { color: #105B2F!important; }
+
+.PPC .coin-colorized { color: #3FA30C!important; }
+
+.QRK .coin-colorized { color: #22AABF!important; }
+
+.RADS .coin-colorized { color: #924cea!important; }
+
+.RBIES .coin-colorized { color: #C62436!important; }
+
+.RBT .coin-colorized { color: #0d4982!important; }
+
+.RBY .coin-colorized { color: #D31F26!important; }
+
+.RDD .coin-colorized { color: #ED1C24!important; }
+
+.REP .coin-colorized { color: #40a2cb!important; }
+
+.RISE .coin-colorized { color: #43CEA2!important; }
+
+.SAR .coin-colorized { color: #1B72B8!important; }
+
+.SCOT .coin-colorized { color: #3498DB!important; }
+
+.SDC .coin-colorized { color: #981D2D!important; }
+
+.SIA .coin-colorized { color: #00CBA0!important; }
+
+.SJCX .coin-colorized { color: #003366!important; }
+
+.SLG .coin-colorized { color: #5A6875!important; }
+
+.SLS .coin-colorized { color: #1EB549!important; }
+
+.SNRG .coin-colorized { color: #160363!important; }
+
+.START .coin-colorized { color: #01AEF0!important; }
+
+.STEEM .coin-colorized { color: #1A5099!important; }
+
+.STR .coin-colorized { color: #08B5E5!important; }
+
+.STRAT .coin-colorized { color: #2398dd!important; }
+
+.SWIFT .coin-colorized { color: #428BCA!important; }
+
+.SYNC .coin-colorized { color: #008DD2!important; }
+
+.SYS .coin-colorized { color: #0098DA!important; }
+
+.TRIG .coin-colorized { color: #1fbff4!important; }
+
+.TX .coin-colorized { color: #1F8BCC!important; }
+
+.UBQ .coin-colorized { color: #00ec8d!important; }
+
+.UNITY .coin-colorized { color: #ED8527!important; }
+
+.USDT .coin-colorized { color: #2CA07A!important; }
+
+.VIOR .coin-colorized { color: #1F52A4!important; }
+
+.VNL .coin-colorized { color: #404249!important; }
+
+.VPN .coin-colorized { color: #589700!important; }
+
+.VRC .coin-colorized { color: #418bca!important; }
+
+.VTC .coin-colorized { color: #1b5c2e!important; }
+
+.WAVES .coin-colorized { color: #24aad6!important; }
+
+.XAI .coin-colorized { color: #2ef99f!important; }
+
+.XBS .coin-colorized { color: #d3261d!important; }
+
+.XCP .coin-colorized { color: #EC1550!important; }
+
+.XEM .coin-colorized { color: #41bf76!important; }
+
+.XMR .coin-colorized { color: #FF6600!important; }
+
+.XPM .coin-colorized { color: #e5b625!important; }
+
+.XRP .coin-colorized { color: #346AA9!important; }
+
+.XTZ .coin-colorized { color: #A6DF00!important; }
+
+.XVG .coin-colorized { color: #42AFB2!important; }
+
+.YBC .coin-colorized { color: #D6C154!important; }
+
+.ZEC .coin-colorized { color: #e5a93d!important; }
+
+.ZEIT .coin-colorized { color: #ACACAC!important; }
+
+.ADC .coin-colorized svg { fill: #3CB0E5!important; }
+
+.AEON .coin-colorized svg { fill: #164450!important; }
+
+.AMP .coin-colorized svg { fill: #048DD2!important; }
+
+.ANC .coin-colorized svg { fill: #000!important; }
+
+.ARCH .coin-colorized svg { fill: #002652!important; }
+
+.ARDR .coin-colorized svg { fill: #1162a1!important; }
+
+.AUR .coin-colorized svg { fill: #136c5e!important; }
+
+.BANX .coin-colorized svg { fill: #225BA6!important; }
+
+.BAT .coin-colorized svg { fill: #9e1f63!important; }
+
+.BAY .coin-colorized svg { fill: #584ba1!important; }
+
+.BC .coin-colorized svg { fill: #202121!important; }
+
+.BCN .coin-colorized svg { fill: #964F51!important; }
+
+.BFT .coin-colorized svg { fill: #4fc3f7!important; }
+
+.BRK .coin-colorized svg { fill: #194fa0!important; }
+
+.BRX .coin-colorized svg { fill: #a8c300!important; }
+
+.BSD .coin-colorized svg { fill: #1186E7!important; }
+
+.BTA .coin-colorized svg { fill: #210094!important; }
+
+.BTC .coin-colorized svg, .BCC .coin-colorized svg { fill: #F7931A!important; }
+
+.BTCD .coin-colorized svg { fill: #2A72DC!important; }
+
+.BTS .coin-colorized svg { fill: #03A9E0!important; }
+
+.CLAM .coin-colorized svg { fill: #D6AB31!important; }
+
+.CLOAK .coin-colorized svg { fill: #DF3F1E!important; }
+
+.DAO .coin-colorized svg { fill: #FF3B3B!important; }
+
+.DASH .coin-colorized svg { fill: #1c75bc!important; }
+
+.DCR .coin-colorized svg { fill: #3b7cfb!important; }
+
+.DCT .coin-colorized svg { fill: #008770!important; }
+
+.DGB .coin-colorized svg { fill: #0066cc!important; }
+
+.DGD .coin-colorized svg, .DGX .coin-colorized svg { fill: #D8A24A!important; }
+
+.DMD .coin-colorized svg { fill: #5497b2!important; }
+
+.DOGE .coin-colorized svg { fill: #BA9F33!important; }
+
+.EMC .coin-colorized svg { fill: #674c8c!important; }
+
+.EOS .coin-colorized svg { fill: #19191A!important; }
+
+.ERC .coin-colorized svg { fill: #101E84!important; }
+
+.ETC .coin-colorized svg { fill: #669073!important; }
+
+.ETH .coin-colorized svg { fill: #282828!important; }
+
+.FC2 .coin-colorized svg { fill: #040405!important; }
+
+.FCT .coin-colorized svg { fill: #2175BB!important; }
+
+.FLO .coin-colorized svg { fill: #1358C8!important; }
+
+.FRK .coin-colorized svg { fill: #0633cd!important; }
+
+.FTC .coin-colorized svg { fill: #679EF1!important; }
+
+.GAME .coin-colorized svg { fill: #ed1b24!important; }
+
+.GDC .coin-colorized svg { fill: #E9A226!important; }
+
+.GEMZ .coin-colorized svg { fill: #e86060!important; }
+
+.GLD .coin-colorized svg { fill: #E8BE24!important; }
+
+.GNO .coin-colorized svg { fill: #00A6C4!important; }
+
+.GNT .coin-colorized svg { fill: #00d6e3!important; }
+
+.GOLOS .coin-colorized svg { fill: #2670B7!important; }
+
+.GRC .coin-colorized svg { fill: #88A13C!important; }
+
+.GRS .coin-colorized svg { fill: #648FA0!important; }
+
+.HEAT .coin-colorized svg { fill: #ff5606!important; }
+
+.ICN .coin-colorized svg { fill: #4c6f8c!important; }
+
+.IFC .coin-colorized svg { fill: #ed272d!important; }
+
+.INCNT .coin-colorized svg { fill: #f2932f!important; }
+
+.IOC .coin-colorized svg { fill: #2fa3de!important; }
+
+.IOTA .coin-colorized svg { fill: #FFFFFF!important; }
+
+.JBS .coin-colorized svg { fill: #1A8BCD!important; }
+
+.KMD .coin-colorized svg { fill: #326464!important; }
+
+.KOBO .coin-colorized svg { fill: #80C342!important; }
+
+.KORE .coin-colorized svg { fill: #DF4124!important; }
+
+.LBC .coin-colorized svg { fill: #015C47!important; }
+
+.LDOGE .coin-colorized svg { fill: #ffcc00!important; }
+
+.LISK .coin-colorized svg { fill: #1A6896!important; }
+
+.LTC .coin-colorized svg { fill: #838383!important; }
+
+.MAID .coin-colorized svg { fill: #5492D6!important; }
+
+.MCO .coin-colorized svg { fill: #0D3459!important; }
+
+.MINT .coin-colorized svg { fill: #006835!important; }
+
+.MONA .coin-colorized svg { fill: #a99364!important; }
+
+.MRC .coin-colorized svg { fill: #4279bd!important; }
+
+.MSC .coin-colorized svg { fill: #1D4983!important; }
+
+.MTR .coin-colorized svg { fill: #b92429!important; }
+
+.MUE .coin-colorized svg { fill: #f5a10e!important; }
+
+.NBT .coin-colorized svg { fill: #FFC93D!important; }
+
+.NEO .coin-colorized svg { fill: #58BF00!important; }
+
+.NEOS .coin-colorized svg { fill: #1d1d1b!important; }
+
+.NEU .coin-colorized svg { fill: #2983c0!important; }
+
+.NLG .coin-colorized svg { fill: #003E7E!important; }
+
+.NMC .coin-colorized svg { fill: #6787B7!important; }
+
+.NOTE .coin-colorized svg { fill: #42daff!important; }
+
+.NVC .coin-colorized svg { fill: #ecab41!important; }
+
+.NXT .coin-colorized svg { fill: #008FBB!important; }
+
+.OK .coin-colorized svg { fill: #0165A4!important; }
+
+.OMG .coin-colorized svg { fill: #1A53F0!important; }
+
+.OMNI .coin-colorized svg { fill: #18347E!important; }
+
+.OPAL .coin-colorized svg { fill: #7193AA!important; }
+
+.PART .coin-colorized svg { fill: #05D5A3!important; }
+
+.PIGGY .coin-colorized svg { fill: #F27A7A!important; }
+
+.PINK .coin-colorized svg { fill: #ED31CA!important; }
+
+.PIVX .coin-colorized svg { fill: #3b2f4d!important; }
+
+.POT .coin-colorized svg { fill: #105B2F!important; }
+
+.PPC .coin-colorized svg { fill: #3FA30C!important; }
+
+.QRK .coin-colorized svg { fill: #22AABF!important; }
+
+.RADS .coin-colorized svg { fill: #924cea!important; }
+
+.RBIES .coin-colorized svg { fill: #C62436!important; }
+
+.RBT .coin-colorized svg { fill: #0d4982!important; }
+
+.RBY .coin-colorized svg { fill: #D31F26!important; }
+
+.RDD .coin-colorized svg { fill: #ED1C24!important; }
+
+.REP .coin-colorized svg { fill: #40a2cb!important; }
+
+.RISE .coin-colorized svg { fill: #43CEA2!important; }
+
+.SAR .coin-colorized svg { fill: #1B72B8!important; }
+
+.SCOT .coin-colorized svg { fill: #3498DB!important; }
+
+.SDC .coin-colorized svg { fill: #981D2D!important; }
+
+.SIA .coin-colorized svg { fill: #00CBA0!important; }
+
+.SJCX .coin-colorized svg { fill: #003366!important; }
+
+.SLG .coin-colorized svg { fill: #5A6875!important; }
+
+.SLS .coin-colorized svg { fill: #1EB549!important; }
+
+.SNRG .coin-colorized svg { fill: #160363!important; }
+
+.START .coin-colorized svg { fill: #01AEF0!important; }
+
+.STEEM .coin-colorized svg { fill: #1A5099!important; }
+
+.STR .coin-colorized svg { fill: #08B5E5!important; }
+
+.STRAT .coin-colorized svg { fill: #2398dd!important; }
+
+.SWIFT .coin-colorized svg { fill: #428BCA!important; }
+
+.SYNC .coin-colorized svg { fill: #008DD2!important; }
+
+.SYS .coin-colorized svg { fill: #0098DA!important; }
+
+.TRIG .coin-colorized svg { fill: #1fbff4!important; }
+
+.TX .coin-colorized svg { fill: #1F8BCC!important; }
+
+.UBQ .coin-colorized svg { fill: #00ec8d!important; }
+
+.UNITY .coin-colorized svg { fill: #ED8527!important; }
+
+.USDT .coin-colorized svg { fill: #2CA07A!important; }
+
+.VIOR .coin-colorized svg { fill: #1F52A4!important; }
+
+.VNL .coin-colorized svg { fill: #404249!important; }
+
+.VPN .coin-colorized svg { fill: #589700!important; }
+
+.VRC .coin-colorized svg { fill: #418bca!important; }
+
+.VTC .coin-colorized svg { fill: #1b5c2e!important; }
+
+.WAVES .coin-colorized svg { fill: #24aad6!important; }
+
+.XAI .coin-colorized svg { fill: #2ef99f!important; }
+
+.XBS .coin-colorized svg { fill: #d3261d!important; }
+
+.XCP .coin-colorized svg { fill: #EC1550!important; }
+
+.XEM .coin-colorized svg { fill: #41bf76!important; }
+
+.XMR .coin-colorized svg { fill: #FF6600!important; }
+
+.XPM .coin-colorized svg { fill: #e5b625!important; }
+
+.XRP .coin-colorized svg { fill: #346AA9!important; }
+
+.XTZ .coin-colorized svg { fill: #A6DF00!important; }
+
+.XVG .coin-colorized svg { fill: #42AFB2!important; }
+
+.YBC .coin-colorized svg { fill: #D6C154!important; }
+
+.ZEC .coin-colorized svg { fill: #e5a93d!important; }
+
+.ZEIT .coin-colorized svg { fill: #ACACAC!important; }
+
+.ADC .coin-bg { background-color: #3CB0E5!important; }
+
+.AEON .coin-bg { background-color: #164450!important; }
+
+.AMP .coin-bg { background-color: #048DD2!important; }
+
+.ANC .coin-bg { background-color: #000!important; }
+
+.ARCH .coin-bg { background-color: #002652!important; }
+
+.ARDR .coin-bg { background-color: #1162a1!important; }
+
+.AUR .coin-bg { background-color: #136c5e!important; }
+
+.BANX .coin-bg { background-color: #225BA6!important; }
+
+.BAT .coin-bg { background-color: #9e1f63!important; }
+
+.BAY .coin-bg { background-color: #584ba1!important; }
+
+.BC .coin-bg { background-color: #202121!important; }
+
+.BCN .coin-bg { background-color: #964F51!important; }
+
+.BFT .coin-bg { background-color: #4fc3f7!important; }
+
+.BRK .coin-bg { background-color: #194fa0!important; }
+
+.BRX .coin-bg { background-color: #a8c300!important; }
+
+.BSD .coin-bg { background-color: #1186E7!important; }
+
+.BTA .coin-bg { background-color: #210094!important; }
+
+.BTC .coin-bg, .BCC .coin-bg { background-color: #F7931A!important; }
+
+.BTCD .coin-bg { background-color: #2A72DC!important; }
+
+.BTS .coin-bg { background-color: #03A9E0!important; }
+
+.CLAM .coin-bg { background-color: #D6AB31!important; }
+
+.CLOAK .coin-bg { background-color: #DF3F1E!important; }
+
+.DAO .coin-bg { background-color: #FF3B3B!important; }
+
+.DASH .coin-bg { background-color: #1c75bc!important; }
+
+.DCR .coin-bg { background-color: #3b7cfb!important; }
+
+.DCT .coin-bg { background-color: #008770!important; }
+
+.DGB .coin-bg { background-color: #0066cc!important; }
+
+.DGD .coin-bg, .DGX .coin-bg { background-color: #D8A24A!important; }
+
+.DMD .coin-bg { background-color: #5497b2!important; }
+
+.DOGE .coin-bg { background-color: #BA9F33!important; }
+
+.EMC .coin-bg { background-color: #674c8c!important; }
+
+.EOS .coin-bg { background-color: #19191A!important; }
+
+.ERC .coin-bg { background-color: #101E84!important; }
+
+.ETC .coin-bg { background-color: #669073!important; }
+
+.ETH .coin-bg { background-color: #282828!important; }
+
+.FC2 .coin-bg { background-color: #040405!important; }
+
+.FCT .coin-bg { background-color: #2175BB!important; }
+
+.FLO .coin-bg { background-color: #1358C8!important; }
+
+.FRK .coin-bg { background-color: #0633cd!important; }
+
+.FTC .coin-bg { background-color: #679EF1!important; }
+
+.GAME .coin-bg { background-color: #ed1b24!important; }
+
+.GDC .coin-bg { background-color: #E9A226!important; }
+
+.GEMZ .coin-bg { background-color: #e86060!important; }
+
+.GLD .coin-bg { background-color: #E8BE24!important; }
+
+.GNO .coin-bg { background-color: #00A6C4!important; }
+
+.GNT .coin-bg { background-color: #00d6e3!important; }
+
+.GOLOS .coin-bg { background-color: #2670B7!important; }
+
+.GRC .coin-bg { background-color: #88A13C!important; }
+
+.GRS .coin-bg { background-color: #648FA0!important; }
+
+.HEAT .coin-bg { background-color: #ff5606!important; }
+
+.ICN .coin-bg { background-color: #4c6f8c!important; }
+
+.IFC .coin-bg { background-color: #ed272d!important; }
+
+.INCNT .coin-bg { background-color: #f2932f!important; }
+
+.IOC .coin-bg { background-color: #2fa3de!important; }
+
+.IOTA .coin-bg { background-color: #FFFFFF!important; }
+
+.JBS .coin-bg { background-color: #1A8BCD!important; }
+
+.KMD .coin-bg { background-color: #326464!important; }
+
+.KOBO .coin-bg { background-color: #80C342!important; }
+
+.KORE .coin-bg { background-color: #DF4124!important; }
+
+.LBC .coin-bg { background-color: #015C47!important; }
+
+.LDOGE .coin-bg { background-color: #ffcc00!important; }
+
+.LISK .coin-bg { background-color: #1A6896!important; }
+
+.LTC .coin-bg { background-color: #838383!important; }
+
+.MAID .coin-bg { background-color: #5492D6!important; }
+
+.MCO .coin-bg { background-color: #0D3459!important; }
+
+.MINT .coin-bg { background-color: #006835!important; }
+
+.MONA .coin-bg { background-color: #a99364!important; }
+
+.MRC .coin-bg { background-color: #4279bd!important; }
+
+.MSC .coin-bg { background-color: #1D4983!important; }
+
+.MTR .coin-bg { background-color: #b92429!important; }
+
+.MUE .coin-bg { background-color: #f5a10e!important; }
+
+.NBT .coin-bg { background-color: #FFC93D!important; }
+
+.NEO .coin-bg { background-color: #58BF00!important; }
+
+.NEOS .coin-bg { background-color: #1d1d1b!important; }
+
+.NEU .coin-bg { background-color: #2983c0!important; }
+
+.NLG .coin-bg { background-color: #003E7E!important; }
+
+.NMC .coin-bg { background-color: #6787B7!important; }
+
+.NOTE .coin-bg { background-color: #42daff!important; }
+
+.NVC .coin-bg { background-color: #ecab41!important; }
+
+.NXT .coin-bg { background-color: #008FBB!important; }
+
+.OK .coin-bg { background-color: #0165A4!important; }
+
+.OMG .coin-bg { background-color: #1A53F0!important; }
+
+.OMNI .coin-bg { background-color: #18347E!important; }
+
+.OPAL .coin-bg { background-color: #7193AA!important; }
+
+.PART .coin-bg { background-color: #05D5A3!important; }
+
+.PIGGY .coin-bg { background-color: #F27A7A!important; }
+
+.PINK .coin-bg { background-color: #ED31CA!important; }
+
+.PIVX .coin-bg { background-color: #3b2f4d!important; }
+
+.POT .coin-bg { background-color: #105B2F!important; }
+
+.PPC .coin-bg { background-color: #3FA30C!important; }
+
+.QRK .coin-bg { background-color: #22AABF!important; }
+
+.RADS .coin-bg { background-color: #924cea!important; }
+
+.RBIES .coin-bg { background-color: #C62436!important; }
+
+.RBT .coin-bg { background-color: #0d4982!important; }
+
+.RBY .coin-bg { background-color: #D31F26!important; }
+
+.RDD .coin-bg { background-color: #ED1C24!important; }
+
+.REP .coin-bg { background-color: #40a2cb!important; }
+
+.RISE .coin-bg { background-color: #43CEA2!important; }
+
+.SAR .coin-bg { background-color: #1B72B8!important; }
+
+.SCOT .coin-bg { background-color: #3498DB!important; }
+
+.SDC .coin-bg { background-color: #981D2D!important; }
+
+.SIA .coin-bg { background-color: #00CBA0!important; }
+
+.SJCX .coin-bg { background-color: #003366!important; }
+
+.SLG .coin-bg { background-color: #5A6875!important; }
+
+.SLS .coin-bg { background-color: #1EB549!important; }
+
+.SNRG .coin-bg { background-color: #160363!important; }
+
+.START .coin-bg { background-color: #01AEF0!important; }
+
+.STEEM .coin-bg { background-color: #1A5099!important; }
+
+.STR .coin-bg { background-color: #08B5E5!important; }
+
+.STRAT .coin-bg { background-color: #2398dd!important; }
+
+.SWIFT .coin-bg { background-color: #428BCA!important; }
+
+.SYNC .coin-bg { background-color: #008DD2!important; }
+
+.SYS .coin-bg { background-color: #0098DA!important; }
+
+.TRIG .coin-bg { background-color: #1fbff4!important; }
+
+.TX .coin-bg { background-color: #1F8BCC!important; }
+
+.UBQ .coin-bg { background-color: #00ec8d!important; }
+
+.UNITY .coin-bg { background-color: #ED8527!important; }
+
+.USDT .coin-bg { background-color: #2CA07A!important; }
+
+.VIOR .coin-bg { background-color: #1F52A4!important; }
+
+.VNL .coin-bg { background-color: #404249!important; }
+
+.VPN .coin-bg { background-color: #589700!important; }
+
+.VRC .coin-bg { background-color: #418bca!important; }
+
+.VTC .coin-bg { background-color: #1b5c2e!important; }
+
+.WAVES .coin-bg { background-color: #24aad6!important; }
+
+.XAI .coin-bg { background-color: #2ef99f!important; }
+
+.XBS .coin-bg { background-color: #d3261d!important; }
+
+.XCP .coin-bg { background-color: #EC1550!important; }
+
+.XEM .coin-bg { background-color: #41bf76!important; }
+
+.XMR .coin-bg { background-color: #FF6600!important; }
+
+.XPM .coin-bg { background-color: #e5b625!important; }
+
+.XRP .coin-bg { background-color: #346AA9!important; }
+
+.XTZ .coin-bg { background-color: #A6DF00!important; }
+
+.XVG .coin-bg { background-color: #42AFB2!important; }
+
+.YBC .coin-bg { background-color: #D6C154!important; }
+
+.ZEC .coin-bg { background-color: #e5a93d!important; }
+
+.ZEIT .coin-bg { background-color: #ACACAC!important; }
+
+button.ADC:hover { -webkit-box-shadow: 0 12px 40px #3CB0E5!important; box-shadow: 0 12px 40px #3CB0E5!important; }
+
+button.AEON:hover { -webkit-box-shadow: 0 12px 40px #164450!important; box-shadow: 0 12px 40px #164450!important; }
+
+button.AMP:hover { -webkit-box-shadow: 0 12px 40px #048DD2!important; box-shadow: 0 12px 40px #048DD2!important; }
+
+button.ANC:hover { -webkit-box-shadow: 0 12px 40px #000!important; box-shadow: 0 12px 40px #000!important; }
+
+button.ARCH:hover { -webkit-box-shadow: 0 12px 40px #002652!important; box-shadow: 0 12px 40px #002652!important; }
+
+button.ARDR:hover { -webkit-box-shadow: 0 12px 40px #1162a1!important; box-shadow: 0 12px 40px #1162a1!important; }
+
+button.AUR:hover { -webkit-box-shadow: 0 12px 40px #136c5e!important; box-shadow: 0 12px 40px #136c5e!important; }
+
+button.BANX:hover { -webkit-box-shadow: 0 12px 40px #225BA6!important; box-shadow: 0 12px 40px #225BA6!important; }
+
+button.BAT:hover { -webkit-box-shadow: 0 12px 40px #9e1f63!important; box-shadow: 0 12px 40px #9e1f63!important; }
+
+button.BAY:hover { -webkit-box-shadow: 0 12px 40px #584ba1!important; box-shadow: 0 12px 40px #584ba1!important; }
+
+button.BC:hover { -webkit-box-shadow: 0 12px 40px #202121!important; box-shadow: 0 12px 40px #202121!important; }
+
+button.BCN:hover { -webkit-box-shadow: 0 12px 40px #964F51!important; box-shadow: 0 12px 40px #964F51!important; }
+
+button.BFT:hover { -webkit-box-shadow: 0 12px 40px #4fc3f7!important; box-shadow: 0 12px 40px #4fc3f7!important; }
+
+button.BRK:hover { -webkit-box-shadow: 0 12px 40px #194fa0!important; box-shadow: 0 12px 40px #194fa0!important; }
+
+button.BRX:hover { -webkit-box-shadow: 0 12px 40px #a8c300!important; box-shadow: 0 12px 40px #a8c300!important; }
+
+button.BSD:hover { -webkit-box-shadow: 0 12px 40px #1186E7!important; box-shadow: 0 12px 40px #1186E7!important; }
+
+button.BTA:hover { -webkit-box-shadow: 0 12px 40px #210094!important; box-shadow: 0 12px 40px #210094!important; }
+
+button.BTC:hover, button.BCC:hover { -webkit-box-shadow: 0 12px 40px #F7931A!important; box-shadow: 0 12px 40px #F7931A!important; }
+
+button.BTCD:hover { -webkit-box-shadow: 0 12px 40px #2A72DC!important; box-shadow: 0 12px 40px #2A72DC!important; }
+
+button.BTS:hover { -webkit-box-shadow: 0 12px 40px #03A9E0!important; box-shadow: 0 12px 40px #03A9E0!important; }
+
+button.CLAM:hover { -webkit-box-shadow: 0 12px 40px #D6AB31!important; box-shadow: 0 12px 40px #D6AB31!important; }
+
+button.CLOAK:hover { -webkit-box-shadow: 0 12px 40px #DF3F1E!important; box-shadow: 0 12px 40px #DF3F1E!important; }
+
+button.DAO:hover { -webkit-box-shadow: 0 12px 40px #FF3B3B!important; box-shadow: 0 12px 40px #FF3B3B!important; }
+
+button.DASH:hover { -webkit-box-shadow: 0 12px 40px #1c75bc!important; box-shadow: 0 12px 40px #1c75bc!important; }
+
+button.DCR:hover { -webkit-box-shadow: 0 12px 40px #3b7cfb!important; box-shadow: 0 12px 40px #3b7cfb!important; }
+
+button.DCT:hover { -webkit-box-shadow: 0 12px 40px #008770!important; box-shadow: 0 12px 40px #008770!important; }
+
+button.DGB:hover { -webkit-box-shadow: 0 12px 40px #0066cc!important; box-shadow: 0 12px 40px #0066cc!important; }
+
+button.DGD:hover, button.DGX:hover { -webkit-box-shadow: 0 12px 40px #D8A24A!important; box-shadow: 0 12px 40px #D8A24A!important; }
+
+button.DMD:hover { -webkit-box-shadow: 0 12px 40px #5497b2!important; box-shadow: 0 12px 40px #5497b2!important; }
+
+button.DOGE:hover { -webkit-box-shadow: 0 12px 40px #BA9F33!important; box-shadow: 0 12px 40px #BA9F33!important; }
+
+button.EMC:hover { -webkit-box-shadow: 0 12px 40px #674c8c!important; box-shadow: 0 12px 40px #674c8c!important; }
+
+button.EOS:hover { -webkit-box-shadow: 0 12px 40px #19191A!important; box-shadow: 0 12px 40px #19191A!important; }
+
+button.ERC:hover { -webkit-box-shadow: 0 12px 40px #101E84!important; box-shadow: 0 12px 40px #101E84!important; }
+
+button.ETC:hover { -webkit-box-shadow: 0 12px 40px #669073!important; box-shadow: 0 12px 40px #669073!important; }
+
+button.ETH:hover { -webkit-box-shadow: 0 12px 40px #282828!important; box-shadow: 0 12px 40px #282828!important; }
+
+button.FC2:hover { -webkit-box-shadow: 0 12px 40px #040405!important; box-shadow: 0 12px 40px #040405!important; }
+
+button.FCT:hover { -webkit-box-shadow: 0 12px 40px #2175BB!important; box-shadow: 0 12px 40px #2175BB!important; }
+
+button.FLO:hover { -webkit-box-shadow: 0 12px 40px #1358C8!important; box-shadow: 0 12px 40px #1358C8!important; }
+
+button.FRK:hover { -webkit-box-shadow: 0 12px 40px #0633cd!important; box-shadow: 0 12px 40px #0633cd!important; }
+
+button.FTC:hover { -webkit-box-shadow: 0 12px 40px #679EF1!important; box-shadow: 0 12px 40px #679EF1!important; }
+
+button.GAME:hover { -webkit-box-shadow: 0 12px 40px #ed1b24!important; box-shadow: 0 12px 40px #ed1b24!important; }
+
+button.GDC:hover { -webkit-box-shadow: 0 12px 40px #E9A226!important; box-shadow: 0 12px 40px #E9A226!important; }
+
+button.GEMZ:hover { -webkit-box-shadow: 0 12px 40px #e86060!important; box-shadow: 0 12px 40px #e86060!important; }
+
+button.GLD:hover { -webkit-box-shadow: 0 12px 40px #E8BE24!important; box-shadow: 0 12px 40px #E8BE24!important; }
+
+button.GNO:hover { -webkit-box-shadow: 0 12px 40px #00A6C4!important; box-shadow: 0 12px 40px #00A6C4!important; }
+
+button.GNT:hover { -webkit-box-shadow: 0 12px 40px #00d6e3!important; box-shadow: 0 12px 40px #00d6e3!important; }
+
+button.GOLOS:hover { -webkit-box-shadow: 0 12px 40px #2670B7!important; box-shadow: 0 12px 40px #2670B7!important; }
+
+button.GRC:hover { -webkit-box-shadow: 0 12px 40px #88A13C!important; box-shadow: 0 12px 40px #88A13C!important; }
+
+button.GRS:hover { -webkit-box-shadow: 0 12px 40px #648FA0!important; box-shadow: 0 12px 40px #648FA0!important; }
+
+button.HEAT:hover { -webkit-box-shadow: 0 12px 40px #ff5606!important; box-shadow: 0 12px 40px #ff5606!important; }
+
+button.ICN:hover { -webkit-box-shadow: 0 12px 40px #4c6f8c!important; box-shadow: 0 12px 40px #4c6f8c!important; }
+
+button.IFC:hover { -webkit-box-shadow: 0 12px 40px #ed272d!important; box-shadow: 0 12px 40px #ed272d!important; }
+
+button.INCNT:hover { -webkit-box-shadow: 0 12px 40px #f2932f!important; box-shadow: 0 12px 40px #f2932f!important; }
+
+button.IOC:hover { -webkit-box-shadow: 0 12px 40px #2fa3de!important; box-shadow: 0 12px 40px #2fa3de!important; }
+
+button.IOTA:hover { -webkit-box-shadow: 0 12px 40px #FFFFFF!important; box-shadow: 0 12px 40px #FFFFFF!important; }
+
+button.JBS:hover { -webkit-box-shadow: 0 12px 40px #1A8BCD!important; box-shadow: 0 12px 40px #1A8BCD!important; }
+
+button.KMD:hover { -webkit-box-shadow: 0 12px 40px #326464!important; box-shadow: 0 12px 40px #326464!important; }
+
+button.KOBO:hover { -webkit-box-shadow: 0 12px 40px #80C342!important; box-shadow: 0 12px 40px #80C342!important; }
+
+button.KORE:hover { -webkit-box-shadow: 0 12px 40px #DF4124!important; box-shadow: 0 12px 40px #DF4124!important; }
+
+button.LBC:hover { -webkit-box-shadow: 0 12px 40px #015C47!important; box-shadow: 0 12px 40px #015C47!important; }
+
+button.LDOGE:hover { -webkit-box-shadow: 0 12px 40px #ffcc00!important; box-shadow: 0 12px 40px #ffcc00!important; }
+
+button.LISK:hover { -webkit-box-shadow: 0 12px 40px #1A6896!important; box-shadow: 0 12px 40px #1A6896!important; }
+
+button.LTC:hover { -webkit-box-shadow: 0 12px 40px #838383!important; box-shadow: 0 12px 40px #838383!important; }
+
+button.MAID:hover { -webkit-box-shadow: 0 12px 40px #5492D6!important; box-shadow: 0 12px 40px #5492D6!important; }
+
+button.MCO:hover { -webkit-box-shadow: 0 12px 40px #0D3459!important; box-shadow: 0 12px 40px #0D3459!important; }
+
+button.MINT:hover { -webkit-box-shadow: 0 12px 40px #006835!important; box-shadow: 0 12px 40px #006835!important; }
+
+button.MONA:hover { -webkit-box-shadow: 0 12px 40px #a99364!important; box-shadow: 0 12px 40px #a99364!important; }
+
+button.MRC:hover { -webkit-box-shadow: 0 12px 40px #4279bd!important; box-shadow: 0 12px 40px #4279bd!important; }
+
+button.MSC:hover { -webkit-box-shadow: 0 12px 40px #1D4983!important; box-shadow: 0 12px 40px #1D4983!important; }
+
+button.MTR:hover { -webkit-box-shadow: 0 12px 40px #b92429!important; box-shadow: 0 12px 40px #b92429!important; }
+
+button.MUE:hover { -webkit-box-shadow: 0 12px 40px #f5a10e!important; box-shadow: 0 12px 40px #f5a10e!important; }
+
+button.NBT:hover { -webkit-box-shadow: 0 12px 40px #FFC93D!important; box-shadow: 0 12px 40px #FFC93D!important; }
+
+button.NEO:hover { -webkit-box-shadow: 0 12px 40px #58BF00!important; box-shadow: 0 12px 40px #58BF00!important; }
+
+button.NEOS:hover { -webkit-box-shadow: 0 12px 40px #1d1d1b!important; box-shadow: 0 12px 40px #1d1d1b!important; }
+
+button.NEU:hover { -webkit-box-shadow: 0 12px 40px #2983c0!important; box-shadow: 0 12px 40px #2983c0!important; }
+
+button.NLG:hover { -webkit-box-shadow: 0 12px 40px #003E7E!important; box-shadow: 0 12px 40px #003E7E!important; }
+
+button.NMC:hover { -webkit-box-shadow: 0 12px 40px #6787B7!important; box-shadow: 0 12px 40px #6787B7!important; }
+
+button.NOTE:hover { -webkit-box-shadow: 0 12px 40px #42daff!important; box-shadow: 0 12px 40px #42daff!important; }
+
+button.NVC:hover { -webkit-box-shadow: 0 12px 40px #ecab41!important; box-shadow: 0 12px 40px #ecab41!important; }
+
+button.NXT:hover { -webkit-box-shadow: 0 12px 40px #008FBB!important; box-shadow: 0 12px 40px #008FBB!important; }
+
+button.OK:hover { -webkit-box-shadow: 0 12px 40px #0165A4!important; box-shadow: 0 12px 40px #0165A4!important; }
+
+button.OMG:hover { -webkit-box-shadow: 0 12px 40px #1A53F0!important; box-shadow: 0 12px 40px #1A53F0!important; }
+
+button.OMNI:hover { -webkit-box-shadow: 0 12px 40px #18347E!important; box-shadow: 0 12px 40px #18347E!important; }
+
+button.OPAL:hover { -webkit-box-shadow: 0 12px 40px #7193AA!important; box-shadow: 0 12px 40px #7193AA!important; }
+
+button.PART:hover { -webkit-box-shadow: 0 12px 40px #05D5A3!important; box-shadow: 0 12px 40px #05D5A3!important; }
+
+button.PIGGY:hover { -webkit-box-shadow: 0 12px 40px #F27A7A!important; box-shadow: 0 12px 40px #F27A7A!important; }
+
+button.PINK:hover { -webkit-box-shadow: 0 12px 40px #ED31CA!important; box-shadow: 0 12px 40px #ED31CA!important; }
+
+button.PIVX:hover { -webkit-box-shadow: 0 12px 40px #3b2f4d!important; box-shadow: 0 12px 40px #3b2f4d!important; }
+
+button.POT:hover { -webkit-box-shadow: 0 12px 40px #105B2F!important; box-shadow: 0 12px 40px #105B2F!important; }
+
+button.PPC:hover { -webkit-box-shadow: 0 12px 40px #3FA30C!important; box-shadow: 0 12px 40px #3FA30C!important; }
+
+button.QRK:hover { -webkit-box-shadow: 0 12px 40px #22AABF!important; box-shadow: 0 12px 40px #22AABF!important; }
+
+button.RADS:hover { -webkit-box-shadow: 0 12px 40px #924cea!important; box-shadow: 0 12px 40px #924cea!important; }
+
+button.RBIES:hover { -webkit-box-shadow: 0 12px 40px #C62436!important; box-shadow: 0 12px 40px #C62436!important; }
+
+button.RBT:hover { -webkit-box-shadow: 0 12px 40px #0d4982!important; box-shadow: 0 12px 40px #0d4982!important; }
+
+button.RBY:hover { -webkit-box-shadow: 0 12px 40px #D31F26!important; box-shadow: 0 12px 40px #D31F26!important; }
+
+button.RDD:hover { -webkit-box-shadow: 0 12px 40px #ED1C24!important; box-shadow: 0 12px 40px #ED1C24!important; }
+
+button.REP:hover { -webkit-box-shadow: 0 12px 40px #40a2cb!important; box-shadow: 0 12px 40px #40a2cb!important; }
+
+button.RISE:hover { -webkit-box-shadow: 0 12px 40px #43CEA2!important; box-shadow: 0 12px 40px #43CEA2!important; }
+
+button.SAR:hover { -webkit-box-shadow: 0 12px 40px #1B72B8!important; box-shadow: 0 12px 40px #1B72B8!important; }
+
+button.SCOT:hover { -webkit-box-shadow: 0 12px 40px #3498DB!important; box-shadow: 0 12px 40px #3498DB!important; }
+
+button.SDC:hover { -webkit-box-shadow: 0 12px 40px #981D2D!important; box-shadow: 0 12px 40px #981D2D!important; }
+
+button.SIA:hover { -webkit-box-shadow: 0 12px 40px #00CBA0!important; box-shadow: 0 12px 40px #00CBA0!important; }
+
+button.SJCX:hover { -webkit-box-shadow: 0 12px 40px #003366!important; box-shadow: 0 12px 40px #003366!important; }
+
+button.SLG:hover { -webkit-box-shadow: 0 12px 40px #5A6875!important; box-shadow: 0 12px 40px #5A6875!important; }
+
+button.SLS:hover { -webkit-box-shadow: 0 12px 40px #1EB549!important; box-shadow: 0 12px 40px #1EB549!important; }
+
+button.SNRG:hover { -webkit-box-shadow: 0 12px 40px #160363!important; box-shadow: 0 12px 40px #160363!important; }
+
+button.START:hover { -webkit-box-shadow: 0 12px 40px #01AEF0!important; box-shadow: 0 12px 40px #01AEF0!important; }
+
+button.STEEM:hover { -webkit-box-shadow: 0 12px 40px #1A5099!important; box-shadow: 0 12px 40px #1A5099!important; }
+
+button.STR:hover { -webkit-box-shadow: 0 12px 40px #08B5E5!important; box-shadow: 0 12px 40px #08B5E5!important; }
+
+button.STRAT:hover { -webkit-box-shadow: 0 12px 40px #2398dd!important; box-shadow: 0 12px 40px #2398dd!important; }
+
+button.SWIFT:hover { -webkit-box-shadow: 0 12px 40px #428BCA!important; box-shadow: 0 12px 40px #428BCA!important; }
+
+button.SYNC:hover { -webkit-box-shadow: 0 12px 40px #008DD2!important; box-shadow: 0 12px 40px #008DD2!important; }
+
+button.SYS:hover { -webkit-box-shadow: 0 12px 40px #0098DA!important; box-shadow: 0 12px 40px #0098DA!important; }
+
+button.TRIG:hover { -webkit-box-shadow: 0 12px 40px #1fbff4!important; box-shadow: 0 12px 40px #1fbff4!important; }
+
+button.TX:hover { -webkit-box-shadow: 0 12px 40px #1F8BCC!important; box-shadow: 0 12px 40px #1F8BCC!important; }
+
+button.UBQ:hover { -webkit-box-shadow: 0 12px 40px #00ec8d!important; box-shadow: 0 12px 40px #00ec8d!important; }
+
+button.UNITY:hover { -webkit-box-shadow: 0 12px 40px #ED8527!important; box-shadow: 0 12px 40px #ED8527!important; }
+
+button.USDT:hover { -webkit-box-shadow: 0 12px 40px #2CA07A!important; box-shadow: 0 12px 40px #2CA07A!important; }
+
+button.VIOR:hover { -webkit-box-shadow: 0 12px 40px #1F52A4!important; box-shadow: 0 12px 40px #1F52A4!important; }
+
+button.VNL:hover { -webkit-box-shadow: 0 12px 40px #404249!important; box-shadow: 0 12px 40px #404249!important; }
+
+button.VPN:hover { -webkit-box-shadow: 0 12px 40px #589700!important; box-shadow: 0 12px 40px #589700!important; }
+
+button.VRC:hover { -webkit-box-shadow: 0 12px 40px #418bca!important; box-shadow: 0 12px 40px #418bca!important; }
+
+button.VTC:hover { -webkit-box-shadow: 0 12px 40px #1b5c2e!important; box-shadow: 0 12px 40px #1b5c2e!important; }
+
+button.WAVES:hover { -webkit-box-shadow: 0 12px 40px #24aad6!important; box-shadow: 0 12px 40px #24aad6!important; }
+
+button.XAI:hover { -webkit-box-shadow: 0 12px 40px #2ef99f!important; box-shadow: 0 12px 40px #2ef99f!important; }
+
+button.XBS:hover { -webkit-box-shadow: 0 12px 40px #d3261d!important; box-shadow: 0 12px 40px #d3261d!important; }
+
+button.XCP:hover { -webkit-box-shadow: 0 12px 40px #EC1550!important; box-shadow: 0 12px 40px #EC1550!important; }
+
+button.XEM:hover { -webkit-box-shadow: 0 12px 40px #41bf76!important; box-shadow: 0 12px 40px #41bf76!important; }
+
+button.XMR:hover { -webkit-box-shadow: 0 12px 40px #FF6600!important; box-shadow: 0 12px 40px #FF6600!important; }
+
+button.XPM:hover { -webkit-box-shadow: 0 12px 40px #e5b625!important; box-shadow: 0 12px 40px #e5b625!important; }
+
+button.XRP:hover { -webkit-box-shadow: 0 12px 40px #346AA9!important; box-shadow: 0 12px 40px #346AA9!important; }
+
+button.XTZ:hover { -webkit-box-shadow: 0 12px 40px #A6DF00!important; box-shadow: 0 12px 40px #A6DF00!important; }
+
+button.XVG:hover { -webkit-box-shadow: 0 12px 40px #42AFB2!important; box-shadow: 0 12px 40px #42AFB2!important; }
+
+button.YBC:hover { -webkit-box-shadow: 0 12px 40px #D6C154!important; box-shadow: 0 12px 40px #D6C154!important; }
+
+button.ZEC:hover { -webkit-box-shadow: 0 12px 40px #e5a93d!important; box-shadow: 0 12px 40px #e5a93d!important; }
+
+button.ZEIT:hover { -webkit-box-shadow: 0 12px 40px #ACACAC!important; box-shadow: 0 12px 40px #ACACAC!important; }
+
+/*
+  Animations classes
+  ----
+  - A collection of animations that can be reused to accomplish the same effect on any element
+*/
+
+@-webkit-keyframes pulse {
+  0% {
+      opacity: 1
+  }
+  100% {
+      opacity: .4
+  }
+}
+
+@-webkit-keyframes fadeInFromNone {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    1% {
+        display: block;
+        opacity: 0;
+    }
+
+    100% {
+        display: block;
+        opacity: 1;
+    }
+}
+
+/* Set base colour and font stack */
+
+body {
+  font-family: 'Dosis', sans-serif;
+  overflow: hidden;
+  letter-spacing: -.010rem;
+  border-radius: 5px;
+  overflow: hidden;
+  font-size: 16px;
+  margin: 0;
+}
+
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.row {
+  margin-left: -16px;
+  margin-right: -16px;
+}
+
+.col {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.content {
+  background-color: #FAFAFA;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.grayed { filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feColorMatrix type="matrix" color-interpolation-filters="sRGB" values="0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0" /></filter></svg>#filter'); -webkit-filter: grayscale(100%); filter: grayscale(100%); }
+
+a {
+    text-decoration: underline;
+}
+
+.window__controls {
+  height: 28px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.window__controls a svg { -webkit-transition: all .3s ease; transition: all .3s ease }
+
+.window__controls:hover a svg .hidden { display: inherit !important }
+
+/*
+  Window Header Component
+  ----
+  - Use for any window header
+  - Can be changed into light version with `.is-light` class
+*/
+
+.window-header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+    font-size: 1em;
+    -webkit-app-region: drag;
+    cursor: -webkit-grab;
+    z-index: 10000;
+}
+
+.window-header-logo, .window-header-logo svg {
+    display: inline-block;
+    width: 30px;
+    height: 40px;
+}
+
+.window-header-logo svg {
+    -webkit-transform: scale(5);
+            transform: scale(5);
+    -webkit-transform-origin: 55% 76%;
+            transform-origin: 55% 76%;
+    opacity: .2
+
+}
+
+.window-header-logo svg g { fill: #090909 }
+
+.window-header ul {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    list-style: none;
+    -webkit-transition: opacity .12s ease-in-out, -webkit-transform .12s ease-in-out;
+    transition: opacity .12s ease-in-out, -webkit-transform .12s ease-in-out;
+    transition: transform .12s ease-in-out, opacity .12s ease-in-out;
+    transition: transform .12s ease-in-out, opacity .12s ease-in-out, -webkit-transform .12s ease-in-out;
+    will-change: transform, opacity;
+    border-radius: 5px 5px 0 0;
+    opacity: 0;
+    -webkit-transform: translateY(-10px);
+            transform: translateY(-10px);
+    padding: 20px 10px;
+    margin: 0;
+
+    display: -webkit-box;
+
+    display: -ms-flexbox;
+
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    height: 60px;
+    -webkit-user-select: none !important;
+    background: #FFF;
+    -webkit-box-shadow: 0px 0px 100px 100px #FFF;
+            box-shadow: 0px 0px 100px 100px #FFF;
+
+}
+
+.window-header:hover ul {
+    opacity: 1;
+    -webkit-transform: translateY(0px);
+            transform: translateY(0px);
+}
+
+/* TITLE */
+
+.window__title {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    z-index: 0;
+}
+
+.window__title h1 {
+    font-size: 1em;
+    margin: -10px 0 0;
+    color: #090909
+}
+
+/* RIGHT SIDE */
+
+.window__controls_right {
+    margin-left: auto
+}
+
+/* CONTROLS */
+
+.window-header .window__controls {
+    position: absolute;
+    left: 10px;
+    z-index: 1;
+}
+
+.window-header .window__controls a {
+    width: 14px;
+    height: 14px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    background: rgba(256, 256, 256, .1);
+    border-radius: 50%;
+    margin-left: 5px;
+    cursor: pointer;
+    pointer-events: all;
+}
+
+.window-header .window__controls a svg {
+    width: 14px;
+    height: 14px;
+}
+
+/*
+  Window Header Component
+  ----
+  - Use for any window header
+  - Can be changed into light version with `.is-light` class
+*/
+
+.window-footer {
+    width: 100%;
+    height: 100px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    color: white;
+    font-size: 1em;
+    /*@extend .webkit-drag;
+    -webkit-app-region: drag;
+    cursor: -webkit-grab;*/
+    pointer-events: none
+}
+
+.window-footer ul {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    list-style: none;
+
+    padding: 0;
+    margin: 0;
+
+    display: -webkit-box;
+
+    display: -ms-flexbox;
+
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    height: 100px;
+    -webkit-user-select: none !important;
+}
+
+.window-footer:not(.window-footer__visible) {
+    opacity: 0;
+    -webkit-transform: translateY(10px);
+            transform: translateY(10px);
+}
+
+.window-footer:hover ul {
+    opacity: 1;
+    -webkit-transform: translateY(0px);
+            transform: translateY(0px);
+}
+
+/* CONTROLS */
+
+.window-footer .window__controls {
+    margin-left: auto;
+    -webkit-transform: scale(.5);
+            transform: scale(.5);
+}
+
+.window-footer .window__controls button {
+    width: 110px;
+    height: 110px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    border-radius: 50%;
+    pointer-events: all;
+}
+
+.window-footer .window__controls button svg {
+    width: 110px;
+    height: 110px;
+}
+
+.window-footer .window__controls button:hover svg {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+    opacity: .8;
+}
+
+a {
+    color: #783FEA;
+    cursor: pointer;
+}
+
+.loader {
+    position: fixed;
+    bottom: 0;
+    height: 100vh;
+    padding-top: 50vh;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    z-index: 2000;
+    font-size: 1.3em;
+
+}
+
+.loader-svg svg {
+    width: 80px;
+    height: 80px;
+}
+
+.loader .loader-wrapper {
+    width: 100%;
+    padding-bottom: 10vh;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-shadow: 0px 0px 200px 200px #FFF;
+            box-shadow: 0px 0px 200px 200px #FFF;
+    background: #FFF;
+}
+
+.loader ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    list-style: none;
+    -webkit-animation: pulse 2s ease-in-out infinite alternate;
+            animation: pulse 2s ease-in-out infinite alternate;
+
+}
+
+/*
+  Notifier Styling Component ✏️
+
+*/
+
+.notifier {
+    position: absolute;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    width: 100vw;
+    padding: 5vh 20px;
+    left: 0;
+    z-index: 1000;
+}
+
+.notifier-title {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+}
+
+.notifier-title-icon {
+    opacity: .05;
+    position: absolute;
+    -webkit-transform: scale(10);
+            transform: scale(10);
+    pointer-events: none;
+
+}
+
+.notifier-title-icon svg {
+    width: 200px;
+    height: 150px;
+}
+
+.notifier-title-text {
+    font-size: 2.8em;
+    font-weight: 200;
+    margin: 0 0 .5em 0;
+}
+
+.notifier button {
+    pointer-events: all;
+}
+
+.notifier-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.notifier-list li {
+    text-align: center;
+}
+
+.notifier-list-close {
+    width: 200px;
+    background: #04050A;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 30px;
+}
+
+/* animation state */
+
+.notifier {
+    bottom: -100vh;
+    -webkit-transition: all .32s ease-in-out;
+    transition: all .32s ease-in-out;
+    will-change: all;
+}
+
+.notifier.notifier-error {
+    bottom: 0;
+    background: #F33C3C;
+    -webkit-box-shadow: 0px 0px 100px 100px #F33C3C;
+            box-shadow: 0px 0px 100px 100px #F33C3C;
+    color: #FFF
+}
+
+/*
+  Input Styling Component ✏️
+  ----
+  - Stylesheet Partial, for inclusion where inputs are used
+  - Any extensions to input styling should go in this file
+*/
+
+input, [contenteditable=true], select, textarea {
+    font: inherit;
+    outline: none;
+    border: 0;
+    /* Ensure focus on inputs doesn't allow app dragging */
+    -webkit-app-region: no-drag;
+    border-radius: 4px;
+}
+
+[contenteditable=true] { max-width: 100% }
+
+[contenteditable=true] + button { display: none !important }
+
+[contenteditable=true]:not(:empty) + button { display: -webkit-box !important; display: -ms-flexbox !important; display: flex !important }
+
+[contenteditable=true]:empty::before {
+  content: attr(data-tooltip);
+  max-width: inherit;
+  word-wrap: break-word;
+}
+
+[contenteditable=true]:focus:empty::before {
+    opacity: .1;
+    content: attr(placeholder);
+}
+
+/*
+  Input Styling Component ✏️
+  ----
+  - Stylesheet Partial, for inclusion where inputs are used
+  - Any extensions to input styling should go in this file
+*/
+
+button {
+    font: inherit;
+    outline: none;
+    background: #FFF;
+    border: none;
+    color: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    padding: 10px 20px;
+}
+
+button.primary {
+    font-size: 1.2em;
+    padding: 15px 30px;
+    background: #000000;
+    color: #FFF;
+}
+
+button.transparent {
+    background: transparent
+}
+
+button[disabled] {
+    color: #E1E6EC;
+    pointer-events: none;
+    cursor: default;
+}
+
+button.primary {  padding: 20px 40px 24px }
+
+button.withBorder {
+    position: relative;
+    border-radius: 60px;
+}
+
+button.withBorder[disabled] {
+    background-color: inherit;
+    color: rgba(0, 0, 0, .2)
+}
+
+button.withBorder.danger {
+    background: #F33C3C
+}
+
+button:not([disabled]).withBorder:hover {
+    -webkit-transform: translateY(-1px) scale(1.01);
+            transform: translateY(-1px) scale(1.01);
+    -webkit-box-shadow: 0 12px 40px #FFF;
+            box-shadow: 0 12px 40px #FFF;
+}
+
+button:not([disabled]).withBorder.danger:hover {
+    -webkit-box-shadow: 0 12px 40px #FFF;
+            box-shadow: 0 12px 40px #FFF
+}
+
+.Clipboard, .Openexternal {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    font-size: .8em;
+}
+
+.Openexternal-icon { margin-right: 5px }
+
+/*
+  Form Styling Component ✏️
+  ----
+  - Super small, but styles the labels
+*/
+
+.fieldset {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    width: 100%;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.legend {
+    width: 100%;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: .5em;
+}
+
+.legend > * { margin-right: 10px }
+
+.legend u {
+    text-decoration: none;
+    border-bottom: 2px solid #6547DF;
+}
+
+.react-toggle--checked .react-toggle-track {
+    background: #783FEA
+}
+
+.react-toggle--checked .react-toggle-thumb {
+    border-color: #783FEA
+}
+
+.react-toggle-track {
+    background-color: #E0DCE9
+}
+
+.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
+  background-color: #E0DCE9
+}
+
+.react-toggle--checked .react-toggle-track {
+  background-color: #783FEA;
+}
+
+.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+  background-color: #783FEA;
+}
+
+.react-toggle--focus .react-toggle-thumb {
+  -webkit-box-shadow: none;
+          box-shadow: none
+}
+
+.react-toggle-thumb { border: 0 }
+
+/*
+  Progress Styling Component ✏️
+  ----
+*/
+
+.c-progress {
+  -webkit-appearance: none;
+  height: 4px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+  -webkit-transition: .12s ease-in-out;
+  transition: .12s ease-in-out;
+}
+
+.c-progress::-webkit-progress-bar { background-color: #D7D7D7; }
+
+.c-progress::-webkit-progress-value {
+    background-image: -webkit-gradient(linear, left top, right top, from(#9300FF), color-stop(49%, #5272E2), color-stop(98%, #05E6B5));
+    background-image: linear-gradient(90deg, #9300FF 0%, #5272E2 49%, #05E6B5 98%);
+    -webkit-box-shadow: inset 0 0 0 .5px rgba(255, 255, 255, .1);
+            box-shadow: inset 0 0 0 .5px rgba(255, 255, 255, .1);
+    border-radius: 4px;
+  }
+
+.c-progress__transparent::-webkit-progress-bar { background-color: rgba(255, 255, 255, .2); }
+
+.toggler__wrapper {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    max-width: 100%;
+    pointer-events: none;
+    -webkit-transition: all .12s ease-in-out;
+    transition: all .12s ease-in-out;
+    will-change: all;
+}
+
+.toggler__wrapper > * { pointer-events: all }
+
+.toggler__broadcaster {
+    min-width: 143px;
+    min-height: 143px;
+    -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, .05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, .05);
+    color: #FFF;
+    font-weight: 600;
+    font-size: 1.8em;
+    cursor: pointer;
+    outline: 0;
+    border: 0;
+    background: #F33C3C;
+    overflow: hidden;
+
+}
+
+.toggler__broadcaster:hover svg { fill: #FFF }
+
+.toggler__broadcaster i, .toggler__broadcaster i svg {
+    overflow: hidden;
+    border-radius: 4px;
+    height: 54px;
+    width: 54px;
+}
+
+.toggler__player {
+    position: relative; /*cancel*/
+    height: 50px;
+    margin-top: 30px;
+    max-width: 400px;
+}
+
+.toggler__player_ID {
+    max-width: 400px;
+    font-size: 1.2em;
+}
+
+[class*='toggler__player-button'] {
+    height: 100%;
+    margin-left: 10px;
+    display: none;
+}
+
+.toggler__player-button-cancel {
+    /*keep input centered*/
+    margin-left: -30px;
+    margin-right: 10px;
+}
+
+.toggler__player-button-icon {
+    margin: 5px 0 0 5px;
+}
+
+.toggler__broadcaster {
+    text-transform: uppercase;
+}
+
+.toggler__broadcaster_recording-label {
+    -webkit-transition: all .12s ease-in-out;
+    transition: all .12s ease-in-out;
+    will-change: all;
+    opacity: 0;
+    width: 0px;
+    margin-right: 10px;
+    display: none;
+}
+
+/* states */
+
+.toggler__wrapper-playerFocused .toggler__broadcaster { display: none }
+
+.toggler__wrapper-playerFocused .toggler__player {
+    margin-bottom: 20px;
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+}
+
+.toggler__wrapper-playerFocused [class*='toggler__player-button'] {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-animation: fadeInFromNone 0.5s ease-out;
+            animation: fadeInFromNone 0.5s ease-out;
+}
+
+.app.recording .toggler__player  { display: none }
+
+/* labels states */
+
+.app.recording .toggler__broadcaster-label, .app:not(.recording) .toggler__timer, .app:not(.recording) .toggler__broadcaster i, .app.recording .toggler__inputID  { display: none }
+
+.app.playing .toggler__wrapper {
+    opacity: 0;
+}
+
+.custom-tooltip {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    background: #FAFAFD;
+    padding: 10px;
+    border-radius: 6px;
+    z-index: 100;
+}
+
+.controls-container, .control-container { width: 100% }
+
+.control-actions {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 80px;
+    width: 100%;
+}
+
+.control-action {
+    margin: 0 10px;
+}
+
+.control-action > * {
+    background: transparent;
+    line-height: 1;
+    font-size: 1em;
+}
+
+.control-action > [class*='-label'] { margin-right: 5px }
+
+.control-action > * > [class*='-icon'] {
+    margin-right: 5px;
+}
+
+.control-action > * > [class*='-icon'] svg {
+    width: 30px;
+    height: 30px;
+}
+
+.control-action-item__counter-icon svg { fill: #FFF }
+
+.control-action-item__stop-icon svg {
+    border-radius: 4px;
+    fill: #F33C3C !important
+}
+
+.control-action-item__timer-label {
+    color: #6547DF;
+    -webkit-animation: pulse 1.8s ease-in-out infinite alternate;
+            animation: pulse 1.8s ease-in-out infinite alternate;
+}
+
+.control-action-item__timer-label svg { fill: #6547DF }
+
+.video-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    -webkit-transition: opacity .12s ease-in-out, -webkit-transform .12s ease-in-out;
+    transition: opacity .12s ease-in-out, -webkit-transform .12s ease-in-out;
+    transition: transform .12s ease-in-out, opacity .12s ease-in-out;
+    transition: transform .12s ease-in-out, opacity .12s ease-in-out, -webkit-transform .12s ease-in-out;
+    will-change: transform, opacity, filter;
+    z-index: -1;
+    overflow: auto;
+}
+
+.app.loading .video-wrapper, .app.waiting .video-wrapper {
+    position: absolute;
+    opacity: .5;
+    filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="15" /></filter></svg>#filter');
+    -webkit-filter: blur(15px);
+            filter: blur(15px);
+    -webkit-transform: scale(1.6);
+            transform: scale(1.6);
+    overflow: hidden;
+    pointer-events: none
+}
+
+/*recording*/
+
+/*playing*/
+
+video { min-height: 100vh }
+
+.video-js {
+    width: 100%;
+    height: 100%;
+}
+
+.vjs-control-bar { display: none !important }
+
+/*
+  Modal Styling Component ✏️
+  ----
+  - Super small, but styles the labels
+*/
+
+.modal {
+    position: fixed;
+    z-index: 1000;
+    bottom: 0;
+    left: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    width: 100vw;
+    height: 100%;
+    background: #FFF;
+}
+
+.modal-header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    height: 80px;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    padding: 20px;
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
+    -webkit-box-shadow:  0 6px 20px rgba(0, 0, 0, .04);
+            box-shadow:  0 6px 20px rgba(0, 0, 0, .04);
+    z-index: 1;
+    background: #FFF;
+}
+
+.modal-header h1 {
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    font-weight: 200;
+    font-size: 1.6em;
+    opacity: .2;
+    text-align: center;
+
+}
+
+.modal-btn-close {
+    position: fixed;
+    z-index: 100010;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    padding: 10px !important
+
+}
+
+.modal-btn-close-icon, .modal-btn-close-icon svg {
+    width: 42px;
+    height: 42px;
+}
+
+.modal-content {
+    overflow: auto;
+    width: 100%;
+    font-weight: 200;
+}
+
+.modal-content h1 {
+    font-size: 2.8em;
+    font-weight: 200;
+    margin: 0 0 .5em 0;
+}
+
+.modal-icon {
+    position: fixed;
+    -webkit-transform: scale(21);
+            transform: scale(21);
+    opacity: .04;
+    pointer-events: none
+}
+
+.modal-icon svg {
+    width: 100px;
+    height: 100px;
+    fill: #FFF;
+}
+
+/* animation state */
+
+.modal {
+    bottom: -100vh;
+    -webkit-transition: all .32s ease-in-out;
+    transition: all .32s ease-in-out;
+    will-change: all;
+}
+
+.modal.modal-open { bottom: 0 }
+
+.ReactTable {
+    border: 0;
+    background: #FAFAFD;
+    color: #FFF;
+}
+
+.rt-thead  {
+    background: rgba(256, 256, 256, .1);
+    font-weight: 600;
+    color: #FFF;
+}
+
+.ReactTable.-striped .rt-tr.-odd {
+    background: rgba(256, 256, 256, .05);
+}
+
+.ReactTable .rt-thead .rt-th.-sort-asc, .ReactTable .rt-thead .rt-td.-sort-asc{
+    -webkit-box-shadow: inset 0 3px 0 0 #000000;
+            box-shadow: inset 0 3px 0 0 #000000;
+}
+
+.ReactTable .rt-thead .rt-th.-sort-desc, .ReactTable .rt-thead .rt-td.-sort-desc {
+    -webkit-box-shadow:  #000000 0px -3px 0px 0px inset;
+            box-shadow:  #000000 0px -3px 0px 0px inset;
+}
+
+.ReactTable .-pagination .-btn, .ReactTable .-pageJump input, .ReactTable .-pageSizeOptions select {
+    background-color: rgba(256, 256, 256, .1);
+    color: #FFF
+}
+
+.ReactTable .-previous, .ReactTable .-next {
+    padding: 5px 10px
+}
+
+.dashboard {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    height: 100%;
+    overflow: auto;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+.trade {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    height: 100%;
+    width: 100%;
+    padding: 10px
+}
+
+.step1 {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.step1 a { opacity: .4 }
+
+.step1 a:hover { opacity: 1 }
+
+.step1 > section {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
+    width: 100%;
+}
+
+.step1 .step1-picker {
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+}
+
+.step1-coin > * {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+
+
+}
+
+.step1-deposit, .step1-receive, .step1-private {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
+    background: #FFF;
+    -webkit-box-shadow: 0 6px 20px rgba(0, 0, 0, .04);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .04);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.coin-custom-logo svg {
+    height: 160px;
+}
+
+.private-icon {
+    position: relative;
+    top: -2px;
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+}
+
+.private-icon svg path {
+    fill: #FFF
+}
+
+.step1-coin  {
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 100%;
+}
+
+.step1-coin-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+}
+
+.step1-coin-adr-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    position: relative;
+    width: 100%;
+    font-weight: bold;
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    padding: 20px 20px;
+}
+
+.step1-coin-adr-bg {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    opacity: 1;
+    pointer-events: none;
+}
+
+.step1-coin-code  {
+    padding: 2px 4px;
+    font-size: .9em;
+    margin: 0px 4px
+}
+
+.step1-coin-balance {
+    z-index: 1;
+    width: 100%;
+    text-align: left;
+}
+
+.step1-coin-adr {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 40px;
+    border: 0;
+    font-size: .9em;
+    outline: none;
+    resize: none;
+    text-align: center;
+}
+
+.step1-coin-amount {
+    font-size: 1.1em;
+    width: 100%;
+    text-align: right;
+    padding: 20px;
+}
+
+.step1-coin-adr::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.step1-coin-adr:focus {
+    font-weight: bold;
+}
+
+.step1-coin-logo {
+    position: relative;
+    top: -12px;
+}
+
+.step1-coin-logo-name {
+    position: relative;
+    font-size: 1.2em;
+}
+
+.step1-coin-picked {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    padding: 10px 0;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    font-weight: 800;
+    font-size: 1.1em
+}
+
+.step1-coin-switch-helper {
+    margin: 0 5px;
+    color: #783FEA;
+    font-size: .9em;
+    font-weight: 100;
+    text-decoration: underline;
+}
+
+.step1 strong {
+    color: #090909;
+}
+
+.step1-coin-item-to {
+    position: relative;
+    padding-top: 10px;
+    background: #FFF;
+}
+
+.step1-invert {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    position: relative;
+    width: 100%;
+    height: 30px;
+    z-index: 2;
+    font-weight: 100;
+    font-size: .9em;
+    background: transparent;
+    padding: 8px 14px 0px;
+    margin-top: -24px;
+}
+
+.step1-invert svg {
+    margin: 0 10px;
+    width: 40px;
+    height: 40px;
+    background: #FFF;
+    border-radius: 50%;
+    padding: 10px;
+    -webkit-box-shadow: 0 6px 20px rgba(0, 0, 0, .04);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .04);
+
+}
+
+.step1-invert svg path {
+    fill: #090909;
+}
+
+.step1-invert .step1-coin-rate {
+     font-size: 1em;
+     background: #FFF;
+     border-radius: 6px;
+     padding: 4px 6px;
+     -webkit-box-shadow: 0 6px 20px rgba(0, 0, 0, .04);
+             box-shadow: 0 6px 20px rgba(0, 0, 0, .04);
+     color: rgba(0, 0, 0, .4)
+ }
+
+.step1-coin-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+.step1-coin-item-head {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    background: #FFF;
+    -webkit-box-shadow:  0 2px 8px rgba(0, 0, 0, .04);
+            box-shadow:  0 2px 8px rgba(0, 0, 0, .04);
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    z-index: 2;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+}
+
+.step1-coin-item-head .coin-icon-placeholder {
+    width: 130px;
+    height: 130px;
+    border-width: 4px;
+    font-size: 1.4em;
+}
+
+.step1-coin-adr-wrapper .coin-icon-placeholder  { display: none }
+
+.step1-coin-item-head-icon svg {
+    width: 180px;
+    height: 180px;
+}
+
+.step1-coin-item-body {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    width: 100%;
+    background: #FFF;
+    overflow: hidden;
+}
+
+.trade-bg-inside {
+    content:"";
+    position: absolute;
+    left: 0px;
+    width: 130%;
+    height: 130%;
+    background: linear-gradient(180grad,rgb(50, 100, 100),#903984);
+    z-index: 0;
+    filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="30" /></filter></svg>#filter');
+    -webkit-filter: blur(30px);
+            filter: blur(30px);
+    opacity: .2
+}
+
+.trade-bg-outside {
+    content:"";
+    position: absolute;
+    left: 0px;
+    width: 110%;
+    height: 100%;
+    background: linear-gradient(180grad,rgb(50, 100, 100),#903984);
+    z-index: -10;
+    filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="100" /></filter></svg>#filter');
+    -webkit-filter: blur(100px);
+            filter: blur(100px);
+    opacity: .1
+}
+
+.step1-coin-item-amount {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    background: #FFF;
+    padding: 10px;
+    border-radius: 6px;
+    -webkit-box-shadow:  0 6px 20px rgba(0, 0, 0, .14);
+            box-shadow:  0 6px 20px rgba(0, 0, 0, .14);
+}
+
+.step1-coin-item-to .step1-coin-item-amount { -webkit-box-shadow: none; box-shadow: none }
+
+.step1-coin-item .amount {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    font-size: 1.2em;
+}
+
+.step1-coin-item label {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    margin-right: 20px;
+}
+
+.step1-coin-item label small {
+    font-weight: 200
+
+}
+
+.step1-coin-item code {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+.step1-coin-item code > *:last-child {
+    margin-left: 4px;
+}
+
+.step1-coin-item input {
+    min-width: 100px;
+    height: 22px;
+    left: 0;
+    width: 100%;
+    padding: 0;
+    text-align: right;
+    background: transparent;
+    color: inherit;
+    font-family: 'Unica One', sans-serif;
+    -webkit-appearance: textfield;
+       -moz-appearance: textfield;
+            appearance: textfield; /* bug autosize input and arrow...*/
+}
+
+::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+}
+
+.step1-private {
+    margin: 10px 0 0;
+    padding: 10px 10px;
+}
+
+.step1-private-label {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+}
+
+.step1-private-label .react-toggle {
+    -webkit-transform: scale(1.3);
+            transform: scale(1.3);
+    margin: 10px;
+}
+
+.step1-private-label-title {
+    font-size: 1.1em;
+    padding: 10px 0;
+    margin: 0
+}
+
+.step1-action {
+    margin-top: auto;
+    font-size: 1.1em;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    padding: 20px;
+}
+
+.step1-action > * { -webkit-box-flex: 1; -ms-flex-positive: 1; flex-grow: 1 }
+
+.login, .login .form {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 100%;
+    overflow: auto;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+}
+
+.login .form {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    padding: 0px 60px 60px;
+}
+
+.login textarea {
+    padding: 16px 10px;
+    margin-bottom: 20px;
+    -webkit-box-shadow:  0 6px 20px rgba(0, 0, 0, .14);
+            box-shadow:  0 6px 20px rgba(0, 0, 0, .14);
+    min-width: inherit;
+    width: 320px;
+    height: 120px;
+    font-size: .5em;
+    resize: none;
+}
+
+.login textarea:focus {
+    -webkit-box-shadow: none;
+            box-shadow: none
+}
+
+.login-button {
+    width: 100%
+}
+
+.login {
+
+}
+
+.Placeholder {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    z-index: 1000;
+    pointer-events: none;
+    color: #000000;
+
+}
+
+.Placeholder-logo, .Placeholder-logo svg {
+    display: inline-block;
+    width: 260px;
+    height: 260px;
+}
+
+.Placeholder-logo svg {
+    -webkit-transform: scale(5);
+            transform: scale(5);
+    -webkit-transform-origin: 55% 76%;
+            transform-origin: 55% 76%;
+    pointer-events: none
+
+}
+
+.Placeholder-tagline {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    z-index: 1;
+
+}
+
+.Placeholder-text {
+    font-weight: 200;
+    font-size: 3.2em;
+    opacity: .1
+}
+
+.Placeholder-bg {
+    position: absolute;
+    display: grid;
+    -webkit-box-align: space-between;
+        -ms-flex-align: space-between;
+            align-items: space-between;
+    grid: repeat(2,2px)/repeat(3,1fr);
+    width: 100%;
+    height: 100%;
+    top: 40vh;
+    background:#292C34;
+    -webkit-transform: skewY(-10deg);
+            transform: skewY(-10deg);
+    opacity: .1
+}
+
+.Placeholder-bg span:first-child {
+    grid-column: 3;
+    background: -webkit-gradient(linear,left top, right top,from(rgba(241, 248, 252, 0)),to(#000000));
+    background: linear-gradient(100grad,rgba(241, 248, 252, 0),#000000);
+}
+
+.coinList {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+.coinList .coinList-coin {
+    position: relative;
+    padding: 0;
+    margin-bottom: 1px;
+}
+
+.coinList .coinList-coin:hover {
+    z-index: 2
+}
+
+.coinList-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-shadow: 0 6px 20px rgba(0, 0, 0, .04);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .04);
+    border-radius: 4px;
+    padding: 10px;
+    background: #FFF;
+}
+
+.coinList-coin-logo {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 60px;
+    height: 100px;
+}
+
+.coinList-coin-logo .coin-icon-placeholder {
+    -webkit-transform: scale(.5);
+            transform: scale(.5);
+}
+
+.coinList .coinList-coin .coinList-coin-name {
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+}
+
+.coinList .coinList-coin .coinList-coin-name h2 {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    font-size: 1.4em;
+    margin: 0 20px 0 0
+}
+
+.coinList .coinList-coin .coinList-coin-name h2 small {
+    font-size: .6em;
+    font-weight: 200;
+}
+
+body {
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease;
+  background-color: #FAFAFD;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+* { -webkit-box-sizing: border-box; box-sizing: border-box }
+
+.content-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.app.content-container {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+}
+
+.app.content-container .Placeholder { -webkit-box-flex: 1; -ms-flex: 1; flex: 1 }
+
+.app.content-container .app-view {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: end;
+        -ms-flex-align: end;
+            align-items: flex-end;
+    height: 100vh;
+    width: 100%;
+    pointer-events: none;
+}
+
+.app.content-container .app-view > * {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    pointer-events: all;
+}
+
+.app.content-container .window-footer { z-index: 0 }
+
+/* states */
+
+.app.recording.content-container, .app.playing.content-container  { -webkit-box-pack: end; -ms-flex-pack: end; justify-content: flex-end }
+
+.app:not(.recording) .player-container { display: none }
+.ADC { color: #3CB0E5; }
+.AEON { color: #164450; }
+.AMP { color: #048DD2; }
+.ANC { color: #000; }
+.ARCH { color: #002652; }
+.ARDR { color: #1162a1; }
+.AUR { color: #136c5e; }
+.BANX { color: #225BA6; }
+.BAT { color: #9e1f63; }
+.BAY { color: #584ba1; }
+.BC { color: #202121; }
+.BCN { color: #964F51; }
+.BFT { color: #4fc3f7; }
+.BRK { color: #194fa0; }
+.BRX { color: #a8c300; }
+.BSD { color: #1186E7; }
+.BTA { color: #210094; }
+.BTC, .BCC { color: #F7931A; }
+.BTCD { color: #2A72DC; }
+.BTS { color: #03A9E0; }
+.CLAM { color: #D6AB31; }
+.CLOAK { color: #DF3F1E; }
+.DAO { color: #FF3B3B; }
+.DASH { color: #1c75bc; }
+.DCR { color: #3b7cfb; }
+.DCT { color: #008770; }
+.DGB { color: #0066cc; }
+.DGD, .DGX { color: #D8A24A; }
+.DMD { color: #5497b2; }
+.DOGE { color: #BA9F33; }
+.EMC { color: #674c8c; }
+.EOS { color: #19191A; }
+.ERC { color: #101E84; }
+.ETC { color: #669073; }
+.ETH { color: #282828; }
+.FC2 { color: #040405; }
+.FCT { color: #2175BB; }
+.FLO { color: #1358C8; }
+.FRK { color: #0633cd; }
+.FTC { color: #679EF1; }
+.GAME { color: #ed1b24; }
+.GDC { color: #E9A226; }
+.GEMZ { color: #e86060; }
+.GLD { color: #E8BE24; }
+.GNO { color: #00A6C4; }
+.GNT { color: #00d6e3; }
+.GOLOS { color: #2670B7; }
+.GRC { color: #88A13C; }
+.GRS { color: #648FA0; }
+.HEAT { color: #ff5606; }
+.ICN { color: #4c6f8c; }
+.IFC { color: #ed272d; }
+.INCNT { color: #f2932f; }
+.IOC { color: #2fa3de; }
+.IOTA { color: #FFFFFF; }
+.JBS { color: #1A8BCD; }
+.KMD { color: #326464; }
+.KOBO { color: #80C342; }
+.KORE { color: #DF4124; }
+.LBC { color: #015C47; }
+.LDOGE { color: #ffcc00; }
+.LISK { color: #1A6896; }
+.LTC { color: #838383; }
+.MAID { color: #5492D6; }
+.MCO { color: #0D3459; }
+.MINT { color: #006835; }
+.MONA { color: #a99364; }
+.MRC { color: #4279bd; }
+.MSC { color: #1D4983; }
+.MTR { color: #b92429; }
+.MUE { color: #f5a10e; }
+.NBT { color: #FFC93D; }
+.NEO { color: #58BF00; }
+.NEOS { color: #1d1d1b; }
+.NEU { color: #2983c0; }
+.NLG { color: #003E7E; }
+.NMC { color: #6787B7; }
+.NOTE { color: #42daff; }
+.NVC { color: #ecab41; }
+.NXT { color: #008FBB; }
+.OK { color: #0165A4; }
+.OMG { color: #1A53F0; }
+.OMNI { color: #18347E; }
+.OPAL { color: #7193AA; }
+.PART { color: #05D5A3; }
+.PIGGY { color: #F27A7A; }
+.PINK { color: #ED31CA; }
+.PIVX { color: #3b2f4d; }
+.POT { color: #105B2F; }
+.PPC { color: #3FA30C; }
+.QRK { color: #22AABF; }
+.RADS { color: #924cea; }
+.RBIES { color: #C62436; }
+.RBT { color: #0d4982; }
+.RBY { color: #D31F26; }
+.RDD { color: #ED1C24; }
+.REP { color: #40a2cb; }
+.RISE { color: #43CEA2; }
+.SAR { color: #1B72B8; }
+.SCOT { color: #3498DB; }
+.SDC { color: #981D2D; }
+.SIA { color: #00CBA0; }
+.SJCX { color: #003366; }
+.SLG { color: #5A6875; }
+.SLS { color: #1EB549; }
+.SNRG { color: #160363; }
+.START { color: #01AEF0; }
+.STEEM { color: #1A5099; }
+.STR { color: #08B5E5; }
+.STRAT { color: #2398dd; }
+.SWIFT { color: #428BCA; }
+.SYNC { color: #008DD2; }
+.SYS { color: #0098DA; }
+.TRIG { color: #1fbff4; }
+.TX { color: #1F8BCC; }
+.UBQ { color: #00ec8d; }
+.UNITY { color: #ED8527; }
+.USDT { color: #2CA07A; }
+.VIOR { color: #1F52A4; }
+.VNL { color: #404249; }
+.VPN { color: #589700; }
+.VRC { color: #418bca; }
+.VTC { color: #1b5c2e; }
+.WAVES { color: #24aad6; }
+.XAI { color: #2ef99f; }
+.XBS { color: #d3261d; }
+.XCP { color: #EC1550; }
+.XEM { color: #41bf76; }
+.XMR { color: #FF6600; }
+.XPM { color: #e5b625; }
+.XRP { color: #346AA9; }
+.XTZ { color: #A6DF00; }
+.XVG { color: #42AFB2; }
+.YBC { color: #D6C154; }
+.ZEC { color: #e5a93d; }
+.ZEIT { color: #ACACAC; }
+/*# sourceMappingURL=style.css.map*/

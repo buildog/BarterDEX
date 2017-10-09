@@ -1,0 +1,42 @@
+@import '_variables';
+
+/* Set base colour and font stack */
+body {
+  font-family: 'Dosis', sans-serif;
+  overflow: hidden;
+  letter-spacing: -.010rem;
+  border-radius: 5px;
+  overflow: hidden;
+  font-size: 16px;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.row {
+  margin-left: -16px;
+  margin-right: -16px;
+}
+
+.col {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.content {
+  background-color: $background-primary;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.grayed { filter: grayscale(100%); }
+
+a {
+    text-decoration: underline;
+}
