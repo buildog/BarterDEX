@@ -91,7 +91,7 @@ export default class PortfolioStore {
 
         // autorefresh portfolio
         ipcRenderer.on('watchPortfolio', () => {
-            self.autorefresh = setInterval(() => self.refresh(), 30000)
+            self.autorefresh = setInterval(() => self.refresh(), 6000)
         })
     }
 

@@ -134,14 +134,12 @@ class Emitter extends EventEmitter {
                 if (status === 'closed') {
                     const passphrase = data.passphrase;
                     const coinsListFile = `${marketmakerDir}/coinslist.json`;
-                    console.log(coinsListFile);
                     const coinslist = fs.readJsonSync(coinsListFile, { throws: false });
                     fs.pathExists(coinsListFile, (err, exists) => {
                         if (exists === true) {
-                            console.log('file exist');
                             self.execMarketMaker({ coinslist, passphrase });
                         } else if (exists === false) {
-                            console.log('file doesn\'t exist');
+                            console.log('coinslist file doesn\'t exist');
                             fs.copy(defaultCoinsListFile, coinsListFile)
                             .then(() => {
                                 console.log('file copied!');
@@ -217,9 +215,9 @@ class Emitter extends EventEmitter {
     enableCoin({ coin = '', type }) {
         const self = this;
 
-        // const data = { userpass: self.userpass, method: 'enable', coin };
+        const data = { userpass: self.userpass, method: 'enable', coin };
         // electrum
-        const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '46.4.125.2', port: 50001 };
+        // const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
 
         const url = 'http://127.0.0.1:7783';
 
@@ -235,7 +233,6 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: self.userpass, method: 'portfolio' };
         const url = 'http://127.0.0.1:7783';
-
         this.apiRequest({ data, url }).then((result) => {
             // body.portfolio.map((item) => item.balance = self.balance({ coin: item.coin, address: item.address }))
             self.emit('setPortfolio', { portfolio: result.portfolio });
@@ -271,21 +268,52 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: self.userpass, method, base, rel, relvolume, price };
         const url = 'http://127.0.0.1:7783';
-        self.inventory({ coin: base }).then(() =>
-            self.inventory({ coin: rel }).then(() => {
-                self.apiRequest({ data, url }).then((result) => {
-                    console.log(`buy order submitted`);
-                    console.log(result);
-                    if (!result.error) {
-                        self.emit('trade', result);
-                    } else {
-                        self.emit('notifier', { error: 7, desc: result.error })
-                    }
-                }).catch((error) => {
-                    self.emit('notifier', { error: 7 })
-                });
-            })
-        )
+        self.inventory({ coin: rel }).then(() => {
+            self.apiRequest({ data, url }).then((result) => {
+                console.log(`buy order submitted`);
+                console.log(result);
+                if (!result.error) {
+                    self.emit('trade', result);
+                } else {
+                    self.emit('notifier', { error: 7, desc: result.error })
+                }
+            }).catch((error) => {
+                self.emit('notifier', { error: 7 })
+            });
+        })
+    }
+
+
+    sendrawtransaction({ coin, signedtx }) {
+        const self = this;
+        const data = { userpass: self.userpass, method: 'sendrawtransaction', coin, signedtx };
+        const url = 'http://127.0.0.1:7783';
+
+        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
+            console.log(`sendWithdraw ${coin}`);
+            console.log(result);
+            resolve(result);
+        }).catch((error) => {
+            console.log(`error sendWithdraw ${coin}`)
+            reject(error);
+        }));
+    }
+
+    withdraw({ address, coin }) {
+        const self = this;
+        const data = { userpass: self.userpass,
+            method: 'withdraw',
+            coin,
+            outputs: [{ [address]: 0.001 }, { [address]: 0.002 }] };
+        const url = 'http://127.0.0.1:7783';
+        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
+            console.log(`withdraw for ${coin}`);
+            console.log(result);
+            resolve(result);
+        }).catch((error) => {
+            console.log('error withdraw')
+            reject(error);
+        }));
     }
 
     inventory({ coin }) {
@@ -296,9 +324,17 @@ class Emitter extends EventEmitter {
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             console.log(`inventory for ${coin}`);
             console.log(result);
-            resolve(result);
+            if (result.alice.length < 3) {
+                self.withdraw({ address: result.alice[0].address, coin: result.alice[0].coin }).then((withdrawResult) => {
+                    self.sendrawtransaction({ coin, signedtx: withdrawResult.hex }).then(() => {
+                        resolve(result);
+                    })
+                })
+            } else {
+                resolve(result);
+            }
         }).catch((error) => {
-            console.log('error inventory')
+            console.log(`error inventory ${coin}`)
             reject(error);
         }));
     }
