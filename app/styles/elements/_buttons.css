@@ -40,7 +40,7 @@ button.primary {  padding: 20px 40px 24px }
 
 button.withBorder {
     position: relative;
-    border-radius: 60px;
+    border-radius: 6px;
 }
 
 button.withBorder[disabled] {

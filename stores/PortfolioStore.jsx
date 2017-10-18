@@ -79,6 +79,8 @@ export default class PortfolioStore {
         this.defaultCrypto = defaultCrypto;
         this.formatFIAT = { format: '%s%v', symbol: this.defaultCurrency.symbol }
         this.formatCrypto = { format: '%v %c', code: defaultCrypto, maxFraction: 8 };
+        this.autorefresh = false;
+        this.initializedTradeWith = false;
 
         const self = this;
 
@@ -88,11 +90,6 @@ export default class PortfolioStore {
         // trade methods after coin is activated
         ipcRenderer.on('updateTrade', (e, { coin, type }) => { self.updateTrade(coin, type) });
         ipcRenderer.on('trade', (e, result) => { self.tradeCb(result) });
-
-        // autorefresh portfolio
-        ipcRenderer.on('watchPortfolio', () => {
-            self.autorefresh = setInterval(() => self.refresh(), 6000)
-        })
     }
 
     getCoin = (short) => this.coinsList.filter((asset) => asset.coin === short)[0];
@@ -118,9 +115,16 @@ export default class PortfolioStore {
     }
 
     @action setPortfolio = (portfolio) => {
-        if (!this.tradeWith) {
+        const self = this;
+
+        if (!this.tradeWith && !this.initializedTradeWith) {
             // Set defaut tradeWith
             this.enableCoin(this.defaultCrypto, 'With');
+            this.initializedTradeWith = true;
+        }
+
+        if (!self.autorefresh) {
+            self.autorefresh = setInterval(() => self.refresh(), 6000)
         }
 
         this.portfolio = addIcons(portfolio)

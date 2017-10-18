@@ -71,10 +71,23 @@
     bottom: -100vh;
     transition: all .32s ease-in-out;
     will-change: all;
+    overflow: hidden;
 }
 .notifier.notifier-error {
     bottom: 0;
     background: $danger;
     box-shadow: 0px 0px 100px 100px $danger;
     color: #FFF
+}
+
+.notifier.notifier-error:before {
+    position: fixed;
+    content:"";
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: $danger;
+    opacity: .3;
+    z-index: -1;
 }
