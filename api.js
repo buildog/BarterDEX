@@ -215,9 +215,9 @@ class Emitter extends EventEmitter {
     enableCoin({ coin = '', type }) {
         const self = this;
 
-        // const data = { userpass: self.userpass, method: 'enable', coin };
+        const data = { userpass: self.userpass, method: 'enable', coin };
         // electrum
-        const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
+        // const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
 
         const url = 'http://127.0.0.1:7783';
 

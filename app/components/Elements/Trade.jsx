@@ -40,13 +40,9 @@ class Trade extends React.Component {
         const { orderbook } = this.props.app.orderbook;
         if (orderbook.asks) {
             if (orderbook.asks.length > 0) {
-                // console.log(JSON.stringify(orderbook.asks));
-                // const order = orderbook.asks.filter((ask) => ask.numutxos > 0);
-                // if (order.length > 0) {
-                //     return order[0].price + 0.1;
-                // }
-                if (orderbook.asks.length > 0) {
-                    return orderbook.asks[0].price + 0.1
+                const order = orderbook.asks.filter((ask) => ask.numutxos > 0);
+                if (order.length > 0) {
+                    return order[0].price + 0.1;
                 }
                 return 1;
             }
@@ -208,13 +204,13 @@ class Trade extends React.Component {
                           </section>
                         </div>
                       </div>
-                    </section>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </section>
+                    </section>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </section>
 
 
                 </div>
               </section>
 
-
+              { /*
               <section className="step1-private">
                 <label className="step1-private-label">
                   <h2 className="step1-private-label-title">Private transaction { this.state.privateTransaction ? 'enabled' : 'disabled' }</h2>
@@ -229,6 +225,7 @@ class Trade extends React.Component {
                   />
                 </label>
               </section>
+              */ }
               <section className={`step1-action ${tradeTo.coin}`}>
                 <button className="withBorder primary" onClick={() => this.trade()} disabled={this.state.validation}>
                   { this.state.validation ? this.state.validation : 'open order'}

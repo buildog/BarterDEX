@@ -3,7 +3,6 @@
     align-items: flex-start;
     height: 100%;
     width: 100%;
-    padding: 10px
 }
 
 .step1 {
@@ -40,7 +39,6 @@
 .step1-receive,
 .step1-private {
     display: flex;
-    flex-direction: column;
     flex-shrink: 0;
     background: #FFF;
     box-shadow: 0 6px 20px rgba(0,0,0,.04);
@@ -279,17 +277,7 @@
     opacity: .2
 }
 
-.trade-bg-outside {
-    content:"";
-    position: absolute;
-    left: 0px;
-    width: 110%;
-    height: 100%;
-    background: linear-gradient(180grad,$color-KMD,$color-MNZ);
-    z-index: -10;
-    filter: blur(100px);
-    opacity: .1
-}
+
 
 .step1-coin-item-amount {
     display: flex;

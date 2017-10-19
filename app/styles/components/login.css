@@ -17,16 +17,17 @@
 .login textarea {
     padding: 16px 10px;
     margin-bottom: 20px;
-    box-shadow:  0 6px 20px rgba(0,0,0,.14);
     min-width: inherit;
     width: 320px;
     height: 120px;
     font-size: .5em;
     resize: none;
+    background: $color-primary;
+    color: #FFF;
 }
 
 .login textarea:focus {
-    box-shadow: none
+    background: $color-primary;
 }
 
 .login-button {

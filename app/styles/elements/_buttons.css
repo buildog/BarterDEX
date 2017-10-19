@@ -22,8 +22,7 @@ button {
 button.primary {
     font-size: 1.2em;
     padding: 15px 30px;
-    background: $color-primary;
-    color: #FFF;
+    background: #FFF;
 }
 
 button.transparent {
@@ -54,11 +53,11 @@ button.withBorder.danger {
 
 button:not([disabled]).withBorder:hover {
     transform: translateY(-1px) scale(1.01);
-    box-shadow: 0 12px 40px #FFF;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.01)
 }
 
 button:not([disabled]).withBorder.danger:hover {
-    box-shadow: 0 12px 40px #FFF
+    box-shadow: 0 12px 40px rgba(0,0,0,0.01)
 }
 
 .Clipboard,
