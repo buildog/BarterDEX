@@ -45,8 +45,8 @@ class Trade extends React.Component {
             selected: 0,
             picker: false,
             rate: 0,
-            validation: `enter amount to continue`,
-            orderBookMessage: `Fetching ${tradeBase.coin}/${tradeRel.coin} orderbook`
+            validation: `enter amount to continue`
+
         }
     }
 
@@ -93,10 +93,15 @@ class Trade extends React.Component {
 
 
     componentWillReact = () => {
+
+        const { trade, tradeRel, tradeBase } = this.props.app.portfolio;
         const amountRel = this.state.amountRel;
+
         if (this.state.rate === 0) {
             this.setState({ rate: this.getRate() });
         }
+
+        this.setState({ orderBookMessage: `Fetching ${tradeBase.coin}/${tradeRel.coin} orderbook` });
         this.updateAmountBase(amountRel);
     }
 
