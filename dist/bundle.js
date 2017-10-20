@@ -39428,7 +39428,7 @@ module.exports =
 	      var installedCoins = _this.props.app.portfolio.installedCoins;
 	      var updateErrors = _this.props.app.notifier.updateErrors;
 
-	      updateErrors({ error: 1, desc: 'you must activate at least 2 coin in agama in order to trade them on BarterDEX' });
+	      updateErrors({ error: 1, desc: 'you must have at least 2 coin wallet running in order to trade them on BarterDEX' });
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
