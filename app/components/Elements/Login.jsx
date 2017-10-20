@@ -2,6 +2,7 @@ import React from 'react'
 
 import { observer, inject } from 'mobx-react';
 import logo from '../../static/favicon.svg';
+import arrow from '../../static/arrow.svg';
 
 
 @inject('app')
@@ -35,9 +36,12 @@ class Login extends React.Component {
                 />
                 <button
                   disabled={this.state.passphrase.length === 0}
-                  className="login-button withBorder primary"
+                  className="login-button withBorder action primary"
                   onClick={() => this.login()}
-                >Login</button>
+                >
+                  <span>Login</span>
+                  <i dangerouslySetInnerHTML={{ __html: arrow }} />
+                </button>
               </section>
             </section>
           </div>

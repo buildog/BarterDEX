@@ -39,16 +39,15 @@
 .window-header-logo svg {
     transform: scale(5);
     transform-origin: 55% 76%;
-    opacity: .2
 
 }
 
-.window-header-logo svg g { fill: $color-secondary }
+.window-header-logo svg g { fill: $color-dark }
 
 
 
 .window-header ul {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -59,7 +58,7 @@
     border-radius: 5px 5px 0 0;
     opacity: 0;
     transform: translateY(-10px);
-    padding: 20px 10px;
+    padding: 20px 10px 0;
     margin: 0;
 
     display: flex;
@@ -67,8 +66,8 @@
     justify-content: center;
     height: 60px;
     -webkit-user-select: none !important;
-    background: #FFF;
-    box-shadow: 0px 0px 100px 100px #FFF;
+    background: #FFF;;
+    box-shadow: 0px 0px 100px 100px #FFF
 
 }
 
@@ -95,13 +94,19 @@
 .window__title h1 {
     font-size: 1em;
     margin: -10px 0 0;
-    color: $color-secondary
+    color: $color-dark
 }
 
 /* RIGHT SIDE */
 
 .window__controls_right {
-    margin-left: auto
+    margin-left: auto;
+}
+
+.window__controls_right button {
+    padding: 8px 14px;
+    font-size: 12px;
+    background-color: $red
 }
 
 /* CONTROLS */

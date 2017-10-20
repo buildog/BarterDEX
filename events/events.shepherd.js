@@ -39,8 +39,6 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
     });
 
     api.on('loginCallback', (data) => {
-        emitter.send('loading', { type: 'delete', key: 1 });
-
         if (!data.error) {
             // start to check if MMS is running
             checkMMInterval = setInterval(() => api.checkMMStatus(), 1000);
@@ -65,6 +63,8 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
     })
 
     api.on('updateUserInfo', (data) => {
+        emitter.send('loading', { type: 'delete', key: 1 });
+
         emitter.send('updateUserInfo', data);
         emitter.send('loading', { type: 'delete', key: 2 });
     })

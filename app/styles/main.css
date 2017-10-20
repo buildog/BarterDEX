@@ -26,17 +26,19 @@
 @import 'elements/_video';
 @import 'elements/_modal';
 @import 'elements/_tables';
+@import 'elements/_header';
 
 
 @import 'components/dashboard';
 @import 'components/trade';
 @import 'components/login';
 @import 'components/coinList';
+@import 'components/wallet';
 
 
 body {
   transition: all .2s ease;
-  background-color: $background-jaguar;
+  color: $color-primary;
   background-repeat: no-repeat;
   height: 100vh;
 }
@@ -46,13 +48,14 @@ body {
 .content-container {
     display: flex;
     width: 100vw;
-    height: 100vh;
+    max-height: 100vh;
 }
 
 .app.content-container {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 50px 10px 10px 10px;
 }
 
 .app.content-container .Placeholder { flex: 1 }
@@ -60,9 +63,7 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: flex-end;
-    height: 100vh;
     width: 100%;
     pointer-events: none;
 }
@@ -70,9 +71,19 @@ body {
 .app.content-container .app-view > * {
     display: flex;
     width: 100%;
-    justify-content: center;
     pointer-events: all;
+    border-radius: 4px;
+    overflow: hidden;
 }
+
+.app.content-container .app-view > *:not(.notifier) {
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+}
+
+.app-view .loader ~ div {
+    filter: blur(2px);
+}
+
 
 .app.content-container .window-footer { z-index: 0 }
 

@@ -42,6 +42,10 @@ const CONSTANTS = {
         7: {
             message: 'trade failled',
             loadingKeys: [5]
+        },
+        8: {
+            message: 'No active chain',
+            critical: true
         }
     },
     colors: {
@@ -187,7 +191,8 @@ const CONSTANTS = {
         XVG: '#42AFB2',
         YBC: '#D6C154',
         ZEC: '#e5a93d',
-        ZEIT: '#ACACAC'
+        ZEIT: '#ACACAC',
+        REVS: '#FF6600'
     }
 };
 

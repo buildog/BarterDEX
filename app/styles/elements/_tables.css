@@ -1,36 +1,78 @@
 .ReactTable {
     border: 0;
     background: $background-jaguar;
-    color: #FFF;
+    color: $color-dark;
+    width: 100%;
 }
 
 .rt-thead  {
-    background: rgba(256,256,256,0.1);
-    font-weight: 600;
-    color: #FFF;
+    background: #FFF;
+    font-weight: 400;
+    color: $color-dark;
+}
+
+.ReactTable .rt-thead .rt-th {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 10px;
+    border: 0;
+}
+
+.ReactTable .-pagination {
+    background: #FFF;
+    box-shadow: none
+}
+
+.ReactTable.-striped .rt-tr {
+    cursor: pointer;
+    transition: all .2s ease;
+    text-align: right
+}
+
+.ReactTable .rt-tbody .rt-td {
+    padding: 10px
 }
 
 .ReactTable.-striped .rt-tr.-odd {
-    background: rgba(256,256,256,0.05);
-}
-.ReactTable .rt-thead .rt-th.-sort-asc,
-.ReactTable .rt-thead .rt-td.-sort-asc{
-    box-shadow: inset 0 3px 0 0 $color-primary;
+    background: rgba(0,0,0,0.02);
 }
 
-.ReactTable .rt-thead .rt-th.-sort-desc,
-.ReactTable .rt-thead .rt-td.-sort-desc {
-    box-shadow:  $color-primary 0px -3px 0px 0px inset;
+.ReactTable.-striped .rt-tr.selected {
+
 }
+
+.ReactTable .rt-thead .rt-th.-sort-asc:before,
+.ReactTable .rt-thead .rt-td.-sort-asc:before{
+    content: "▲";
+    font-size: .6em;
+    margin-right: 4px;
+
+}
+
+.ReactTable .rt-thead .rt-th.-sort-desc:before,
+.ReactTable .rt-thead .rt-td.-sort-desc:before {
+    content: "▼";
+    font-size: .6em;
+    margin-right: 4px;
+}
+
+.ReactTable .rt-thead .rt-th.-sort-asc,
+.ReactTable .rt-thead .rt-th.-sort-desc { box-shadow: none }
 
 .ReactTable .-pagination .-btn,
 .ReactTable .-pageJump input,
 .ReactTable .-pageSizeOptions select {
     background-color: rgba(256,256,256,0.1);
-    color: #FFF
+    color: $color-dark;
+    font-weight: 200;
 }
 
 .ReactTable .-previous,
 .ReactTable .-next {
     padding: 5px 10px
+}
+
+.ReactTable .-pagination .-pageSizeOptions {
+    display: none
 }

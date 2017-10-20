@@ -4,7 +4,8 @@ import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import { Provider } from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 
-import { Home, Counter } from './containers';
+import { Restricted } from './containers';
+import { Dashboard, Wallet } from './components';
 import { AppStore, WinStore } from '../stores';
 
 import 'react-toggle/style.css'
@@ -41,14 +42,14 @@ const stores = {
 
 const App = ({ children }) => (
   <Provider {...stores}>
-    {children}
+    <Restricted>{ children }</Restricted>
   </Provider>
 );
 
 const Routes = (
   <Route path="/" component={App}>
-    <IndexRoute component={Home} />
-    <Route path="/counter" component={Counter} />
+    <IndexRoute component={Dashboard} />
+    <Route path="/wallet/:coin" component={Wallet} />
   </Route>
 );
 
