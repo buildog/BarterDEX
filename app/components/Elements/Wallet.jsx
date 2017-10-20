@@ -45,7 +45,7 @@ class Wallet extends React.Component {
             <header className={`wallet-wallets-header component-header component-header-centered ${coin.coin}`}>
               <Link className="wallet-wallets-header-back action primary right dark" to="/">
                 <i className="wallet-wallets-list-item_action" dangerouslySetInnerHTML={{ __html: arrow }} />
-                <span>Porfolio</span>
+                <span>back</span>
               </Link>
               <h2>
                 <div className="wallet-icon coin-colorized">{ coin.icon }</div>
