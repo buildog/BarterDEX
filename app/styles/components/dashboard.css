@@ -1,7 +1,138 @@
-.dashboard {
+.dashboard,
+.dashboard-noChain {
     display: flex;
     flex-direction: column;
-    height: 100%;
     overflow: auto;
     align-items: center;
+}
+
+
+.dashboard-wallets,
+.dashboard-wallets-header,
+.dashboard-wallets-list { width: 100% }
+
+
+.dashboard-balances-pie {
+    width: 60px !important;
+    height: 60px !important;
+    position: relative !important;
+    margin-left: -10px;
+    margin-bottom: -30px;
+    transform: scale(1.9);
+    transform-origin: left center
+}
+
+.dashboard-balances-pie svg {
+    position: absolute;
+    bottom: 0;
+}
+
+.dashboard-wallets-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+    background: #FFF;
+    max-height: 60vh
+}
+
+.dashboard-wallets-list li {
+    width: 100%;
+    flex-shrink: 0;
+    background-color: #FFF;
+    box-shadow: 0 6px 20px rgba(0,0,0,.14);
+    border-bottom: 1px solid $grey;
+    transition: all .2s ease;
+    cursor: pointer;
+}
+
+.dashboard-wallets-list li > a {
+    display: flex;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    text-decoration: none;
+    width: 100%;
+    padding: 0px 20px 0px 20px;
+}
+
+.dashboard-wallets-list-item_icon {
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(256,256,256,0.1);
+    padding: 10px;
+    border-radius: 50%;
+    transition: transform .4s ease;
+    box-shadow: $box-shadow-inputs
+
+}
+
+.dashboard-wallets-list-item_icon > * {
+    width: 40px;
+    height: 40px;
+    font-size: 2.1em;
+    transform: rotate(10deg);
+}
+
+
+.dashboard-wallets-list-item_balance {
+    flex-grow: 1;
+    position: relative;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    transition: transform .4s ease;
+    color: $color-dark
+}
+
+.dashboard-wallets-list-item_balance small { color: $color-secondary }
+
+.dashboard-wallets-list-item_action {
+    display: flex;
+    align-items: center;
+    width: 30px;
+    background: transparent
+}
+
+.dashboard-wallets-list-item_action svg {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    left: 0;
+    transition: transform .6s ease;
+}
+
+/* context */
+
+.dashboard-wallets-list li:hover {
+    z-index: 1;
+    background: $blue;
+}
+
+.dashboard-wallets-list li:hover .coin-colorized,
+.dashboard-wallets-list li:hover svg {
+    color: #FFF !important;
+    fill: #FFF !important;
+}
+
+.dashboard-wallets-list li:hover .dashboard-wallets-list-item_icon {
+    transform:scale(1.05)
+}
+.dashboard-wallets-list li:hover .dashboard-wallets-list-item_balance {
+    color: #FFF;
+    transform: translateX(2px)
+}
+
+.dashboard-wallets-list li:hover .dashboard-wallets-list-item_balance small {
+    color: rgba(256,256,256,0.4)
+}
+
+.dashboard-wallets-list li:hover .dashboard-wallets-list-item_action svg {
+    fill: #FFF;
+    transform: translateX(10px) scale(1.1)
 }

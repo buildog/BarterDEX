@@ -2,9 +2,8 @@
 
 /* Set base colour and font stack */
 body {
-  font-family: 'Dosis', sans-serif;
+    font-family: 'Heebo', sans-serif;
   overflow: hidden;
-  letter-spacing: -.010rem;
   border-radius: 5px;
   overflow: hidden;
   font-size: 16px;
@@ -28,7 +27,6 @@ body {
 }
 
 .content {
-  background-color: $background-primary;
   display: flex;
   flex-direction: column;
   overflow: hidden;

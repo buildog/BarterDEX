@@ -19,6 +19,22 @@ textarea {
     border-radius: 4px;
 }
 
+input {
+    border: 0;
+    height: 34px;
+    padding: 2px 4px;
+    width: auto;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 [contenteditable=true] { max-width: 100% }
 [contenteditable=true] + button { display: none !important }
 [contenteditable=true]:not(:empty) + button { display: flex !important }

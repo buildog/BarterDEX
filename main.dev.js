@@ -39,8 +39,9 @@ app.on('ready', async () => {
         height: 720,
         resizable: false,
         frame: false,
-        backgroundColor: '#FAFAFD',
-        show: false
+        transparent: true,
+        show: false,
+        hasShadow: false
     })
 
     mainWindow.loadURL(`file://${__dirname}/app/index.html`)

@@ -10,55 +10,35 @@
 button {
     font: inherit;
     outline: none;
-    background: #FFF;
+    background: transparent;
     border: none;
     color: inherit;
     font-weight: 600;
+    padding: 0;
     cursor: pointer;
     transition: all .2s ease;
-    padding: 10px 20px;
+    border-radius: 4px;
 }
 
-button.primary {
-    font-size: 1.2em;
-    padding: 15px 30px;
-    background: #FFF;
-}
 
 button.transparent {
     background: transparent
 }
 
 button[disabled] {
-    color: $grey;
     pointer-events: none;
     cursor: default;
 }
 
-button.primary {  padding: 20px 40px 24px }
+
 
 button.withBorder {
     position: relative;
-    border-radius: 6px;
+    text-transform: uppercase;
+    box-shadow: $box-shadow-inputs;
 }
 
-button.withBorder[disabled] {
-    background-color: inherit;
-    color: rgba(0,0,0,0.2)
-}
 
-button.withBorder.danger {
-    background: $danger
-}
-
-button:not([disabled]).withBorder:hover {
-    transform: translateY(-1px) scale(1.01);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.01)
-}
-
-button:not([disabled]).withBorder.danger:hover {
-    box-shadow: 0 12px 40px rgba(0,0,0,0.01)
-}
 
 .Clipboard,
 .Openexternal {
@@ -69,3 +49,104 @@ button:not([disabled]).withBorder.danger:hover {
 
 
 .Openexternal-icon { margin-right: 5px }
+
+
+.action,
+.action i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    transition: all .2s ease;
+}
+
+.action {
+    padding: 10px 10px 10px 20px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.action > span {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action > i {
+    margin-left: 8px;
+    padding: 6px;
+    border-radius: 4px
+}
+
+.action > i svg {
+    width: 20px;
+    height: 20px;
+    fill: #FFF
+}
+
+
+.action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.01)
+}
+
+.action:hover > i {
+    background: $color-dark;
+    transform:scale(1.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,.14);
+}
+
+/* primary */
+
+.action.primary {
+    background: $blue;
+    color: #FFF;
+    box-shadow: 0px 10px 20px #B2C8FC
+}
+.action.primary > i { background-color: rgba(0,0,0,0.2) }
+.action.primary > span { font-weight: 600; }
+.action.primary:hover > i { background: $color-dark }
+
+/* dark */
+
+.action.dark {
+    background-color: transparent;
+    color: $color-dark;
+    opacity: .4;
+    box-shadow: none
+}
+.action.dark:hover {
+    opacity: 1
+}
+.action.dark > i {
+    background: $color-dark;
+}
+
+/* right */
+.action.primary.right {
+    padding-left: 10px;
+    padding-right: 20px;
+}
+.action.primary.right > i {
+    margin-left: 0;
+    margin-right: 8px
+}
+
+.action[disabled] {
+    background-color: rgba(0,0,0,0.1) !important;
+    color: rgba(0,0,0,0.22);
+    box-shadow: none
+}
+
+/* small */
+
+.action.small {
+    padding: 4px 4px 4px 8px;
+}
+
+/* arrow down */
+.action.arrow-down > i {
+    transform: rotate(90deg);
+}

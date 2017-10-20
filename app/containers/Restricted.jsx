@@ -5,14 +5,13 @@ import {
         Footer,
         MainLoader,
         Notifier,
-        Login,
-        Dashboard } from '../components';
+        Login } from '../components';
 
 import classNames from 'classnames';
 
 @inject('app')
 @observer
-class Home extends React.Component {
+class Restricted extends React.Component {
 
     getClassState = () => {
         const { loader } = this.props.app;
@@ -29,7 +28,7 @@ class Home extends React.Component {
         const { userpass } = this.props.app;
 
         if (userpass) {
-            return (<Dashboard />);
+            return this.props.children;
         }
 
         return (<Login />);
@@ -43,14 +42,15 @@ class Home extends React.Component {
           <content className={this.getClassState()}>
             <Header />
             <section className="app-view">
+              { hasLoading === 0 ? '' : <MainLoader /> }
+              <Notifier />
               { this.privateRoute() }
+
             </section>
-            { hasLoading === 0 ? '' : <MainLoader /> }
-            <Notifier />
             <Footer />
           </content>
         )
     }
 }
 
-export default Home
+export default Restricted

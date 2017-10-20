@@ -33,16 +33,11 @@
     justify-content: center;
     flex-direction: column;
     font-style: normal;
-    border: 2px solid $color-primary;
-    width: 80px;
-    height: 80px;
+    width: 30px;
+    height: 30px;
     flex-shrink: 0;
-    border-radius: 50%;
-    font-weight: 600
-}
-
-[class*='amount'] {
-    font-family: 'Unica One', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
 }
 
 .large-number {
@@ -69,7 +64,7 @@
     background-color: rgba(226, 78, 64, .1)
 }
 
-.shadow {
+ {
     box-shadow: 0px 0px 15px rgba(0,0,0,0.95);
 }
 
@@ -79,6 +74,7 @@ code {
     background: $background-primary;
     border-radius: 3px;
     padding: 10px;
+    font: inherit;
 }
 
 /* Make child vertical and horizontal centered */
@@ -240,7 +236,7 @@ code {
 .YBC .coin-colorized { color: #D6C154!important; }
 .ZEC .coin-colorized { color: #e5a93d!important; }
 .ZEIT .coin-colorized { color: #ACACAC!important; }
-
+.REVS .coin-colorized { color: #FF6600!important; }
 
 
 
@@ -384,6 +380,7 @@ code {
 
 
 
+
 .ADC .coin-bg { background-color: #3CB0E5!important; }
 .AEON .coin-bg { background-color: #164450!important; }
 .AMP .coin-bg { background-color: #048DD2!important; }
@@ -520,142 +517,143 @@ code {
 .YBC .coin-bg { background-color: #D6C154!important; }
 .ZEC .coin-bg { background-color: #e5a93d!important; }
 .ZEIT .coin-bg { background-color: #ACACAC!important; }
+.REVS .coin-bg { background-color: #FF6600!important; }
 
 
 
-button.ADC:hover { box-shadow: 0 12px 40px #3CB0E5!important; }
-button.AEON:hover { box-shadow: 0 12px 40px #164450!important; }
-button.AMP:hover { box-shadow: 0 12px 40px #048DD2!important; }
-button.ANC:hover { box-shadow: 0 12px 40px #000!important; }
-button.ARCH:hover { box-shadow: 0 12px 40px #002652!important; }
-button.ARDR:hover { box-shadow: 0 12px 40px #1162a1!important; }
-button.AUR:hover { box-shadow: 0 12px 40px #136c5e!important; }
-button.BANX:hover { box-shadow: 0 12px 40px #225BA6!important; }
-button.BAT:hover { box-shadow: 0 12px 40px #9e1f63!important; }
-button.BAY:hover { box-shadow: 0 12px 40px #584ba1!important; }
-button.BC:hover { box-shadow: 0 12px 40px #202121!important; }
-button.BCN:hover { box-shadow: 0 12px 40px #964F51!important; }
-button.BFT:hover { box-shadow: 0 12px 40px #4fc3f7!important; }
-button.BRK:hover { box-shadow: 0 12px 40px #194fa0!important; }
-button.BRX:hover { box-shadow: 0 12px 40px #a8c300!important; }
-button.BSD:hover { box-shadow: 0 12px 40px #1186E7!important; }
-button.BTA:hover { box-shadow: 0 12px 40px #210094!important; }
-button.BTC:hover,  button.BCC:hover { box-shadow: 0 12px 40px #F7931A!important; }
-button.BTCD:hover { box-shadow: 0 12px 40px #2A72DC!important; }
-button.BTS:hover { box-shadow: 0 12px 40px #03A9E0!important; }
-button.CLAM:hover { box-shadow: 0 12px 40px #D6AB31!important; }
-button.CLOAK:hover { box-shadow: 0 12px 40px #DF3F1E!important; }
-button.DAO:hover { box-shadow: 0 12px 40px #FF3B3B!important; }
-button.DASH:hover { box-shadow: 0 12px 40px #1c75bc!important; }
-button.DCR:hover { box-shadow: 0 12px 40px #3b7cfb!important; }
-button.DCT:hover { box-shadow: 0 12px 40px #008770!important; }
-button.DGB:hover { box-shadow: 0 12px 40px #0066cc!important; }
-button.DGD:hover,  button.DGX:hover { box-shadow: 0 12px 40px #D8A24A!important; }
-button.DMD:hover { box-shadow: 0 12px 40px #5497b2!important; }
-button.DOGE:hover { box-shadow: 0 12px 40px #BA9F33!important; }
-button.EMC:hover { box-shadow: 0 12px 40px #674c8c!important; }
-button.EOS:hover { box-shadow: 0 12px 40px #19191A!important; }
-button.ERC:hover { box-shadow: 0 12px 40px #101E84!important; }
-button.ETC:hover { box-shadow: 0 12px 40px #669073!important; }
-button.ETH:hover { box-shadow: 0 12px 40px #282828!important; }
-button.FC2:hover { box-shadow: 0 12px 40px #040405!important; }
-button.FCT:hover { box-shadow: 0 12px 40px #2175BB!important; }
-button.FLO:hover { box-shadow: 0 12px 40px #1358C8!important; }
-button.FRK:hover { box-shadow: 0 12px 40px #0633cd!important; }
-button.FTC:hover { box-shadow: 0 12px 40px #679EF1!important; }
-button.GAME:hover { box-shadow: 0 12px 40px #ed1b24!important; }
-button.GDC:hover { box-shadow: 0 12px 40px #E9A226!important; }
-button.GEMZ:hover { box-shadow: 0 12px 40px #e86060!important; }
-button.GLD:hover { box-shadow: 0 12px 40px #E8BE24!important; }
-button.GNO:hover { box-shadow: 0 12px 40px #00A6C4!important; }
-button.GNT:hover { box-shadow: 0 12px 40px #00d6e3!important; }
-button.GOLOS:hover { box-shadow: 0 12px 40px #2670B7!important; }
-button.GRC:hover { box-shadow: 0 12px 40px #88A13C!important; }
-button.GRS:hover { box-shadow: 0 12px 40px #648FA0!important; }
-button.HEAT:hover { box-shadow: 0 12px 40px #ff5606!important; }
-button.ICN:hover { box-shadow: 0 12px 40px #4c6f8c!important; }
-button.IFC:hover { box-shadow: 0 12px 40px #ed272d!important; }
-button.INCNT:hover { box-shadow: 0 12px 40px #f2932f!important; }
-button.IOC:hover { box-shadow: 0 12px 40px #2fa3de!important; }
-button.IOTA:hover { box-shadow: 0 12px 40px #FFFFFF!important; }
-button.JBS:hover { box-shadow: 0 12px 40px #1A8BCD!important; }
-button.KMD:hover { box-shadow: 0 12px 40px #326464!important; }
-button.KOBO:hover { box-shadow: 0 12px 40px #80C342!important; }
-button.KORE:hover { box-shadow: 0 12px 40px #DF4124!important; }
-button.LBC:hover { box-shadow: 0 12px 40px #015C47!important; }
-button.LDOGE:hover { box-shadow: 0 12px 40px #ffcc00!important; }
-button.LISK:hover { box-shadow: 0 12px 40px #1A6896!important; }
-button.LTC:hover { box-shadow: 0 12px 40px #838383!important; }
-button.MAID:hover { box-shadow: 0 12px 40px #5492D6!important; }
-button.MCO:hover { box-shadow: 0 12px 40px #0D3459!important; }
-button.MINT:hover { box-shadow: 0 12px 40px #006835!important; }
-button.MONA:hover { box-shadow: 0 12px 40px #a99364!important; }
-button.MRC:hover { box-shadow: 0 12px 40px #4279bd!important; }
-button.MSC:hover { box-shadow: 0 12px 40px #1D4983!important; }
-button.MTR:hover { box-shadow: 0 12px 40px #b92429!important; }
-button.MUE:hover { box-shadow: 0 12px 40px #f5a10e!important; }
-button.NBT:hover { box-shadow: 0 12px 40px #FFC93D!important; }
-button.NEO:hover { box-shadow: 0 12px 40px #58BF00!important; }
-button.NEOS:hover { box-shadow: 0 12px 40px #1d1d1b!important; }
-button.NEU:hover { box-shadow: 0 12px 40px #2983c0!important; }
-button.NLG:hover { box-shadow: 0 12px 40px #003E7E!important; }
-button.NMC:hover { box-shadow: 0 12px 40px #6787B7!important; }
-button.NOTE:hover { box-shadow: 0 12px 40px #42daff!important; }
-button.NVC:hover { box-shadow: 0 12px 40px #ecab41!important; }
-button.NXT:hover { box-shadow: 0 12px 40px #008FBB!important; }
-button.OK:hover { box-shadow: 0 12px 40px #0165A4!important; }
-button.OMG:hover { box-shadow: 0 12px 40px #1A53F0!important; }
-button.OMNI:hover { box-shadow: 0 12px 40px #18347E!important; }
-button.OPAL:hover { box-shadow: 0 12px 40px #7193AA!important; }
-button.PART:hover { box-shadow: 0 12px 40px #05D5A3!important; }
-button.PIGGY:hover { box-shadow: 0 12px 40px #F27A7A!important; }
-button.PINK:hover { box-shadow: 0 12px 40px #ED31CA!important; }
-button.PIVX:hover { box-shadow: 0 12px 40px #3b2f4d!important; }
-button.POT:hover { box-shadow: 0 12px 40px #105B2F!important; }
-button.PPC:hover { box-shadow: 0 12px 40px #3FA30C!important; }
-button.QRK:hover { box-shadow: 0 12px 40px #22AABF!important; }
-button.RADS:hover { box-shadow: 0 12px 40px #924cea!important; }
-button.RBIES:hover { box-shadow: 0 12px 40px #C62436!important; }
-button.RBT:hover { box-shadow: 0 12px 40px #0d4982!important; }
-button.RBY:hover { box-shadow: 0 12px 40px #D31F26!important; }
-button.RDD:hover { box-shadow: 0 12px 40px #ED1C24!important; }
-button.REP:hover { box-shadow: 0 12px 40px #40a2cb!important; }
-button.RISE:hover { box-shadow: 0 12px 40px #43CEA2!important; }
-button.SAR:hover { box-shadow: 0 12px 40px #1B72B8!important; }
-button.SCOT:hover { box-shadow: 0 12px 40px #3498DB!important; }
-button.SDC:hover { box-shadow: 0 12px 40px #981D2D!important; }
-button.SIA:hover { box-shadow: 0 12px 40px #00CBA0!important; }
-button.SJCX:hover { box-shadow: 0 12px 40px #003366!important; }
-button.SLG:hover { box-shadow: 0 12px 40px #5A6875!important; }
-button.SLS:hover { box-shadow: 0 12px 40px #1EB549!important; }
-button.SNRG:hover { box-shadow: 0 12px 40px #160363!important; }
-button.START:hover { box-shadow: 0 12px 40px #01AEF0!important; }
-button.STEEM:hover { box-shadow: 0 12px 40px #1A5099!important; }
-button.STR:hover { box-shadow: 0 12px 40px #08B5E5!important; }
-button.STRAT:hover { box-shadow: 0 12px 40px #2398dd!important; }
-button.SWIFT:hover { box-shadow: 0 12px 40px #428BCA!important; }
-button.SYNC:hover { box-shadow: 0 12px 40px #008DD2!important; }
-button.SYS:hover { box-shadow: 0 12px 40px #0098DA!important; }
-button.TRIG:hover { box-shadow: 0 12px 40px #1fbff4!important; }
-button.TX:hover { box-shadow: 0 12px 40px #1F8BCC!important; }
-button.UBQ:hover { box-shadow: 0 12px 40px #00ec8d!important; }
-button.UNITY:hover { box-shadow: 0 12px 40px #ED8527!important; }
-button.USDT:hover { box-shadow: 0 12px 40px #2CA07A!important; }
-button.VIOR:hover { box-shadow: 0 12px 40px #1F52A4!important; }
-button.VNL:hover { box-shadow: 0 12px 40px #404249!important; }
-button.VPN:hover { box-shadow: 0 12px 40px #589700!important; }
-button.VRC:hover { box-shadow: 0 12px 40px #418bca!important; }
-button.VTC:hover { box-shadow: 0 12px 40px #1b5c2e!important; }
-button.WAVES:hover { box-shadow: 0 12px 40px #24aad6!important; }
-button.XAI:hover { box-shadow: 0 12px 40px #2ef99f!important; }
-button.XBS:hover { box-shadow: 0 12px 40px #d3261d!important; }
-button.XCP:hover { box-shadow: 0 12px 40px #EC1550!important; }
-button.XEM:hover { box-shadow: 0 12px 40px #41bf76!important; }
-button.XMR:hover { box-shadow: 0 12px 40px #FF6600!important; }
-button.XPM:hover { box-shadow: 0 12px 40px #e5b625!important; }
-button.XRP:hover { box-shadow: 0 12px 40px #346AA9!important; }
-button.XTZ:hover { box-shadow: 0 12px 40px #A6DF00!important; }
-button.XVG:hover { box-shadow: 0 12px 40px #42AFB2!important; }
-button.YBC:hover { box-shadow: 0 12px 40px #D6C154!important; }
-button.ZEC:hover { box-shadow: 0 12px 40px #e5a93d!important; }
-button.ZEIT:hover { box-shadow: 0 12px 40px #ACACAC!important; }
+.shadow.ADC:hover { box-shadow: 0 12px 40px #3CB0E5!important; }
+.shadow.AEON:hover { box-shadow: 0 12px 40px #164450!important; }
+.shadow.AMP:hover { box-shadow: 0 12px 40px #048DD2!important; }
+.shadow.ANC:hover { box-shadow: 0 12px 40px #000!important; }
+.shadow.ARCH:hover { box-shadow: 0 12px 40px #002652!important; }
+.shadow.ARDR:hover { box-shadow: 0 12px 40px #1162a1!important; }
+.shadow.AUR:hover { box-shadow: 0 12px 40px #136c5e!important; }
+.shadow.BANX:hover { box-shadow: 0 12px 40px #225BA6!important; }
+.shadow.BAT:hover { box-shadow: 0 12px 40px #9e1f63!important; }
+.shadow.BAY:hover { box-shadow: 0 12px 40px #584ba1!important; }
+.shadow.BC:hover { box-shadow: 0 12px 40px #202121!important; }
+.shadow.BCN:hover { box-shadow: 0 12px 40px #964F51!important; }
+.shadow.BFT:hover { box-shadow: 0 12px 40px #4fc3f7!important; }
+.shadow.BRK:hover { box-shadow: 0 12px 40px #194fa0!important; }
+.shadow.BRX:hover { box-shadow: 0 12px 40px #a8c300!important; }
+.shadow.BSD:hover { box-shadow: 0 12px 40px #1186E7!important; }
+.shadow.BTA:hover { box-shadow: 0 12px 40px #210094!important; }
+.shadow.BTC:hover,  .shadow.BCC:hover { box-shadow: 0 12px 40px #F7931A!important; }
+.shadow.BTCD:hover { box-shadow: 0 12px 40px #2A72DC!important; }
+.shadow.BTS:hover { box-shadow: 0 12px 40px #03A9E0!important; }
+.shadow.CLAM:hover { box-shadow: 0 12px 40px #D6AB31!important; }
+.shadow.CLOAK:hover { box-shadow: 0 12px 40px #DF3F1E!important; }
+.shadow.DAO:hover { box-shadow: 0 12px 40px #FF3B3B!important; }
+.shadow.DASH:hover { box-shadow: 0 12px 40px #1c75bc!important; }
+.shadow.DCR:hover { box-shadow: 0 12px 40px #3b7cfb!important; }
+.shadow.DCT:hover { box-shadow: 0 12px 40px #008770!important; }
+.shadow.DGB:hover { box-shadow: 0 12px 40px #0066cc!important; }
+.shadow.DGD:hover,  .shadow.DGX:hover { box-shadow: 0 12px 40px #D8A24A!important; }
+.shadow.DMD:hover { box-shadow: 0 12px 40px #5497b2!important; }
+.shadow.DOGE:hover { box-shadow: 0 12px 40px #BA9F33!important; }
+.shadow.EMC:hover { box-shadow: 0 12px 40px #674c8c!important; }
+.shadow.EOS:hover { box-shadow: 0 12px 40px #19191A!important; }
+.shadow.ERC:hover { box-shadow: 0 12px 40px #101E84!important; }
+.shadow.ETC:hover { box-shadow: 0 12px 40px #669073!important; }
+.shadow.ETH:hover { box-shadow: 0 12px 40px #282828!important; }
+.shadow.FC2:hover { box-shadow: 0 12px 40px #040405!important; }
+.shadow.FCT:hover { box-shadow: 0 12px 40px #2175BB!important; }
+.shadow.FLO:hover { box-shadow: 0 12px 40px #1358C8!important; }
+.shadow.FRK:hover { box-shadow: 0 12px 40px #0633cd!important; }
+.shadow.FTC:hover { box-shadow: 0 12px 40px #679EF1!important; }
+.shadow.GAME:hover { box-shadow: 0 12px 40px #ed1b24!important; }
+.shadow.GDC:hover { box-shadow: 0 12px 40px #E9A226!important; }
+.shadow.GEMZ:hover { box-shadow: 0 12px 40px #e86060!important; }
+.shadow.GLD:hover { box-shadow: 0 12px 40px #E8BE24!important; }
+.shadow.GNO:hover { box-shadow: 0 12px 40px #00A6C4!important; }
+.shadow.GNT:hover { box-shadow: 0 12px 40px #00d6e3!important; }
+.shadow.GOLOS:hover { box-shadow: 0 12px 40px #2670B7!important; }
+.shadow.GRC:hover { box-shadow: 0 12px 40px #88A13C!important; }
+.shadow.GRS:hover { box-shadow: 0 12px 40px #648FA0!important; }
+.shadow.HEAT:hover { box-shadow: 0 12px 40px #ff5606!important; }
+.shadow.ICN:hover { box-shadow: 0 12px 40px #4c6f8c!important; }
+.shadow.IFC:hover { box-shadow: 0 12px 40px #ed272d!important; }
+.shadow.INCNT:hover { box-shadow: 0 12px 40px #f2932f!important; }
+.shadow.IOC:hover { box-shadow: 0 12px 40px #2fa3de!important; }
+.shadow.IOTA:hover { box-shadow: 0 12px 40px #FFFFFF!important; }
+.shadow.JBS:hover { box-shadow: 0 12px 40px #1A8BCD!important; }
+.shadow.KMD:hover { box-shadow: 0 12px 40px #326464!important; }
+.shadow.KOBO:hover { box-shadow: 0 12px 40px #80C342!important; }
+.shadow.KORE:hover { box-shadow: 0 12px 40px #DF4124!important; }
+.shadow.LBC:hover { box-shadow: 0 12px 40px #015C47!important; }
+.shadow.LDOGE:hover { box-shadow: 0 12px 40px #ffcc00!important; }
+.shadow.LISK:hover { box-shadow: 0 12px 40px #1A6896!important; }
+.shadow.LTC:hover { box-shadow: 0 12px 40px #838383!important; }
+.shadow.MAID:hover { box-shadow: 0 12px 40px #5492D6!important; }
+.shadow.MCO:hover { box-shadow: 0 12px 40px #0D3459!important; }
+.shadow.MINT:hover { box-shadow: 0 12px 40px #006835!important; }
+.shadow.MONA:hover { box-shadow: 0 12px 40px #a99364!important; }
+.shadow.MRC:hover { box-shadow: 0 12px 40px #4279bd!important; }
+.shadow.MSC:hover { box-shadow: 0 12px 40px #1D4983!important; }
+.shadow.MTR:hover { box-shadow: 0 12px 40px #b92429!important; }
+.shadow.MUE:hover { box-shadow: 0 12px 40px #f5a10e!important; }
+.shadow.NBT:hover { box-shadow: 0 12px 40px #FFC93D!important; }
+.shadow.NEO:hover { box-shadow: 0 12px 40px #58BF00!important; }
+.shadow.NEOS:hover { box-shadow: 0 12px 40px #1d1d1b!important; }
+.shadow.NEU:hover { box-shadow: 0 12px 40px #2983c0!important; }
+.shadow.NLG:hover { box-shadow: 0 12px 40px #003E7E!important; }
+.shadow.NMC:hover { box-shadow: 0 12px 40px #6787B7!important; }
+.shadow.NOTE:hover { box-shadow: 0 12px 40px #42daff!important; }
+.shadow.NVC:hover { box-shadow: 0 12px 40px #ecab41!important; }
+.shadow.NXT:hover { box-shadow: 0 12px 40px #008FBB!important; }
+.shadow.OK:hover { box-shadow: 0 12px 40px #0165A4!important; }
+.shadow.OMG:hover { box-shadow: 0 12px 40px #1A53F0!important; }
+.shadow.OMNI:hover { box-shadow: 0 12px 40px #18347E!important; }
+.shadow.OPAL:hover { box-shadow: 0 12px 40px #7193AA!important; }
+.shadow.PART:hover { box-shadow: 0 12px 40px #05D5A3!important; }
+.shadow.PIGGY:hover { box-shadow: 0 12px 40px #F27A7A!important; }
+.shadow.PINK:hover { box-shadow: 0 12px 40px #ED31CA!important; }
+.shadow.PIVX:hover { box-shadow: 0 12px 40px #3b2f4d!important; }
+.shadow.POT:hover { box-shadow: 0 12px 40px #105B2F!important; }
+.shadow.PPC:hover { box-shadow: 0 12px 40px #3FA30C!important; }
+.shadow.QRK:hover { box-shadow: 0 12px 40px #22AABF!important; }
+.shadow.RADS:hover { box-shadow: 0 12px 40px #924cea!important; }
+.shadow.RBIES:hover { box-shadow: 0 12px 40px #C62436!important; }
+.shadow.RBT:hover { box-shadow: 0 12px 40px #0d4982!important; }
+.shadow.RBY:hover { box-shadow: 0 12px 40px #D31F26!important; }
+.shadow.RDD:hover { box-shadow: 0 12px 40px #ED1C24!important; }
+.shadow.REP:hover { box-shadow: 0 12px 40px #40a2cb!important; }
+.shadow.RISE:hover { box-shadow: 0 12px 40px #43CEA2!important; }
+.shadow.SAR:hover { box-shadow: 0 12px 40px #1B72B8!important; }
+.shadow.SCOT:hover { box-shadow: 0 12px 40px #3498DB!important; }
+.shadow.SDC:hover { box-shadow: 0 12px 40px #981D2D!important; }
+.shadow.SIA:hover { box-shadow: 0 12px 40px #00CBA0!important; }
+.shadow.SJCX:hover { box-shadow: 0 12px 40px #003366!important; }
+.shadow.SLG:hover { box-shadow: 0 12px 40px #5A6875!important; }
+.shadow.SLS:hover { box-shadow: 0 12px 40px #1EB549!important; }
+.shadow.SNRG:hover { box-shadow: 0 12px 40px #160363!important; }
+.shadow.START:hover { box-shadow: 0 12px 40px #01AEF0!important; }
+.shadow.STEEM:hover { box-shadow: 0 12px 40px #1A5099!important; }
+.shadow.STR:hover { box-shadow: 0 12px 40px #08B5E5!important; }
+.shadow.STRAT:hover { box-shadow: 0 12px 40px #2398dd!important; }
+.shadow.SWIFT:hover { box-shadow: 0 12px 40px #428BCA!important; }
+.shadow.SYNC:hover { box-shadow: 0 12px 40px #008DD2!important; }
+.shadow.SYS:hover { box-shadow: 0 12px 40px #0098DA!important; }
+.shadow.TRIG:hover { box-shadow: 0 12px 40px #1fbff4!important; }
+.shadow.TX:hover { box-shadow: 0 12px 40px #1F8BCC!important; }
+.shadow.UBQ:hover { box-shadow: 0 12px 40px #00ec8d!important; }
+.shadow.UNITY:hover { box-shadow: 0 12px 40px #ED8527!important; }
+.shadow.USDT:hover { box-shadow: 0 12px 40px #2CA07A!important; }
+.shadow.VIOR:hover { box-shadow: 0 12px 40px #1F52A4!important; }
+.shadow.VNL:hover { box-shadow: 0 12px 40px #404249!important; }
+.shadow.VPN:hover { box-shadow: 0 12px 40px #589700!important; }
+.shadow.VRC:hover { box-shadow: 0 12px 40px #418bca!important; }
+.shadow.VTC:hover { box-shadow: 0 12px 40px #1b5c2e!important; }
+.shadow.WAVES:hover { box-shadow: 0 12px 40px #24aad6!important; }
+.shadow.XAI:hover { box-shadow: 0 12px 40px #2ef99f!important; }
+.shadow.XBS:hover { box-shadow: 0 12px 40px #d3261d!important; }
+.shadow.XCP:hover { box-shadow: 0 12px 40px #EC1550!important; }
+.shadow.XEM:hover { box-shadow: 0 12px 40px #41bf76!important; }
+.shadow.XMR:hover { box-shadow: 0 12px 40px #FF6600!important; }
+.shadow.XPM:hover { box-shadow: 0 12px 40px #e5b625!important; }
+.shadow.XRP:hover { box-shadow: 0 12px 40px #346AA9!important; }
+.shadow.XTZ:hover { box-shadow: 0 12px 40px #A6DF00!important; }
+.shadow.XVG:hover { box-shadow: 0 12px 40px #42AFB2!important; }
+.shadow.YBC:hover { box-shadow: 0 12px 40px #D6C154!important; }
+.shadow.ZEC:hover { box-shadow: 0 12px 40px #e5a93d!important; }
+.shadow.ZEIT:hover { box-shadow: 0 12px 40px #ACACAC!important; }

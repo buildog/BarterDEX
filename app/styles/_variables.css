@@ -6,14 +6,14 @@
 */
 
 /* Colors */
-$blue: #6547DF;
+$blue: #4C84FF;
 $blue-dark: #2D91FC;
 $danger: #F33C3C;
 
 
 $grey-lighter: #D7D7D7;
 $grey-light: #919191;
-$grey: #E1E6EC;
+$grey: rgba(0,0,0,0.1);
 $grey-dark: #2D2D2D;
 $grey-darker: #1A1A20;
 
@@ -27,17 +27,19 @@ $font-size-default:    1em;
 
 /* Backgrounds */
 $background-primary:   #F8FAFF;
-$background-secondary: #FFF;
-$background-light:     #111;
-$background-jaguar:    #F8FAFF;
+$background-jaguar:    #F4F5F9;
+$background-light:     #2E3137;
+$background-dark:      rgba(0,0,0,0.01);
 
 /* Typography */
-$color-primary:        #000000;
-$color-secondary:      #090909;
-$color-dark:           $grey;
+$color-primary:        #777F8A;
+$color-secondary:      #959CAE;
+$color-dark:           #04050A;
 $divider-color:        $grey-dark;
+
 $box-shadow-inputs:    0 1px 1px 0 rgba(0, 0, 0, .2),
-                       0 0 0 1px rgba(0, 0, 0, .1);
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, 0.05);
 
 /* Borders */
 $window-border-radius: 5px;

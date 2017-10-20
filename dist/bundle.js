@@ -17925,16 +17925,16 @@ module.exports =
 	    key: 'render',
 	    value: function render() {
 	      var _props$app$portfolio = this.props.app.portfolio,
-	          tradeTo = _props$app$portfolio.tradeTo,
-	          tradeWith = _props$app$portfolio.tradeWith,
+	          tradeBase = _props$app$portfolio.tradeBase,
+	          tradeRel = _props$app$portfolio.tradeRel,
 	          coinsList = _props$app$portfolio.coinsList;
 
 
 	      return _react2.default.createElement(
 	        'section',
 	        { className: 'dashboard' },
-	        tradeTo && tradeWith && _react2.default.createElement(_.Trade, null),
-	        !tradeTo && coinsList.length > 0 && _react2.default.createElement(_.CoinPicker, { type: 'To', title: 'Select a coin to buy' })
+	        tradeBase && tradeRel && _react2.default.createElement(_.Trade, null),
+	        !tradeBase && coinsList.length > 0 && _react2.default.createElement(_.CoinPicker, { type: 'To', title: 'Select a coin to buy' })
 	      );
 	    }
 	  }]);
@@ -18712,29 +18712,29 @@ module.exports =
 	      var orderbook = _this.props.app.orderbook.orderbook;
 	      var _this$props$app$portf = _this.props.app.portfolio,
 	          trade = _this$props$app$portf.trade,
-	          tradeWith = _this$props$app$portf.tradeWith,
-	          tradeTo = _this$props$app$portf.tradeTo;
+	          tradeRel = _this$props$app$portf.tradeRel,
+	          tradeBase = _this$props$app$portf.tradeBase;
 
 
 	      console.log(JSON.stringify(orderbook.asks));
 	      trade({
 	        method: 'buy',
-	        base: tradeTo.coin,
-	        rel: tradeWith.coin,
+	        base: tradeBase.coin,
+	        rel: tradeRel.coin,
 	        price: _this.getRate(),
 	        relvolume: _this.state.amountWith
 	      });
 	    };
 
 	    _this.updateAmountWith = function (amountWith) {
-	      var tradeWith = _this.props.app.portfolio.tradeWith;
+	      var tradeRel = _this.props.app.portfolio.tradeRel;
 
 	      var validation = false;
 
-	      if (tradeWith.balance < amountWith) {
-	        validation = 'not enough ' + tradeWith.coin;
+	      if (tradeRel.balance < amountWith) {
+	        validation = 'not enough ' + tradeRel.coin;
 	      } else if (amountWith === '0' || amountWith === '') {
-	        validation = 'enter buy ' + tradeWith.coin + ' amount';
+	        validation = 'enter buy ' + tradeRel.coin + ' amount';
 	      }
 	      _this.setState({ validation: validation, amountWith: amountWith, amountTo: amountWith / _this.getRate() });
 	    };
@@ -18781,21 +18781,21 @@ module.exports =
 	      // portfolio
 	      var _props$app$portfolio = this.props.app.portfolio,
 	          portfolioRenderBalance = _props$app$portfolio.portfolioRenderBalance,
-	          tradeTo = _props$app$portfolio.tradeTo,
-	          tradeWith = _props$app$portfolio.tradeWith;
+	          tradeBase = _props$app$portfolio.tradeBase,
+	          tradeRel = _props$app$portfolio.tradeRel;
 	      var orderbook = this.props.app.orderbook.orderbook;
 
 	      // default colors if not set in constants
 
-	      if (!_constants.colors[tradeWith.coin]) {
-	        _constants.colors[tradeWith.coin] = '#DDD';
+	      if (!_constants.colors[tradeRel.coin]) {
+	        _constants.colors[tradeRel.coin] = '#DDD';
 	      }
-	      if (!_constants.colors[tradeTo.coin]) {
-	        _constants.colors[tradeTo.coin] = '#FFF';
+	      if (!_constants.colors[tradeBase.coin]) {
+	        _constants.colors[tradeBase.coin] = '#FFF';
 	      }
 
 	      var backgroundStyle = {
-	        background: 'linear-gradient(180grad,' + _constants.colors[tradeWith.coin] + ',' + _constants.colors[tradeTo.coin] + ')'
+	        background: 'linear-gradient(180grad,' + _constants.colors[tradeRel.coin] + ',' + _constants.colors[tradeBase.coin] + ')'
 	      };
 
 	      return _react2.default.createElement(
@@ -18814,14 +18814,14 @@ module.exports =
 	              { className: 'step1-coin' },
 	              _react2.default.createElement(
 	                'section',
-	                { className: 'step1-coin-item step1-coin-item-head ' + tradeTo.coin },
+	                { className: 'step1-coin-item step1-coin-item-head ' + tradeBase.coin },
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'step1-coin-logo' },
 	                  _react2.default.createElement(
 	                    'span',
 	                    { className: 'step1-coin-item-head-icon coin-colorized' },
-	                    tradeTo.icon
+	                    tradeBase.icon
 	                  ),
 	                  _react2.default.createElement(
 	                    'div',
@@ -18835,7 +18835,7 @@ module.exports =
 	                        'Buy'
 	                      ),
 	                      ' ',
-	                      tradeTo.name
+	                      tradeBase.name
 	                    ),
 	                    _react2.default.createElement(
 	                      'a',
@@ -18853,7 +18853,7 @@ module.exports =
 	                _react2.default.createElement('span', { className: 'trade-bg-inside', style: backgroundStyle }),
 	                _react2.default.createElement(
 	                  'section',
-	                  { className: 'step1-coin-item ' + tradeWith.coin },
+	                  { className: 'step1-coin-item ' + tradeRel.coin },
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'step1-coin' },
@@ -18870,7 +18870,7 @@ module.exports =
 	                            'span',
 	                            null,
 	                            'with ',
-	                            tradeWith.name
+	                            tradeRel.name
 	                          ),
 	                          _react2.default.createElement(
 	                            'small',
@@ -18879,7 +18879,7 @@ module.exports =
 	                            _react2.default.createElement(
 	                              'small',
 	                              { className: 'amount' },
-	                              portfolioRenderBalance(tradeWith.coin)
+	                              portfolioRenderBalance(tradeRel.coin)
 	                            )
 	                          ),
 	                          _react2.default.createElement(
@@ -18916,9 +18916,9 @@ module.exports =
 	                            _react2.default.createElement(
 	                              'span',
 	                              null,
-	                              tradeWith.coin
+	                              tradeRel.coin
 	                            ),
-	                            tradeWith.icon
+	                            tradeRel.icon
 	                          )
 	                        )
 	                      )
@@ -18942,7 +18942,7 @@ module.exports =
 	                ),
 	                _react2.default.createElement(
 	                  'section',
-	                  { className: 'step1-coin-item step1-coin-item-to ' + tradeTo.coin },
+	                  { className: 'step1-coin-item step1-coin-item-to ' + tradeBase.coin },
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'step1-coin' },
@@ -18975,9 +18975,9 @@ module.exports =
 	                            _react2.default.createElement(
 	                              'span',
 	                              null,
-	                              tradeTo.coin
+	                              tradeBase.coin
 	                            ),
-	                            tradeTo.icon
+	                            tradeBase.icon
 	                          )
 	                        )
 	                      )
@@ -19012,7 +19012,7 @@ module.exports =
 	          ),
 	          _react2.default.createElement(
 	            'section',
-	            { className: 'step1-action ' + tradeTo.coin },
+	            { className: 'step1-action ' + tradeBase.coin },
 	            _react2.default.createElement(
 	              'button',
 	              { className: 'withBorder primary', onClick: function onClick() {
@@ -20024,9 +20024,9 @@ module.exports =
 
 	    _initDefineProp(this, 'coinsList', _descriptor2, this);
 
-	    _initDefineProp(this, 'tradeTo', _descriptor3, this);
+	    _initDefineProp(this, 'tradeBase', _descriptor3, this);
 
-	    _initDefineProp(this, 'tradeWith', _descriptor4, this);
+	    _initDefineProp(this, 'tradeRel', _descriptor4, this);
 
 	    _initDefineProp(this, 'fiatRates', _descriptor5, this);
 
@@ -20126,12 +20126,12 @@ module.exports =
 	    initializer: function initializer() {
 	        return [];
 	    }
-	}), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'tradeTo', [_mobx.observable], {
+	}), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'tradeBase', [_mobx.observable], {
 	    enumerable: true,
 	    initializer: function initializer() {
 	        return false;
 	    }
-	}), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'tradeWith', [_mobx.observable], {
+	}), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'tradeRel', [_mobx.observable], {
 	    enumerable: true,
 	    initializer: function initializer() {
 	        return false;
@@ -20184,8 +20184,8 @@ module.exports =
 	        var _this4 = this;
 
 	        return function (portfolio) {
-	            if (!_this4.tradeWith) {
-	                // Set defaut tradeWith
+	            if (!_this4.tradeRel) {
+	                // Set defaut tradeRel
 	                _this4.enableCoin(_this4.defaultCrypto, 'With');
 	            }
 
@@ -20201,8 +20201,8 @@ module.exports =
 	            _this5.orderbook.killListener();
 	            _this5['trade' + type] = _this5.getPortfolioCoin(coin);
 
-	            if (_this5.tradeTo && _this5.tradeWith) {
-	                _this5.orderbook.listenOrderbook({ base: _this5.tradeTo.coin, rel: _this5.tradeWith.coin });
+	            if (_this5.tradeBase && _this5.tradeRel) {
+	                _this5.orderbook.listenOrderbook({ base: _this5.tradeBase.coin, rel: _this5.tradeRel.coin });
 	            }
 	        };
 	    }

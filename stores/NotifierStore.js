@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 import { ipcRenderer } from 'electron';
 import CONSTANTS from '../constants';
 
@@ -15,7 +15,7 @@ export default class NotifierStore {
         });
     }
 
-    updateErrors = (args) => {
+    @action updateErrors = (args) => {
         const code = args.error;
         let desc;
         const ghost = JSON.parse(JSON.stringify(this.errors));

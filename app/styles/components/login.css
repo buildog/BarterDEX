@@ -7,36 +7,37 @@
     overflow: auto;
     align-items: center;
     justify-content: center;
+    background: $background-jaguar;
 }
 
 .login .form {
     flex-direction: column;
-    padding: 0px 60px 60px;
-}
-
-.login textarea {
-    padding: 16px 10px;
-    margin-bottom: 20px;
-    min-width: inherit;
-    width: 320px;
-    height: 120px;
-    font-size: .5em;
-    resize: none;
-    background: $color-primary;
-    color: #FFF;
-}
-
-.login textarea:focus {
-    background: $color-primary;
+    padding: 0px 60px 100px;
 }
 
 .login-button {
-    width: 100%
+    width: 100%;
+    padding: 20px;
+    font-size: 1em
 }
 
-.login {
-
+.login textarea {
+    margin-top: 10px;
+    padding: 10px 10px;
+    margin-bottom: 20px;
+    min-width: inherit;
+    width: 320px;
+    height: 180px;
+    resize: none;
+    box-shadow: $box-shadow-inputs;
+    border: 1px solid transparent;
 }
+
+.login textarea:focus {
+    border: 1px solid #2188ff;
+    box-shadow: inset 0 1px 2px rgba(27,31,35,0.075), 0 0 0 0.2em rgba(3,102,214,0.3);
+}
+
 
 .Placeholder {
     display: flex;
@@ -45,7 +46,6 @@
     justify-content: flex-end;
     z-index: 1000;
     pointer-events: none;
-    color: $color-primary;
 
 }
 
@@ -57,11 +57,11 @@
 .Placeholder-logo svg {
     display: inline-block;
     width: 260px;
-    height: 260px;
+    height: 220px;
 }
 
 .Placeholder-logo svg {
-    transform: scale(5);
+    transform: scale(3);
     transform-origin: 55% 76%;
     pointer-events: none
 
@@ -80,24 +80,6 @@
 .Placeholder-text {
     font-weight: 200;
     font-size: 3.2em;
-    opacity: .1
-}
+    color: $color-dark;
 
-
-.Placeholder-bg {
-    position: absolute;
-    display: grid;
-    align-items: space-between;
-    grid: repeat(2,2px)/repeat(3,1fr);
-    width: 100%;
-    height: 100%;
-    top: 40vh;
-    background:#292C34;
-    transform: skewY(-10deg);
-    opacity: .1
-}
-
-.Placeholder-bg span:first-child {
-    grid-column: 3;
-    background: linear-gradient(100grad,rgba(241,248,252,0),$color-primary);
 }
