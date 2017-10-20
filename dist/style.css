@@ -437,7 +437,7 @@
 
 /* Allow element to be held down to drag the current window */
 
-.webkit-drag, .window-header {
+.webkit-drag {
   -webkit-app-region: drag;
   cursor: -webkit-grab;
 }
@@ -1763,13 +1763,13 @@ a {
     left: 0;
     color: white;
     font-size: 1em;
-    -webkit-app-region: drag;
-    cursor: -webkit-grab;
     z-index: 10000;
 }
 
 .window-header-logo, .window-header-logo svg {
-    display: inline-block;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
     width: 30px;
     height: 40px;
 }
@@ -1781,8 +1781,6 @@ a {
             transform-origin: 55% 76%;
 
 }
-
-.window-header-logo svg g { fill: #04050A }
 
 .window-header ul {
     position: fixed;
@@ -1816,9 +1814,10 @@ a {
             justify-content: center;
     height: 60px;
     -webkit-user-select: none !important;
-    background: #FFF;;
-    -webkit-box-shadow: 0px 0px 100px 100px #FFF;;
-            box-shadow: 0px 0px 100px 100px #FFF
+    background: #04050A;
+    -webkit-box-shadow: 0px 0px 100px 100px #04050A;
+            box-shadow: 0px 0px 100px 100px #04050A;
+    will-change: transform;
 
 }
 
@@ -1834,7 +1833,7 @@ a {
     position: absolute;
     width: 100%;
     height: 100%;
-    top: 0;
+    bottom: 0;
     left: 0;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1850,12 +1849,13 @@ a {
         -ms-flex-direction: column;
             flex-direction: column;
     z-index: 0;
+    pointer-events: none
 }
 
 .window__title h1 {
     font-size: 1em;
     margin: -10px 0 0;
-    color: #04050A
+    color: #FFF
 }
 
 /* RIGHT SIDE */
@@ -1867,7 +1867,6 @@ a {
 .window__controls_right button {
     padding: 8px 14px;
     font-size: 12px;
-    background-color: #FF6159
 }
 
 /* CONTROLS */
@@ -2151,6 +2150,8 @@ a {
 }
 
 .notifier-list li {
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
     width: 100%;
     text-align: center;
     overflow: hidden;
@@ -2425,6 +2426,12 @@ button.withBorder {
 .action.arrow-down > i {
     -webkit-transform: rotate(90deg);
             transform: rotate(90deg);
+}
+
+/* danger */
+
+.action.danger {
+    background-color: #F33C3C
 }
 
 /*
@@ -3338,6 +3345,16 @@ video { min-height: 100vh }
 
 .trade-action-wrapper button { -webkit-box-shadow: none !important; box-shadow: none !important }
 
+.trade-action-wrapper button div.validation {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+}
+
 .trade-amount_input {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -3715,7 +3732,7 @@ body {
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    padding: 50px 10px 10px 10px;
+    padding: 40px 10px 10px 10px;
 }
 
 .app.content-container .Placeholder { -webkit-box-flex: 1; -ms-flex: 1; flex: 1 }
@@ -3749,12 +3766,6 @@ body {
 .app.content-container .app-view > *:not(.notifier) {
     -webkit-box-shadow: 0px 2px 6px rgba(0, 0, 0, .2);
             box-shadow: 0px 2px 6px rgba(0, 0, 0, .2);
-}
-
-.app-view .loader ~ div {
-    filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="2" /></filter></svg>#filter');
-    -webkit-filter: blur(2px);
-            filter: blur(2px);
 }
 
 .app.content-container .window-footer { z-index: 0 }

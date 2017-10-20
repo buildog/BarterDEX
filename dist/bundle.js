@@ -38838,8 +38838,8 @@ module.exports =
 	            selected: 0,
 	            picker: false,
 	            rate: 0,
-	            validation: 'enter amount to continue',
-	            orderBookMessage: 'Fetching ' + tradeBase.coin + '/' + tradeRel.coin + ' orderbook'
+	            validation: 'enter amount to continue'
+
 	        };
 	        return _this;
 	    }
@@ -38945,6 +38945,7 @@ module.exports =
 	                                    _react2.default.createElement(_reactInputAutosize2.default, {
 	                                        name: 'form-field-name',
 	                                        type: 'number',
+	                                        min: '0',
 	                                        placeholder: '0.00',
 	                                        style: { fontSize: 18 },
 	                                        value: this.state.amountRel,
@@ -38964,7 +38965,7 @@ module.exports =
 	                                    '(@ 1 ',
 	                                    tradeBase.coin,
 	                                    ' = ',
-	                                    this.getRate(),
+	                                    this.state.rate,
 	                                    ' ',
 	                                    tradeRel.coin,
 	                                    ')'
@@ -39014,7 +39015,7 @@ module.exports =
 	        var self = _this3;
 	        return (0, _classnames2.default)({
 	            trade: true,
-	            'trade-ratePicked': self.getRate() > 0
+	            'trade-ratePicked': self.state.rate > 0
 	        });
 	    };
 
@@ -39026,7 +39027,8 @@ module.exports =
 	    this.pickRate = function (info) {
 	        console.log(info);
 	        _this3.setState({
-	            selected: info.index
+	            selected: info.index,
+	            rate: info.original.price
 	        });
 	    };
 
@@ -39047,28 +39049,45 @@ module.exports =
 	    this.resetForm = function () {
 	        // this.amountRelInput.focus();
 	        // this.amountRelInput.value = '';
-	        _this3.setState({ amountRel: 0, amountBase: 0, picker: false });
+	        var _props$app$portfolio2 = _this3.props.app.portfolio,
+	            tradeRel = _props$app$portfolio2.tradeRel,
+	            tradeBase = _props$app$portfolio2.tradeBase;
+
+	        _this3.setState({ amountRel: 0, amountBase: 0, picker: false, rate: 0, orderBookMessage: 'Fetching ' + tradeBase.coin + '/' + tradeRel.coin + ' orderbook' });
 	    };
 
 	    this.componentWillReact = function () {
+	        var _props$app$portfolio3 = _this3.props.app.portfolio,
+	            trade = _props$app$portfolio3.trade,
+	            tradeRel = _props$app$portfolio3.tradeRel,
+	            tradeBase = _props$app$portfolio3.tradeBase;
+
 	        var amountRel = _this3.state.amountRel;
+
+	        if (_this3.state.rate === 0) {
+	            _this3.setState({ rate: _this3.getRate() });
+	        }
+
+	        _this3.setState({ orderBookMessage: 'Fetching ' + tradeBase.coin + '/' + tradeRel.coin + ' orderbook' });
 	        _this3.updateAmountBase(amountRel);
 	    };
 
 	    this.trade = function () {
-	        var _props$app$portfolio2 = _this3.props.app.portfolio,
-	            trade = _props$app$portfolio2.trade,
-	            tradeRel = _props$app$portfolio2.tradeRel,
-	            tradeBase = _props$app$portfolio2.tradeBase;
+	        var _props$app$portfolio4 = _this3.props.app.portfolio,
+	            trade = _props$app$portfolio4.trade,
+	            tradeRel = _props$app$portfolio4.tradeRel,
+	            tradeBase = _props$app$portfolio4.tradeBase;
 
 
 	        trade({
 	            method: 'buy',
 	            base: tradeBase.coin,
 	            rel: tradeRel.coin,
-	            price: _this3.getRate(),
+	            price: _this3.state.rate,
 	            relvolume: _this3.state.amountRel
 	        });
+
+	        resetForm();
 	    };
 
 	    this.updateAmountRel = function (amountRel) {
@@ -39077,15 +39096,31 @@ module.exports =
 	        var validation = false;
 
 	        if (tradeRel.balance < amountRel) {
-	            validation = 'not enough ' + tradeRel.coin;
+	            validation = _react2.default.createElement(
+	                'div',
+	                { className: 'validation' },
+	                _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    'not enough ',
+	                    tradeRel.coin
+	                ),
+	                _react2.default.createElement(
+	                    'small',
+	                    null,
+	                    '(max ',
+	                    tradeRel.balance,
+	                    ')'
+	                )
+	            );
 	        } else if (amountRel === '0' || amountRel === '') {
 	            validation = 'enter buy ' + tradeRel.coin + ' amount';
 	        }
-	        _this3.setState({ validation: validation, amountRel: amountRel, amountBase: amountRel / _this3.getRate() });
+	        _this3.setState({ validation: validation, amountRel: amountRel, amountBase: amountRel / _this3.state.rate });
 	    };
 
 	    this.updateAmountBase = function (amountRel) {
-	        _this3.setState({ amountBase: amountRel / _this3.getRate() });
+	        _this3.setState({ amountBase: amountRel / _this3.state.rate });
 	    };
 
 	    this.privateIcon = function () {
@@ -39303,27 +39338,25 @@ module.exports =
 	          _react2.default.createElement(
 	            'h2',
 	            null,
-	            _react2.default.createElement(
-	              'small',
-	              null,
+	            installedCoins.filter(function (coin) {
+	              return coin.KMDvalue > 0;
+	            }).length > 0 && _react2.default.createElement(
+	              _recharts.ResponsiveContainer,
+	              { className: 'dashboard-balances-pie' },
 	              _react2.default.createElement(
-	                _recharts.ResponsiveContainer,
-	                { className: 'dashboard-balances-pie' },
+	                _recharts.PieChart,
+	                null,
 	                _react2.default.createElement(
-	                  _recharts.PieChart,
-	                  null,
-	                  _react2.default.createElement(
-	                    _recharts.Pie,
-	                    {
-	                      data: installedCoins,
-	                      dataKey: 'KMDvalue',
-	                      startAngle: 180,
-	                      endAngle: 0
-	                    },
-	                    installedCoins.map(function (coin) {
-	                      return _react2.default.createElement(_recharts.Cell, { key: coin.coin, stroke: 'transparent', fill: colors[coin.coin] });
-	                    })
-	                  )
+	                  _recharts.Pie,
+	                  {
+	                    data: installedCoins,
+	                    dataKey: 'KMDvalue',
+	                    startAngle: 180,
+	                    endAngle: 0
+	                  },
+	                  installedCoins.map(function (coin) {
+	                    return _react2.default.createElement(_recharts.Cell, { key: coin.coin, stroke: 'transparent', fill: colors[coin.coin] });
+	                  })
 	                )
 	              )
 	            ),
@@ -39348,7 +39381,7 @@ module.exports =
 	            _react2.default.createElement(
 	              'span',
 	              null,
-	              'add coin (soon)'
+	              'electrum (soon)'
 	            ),
 	            _react2.default.createElement('i', { dangerouslySetInnerHTML: { __html: _plus2.default } })
 	          )
@@ -39606,12 +39639,12 @@ module.exports =
 	              )
 	            )
 	          ),
-	          userpass ? _react2.default.createElement(
+	          userpass.length > 0 ? _react2.default.createElement(
 	            'li',
 	            { className: 'window__controls_right' },
 	            _react2.default.createElement(
 	              'button',
-	              { className: 'withBorder danger', onClick: function onClick() {
+	              { className: 'action danger', onClick: function onClick() {
 	                  return _this2.logout();
 	                } },
 	              'logout'
@@ -39716,6 +39749,7 @@ module.exports =
 	            'section',
 	            { className: 'form' },
 	            _react2.default.createElement('textarea', {
+	              autoFocus: true,
 	              name: 'form-field-name',
 	              placeholder: 'Enter here your passphrase',
 	              value: this.state.passphrase,
@@ -41700,8 +41734,11 @@ module.exports =
 	}), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'logout', [_mobx.action], {
 	    enumerable: true,
 	    initializer: function initializer() {
+	        var _this = this;
+
 	        return function () {
 	            // send login passphrase
+	            _this.portfolio.leave();
 	            shepherdIPC({ command: 'logout' });
 	        };
 	    }
