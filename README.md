@@ -27,7 +27,8 @@ npm start
 
 
 ## Apps
-**wip**.
+
+[Release page](https://github.com/buildog/BarterDEX/releases) 
 
 ## Package release
 
