@@ -48,6 +48,7 @@ export default class AppStore {
 
   @action logout = () => {
       // send login passphrase
+      this.portfolio.leave();
       shepherdIPC({ command: 'logout' });
   }
 
