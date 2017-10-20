@@ -6,7 +6,7 @@ Let’s decentralize Cryptocurrency Exchanges and secure it with BarterDEX
 
 #### Quick start
 
-Before starting make sure you have [Agama wallet](https://github.com/SuperNETorg/Agama) running and  [marketmaker](https://github.com/SuperNETorg/komodo/wiki/Setting-up-Liquidity-Provider-(LP)-Node#installing-liquidity-provider-lp-node-on-ubuntudebian-system) daemon compiled and running on your machine.
+Before starting make sure you have [Agama wallet](https://github.com/SuperNETorg/Agama) running on your machine, with at least 2 coins activated in native mode.
 
 
 ```
