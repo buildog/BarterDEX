@@ -65,7 +65,8 @@
     transform: translateY(10px);
     opacity: 0;
     transition: all .2s ease;
-    pointer-events: none
+    pointer-events: none;
+    will-change: transform;
 }
 
 .trade-action-wrapper {
