@@ -63,7 +63,7 @@ class Dashboard extends React.Component {
     renderNotice = () => {
         const { installedCoins } = this.props.app.portfolio;
         const { updateErrors } = this.props.app.notifier;
-        updateErrors({ error: 1, desc: 'you must activate at least 2 coin in agama in order to trade them on BarterDEX' });
+        updateErrors({ error: 1, desc: 'you must have at least 2 coin wallet running in order to trade them on BarterDEX' });
     }
 
     render() {
