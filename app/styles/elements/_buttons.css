@@ -150,3 +150,8 @@ button.withBorder {
 .action.arrow-down > i {
     transform: rotate(90deg);
 }
+
+/* danger */
+.action.danger {
+    background-color: $danger
+}

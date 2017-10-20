@@ -88,7 +88,8 @@ class Trade extends React.Component {
     resetForm = () => {
         // this.amountRelInput.focus();
         // this.amountRelInput.value = '';
-        this.setState({ amountRel: 0, amountBase: 0, picker: false, rate: 0 })
+        const { tradeRel, tradeBase } = this.props.app.portfolio;
+        this.setState({ amountRel: 0, amountBase: 0, picker: false, rate: 0, orderBookMessage: `Fetching ${tradeBase.coin}/${tradeRel.coin} orderbook` })
     }
 
 
@@ -204,6 +205,7 @@ class Trade extends React.Component {
                       <AutosizeInput
                         name="form-field-name"
                         type="number"
+                        min="0"
                         placeholder="0.00"
                         style={{ fontSize: 18 }}
                         value={this.state.amountRel}
