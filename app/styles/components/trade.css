@@ -86,6 +86,10 @@
 
 .trade-action-wrapper button { box-shadow: none !important }
 
+.trade-action-wrapper button div.validation {
+    display: flex;
+    flex-direction: column;
+}
 .trade-amount_input {
     display: flex;
     align-items: center;

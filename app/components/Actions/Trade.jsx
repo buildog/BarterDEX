@@ -54,7 +54,7 @@ class Trade extends React.Component {
         const self = this;
         return classNames({
             trade: true,
-            'trade-ratePicked': self.getRate() > 0
+            'trade-ratePicked': self.state.rate > 0
         })
     }
 
@@ -66,7 +66,8 @@ class Trade extends React.Component {
     pickRate = (info) => {
         console.log(info);
         this.setState({
-            selected: info.index
+            selected: info.index,
+            rate: info.original.price
         })
     }
 
@@ -87,12 +88,15 @@ class Trade extends React.Component {
     resetForm = () => {
         // this.amountRelInput.focus();
         // this.amountRelInput.value = '';
-        this.setState({ amountRel: 0, amountBase: 0, picker: false })
+        this.setState({ amountRel: 0, amountBase: 0, picker: false, rate: 0 })
     }
 
 
     componentWillReact = () => {
         const amountRel = this.state.amountRel;
+        if (this.state.rate === 0) {
+            this.setState({ rate: this.getRate() });
+        }
         this.updateAmountBase(amountRel);
     }
 
@@ -103,9 +107,11 @@ class Trade extends React.Component {
             method: 'buy',
             base: tradeBase.coin,
             rel: tradeRel.coin,
-            price: this.getRate(),
+            price: this.state.rate ,
             relvolume: this.state.amountRel
         })
+
+        resetForm();
     }
 
 
@@ -114,15 +120,15 @@ class Trade extends React.Component {
         let validation = false;
 
         if (tradeRel.balance < amountRel) {
-            validation = `not enough ${tradeRel.coin}`;
+            validation = (<div className="validation"><span>not enough {tradeRel.coin}</span><small>(max {tradeRel.balance})</small></div>);
         } else if (amountRel === '0' || amountRel === '') {
             validation = `enter buy ${tradeRel.coin} amount`;
         }
-        this.setState({ validation, amountRel, amountBase: amountRel / this.getRate() })
+        this.setState({ validation, amountRel, amountBase: amountRel / this.state.rate  })
     }
 
     updateAmountBase = (amountRel) => {
-        this.setState({ amountBase: amountRel / this.getRate() })
+        this.setState({ amountBase: amountRel / this.state.rate })
     }
 
     privateIcon = () => (<span className="private-icon" dangerouslySetInnerHTML={{ __html: zoro }} />)
@@ -201,7 +207,7 @@ class Trade extends React.Component {
                       <span>{ tradeRel.coin }</span>
                     </section>
                     <small className="trade-amount_input_rate">
-                        (@ 1 {tradeBase.coin} = { this.getRate() } {tradeRel.coin})
+                        (@ 1 {tradeBase.coin} = { this.state.rate } {tradeRel.coin})
                     </small>
                   </div>
 
