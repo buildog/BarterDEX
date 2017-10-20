@@ -14,7 +14,15 @@ const config = merge(baseConfig, {
             'process.env.NODE_ENV': JSON.stringify('production')
         })],
 
-    target: 'electron-renderer'
+    target: 'electron-renderer',
+
+    externals: [
+        'font-awesome',
+        'source-map-support',
+        'request',
+        'mailgun-js',
+        'os'
+    ]
 })
 
 export default config

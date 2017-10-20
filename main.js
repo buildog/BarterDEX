@@ -8917,7 +8917,7 @@ module.exports =
 	                        installer = __webpack_require__(505); // eslint-disable-line global-require
 	
 	                        extensions = ['REACT_DEVELOPER_TOOLS', 'REACT_PERF'];
-	                        forceDownload = !!({"NODE_ENV":"production","HOME":"/Users/builldog"}).UPGRADE_EXTENSIONS;
+	                        forceDownload = !!({"NODE_ENV":"production"}).UPGRADE_EXTENSIONS;
 	                        _iteratorNormalCompletion = true;
 	                        _didIteratorError = false;
 	                        _iteratorError = undefined;
@@ -9010,8 +9010,9 @@ module.exports =
 	                        height: 720,
 	                        resizable: false,
 	                        frame: false,
-	                        backgroundColor: '#FAFAFD',
-	                        show: false
+	                        transparent: true,
+	                        show: false,
+	                        hasShadow: false
 	                    });
 	
 	                    mainWindow.loadURL('file://' + __dirname + '/app/index.html');
@@ -9176,6 +9177,8 @@ module.exports =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -9186,6 +9189,7 @@ module.exports =
 	var EventEmitter = __webpack_require__(382);
 	
 	var osPlatform = _config.main.osPlatform;
+	var homeDir = _config.main.homeDir;
 	var defaultCoinsListFile = _config.main.defaultCoinsListFile;
 	var marketmakerBin = _config.main.marketmakerBin;
 	var marketmakerDir = _config.main.marketmakerDir;
@@ -9328,14 +9332,12 @@ module.exports =
 	                    if (status === 'closed') {
 	                        var passphrase = data.passphrase;
 	                        var coinsListFile = marketmakerDir + '/coinslist.json';
-	                        console.log(coinsListFile);
 	                        var coinslist = _fsExtra2.default.readJsonSync(coinsListFile, { throws: false });
 	                        _fsExtra2.default.pathExists(coinsListFile, function (err, exists) {
 	                            if (exists === true) {
-	                                console.log('file exist');
 	                                self.execMarketMaker({ coinslist: coinslist, passphrase: passphrase });
 	                            } else if (exists === false) {
-	                                console.log('file doesn\'t exist');
+	                                console.log('coinslist file doesn\'t exist');
 	                                _fsExtra2.default.copy(defaultCoinsListFile, coinsListFile).then(function () {
 	                                    console.log('file copied!');
 	                                    self.execMarketMaker({ coinslist: coinslist, passphrase: passphrase });
@@ -9364,7 +9366,7 @@ module.exports =
 	            var customParam = {
 	                gui: 'buildog',
 	                client: 1,
-	                userhome: '' + ("/Users/builldog"),
+	                userhome: homeDir,
 	                passphrase: data.passphrase.trim(),
 	                coins: data.coinslist
 	            };
@@ -9399,20 +9401,47 @@ module.exports =
 	                    userpass = result.userpass,
 	                    mypubkey = result.mypubkey;
 	
-	                self.emit('updateUserInfo', { coins: coins, userpass: userpass, mypubkey: mypubkey });
+	
 	                self.userpass = userpass;
 	                self.mypubkey = mypubkey;
 	                self.coins = coins;
-	                console.log('logged in');
-	                self.emit('coinsList', coins);
+	
+	                self.getCoins().then(function (coinsList) {
+	                    self.emit('coinsList', coinsList);
+	                    self.emit('updateUserInfo', { coins: coins, userpass: userpass, mypubkey: mypubkey });
+	                });
 	            }).catch(function (error) {
 	                self.emit('notifier', { error: 2, desc: error });
+	            });
+	        }
+	
+	        /*
+	        installed true/false,
+	        height of -1 means it isnt running, height > 0 means it is running and balance is non-zero if there is a balance for any coin with a running coin
+	        */
+	
+	    }, {
+	        key: 'getCoins',
+	        value: function getCoins() {
+	            var _this3 = this;
+	
+	            var self = this;
+	            var data = { userpass: self.userpass, method: 'getcoins' };
+	            var url = 'http://127.0.0.1:7783';
+	
+	            return new Promise(function (resolve, reject) {
+	                return _this3.apiRequest({ data: data, url: url }).then(function (result) {
+	                    resolve(result);
+	                }).catch(function (error) {
+	                    console.log('error getcoin ' + coin);
+	                    reject(error);
+	                });
 	            });
 	        }
 	    }, {
 	        key: 'enableCoin',
 	        value: function enableCoin(_ref3) {
-	            var _this3 = this;
+	            var _this4 = this;
 	
 	            var _ref3$coin = _ref3.coin,
 	                coin = _ref3$coin === undefined ? '' : _ref3$coin,
@@ -9420,16 +9449,21 @@ module.exports =
 	
 	            var self = this;
 	
-	            // const data = { userpass: self.userpass, method: 'enable', coin };
+	            var data = { userpass: self.userpass, method: 'enable', coin: coin };
 	            // electrum
-	            var data = { userpass: self.userpass, method: 'electrum', coin: coin, ipaddr: '46.4.125.2', port: 50001 };
+	            // const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
 	
 	            var url = 'http://127.0.0.1:7783';
 	
-	            this.apiRequest({ data: data, url: url }).then(function () {
+	            this.apiRequest({ data: data, url: url }).then(function (result) {
+	                if (result.error) {
+	                    return self.emit('notifier', { error: 3, desc: result.error });
+	                }
+	
 	                console.log(coin + ' enabled for Trade' + type);
+	                console.log(result);
 	                self.fetchPortfolio(function () {
-	                    return _this3.emit('updateTrade', { coin: coin, type: type });
+	                    return _this4.emit('updateTrade', { coin: coin, type: type });
 	                });
 	            }).catch(function (error) {
 	                self.emit('notifier', { error: 3 });
@@ -9441,7 +9475,6 @@ module.exports =
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'portfolio' };
 	            var url = 'http://127.0.0.1:7783';
-	
 	            this.apiRequest({ data: data, url: url }).then(function (result) {
 	                // body.portfolio.map((item) => item.balance = self.balance({ coin: item.coin, address: item.address }))
 	                self.emit('setPortfolio', { portfolio: result.portfolio });
@@ -9459,7 +9492,6 @@ module.exports =
 	            var self = this;
 	            var data = { userpass: this.userpass, method: 'orderbook', base: base, rel: rel };
 	            var url = 'http://127.0.0.1:7783';
-	
 	            this.apiRequest({ data: data, url: url }).then(function (result) {
 	                self.emit('orderbook', { base: base, rel: rel, data: result });
 	            }).catch(function (error) {
@@ -9495,58 +9527,112 @@ module.exports =
 	            var self = this;
 	            var data = { userpass: self.userpass, method: method, base: base, rel: rel, relvolume: relvolume, price: price };
 	            var url = 'http://127.0.0.1:7783';
-	            self.inventory({ coin: base }).then(function () {
-	                return self.inventory({ coin: rel }).then(function () {
-	                    self.apiRequest({ data: data, url: url }).then(function (result) {
-	                        console.log('buy order submitted');
-	                        console.log(result);
-	                        if (!result.error) {
-	                            self.emit('trade', result);
-	                        } else {
-	                            self.emit('notifier', { error: 7, desc: result.error });
-	                        }
-	                    }).catch(function (error) {
-	                        self.emit('notifier', { error: 7 });
-	                    });
+	            self.inventory({ coin: rel }).then(function () {
+	                self.apiRequest({ data: data, url: url }).then(function (result) {
+	                    console.log('buy order submitted');
+	                    console.log(result);
+	                    if (!result.error) {
+	                        self.emit('trade', result);
+	                    } else {
+	                        self.emit('notifier', { error: 7, desc: result.error });
+	                    }
+	                }).catch(function (error) {
+	                    self.emit('notifier', { error: 7 });
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'sendrawtransaction',
+	        value: function sendrawtransaction(_ref7) {
+	            var _this5 = this;
+	
+	            var coin = _ref7.coin,
+	                signedtx = _ref7.signedtx;
+	
+	            var self = this;
+	            var data = { userpass: self.userpass, method: 'sendrawtransaction', coin: coin, signedtx: signedtx };
+	            var url = 'http://127.0.0.1:7783';
+	
+	            return new Promise(function (resolve, reject) {
+	                return _this5.apiRequest({ data: data, url: url }).then(function (result) {
+	                    console.log('sendWithdraw ' + coin);
+	                    console.log(result);
+	                    resolve(result);
+	                }).catch(function (error) {
+	                    console.log('error sendWithdraw ' + coin);
+	                    reject(error);
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'withdraw',
+	        value: function withdraw(_ref8) {
+	            var _this6 = this;
+	
+	            var address = _ref8.address,
+	                coin = _ref8.coin;
+	
+	            var self = this;
+	            var data = { userpass: self.userpass,
+	                method: 'withdraw',
+	                coin: coin,
+	                outputs: [_defineProperty({}, address, 0.001), _defineProperty({}, address, 0.002)] };
+	            var url = 'http://127.0.0.1:7783';
+	            return new Promise(function (resolve, reject) {
+	                return _this6.apiRequest({ data: data, url: url }).then(function (result) {
+	                    console.log('withdraw for ' + coin);
+	                    console.log(result);
+	                    resolve(result);
+	                }).catch(function (error) {
+	                    console.log('error withdraw');
+	                    reject(error);
 	                });
 	            });
 	        }
 	    }, {
 	        key: 'inventory',
-	        value: function inventory(_ref7) {
-	            var _this4 = this;
+	        value: function inventory(_ref11) {
+	            var _this7 = this;
 	
-	            var coin = _ref7.coin;
+	            var coin = _ref11.coin;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'inventory', coin: coin };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this4.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this7.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('inventory for ' + coin);
 	                    console.log(result);
-	                    resolve(result);
+	                    if (result.alice.length < 3) {
+	                        self.withdraw({ address: result.alice[0].address, coin: result.alice[0].coin }).then(function (withdrawResult) {
+	                            self.sendrawtransaction({ coin: coin, signedtx: withdrawResult.hex }).then(function () {
+	                                resolve(result);
+	                            });
+	                        });
+	                    } else {
+	                        resolve(result);
+	                    }
 	                }).catch(function (error) {
-	                    console.log('error inventory');
+	                    console.log('error inventory ' + coin);
 	                    reject(error);
 	                });
 	            });
 	        }
 	    }, {
 	        key: 'listunspent',
-	        value: function listunspent(_ref8) {
-	            var _this5 = this;
+	        value: function listunspent(_ref12) {
+	            var _this8 = this;
 	
-	            var coin = _ref8.coin,
-	                address = _ref8.address;
+	            var coin = _ref12.coin,
+	                address = _ref12.address;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'listunspent', coin: coin, address: address };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this5.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this8.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('listunspent for ' + coin);
 	                    console.log(result);
 	                    resolve(result);
@@ -9949,14 +10035,14 @@ module.exports =
 	    return false;
 	  }
 	
-	  var homeDir = os.homedir ? os.homedir() : ({"NODE_ENV":"production","HOME":"/Users/builldog"})['HOME'];
+	  var homeDir = os.homedir ? os.homedir() : ({"NODE_ENV":"production"})['HOME'];
 	  
 	  var dir;
 	  switch (process.platform) {
 	    case 'linux': {
-	      dir = prepareDir(({"NODE_ENV":"production","HOME":"/Users/builldog"})['XDG_CONFIG_HOME'], appName)
+	      dir = prepareDir(({"NODE_ENV":"production"})['XDG_CONFIG_HOME'], appName)
 	        .or(homeDir, '.config', appName)
-	        .or(({"NODE_ENV":"production","HOME":"/Users/builldog"})['XDG_DATA_HOME'], appName)
+	        .or(({"NODE_ENV":"production"})['XDG_DATA_HOME'], appName)
 	        .or(homeDir, '.local', 'share', appName)
 	        .result;
 	      break;
@@ -9970,7 +10056,7 @@ module.exports =
 	    }
 	
 	    case 'win32': {
-	      dir = prepareDir(({"NODE_ENV":"production","HOME":"/Users/builldog"})['APPDATA'], appName)
+	      dir = prepareDir(({"NODE_ENV":"production"})['APPDATA'], appName)
 	        .or(homeDir, 'AppData', 'Roaming', appName)
 	        .result;
 	      break;
@@ -10379,16 +10465,16 @@ module.exports =
 	}
 	
 	if (_os2.default.platform() === 'darwin') {
-	    (0, _fixPath2.default)();
-	    marketmakerDir = ("/Users/builldog") + '/Library/Application Support/marketmaker';
+	    // fixPath();
+	    marketmakerDir = homeDir + '/Library/Application Support/marketmaker';
 	}
 	
 	if (_os2.default.platform() === 'linux') {
-	    marketmakerDir = ("/Users/builldog") + '/.marketmaker';
+	    marketmakerDir = homeDir + '/.marketmaker';
 	}
 	
 	if (_os2.default.platform() === 'win32') {
-	    marketmakerDir = ({"NODE_ENV":"production","HOME":"/Users/builldog"}).APPDATA + '/marketmaker';
+	    marketmakerDir = ({"NODE_ENV":"production"}).APPDATA + '/marketmaker';
 	    marketmakerDir = _path2.default.normalize(marketmakerDir);
 	    marketmakerIcon = _path2.default.join(__dirname, '/app/assets/icons/agama_icons/agama_app_icon.ico');
 	}
@@ -10396,7 +10482,7 @@ module.exports =
 	console.log(marketmakerDir);
 	
 	// DEFAULT COINS LIST FOR MARKETMAKER
-	var defaultCoinsListFile = './coinslist.json';
+	var defaultCoinsListFile = _path2.default.join(__dirname, './coinslist.json');
 	
 	exports.default = {
 	    main: { homeDir: homeDir, appRootDir: appRootDir, env: env, assetChainPorts: assetChainPorts, osPlatform: osPlatform, defaultCoinsListFile: defaultCoinsListFile, marketmakerBin: marketmakerBin, marketmakerDir: marketmakerDir, marketmakerIcon: marketmakerIcon }
@@ -10415,11 +10501,11 @@ module.exports =
 			return;
 		}
 	
-		({"NODE_ENV":"production","HOME":"/Users/builldog"}).PATH = shellPath.sync() || [
+		({"NODE_ENV":"production"}).PATH = shellPath.sync() || [
 			'./node_modules/.bin',
 			'/.nodebrew/current/bin',
 			'/usr/local/bin',
-			({"NODE_ENV":"production","HOME":"/Users/builldog"}).PATH
+			({"NODE_ENV":"production"}).PATH
 		].join(':');
 	};
 
@@ -10459,7 +10545,7 @@ module.exports =
 	
 	module.exports = shell => {
 		if (process.platform === 'win32') {
-			return Promise.resolve(({"NODE_ENV":"production","HOME":"/Users/builldog"}));
+			return Promise.resolve(({"NODE_ENV":"production"}));
 		}
 	
 		return execa(shell || defaultShell, args)
@@ -10468,14 +10554,14 @@ module.exports =
 				if (shell) {
 					throw err;
 				} else {
-					return ({"NODE_ENV":"production","HOME":"/Users/builldog"});
+					return ({"NODE_ENV":"production"});
 				}
 			});
 	};
 	
 	module.exports.sync = shell => {
 		if (process.platform === 'win32') {
-			return ({"NODE_ENV":"production","HOME":"/Users/builldog"});
+			return ({"NODE_ENV":"production"});
 		}
 	
 		try {
@@ -10485,7 +10571,7 @@ module.exports =
 			if (shell) {
 				throw err;
 			} else {
-				return ({"NODE_ENV":"production","HOME":"/Users/builldog"});
+				return ({"NODE_ENV":"production"});
 			}
 		}
 	};
@@ -10575,7 +10661,7 @@ module.exports =
 	
 		if (process.platform === 'win32') {
 			opts.__winShell = true;
-			file = ({"NODE_ENV":"production","HOME":"/Users/builldog"}).comspec || 'cmd.exe';
+			file = ({"NODE_ENV":"production"}).comspec || 'cmd.exe';
 			args = ['/s', '/c', `"${cmd}"`];
 			opts.windowsVerbatimArguments = true;
 		}
@@ -10970,7 +11056,7 @@ module.exports =
 	
 	            // Use cmd.exe
 	            args = ['/s', '/c', '"' + command + (args.length ? ' ' + args.join(' ') : '') + '"'];
-	            command = ({"NODE_ENV":"production","HOME":"/Users/builldog"}).comspec || 'cmd.exe';
+	            command = ({"NODE_ENV":"production"}).comspec || 'cmd.exe';
 	
 	            // Tell node's spawn that the arguments are already escaped
 	            options.windowsVerbatimArguments = true;
@@ -11466,11 +11552,11 @@ module.exports =
 /* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	if (({"NODE_ENV":"production","HOME":"/Users/builldog"}).npm_package_name === 'pseudomap' &&
-	    ({"NODE_ENV":"production","HOME":"/Users/builldog"}).npm_lifecycle_script === 'test')
-	  ({"NODE_ENV":"production","HOME":"/Users/builldog"}).TEST_PSEUDOMAP = 'true'
+	if (({"NODE_ENV":"production"}).npm_package_name === 'pseudomap' &&
+	    ({"NODE_ENV":"production"}).npm_lifecycle_script === 'test')
+	  ({"NODE_ENV":"production"}).TEST_PSEUDOMAP = 'true'
 	
-	if (typeof Map === 'function' && !({"NODE_ENV":"production","HOME":"/Users/builldog"}).TEST_PSEUDOMAP) {
+	if (typeof Map === 'function' && !({"NODE_ENV":"production"}).TEST_PSEUDOMAP) {
 	  module.exports = Map
 	} else {
 	  module.exports = __webpack_require__(359)
@@ -11998,7 +12084,7 @@ module.exports =
 	    try {
 	        resolved = !noExtension ?
 	            which.sync(command) :
-	            which.sync(command, { pathExt: path.delimiter + (({"NODE_ENV":"production","HOME":"/Users/builldog"}).PATHEXT || '') });
+	            which.sync(command, { pathExt: path.delimiter + (({"NODE_ENV":"production"}).PATHEXT || '') });
 	    } catch (e) { /* empty */ }
 	
 	    commandCache.set(command + '!' + noExtension, resolved);
@@ -12017,8 +12103,8 @@ module.exports =
 	which.sync = whichSync
 	
 	var isWindows = process.platform === 'win32' ||
-	    ({"NODE_ENV":"production","HOME":"/Users/builldog"}).OSTYPE === 'cygwin' ||
-	    ({"NODE_ENV":"production","HOME":"/Users/builldog"}).OSTYPE === 'msys'
+	    ({"NODE_ENV":"production"}).OSTYPE === 'cygwin' ||
+	    ({"NODE_ENV":"production"}).OSTYPE === 'msys'
 	
 	var path = __webpack_require__(341)
 	var COLON = isWindows ? ';' : ':'
@@ -12033,7 +12119,7 @@ module.exports =
 	
 	function getPathInfo (cmd, opt) {
 	  var colon = opt.colon || COLON
-	  var pathEnv = opt.path || ({"NODE_ENV":"production","HOME":"/Users/builldog"}).PATH || ''
+	  var pathEnv = opt.path || ({"NODE_ENV":"production"}).PATH || ''
 	  var pathExt = ['']
 	
 	  pathEnv = pathEnv.split(colon)
@@ -12041,7 +12127,7 @@ module.exports =
 	  var pathExtExe = ''
 	  if (isWindows) {
 	    pathEnv.unshift(process.cwd())
-	    pathExtExe = (opt.pathExt || ({"NODE_ENV":"production","HOME":"/Users/builldog"}).PATHEXT || '.EXE;.CMD;.BAT;.COM')
+	    pathExtExe = (opt.pathExt || ({"NODE_ENV":"production"}).PATHEXT || '.EXE;.CMD;.BAT;.COM')
 	    pathExt = pathExtExe.split(colon)
 	
 	
@@ -12224,7 +12310,7 @@ module.exports =
 	
 	function checkPathExt (path, options) {
 	  var pathext = options.pathExt !== undefined ?
-	    options.pathExt : ({"NODE_ENV":"production","HOME":"/Users/builldog"}).PATHEXT
+	    options.pathExt : ({"NODE_ENV":"production"}).PATHEXT
 	
 	  if (!pathext) {
 	    return true
@@ -12436,7 +12522,7 @@ module.exports =
 	module.exports = opts => {
 		opts = Object.assign({
 			cwd: process.cwd(),
-			path: ({"NODE_ENV":"production","HOME":"/Users/builldog"})[pathKey()]
+			path: ({"NODE_ENV":"production"})[pathKey()]
 		}, opts);
 	
 		let prev;
@@ -12457,7 +12543,7 @@ module.exports =
 	
 	module.exports.env = opts => {
 		opts = Object.assign({
-			env: ({"NODE_ENV":"production","HOME":"/Users/builldog"})
+			env: ({"NODE_ENV":"production"})
 		}, opts);
 	
 		const env = Object.assign({}, opts.env);
@@ -12478,7 +12564,7 @@ module.exports =
 	module.exports = opts => {
 		opts = opts || {};
 	
-		const env = opts.env || ({"NODE_ENV":"production","HOME":"/Users/builldog"});
+		const env = opts.env || ({"NODE_ENV":"production"});
 		const platform = opts.platform || process.platform;
 	
 		if (platform !== 'win32') {
@@ -13376,7 +13462,7 @@ module.exports =
 
 	'use strict';
 	module.exports = (() => {
-		const env = ({"NODE_ENV":"production","HOME":"/Users/builldog"});
+		const env = ({"NODE_ENV":"production"});
 	
 		if (process.platform === 'darwin') {
 			return env.SHELL || '/bin/bash';
@@ -13848,7 +13934,7 @@ module.exports =
 	
 	  // If debug isn't set in LS, and we're in Electron, try to load $DEBUG
 	  if (!r && typeof process !== 'undefined' && 'env' in process) {
-	    r = ({"NODE_ENV":"production","HOME":"/Users/builldog"}).DEBUG;
+	    r = ({"NODE_ENV":"production"}).DEBUG;
 	  }
 	
 	  return r;
@@ -23588,14 +23674,14 @@ module.exports =
 	var debug = noop
 	if (util.debuglog)
 	  debug = util.debuglog('gfs4')
-	else if (/\bgfs4\b/i.test(({"NODE_ENV":"production","HOME":"/Users/builldog"}).NODE_DEBUG || ''))
+	else if (/\bgfs4\b/i.test(({"NODE_ENV":"production"}).NODE_DEBUG || ''))
 	  debug = function() {
 	    var m = util.format.apply(util, arguments)
 	    m = 'GFS4: ' + m.split(/\n/).join('\nGFS4: ')
 	    console.error(m)
 	  }
 	
-	if (/\bgfs4\b/i.test(({"NODE_ENV":"production","HOME":"/Users/builldog"}).NODE_DEBUG || '')) {
+	if (/\bgfs4\b/i.test(({"NODE_ENV":"production"}).NODE_DEBUG || '')) {
 	  process.on('exit', function() {
 	    debug(queue)
 	    __webpack_require__(380).equal(queue.length, 0)
@@ -23603,7 +23689,7 @@ module.exports =
 	}
 	
 	module.exports = patch(__webpack_require__(452))
-	if (({"NODE_ENV":"production","HOME":"/Users/builldog"}).TEST_GRACEFUL_FS_GLOBAL_PATCH) {
+	if (({"NODE_ENV":"production"}).TEST_GRACEFUL_FS_GLOBAL_PATCH) {
 	  module.exports = patch(fs)
 	}
 	
@@ -23850,7 +23936,7 @@ module.exports =
 	var origCwd = process.cwd
 	var cwd = null
 	
-	var platform = ({"NODE_ENV":"production","HOME":"/Users/builldog"}).GRACEFUL_FS_PLATFORM || process.platform
+	var platform = ({"NODE_ENV":"production"}).GRACEFUL_FS_PLATFORM || process.platform
 	
 	process.cwd = function() {
 	  if (!cwd)
@@ -28334,8 +28420,6 @@ module.exports =
 	    });
 	
 	    api.on('loginCallback', function (data) {
-	        emitter.send('loading', { type: 'delete', key: 1 });
-	
 	        if (!data.error) {
 	            // start to check if MMS is running
 	            checkMMInterval = setInterval(function () {
@@ -28362,8 +28446,9 @@ module.exports =
 	    });
 	
 	    api.on('updateUserInfo', function (data) {
+	        emitter.send('loading', { type: 'delete', key: 1 });
+	
 	        emitter.send('updateUserInfo', data);
-	        emitter.send('watchPortfolio');
 	        emitter.send('loading', { type: 'delete', key: 2 });
 	    });
 	};
@@ -29156,8 +29241,8 @@ module.exports =
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
-	const getFromEnv = parseInt(({"NODE_ENV":"production","HOME":"/Users/builldog"}).ELECTRON_IS_DEV, 10) === 1;
-	const isEnvSet = 'ELECTRON_IS_DEV' in ({"NODE_ENV":"production","HOME":"/Users/builldog"});
+	const getFromEnv = parseInt(({"NODE_ENV":"production"}).ELECTRON_IS_DEV, 10) === 1;
+	const isEnvSet = 'ELECTRON_IS_DEV' in ({"NODE_ENV":"production"});
 	
 	module.exports = isEnvSet ? getFromEnv : (process.defaultApp || /node_modules[\\/]electron[\\/]/.test(process.execPath));
 
@@ -29329,9 +29414,9 @@ module.exports =
 	// The debug function is excluded entirely from the minified version.
 	/* nomin */ var debug;
 	/* nomin */ if (typeof process === 'object' &&
-	    /* nomin */ ({"NODE_ENV":"production","HOME":"/Users/builldog"}) &&
-	    /* nomin */ ({"NODE_ENV":"production","HOME":"/Users/builldog"}).NODE_DEBUG &&
-	    /* nomin */ /\bsemver\b/i.test(({"NODE_ENV":"production","HOME":"/Users/builldog"}).NODE_DEBUG))
+	    /* nomin */ ({"NODE_ENV":"production"}) &&
+	    /* nomin */ ({"NODE_ENV":"production"}).NODE_DEBUG &&
+	    /* nomin */ /\bsemver\b/i.test(({"NODE_ENV":"production"}).NODE_DEBUG))
 	  /* nomin */ debug = function() {
 	    /* nomin */ var args = Array.prototype.slice.call(arguments, 0);
 	    /* nomin */ args.unshift('SEMVER');
@@ -31962,7 +32047,7 @@ module.exports =
 	
 	// JavaScript implementation of realpath, ported from node pre-v6
 	
-	var DEBUG = ({"NODE_ENV":"production","HOME":"/Users/builldog"}).NODE_DEBUG && /fs/.test(({"NODE_ENV":"production","HOME":"/Users/builldog"}).NODE_DEBUG);
+	var DEBUG = ({"NODE_ENV":"production"}).NODE_DEBUG && /fs/.test(({"NODE_ENV":"production"}).NODE_DEBUG);
 	
 	function rethrow() {
 	  // Only enable in debug mode. A backtrace uses ~1000 bytes of heap space and

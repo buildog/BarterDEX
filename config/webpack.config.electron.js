@@ -24,8 +24,7 @@ export default merge(baseConfig, {
     ),
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: JSON.stringify('production'),
-                HOME: JSON.stringify(process.env.HOME)
+                NODE_ENV: JSON.stringify('production')
             }
         })
     ],
@@ -41,6 +40,7 @@ export default merge(baseConfig, {
         'font-awesome',
         'source-map-support',
         'request',
-        'mailgun-js'
+        'mailgun-js',
+        'os'
     ]
 })

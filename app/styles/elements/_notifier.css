@@ -58,6 +58,7 @@
 }
 
 .notifier-list li {
+    flex-shrink: 0;
     width: 100%;
     text-align: center;
     overflow: hidden;

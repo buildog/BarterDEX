@@ -28,6 +28,7 @@ class Login extends React.Component {
               <h1 className="Placeholder-text">Barter<strong>DEX</strong></h1>
               <section className="form">
                 <textarea
+                  autoFocus
                   name="form-field-name"
                   placeholder="Enter here your passphrase"
                   value={this.state.passphrase}

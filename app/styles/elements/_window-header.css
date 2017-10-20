@@ -42,9 +42,6 @@
 
 }
 
-.window-header-logo svg g { fill: $color-dark }
-
-
 
 .window-header ul {
     position: fixed;
@@ -66,8 +63,8 @@
     justify-content: center;
     height: 60px;
     -webkit-user-select: none !important;
-    background: #FFF;;
-    box-shadow: 0px 0px 100px 100px #FFF
+    background: $color-dark;
+    box-shadow: 0px 0px 100px 100px $color-dark;
 
 }
 
@@ -94,7 +91,7 @@
 .window__title h1 {
     font-size: 1em;
     margin: -10px 0 0;
-    color: $color-dark
+    color: #FFF
 }
 
 /* RIGHT SIDE */

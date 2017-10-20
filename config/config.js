@@ -84,12 +84,12 @@ if (env === 'development') {
 
 
 if (os.platform() === 'darwin') {
-    fixPath();
-    marketmakerDir = `${process.env.HOME}/Library/Application Support/marketmaker`;
+    // fixPath();
+    marketmakerDir = `${homeDir}/Library/Application Support/marketmaker`;
 }
 
 if (os.platform() === 'linux') {
-    marketmakerDir = `${process.env.HOME}/.marketmaker`;
+    marketmakerDir = `${homeDir}/.marketmaker`;
 }
 
 if (os.platform() === 'win32') {
@@ -101,7 +101,7 @@ if (os.platform() === 'win32') {
 console.log(marketmakerDir);
 
 // DEFAULT COINS LIST FOR MARKETMAKER
-const defaultCoinsListFile = './coinslist.json';
+const defaultCoinsListFile = path.join(__dirname, './coinslist.json');
 
 export default {
     main: { homeDir, appRootDir, env, assetChainPorts, osPlatform, defaultCoinsListFile, marketmakerBin, marketmakerDir, marketmakerIcon }

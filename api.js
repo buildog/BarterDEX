@@ -9,6 +9,7 @@ const exec = require('child_process').exec;
 const EventEmitter = require('events');
 
 const osPlatform = main.osPlatform;
+const homeDir = main.homeDir;
 const defaultCoinsListFile = main.defaultCoinsListFile;
 const marketmakerBin = main.marketmakerBin;
 const marketmakerDir = main.marketmakerDir;
@@ -170,7 +171,7 @@ class Emitter extends EventEmitter {
         const customParam = {
             gui: 'buildog',
             client: 1,
-            userhome: `${process.env.HOME}`,
+            userhome: homeDir,
             passphrase: data.passphrase.trim(),
             coins: data.coinslist
         };
