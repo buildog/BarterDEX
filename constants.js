@@ -46,6 +46,10 @@ const CONSTANTS = {
         8: {
             message: 'No active chain',
             critical: true
+        },
+        9: {
+            message: 'MarketMaker crash',
+            critical: true
         }
     },
     colors: {

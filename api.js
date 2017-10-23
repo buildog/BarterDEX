@@ -160,9 +160,12 @@ class Emitter extends EventEmitter {
                             console.log(err) // => null
                         }
                     })
-                } else {
+                } else if (!data.retry) {
                     console.log(`port 7783 marketmaker is already in use, restarting markertmaker`);
+                    data.retry = true;
                     this.killMarketmaker(true).then(() => this.startMarketMaker(data));
+                } else {
+                    self.emit('notifier', { error: 1 });
                 }
             });
         } catch (e) {
@@ -186,7 +189,10 @@ class Emitter extends EventEmitter {
             // maxBuffer: 1024 * 10000 // 10 mb
         }, (error, stdout, stderr) => {
             console.log(`stdout: ${stdout}`);
-            console.log(`stderr: ${stderr}`);
+            if (stderr.length) {
+                console.log(`stderr: ${stderr}`);
+                self.emit('notifier', { error: 9, desc: stderr });
+            }
             console.log('exed');
         });
 
@@ -197,6 +203,7 @@ class Emitter extends EventEmitter {
         const self = this;
         portscanner.checkPortStatus(7783, '127.0.0.1', (error, status) => {
             self.emit('MMStatus', status);
+            console.log(status);
         })
     }
 
