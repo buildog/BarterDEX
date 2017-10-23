@@ -38,10 +38,8 @@ app.on('ready', async () => {
         width: 400,
         height: 720,
         resizable: false,
-        frame: false,
-        transparent: true,
         show: false,
-        hasShadow: false
+        backgroundColor: '#959CAE'
     })
 
     // Bootstrap listeners
