@@ -110,12 +110,14 @@ class Emitter extends EventEmitter {
 
                             if (error !== null) {
                                 console.log(`${pkillCmd} exec error: ${error}`);
+                                self.emit('notifier', { error: 1 });
                             }
                         });
                     }
 
                     if (error !== null) {
                         console.log(`${marketmakerGrep} exec error: ${error}`);
+                        self.emit('notifier', { error: 1 });
                     } else {
                         self.emit('logoutCallback', { type: 'success' });
                         self.userpass = '';
