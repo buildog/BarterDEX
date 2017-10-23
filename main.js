@@ -9010,10 +9010,8 @@ module.exports =
 	                        width: 400,
 	                        height: 720,
 	                        resizable: false,
-	                        frame: false,
-	                        transparent: true,
 	                        show: false,
-	                        hasShadow: false
+	                        backgroundColor: '#959CAE'
 	                    });
 	
 	                    // Bootstrap listeners
@@ -9307,12 +9305,14 @@ module.exports =
 	
 	                                if (error !== null) {
 	                                    console.log(pkillCmd + ' exec error: ' + error);
+	                                    self.emit('notifier', { error: 1 });
 	                                }
 	                            });
 	                        }
 	
 	                        if (error !== null) {
 	                            console.log(marketmakerGrep + ' exec error: ' + error);
+	                            self.emit('notifier', { error: 1 });
 	                        } else {
 	                            self.emit('logoutCallback', { type: 'success' });
 	                            self.userpass = '';
