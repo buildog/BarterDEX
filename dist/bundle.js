@@ -41667,6 +41667,8 @@ module.exports =
 	};
 
 	var AppStore = (_class = function AppStore() {
+	    var _this = this;
+
 	    _classCallCheck(this, AppStore);
 
 	    _initDefineProp(this, 'userpass', _descriptor, this);
@@ -41707,6 +41709,11 @@ module.exports =
 	        self.mypubkey = '';
 	    });
 
+	    _electron.ipcRenderer.on('willClose', function () {
+	        _this.logout();
+	        _electron.ipcRenderer.send('readyToQuit');
+	    });
+
 	    // shepherdIPC({ command: 'logout' });
 	}, (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'userpass', [_mobx.observable], {
 	    enumerable: true,
@@ -41734,11 +41741,11 @@ module.exports =
 	}), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'logout', [_mobx.action], {
 	    enumerable: true,
 	    initializer: function initializer() {
-	        var _this = this;
+	        var _this2 = this;
 
 	        return function () {
 	            // send login passphrase
-	            _this.portfolio.leave();
+	            _this2.portfolio.leave();
 	            shepherdIPC({ command: 'logout' });
 	        };
 	    }

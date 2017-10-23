@@ -80,48 +80,52 @@ class Emitter extends EventEmitter {
     // kill rogue marketmaker copies on start
     killMarketmaker(data) {
         const self = this;
-        if (data === true) {
-            let marketmakerGrep;
 
-            switch (osPlatform) {
-            case 'darwin':
-                marketmakerGrep = 'ps -p $(ps -A | grep -m1 marketmaker | awk \'{print $1}\') | grep -i marketmaker';
-                break;
-            case 'linux':
-                marketmakerGrep = 'ps -p $(pidof marketmaker) | grep -i marketmaker';
-                break;
-            case 'win32':
-                marketmakerGrep = 'tasklist';
-                break;
-            default:
-                break;
+        return new Promise((resolve) => {
+            if (data === true) {
+                let marketmakerGrep;
+
+                switch (osPlatform) {
+                case 'darwin':
+                    marketmakerGrep = 'ps -p $(ps -A | grep -m1 marketmaker | awk \'{print $1}\') | grep -i marketmaker';
+                    break;
+                case 'linux':
+                    marketmakerGrep = 'ps -p $(pidof marketmaker) | grep -i marketmaker';
+                    break;
+                case 'win32':
+                    marketmakerGrep = 'tasklist';
+                    break;
+                default:
+                    break;
+                }
+
+                exec(marketmakerGrep, (error, stdout) => {
+                    if (stdout.indexOf('marketmaker') > -1) {
+                        const pkillCmd = osPlatform === 'win32' ? 'taskkill /f /im marketmaker.exe' : 'pkill -15 marketmaker';
+
+                        console.log('found another marketmaker process(es)');
+
+                        exec(pkillCmd, (error, stdout, stderr) => {
+                            console.log(`${pkillCmd} is issued`);
+
+                            if (error !== null) {
+                                console.log(`${pkillCmd} exec error: ${error}`);
+                            }
+                        });
+                    }
+
+                    if (error !== null) {
+                        console.log(`${marketmakerGrep} exec error: ${error}`);
+                    } else {
+                        self.emit('logoutCallback', { type: 'success' });
+                        self.userpass = '';
+                        self.mypubkey = '';
+                        self.coins = '';
+                        resolve('killed marketmaker');
+                    }
+                });
             }
-
-            exec(marketmakerGrep, (error, stdout, stderr) => {
-                if (stdout.indexOf('marketmaker') > -1) {
-                    const pkillCmd = osPlatform === 'win32' ? 'taskkill /f /im marketmaker.exe' : 'pkill -15 marketmaker';
-
-                    console.log('found another marketmaker process(es)');
-
-                    exec(pkillCmd, (error, stdout, stderr) => {
-                        console.log(`${pkillCmd} is issued`);
-
-                        if (error !== null) {
-                            console.log(`${pkillCmd} exec error: ${error}`);
-                        }
-                    });
-                }
-
-                if (error !== null) {
-                    console.log(`${marketmakerGrep} exec error: ${error}`);
-                } else {
-                    self.emit('logoutCallback', { type: 'success' });
-                    self.userpass = '';
-                    self.mypubkey = '';
-                    self.coins = '';
-                }
-            });
-        }
+        });
     }
 
 
@@ -155,8 +159,8 @@ class Emitter extends EventEmitter {
                         }
                     })
                 } else {
-                    console.log(`port 7783 marketmaker is already in use`);
-                    this.emit('notifier', { error: 1 });
+                    console.log(`port 7783 marketmaker is already in use, restarting markertmaker`);
+                    this.killMarketmaker(true).then(() => this.startMarketMaker(data));
                 }
             });
         } catch (e) {

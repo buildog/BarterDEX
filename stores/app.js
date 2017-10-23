@@ -38,6 +38,11 @@ export default class AppStore {
             self.mypubkey = '';
         })
 
+        ipcRenderer.on('willClose', () => {
+            this.logout();
+            ipcRenderer.send('readyToQuit');
+        })
+
         // shepherdIPC({ command: 'logout' });
     }
 

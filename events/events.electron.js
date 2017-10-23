@@ -6,6 +6,8 @@ import log from 'electron-log';
 import { Logging } from '../logging';
 
 export const electronEvents = ({ app, mainWindow, api, listener, emitter }) => {
+    // api.removeAllListeners();
+
     // Start logging
     Logging.setLogging();
 
@@ -23,9 +25,14 @@ export const electronEvents = ({ app, mainWindow, api, listener, emitter }) => {
     const close = () => {
         // On OS X it is common for applications and their menu bar
         // to stay active until the user quits explicitly with Cmd + Q
-        mainWindow.close();
-        log.info('All windows closed. shutting down iguana...')
+        log.info('All windows closed. shutting down marketmaker')
+        emitter.send('willClose');
     }
+
+    listener.on('readyToQuit', () => {
+        api.removeAllListeners();
+        setTimeout(() => mainWindow.close(), 2000);
+    })
 
     /*
         Send bug report
@@ -52,7 +59,7 @@ export const electronEvents = ({ app, mainWindow, api, listener, emitter }) => {
     */
 
     listener.on('criticalRefresh', () => {
-        Logging.sendBugReport().then(() => mainWindow.reload())
+        mainWindow.reload();
     });
 
 
@@ -85,8 +92,6 @@ export const electronEvents = ({ app, mainWindow, api, listener, emitter }) => {
         Close window
     */
 
-    listener.on('close', () => {
-        close();
-    });
+    listener.on('close', () => close());
     app.on('will-quit', () => close());
 }

@@ -8996,6 +8996,7 @@ module.exports =
 	}();
 	
 	_electron.app.on('ready', _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+	    var eventsConfig, eventsElectron;
 	    return regeneratorRuntime.wrap(function _callee2$(_context2) {
 	        while (1) {
 	            switch (_context2.prev = _context2.next) {
@@ -9015,22 +9016,23 @@ module.exports =
 	                        hasShadow: false
 	                    });
 	
+	                    // Bootstrap listeners
+	                    eventsConfig = { api: api, emitter: mainWindow.webContents, listener: _electron.ipcMain, config: _config.main };
+	                    eventsElectron = { app: _electron.app, emitter: mainWindow.webContents, mainWindow: mainWindow, api: api, config: _config.main, listener: _electron.ipcMain };
+	
+	
+	                    (0, _events.electronEvents)(eventsElectron);
+	
+	                    (0, _events.shepherdEvents)(eventsConfig);
+	                    (0, _events.tradeEvents)(eventsConfig);
+	                    (0, _events.portfolioEvents)(eventsConfig);
+	                    (0, _events.orderbookEvents)(eventsConfig);
+	
 	                    mainWindow.loadURL('file://' + __dirname + '/app/index.html');
 	
 	                    mainWindow.webContents.on('did-finish-load', function () {
 	                        mainWindow.show();
 	                        mainWindow.focus();
-	
-	                        // Bootstrap listeners
-	                        var eventsConfig = { api: api, emitter: mainWindow.webContents, listener: _electron.ipcMain, config: _config.main };
-	                        var eventsElectron = { app: _electron.app, emitter: mainWindow.webContents, mainWindow: mainWindow, api: api, config: _config.main, listener: _electron.ipcMain };
-	
-	                        (0, _events.electronEvents)(eventsElectron);
-	
-	                        (0, _events.shepherdEvents)(eventsConfig);
-	                        (0, _events.tradeEvents)(eventsConfig);
-	                        (0, _events.portfolioEvents)(eventsConfig);
-	                        (0, _events.orderbookEvents)(eventsConfig);
 	                    });
 	
 	                    mainWindow.on('closed', function () {
@@ -9078,7 +9080,7 @@ module.exports =
 	                        }]));
 	                    }
 	
-	                case 10:
+	                case 17:
 	                case 'end':
 	                    return _context2.stop();
 	            }
@@ -9275,48 +9277,52 @@ module.exports =
 	        key: 'killMarketmaker',
 	        value: function killMarketmaker(data) {
 	            var self = this;
-	            if (data === true) {
-	                var marketmakerGrep = void 0;
 	
-	                switch (osPlatform) {
-	                    case 'darwin':
-	                        marketmakerGrep = 'ps -p $(ps -A | grep -m1 marketmaker | awk \'{print $1}\') | grep -i marketmaker';
-	                        break;
-	                    case 'linux':
-	                        marketmakerGrep = 'ps -p $(pidof marketmaker) | grep -i marketmaker';
-	                        break;
-	                    case 'win32':
-	                        marketmakerGrep = 'tasklist';
-	                        break;
-	                    default:
-	                        break;
+	            return new Promise(function (resolve) {
+	                if (data === true) {
+	                    var marketmakerGrep = void 0;
+	
+	                    switch (osPlatform) {
+	                        case 'darwin':
+	                            marketmakerGrep = 'ps -p $(ps -A | grep -m1 marketmaker | awk \'{print $1}\') | grep -i marketmaker';
+	                            break;
+	                        case 'linux':
+	                            marketmakerGrep = 'ps -p $(pidof marketmaker) | grep -i marketmaker';
+	                            break;
+	                        case 'win32':
+	                            marketmakerGrep = 'tasklist';
+	                            break;
+	                        default:
+	                            break;
+	                    }
+	
+	                    exec(marketmakerGrep, function (error, stdout) {
+	                        if (stdout.indexOf('marketmaker') > -1) {
+	                            var pkillCmd = osPlatform === 'win32' ? 'taskkill /f /im marketmaker.exe' : 'pkill -15 marketmaker';
+	
+	                            console.log('found another marketmaker process(es)');
+	
+	                            exec(pkillCmd, function (error, stdout, stderr) {
+	                                console.log(pkillCmd + ' is issued');
+	
+	                                if (error !== null) {
+	                                    console.log(pkillCmd + ' exec error: ' + error);
+	                                }
+	                            });
+	                        }
+	
+	                        if (error !== null) {
+	                            console.log(marketmakerGrep + ' exec error: ' + error);
+	                        } else {
+	                            self.emit('logoutCallback', { type: 'success' });
+	                            self.userpass = '';
+	                            self.mypubkey = '';
+	                            self.coins = '';
+	                            resolve('killed marketmaker');
+	                        }
+	                    });
 	                }
-	
-	                exec(marketmakerGrep, function (error, stdout, stderr) {
-	                    if (stdout.indexOf('marketmaker') > -1) {
-	                        var pkillCmd = osPlatform === 'win32' ? 'taskkill /f /im marketmaker.exe' : 'pkill -15 marketmaker';
-	
-	                        console.log('found another marketmaker process(es)');
-	
-	                        exec(pkillCmd, function (error, stdout, stderr) {
-	                            console.log(pkillCmd + ' is issued');
-	
-	                            if (error !== null) {
-	                                console.log(pkillCmd + ' exec error: ' + error);
-	                            }
-	                        });
-	                    }
-	
-	                    if (error !== null) {
-	                        console.log(marketmakerGrep + ' exec error: ' + error);
-	                    } else {
-	                        self.emit('logoutCallback', { type: 'success' });
-	                        self.userpass = '';
-	                        self.mypubkey = '';
-	                        self.coins = '';
-	                    }
-	                });
-	            }
+	            });
 	        }
 	    }, {
 	        key: 'startMarketMaker',
@@ -9350,8 +9356,10 @@ module.exports =
 	                            }
 	                        });
 	                    } else {
-	                        console.log('port 7783 marketmaker is already in use');
-	                        _this2.emit('notifier', { error: 1 });
+	                        console.log('port 7783 marketmaker is already in use, restarting markertmaker');
+	                        _this2.killMarketmaker(true).then(function () {
+	                            return _this2.startMarketMaker(data);
+	                        });
 	                    }
 	                });
 	            } catch (e) {
@@ -28258,6 +28266,8 @@ module.exports =
 	        listener = _ref.listener,
 	        emitter = _ref.emitter;
 	
+	    // api.removeAllListeners();
+	
 	    // Start logging
 	    _logging.Logging.setLogging();
 	
@@ -28274,9 +28284,16 @@ module.exports =
 	    var close = function close() {
 	        // On OS X it is common for applications and their menu bar
 	        // to stay active until the user quits explicitly with Cmd + Q
-	        mainWindow.close();
-	        _electronLog2.default.info('All windows closed. shutting down iguana...');
+	        _electronLog2.default.info('All windows closed. shutting down marketmaker');
+	        emitter.send('willClose');
 	    };
+	
+	    listener.on('readyToQuit', function () {
+	        api.removeAllListeners();
+	        setTimeout(function () {
+	            return mainWindow.close();
+	        }, 2000);
+	    });
 	
 	    /*
 	        Send bug report
@@ -28304,9 +28321,7 @@ module.exports =
 	    */
 	
 	    listener.on('criticalRefresh', function () {
-	        _logging.Logging.sendBugReport().then(function () {
-	            return mainWindow.reload();
-	        });
+	        mainWindow.reload();
 	    });
 	
 	    /*
@@ -28338,7 +28353,7 @@ module.exports =
 	    */
 	
 	    listener.on('close', function () {
-	        close();
+	        return close();
 	    });
 	    app.on('will-quit', function () {
 	        return close();
@@ -28385,14 +28400,18 @@ module.exports =
 	    close: 'closed'
 	};
 	
+	var mmsState = MMStates.initial;
 	var checkMMInterval = void 0;
+	
+	var stopMMStatus = function stopMMStatus() {
+	    mmsState = MMStates.initial;
+	    checkMMInterval && clearInterval(checkMMInterval);
+	};
 	
 	var shepherdEvents = exports.shepherdEvents = function shepherdEvents(_ref) {
 	    var api = _ref.api,
 	        emitter = _ref.emitter,
 	        listener = _ref.listener;
-	
-	    var mmsState = '';
 	
 	    listener.on('shepherd-command', function (event, arg) {
 	        switch (arg.command) {
@@ -28401,7 +28420,6 @@ module.exports =
 	            case 'login':
 	                emitter.send('loading', { type: 'add', key: 1 });
 	                api.startMarketMaker({ passphrase: arg.passphrase });
-	
 	                break;
 	            case 'logout':
 	                api.killMarketmaker(true);
@@ -28413,8 +28431,7 @@ module.exports =
 	
 	    api.on('logoutCallback', function (data) {
 	        if (!data.error) {
-	            mmsState = MMStates.initial;
-	            clearInterval(checkMMInterval);
+	            stopMMStatus();
 	            emitter.send('resetUserInfo', data);
 	        }
 	    });
@@ -28422,6 +28439,7 @@ module.exports =
 	    api.on('loginCallback', function (data) {
 	        if (!data.error) {
 	            // start to check if MMS is running
+	            stopMMStatus();
 	            checkMMInterval = setInterval(function () {
 	                return api.checkMMStatus();
 	            }, 1000);
@@ -28447,7 +28465,6 @@ module.exports =
 	
 	    api.on('updateUserInfo', function (data) {
 	        emitter.send('loading', { type: 'delete', key: 1 });
-	
 	        emitter.send('updateUserInfo', data);
 	        emitter.send('loading', { type: 'delete', key: 2 });
 	    });
