@@ -38,8 +38,8 @@ npm install
 
 ## Apps
 
-### 1. Install dependencies
-### 2. Download and install the packages [Release page](https://github.com/buildog/BarterDEX/releases)
+#### 1. Install dependencies
+#### 2. Download and install the packages [Release page](https://github.com/buildog/BarterDEX/releases)
 
 ## Package release
 
