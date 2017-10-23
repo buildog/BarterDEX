@@ -1,7 +1,7 @@
 const CONSTANTS = {
     loading: {
         0: 'App Initialization',
-        1: 'Login in',
+        1: 'Logging in',
         2: 'Marketmaker Initialization',
         3: 'Porfolio fetch',
         4: 'Coin activation',
