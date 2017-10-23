@@ -39,22 +39,6 @@ npm install
 ## Apps
 
 ### 1. Install dependencies
-
-nanomsg is required, please install it via
-
-```shell
-brew install CMake
-git clone https://github.com/nanomsg/nanomsg.git
-cd nanomsg
-git checkout 5.0.0
-mkdir build
-cd build
-cmake ..
-cmake --build .
-ctest .
-sudo cmake --build . --target install
-```
-
 ### 2. Download and install the packages [Release page](https://github.com/buildog/BarterDEX/releases)
 
 ## Package release
