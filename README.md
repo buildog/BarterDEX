@@ -4,8 +4,6 @@ Let’s decentralize Cryptocurrency Exchanges and secure it with BarterDEX
 
 ## Electron (Node.js)
 
-#### How to install
-
 Before starting make sure you have [Agama wallet](https://github.com/SuperNETorg/Agama) running on your machine, with at least 2 coins activated in native mode.
 
 #### Install dependencies
