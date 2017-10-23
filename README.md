@@ -4,7 +4,7 @@ Let’s decentralize Cryptocurrency Exchanges and secure it with BarterDEX
 
 ## Electron (Node.js)
 
-#### How to install 
+#### How to install
 
 Before starting make sure you have [Agama wallet](https://github.com/SuperNETorg/Agama) running on your machine, with at least 2 coins activated in native mode.
 
@@ -14,7 +14,6 @@ This project require nanomsg, you can install it via Homebrew:
 
 ```shell
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
-and press enter/return key. Wait for the command to finish.
 ```
 
 ```shell
@@ -23,7 +22,6 @@ brew install nanomsg
 
 #### Install barterDEX
 
-barterDEX
 ```shell
 git clone git@github.com:buildog/BarterDEX.git
 cd BarterDEX
