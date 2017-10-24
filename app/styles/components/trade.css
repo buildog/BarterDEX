@@ -1,9 +1,23 @@
 .trade,
 .trade-body {
-    width: 100%;
-    background: #FFF;
+    display: flex;
+    flex-direction: column;
 }
 
+.trade,
+.trade-body {
+    width: 100%;
+    background: #FFF;
+    flex-grow: 1;
+    flex-shrink: 0
+}
+
+.trade-body {
+    position: relative;
+    z-index: 10;
+    transition: all .2s ease;
+    will-change: transform;
+}
 
 .trade-type {
     list-style: none;
@@ -13,18 +27,20 @@
     padding: 0;
     margin: 0;
     color: $color-primary;
-    position: relative;
-    z-index: 1;
     width: 100%;
     z-index: 1000;
     background:$background-jaguar;
 }
 
 .trade-type-item {
-    padding: 10px;
+    padding: 10px 10px 4px 10px;
     flex-grow: 1;
     border-bottom:  1px solid $grey;
+    opacity: .5
 }
+
+.trade-type-item:hover,
+.trade-type-item.current { opacity: 1 }
 
 .trade-type-item.current {
     background: #FFF;
@@ -43,28 +59,28 @@
     border-top-right-radius: 4px;
 }
 
-.trade-type-item.current i svg { fill: $color-dark }
-.trade-type-item.current i svg path { stroke: $color-dark !important }
-
-
-
 .trade-type-item button > div {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     width: 60px;
+    font-weight: 400;
 }
+
+.trade-type-item.current button > div { font-weight: 600 }
 
 
 .trade-type-item i svg {
     width: 60px;
-    height: 20px;
-    fill: $color-primary;
+    height: 30px;
+    fill: $color-dark;
+    transform: scale(1.1);
+    transform-origin: top center
 }
 
 .trade-type-item i svg path {
-    stroke: $color-primary !important;
+    stroke: $color-dark !important;
 }
 
 
@@ -114,21 +130,31 @@
     font-size: 1.2em
 }
 
-.trade-orderbook {
-    flex-grow: 1;
-    flex-shrink: 0;
+.trade-amount {
     position: relative;
-    z-index: 0;
+}
+
+.trade-orderbook {
+    position: absolute;
+    z-index: 100;
+    top: 110px;
+    left: 0;
+    width: 100%;
+    max-height: 100%;
+    background: $color-dark;
+    box-shadow: $box-shadow-inputs;
+    border-radius: 4px;
     overflow: auto;
 }
 
-.trade-orderbook  .rt-tbody {
-    max-height: 300px;
-}
+
 
 .trade-action {
+    flex-grow: 1;
+    position: relative;
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 10px;
@@ -140,6 +166,8 @@
     transition: all .2s ease;
     pointer-events: none;
     will-change: transform;
+    z-index: 1;
+
 }
 
 .trade-action-wrapper {
@@ -147,12 +175,12 @@
     border-radius: 4px;
     overflow: hidden;
     background: #FFF;
+    box-shadow: $box-shadow-inputs;
+
     color: $color-dark;
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
-    box-shadow: $box-shadow-inputs;
 }
 
 .trade-amount {
@@ -163,6 +191,7 @@
 
 .trade-amount input {
     min-width: 100%;
+    padding: 24px 10px;
 }
 
 .trade-action-wrapper button { box-shadow: none !important }
@@ -172,6 +201,7 @@
     flex-direction: column;
 }
 .trade-amount_input {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -189,36 +219,66 @@
     width: 100%
 }
 
+.trade-amount_input-wrapper  { position: relative }
+.trade-amount_input-wrapper code {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    z-index: 1;
+    margin: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color: $color-primary;
+    background: transparent
+}
+
 .trade-amount_input {
     padding: 10px;
 }
 
-.trade-amount label {
+.trade-amount .label {
     display: flex;
     align-items: center;
     width: 100%;
     font-weight: 400;
-    padding: 4px;
+    padding: 10px 4px;
     justify-content: space-between;
+    pointer-events: none;
+
 
 }
 
-.trade-amount label > * {
-    margin-right: 4px;
-
-}
-
-.trade-amount label.trade-rel {
+.trade-amount .label.trade-rel {
     padding: 10px;
     background: $background-jaguar;
 }
 
-.trade-amount label.trade-rel strong { color: $color-dark }
+.trade-rel > * {
+    flex-grow: 1;
+}
+
+.trade-amount .label.trade-rel strong { color: $color-dark }
 
 
-.trade-amount label.trade-rel button {
+.trade-amount .label.trade-rel button {
     background: #FFF;
     box-shadow: $box-shadow-inputs !important;
+    width: 100%;
+}
+
+.trade-amount .label.trade-rel button span {
+    justify-content: flex-start;
+}
+
+.trade-rel > *:first-child button {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
+}
+
+.trade-rel > *:last-child button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0
 }
 
 
@@ -246,6 +306,12 @@
     width: 100%;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+    padding: 30px 20px;
+    font-size: 1em;
+}
+
+.trade-button:hover {
+    transform: none !important
 }
 
 /* contexts */

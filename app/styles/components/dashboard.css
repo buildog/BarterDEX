@@ -33,6 +33,7 @@
     flex-direction: column;
     padding: 0;
     margin: 0;
+    border-radius: 4px;
     overflow: auto;
     background: #FFF;
     max-height: 60vh
@@ -46,6 +47,7 @@
     border-bottom: 1px solid $grey;
     transition: all .2s ease;
     cursor: pointer;
+    will-change: transform;
 }
 
 .dashboard-wallets-list li > a {

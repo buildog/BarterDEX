@@ -7,7 +7,6 @@ import ReactTable from 'react-table'
 import classNames from 'classnames';
 
 import { CoinPicker } from '../';
-import { colors } from '../../../constants';
 
 import * as Icon from 'react-cryptocoins';
 import zoro from '../../static/zoro.svg';
@@ -19,6 +18,7 @@ import send from '../../static/send.svg';
 import receive from '../../static/receive.svg';
 import history from '../../static/history.svg';
 import buy from '../../static/buy.svg';
+import charts from '../../static/charts.svg';
 
 const orderbookColumns = [
     {
@@ -50,6 +50,7 @@ class Trade extends React.Component {
             selected: 0,
             picker: false,
             rate: 0,
+            showOrderbook: false,
             validation: `enter amount to continue`
 
         }
@@ -59,7 +60,9 @@ class Trade extends React.Component {
         const self = this;
         return classNames({
             trade: true,
-            'trade-ratePicked': true
+            'trade-ratePicked': true,
+            'trade-openedOrderbook': this.state.showOrderbook
+
         })
     }
 
@@ -71,7 +74,8 @@ class Trade extends React.Component {
     pickRate = (info) => {
         this.setState({
             selected: info.index,
-            rate: info.original.price
+            rate: info.original.price,
+            showOrderbook: false
         })
     }
 
@@ -88,6 +92,10 @@ class Trade extends React.Component {
         return 0;
     }
 
+    toggleOrderbook = (e) => {
+        this.setState({ showOrderbook: !this.state.showOrderbook });
+        e.stopPropagation()
+    }
 
     resetForm = () => {
         // this.amountRelInput.focus();
@@ -146,55 +154,48 @@ class Trade extends React.Component {
 
     privateIcon = () => (<span className="private-icon" dangerouslySetInnerHTML={{ __html: zoro }} />)
 
-    openPicker = (type) => { this.setState({ picker: type }) }
-    closePicker = () => {
-        this.resetForm();
-        this.setState({ picker: false })
+    togglePicker = (e, type) => {
+        this.setState({ picker: this.state.picker ? false : type });
+        e.stopPropagation();
     }
+    closeSelects = () => { this.setState({ picker: false, showOrderbook: false }) }
 
-    coinPicker = (type) => (<CoinPicker title={type === 'Base' ? 'Select a coin to buy' : 'Select a coin to sell'} type={type} onClose={() => this.closePicker()} />)
+    coinPicker = (type) => (<CoinPicker title={type === 'Base' ? 'Select a coin to buy' : 'Select a coin to sell'} type={type} onClose={() => this.resetForm()} />)
+
+    setMax = (amount) => {
+        this.setState({ amountRel: amount });
+    };
 
     render() {
         // portfolio
         const self = this;
-        const { tradeBase, tradeRel, renderBalance } = this.props.app.portfolio;
-        const { asks } = this.props.app.orderbook;
+        const { tradeBase, tradeRel } = this.props.app.portfolio;
+        const { asks, bids } = this.props.app.orderbook;
+        const orderbook = asks;
 
-        // default colors if not set in constants
-        if (!colors[tradeRel.coin]) {
-            colors[tradeRel.coin] = '#DDD'
-        }
-        if (!colors[tradeBase.coin]) {
-            colors[tradeBase.coin] = '#FFF'
-        }
-
-        const backgroundStyle = {
-            background: `linear-gradient(180grad,${colors[tradeRel.coin]},${colors[tradeBase.coin]})`
-        }
 
         return (
-          <div className={this.getClassState()}>
+          <div className={this.getClassState()} onClick={() => this.closeSelects()}>
 
 
-            { this.state.picker && this.coinPicker(this.state.picker) }
             <section className="trade-body">
 
               <ul className="trade-type">
 
-                <li className="trade-type-item">
+                <li className="trade-type-item current">
                   <button>
                     <div>
-                      <i dangerouslySetInnerHTML={{ __html: sell }} />
-                      <small>Sell</small>
+                      <i dangerouslySetInnerHTML={{ __html: shuffle }} />
+                      <small>Exchange</small>
                     </div>
                   </button>
                 </li>
 
-                <li className="trade-type-item current">
+                <li className="trade-type-item">
                   <button>
                     <div>
-                      <i dangerouslySetInnerHTML={{ __html: buy }} />
-                      <small>Buy</small>
+                      <i dangerouslySetInnerHTML={{ __html: charts }} />
+                      <small>Charts</small>
                     </div>
                   </button>
                 </li>
@@ -225,38 +226,67 @@ class Trade extends React.Component {
 
                   <div className={`trade-amount`}>
 
-                    <label className={`trade-rel ${tradeRel.coin}`}>
-                      <strong>Buy with </strong>
-                      <button onClick={() => self.openPicker('Rel')} className="action small arrow-down">
-                        <span><span className="trade-base-icon">{tradeRel.icon}</span> { tradeRel.name }</span>
-                        <i dangerouslySetInnerHTML={{ __html: arrow }} />
-                      </button>
-                    </label>
+                    <span className={`label trade-rel ${tradeRel.coin}`}>
+                      <div className="select-container">
+                        <button className="action small arrow-down">
+                          <span>Buy with</span>
+                          <i dangerouslySetInnerHTML={{ __html: arrow }} />
+                        </button>
+                      </div>
+
+                      <div className="select-container">
+                        { this.state.picker && this.coinPicker(this.state.picker) }
+
+                        <button onClick={(e) => self.togglePicker(e, 'Rel')} className="action small arrow-down coin-colorized">
+                          <span><span className="trade-base-icon">{tradeRel.icon}</span> { tradeRel.name }</span>
+                          <i dangerouslySetInnerHTML={{ __html: arrow }} />
+                        </button>
+                      </div>
+                    </span>
 
                     <section className="trade-amount_input">
                       <section className="trade-amount_input_price">
-                        <label>
+                        <span className="label">
                           <span>Price</span>
-                          <small>({tradeRel.coin} for 1 { tradeBase.coin })</small>
-                        </label>
-                        <input
-                          name="form-field-name"
-                          type="number"
-                          min="0"
-                          placeholder="0.00"
-                          style={{ fontSize: 18 }}
-                          value={this.state.rate}
-                          onChange={(e) => this.updateRate(e.target.value)}
-                        />
+                          <small><button className="link">Ask</button> <button className="link" onClick={(e) => this.toggleOrderbook(e)}>{ this.state.showOrderbook ? 'Hide' : 'View'} orderbook</button></small>
+                        </span>
+                        <div className="trade-amount_input-wrapper">
+                          <input
+                            name="form-field-name"
+                            type="number"
+                            min="0"
+                            placeholder="0.00"
+                            style={{ fontSize: 18 }}
+                            value={this.state.rate}
+                            onChange={(e) => this.updateRate(e.target.value)}
+                          />
+                        </div>
+
+                        { this.state.showOrderbook && <section className="trade-orderbook">
+                          <ReactTable
+                            className="-striped -highlight"
+                            data={orderbook}
+                            columns={orderbookColumns}
+                            defaultSorted={[{ id: 'price' }]}
+                            noDataText={this.state.orderBookMessage}
+                            showPaginationBottom={false}
+                            style={{ height: '280px' }}
+                            getTrProps={(state, rowInfo) => ({
+                                onClick: e => { self.pickRate(rowInfo) },
+                                className: rowInfo && rowInfo.index === self.state.selected ? 'selected coin-colorized' : ''
+                            })}
+                          /> </section>}
 
                       </section>
                       <section className="trade-amount_input_amount">
-                        <label>
+                        <span className="label">
                           <span>Amount of { tradeRel.coin }</span>
-                          <small><button>max</button></small>
-                        </label>
+                          <small>
+                            { this.state.amountRel !== tradeRel.balance && <button className="link" onClick={() => this.setMax(tradeRel.balance)}>Max</button> }
+                          </small>
+                        </span>
 
-                        <div>
+                        <div className="trade-amount_input-wrapper">
                           <input
                             name="form-field-name"
                             type="number"
@@ -266,16 +296,18 @@ class Trade extends React.Component {
                             value={this.state.amountRel}
                             onChange={(e) => this.updateAmountRel(e.target.value)}
                           />
+                          { this.state.amountRel === tradeRel.balance && <code>MAX</code> }
+
                         </div>
 
                       </section>
                     </section>
 
                     <section className={`${tradeBase.coin}`}>
-                      <button className="trade-button withBorder action primary coin-bg" onClick={() => this.trade()} disabled={this.state.validation}>
+                      <button className="trade-button withBorder action centered primary coin-bg" onClick={() => this.trade()} disabled={this.state.validation}>
                         <span>{ this.state.validation ? this.state.validation :
                         <div className="trade-action-amountRel">
-                          <span>Buy</span>
+                          <span>ORDER</span>
                           <span>{this.state.amountBase}</span>
                           <span>{tradeBase.coin}</span>
                         </div> }
@@ -287,22 +319,6 @@ class Trade extends React.Component {
 
                 </section>
 
-              </section>
-
-
-              <section className={`trade-orderbook ${tradeRel.coin}`}>
-                <ReactTable
-                  className="-striped -highlight"
-                  data={asks}
-                  columns={orderbookColumns}
-                  defaultSorted={[{ id: 'price' }]}
-                  noDataText={this.state.orderBookMessage}
-                  showPaginationBottom={false}
-                  getTrProps={(state, rowInfo) => ({
-                      onClick: e => { self.pickRate(rowInfo) },
-                      className: rowInfo && rowInfo.index === self.state.selected ? 'selected coin-colorized' : ''
-                  })}
-                />
               </section>
 
             </section>

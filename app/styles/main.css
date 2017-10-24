@@ -74,7 +74,7 @@ body {
     width: 100%;
     pointer-events: all;
     border-radius: 4px;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .app.content-container .app-view > *:not(.notifier) {

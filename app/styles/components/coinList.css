@@ -20,8 +20,6 @@
     border-bottom: 1px solid $grey
 }
 
-
-
 .coinList .coinList-coin:hover .coinList-wrapper {
     background: $blue;
     color: #FFF;

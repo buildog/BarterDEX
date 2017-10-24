@@ -37,7 +37,7 @@ class Login extends React.Component {
                 />
                 <button
                   disabled={this.state.passphrase.length === 0}
-                  className="login-button withBorder action primary"
+                  className="login-button withBorder action centered primary"
                   onClick={() => this.login()}
                 >
                   <span>Login</span>

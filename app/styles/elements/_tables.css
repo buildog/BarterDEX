@@ -30,7 +30,9 @@
 }
 
 .ReactTable .rt-tbody .rt-td {
-    padding: 10px
+    padding: 10px;
+    text-align: center;
+
 }
 
 .ReactTable.-striped .rt-tr.-odd {

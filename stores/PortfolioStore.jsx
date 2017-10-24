@@ -85,7 +85,6 @@ export default class PortfolioStore {
     }
 
     @action prepareCoinsList = (coins) => {
-        console.log(coins);
         const withIcons = addIcons(coins);
         const byIcon = withIcons.slice(0);
         byIcon.sort((a, b) => a.hasSVGIcon ? 0 : 1);
@@ -111,7 +110,7 @@ export default class PortfolioStore {
     // trade methods check if coin is activated
     @action setTrade = (coin, type) => {
         const self = this;
-        console.log(coin.coin);
+
         // check if inside the portfolio, if not wait for backend event after activated
         if (!self.getPortfolioCoin(coin.coin)) {
             return self.enableCoin(coin.coin, type);
@@ -136,7 +135,11 @@ export default class PortfolioStore {
     @action renderBalance = (short) => {
         const opts = { format: '%v %c', code: short, maxFraction: 8 };
         const coin = this.getPortfolioCoin(short);
-        // return formatCurrency(coin.balance, opts)
+        if (coin) {
+            return formatCurrency(coin.balance, opts)
+        }
+
+        return 0;
     }
 
     portfolioRenderBTC = (short) => {

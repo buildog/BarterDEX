@@ -42,9 +42,6 @@
     align-items: flex-start;
     justify-content: flex-start;
 }
-.component-header-withBack h2 {
-    padding-left: 20px;
-}
 
 .component-header-centered h2 {
     flex-grow: 1;

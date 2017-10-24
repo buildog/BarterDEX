@@ -2,12 +2,24 @@ import React from 'react'
 import { inject, observer } from 'mobx-react'
 import { Link } from 'react-router';
 import { Trade, Modal, CoinPicker } from '../';
+import classNames from 'classnames';
+
 import arrow from '../../static/arrow.svg';
 import circles from '../../static/circles.svg';
 
 @inject('app')
 @observer
 class Wallet extends React.Component {
+
+    getClassState = () => {
+        const self = this;
+        const { tradeBase, tradeRel } = this.props.app.portfolio;
+
+        return classNames({
+            wallet: true,
+            'wallet-ready': tradeBase && tradeRel
+        })
+    }
 
     renderTrade = () => {
         const { tradeBase, tradeRel } = this.props.app.portfolio;
@@ -41,15 +53,16 @@ class Wallet extends React.Component {
         /* activate the coins */
 
         return (
-          <section className={`wallet`}>
-            <header className={`wallet-wallets-header component-header component-header-withBack ${coin.coin}`}>
+          <section className={this.getClassState()}>
+            <header className={`wallet-wallets-header component-header component-header-centered component-header-withBack ${coin.coin}`}>
               <Link className="wallet-wallets-header-back action primary right dark" to="/">
                 <i className="wallet-wallets-list-item_action" dangerouslySetInnerHTML={{ __html: arrow }} />
+                <span className="wallet-wallets-header-back-helper">Back</span>
               </Link>
               <h2>
                 <div className="wallet-icon coin-colorized">{ coin.icon }</div>
                 <div className="wallet-coinName coin-colorized">{coin.name}</div>
-                <div className="wallet-balance">{ coin.balance } {coin.coin}</div>
+                <div className="wallet-balance">{ renderBalance(coin.coin) }</div>
               </h2>
             </header>
 
