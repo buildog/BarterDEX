@@ -136,3 +136,12 @@
     fill: #FFF;
     transform: translateX(10px) scale(1.1)
 }
+
+.dashboard-empty {
+    padding: 20px;
+    background: #FFF
+}
+
+.dashboard-empty h3 {
+    text-align: center;
+}

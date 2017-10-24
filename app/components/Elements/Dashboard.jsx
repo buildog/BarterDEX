@@ -20,17 +20,17 @@ class Dashboard extends React.Component {
             <header className="dashboard-wallets-header component-header">
               <h2>
 
-                  { installedCoins.filter((coin) => coin.KMDvalue > 0).length > 0 && <ResponsiveContainer className="dashboard-balances-pie">
-                    <PieChart>
-                      <Pie
-                        data={installedCoins}
-                        dataKey="KMDvalue"
-                        startAngle={180}
-                        endAngle={0}
-                      >
-                        {installedCoins.map((coin) => <Cell key={coin.coin} stroke="transparent" fill={colors[coin.coin]} />)}
-                      </Pie>
-                    </PieChart>
+                { installedCoins.filter((coin) => coin.KMDvalue > 0).length > 0 && <ResponsiveContainer className="dashboard-balances-pie">
+                  <PieChart>
+                    <Pie
+                      data={installedCoins}
+                      dataKey="KMDvalue"
+                      startAngle={180}
+                      endAngle={0}
+                    >
+                      {installedCoins.map((coin) => <Cell key={coin.coin} stroke="transparent" fill={colors[coin.coin]} />)}
+                    </Pie>
+                  </PieChart>
                   </ResponsiveContainer>
                 }
                 <div>Portfolio</div>
@@ -60,18 +60,33 @@ class Dashboard extends React.Component {
         )
     }
 
-    renderNotice = () => {
-        const { installedCoins } = this.props.app.portfolio;
-        const { updateErrors } = this.props.app.notifier;
-        updateErrors({ error: 1, desc: 'you must have at least 2 coin wallet running in order to trade them on BarterDEX' });
-    }
+    noticeNoCoin = () =>
+        // const { installedCoins } = this.props.app.portfolio;
+        // const { updateErrors } = this.props.app.notifier;
+        // updateErrors({ error: 1, desc: 'you must have at least 2 coin wallet running in order to trade them on BarterDEX' });
+         (<div className="dashboard-empty">
+           <h3>No coin detected</h3>
+           <p>We didn't detected any coin wallet running on your machine. Run a coin wallet or add electrum coin.</p>
+         </div>)
+
+    noticeSingle = () =>
+             // const { installedCoins } = this.props.app.portfolio;
+             // const { updateErrors } = this.props.app.notifier;
+             // updateErrors({ error: 1, desc: 'you must have at least 2 coin wallet running in order to trade them on BarterDEX' });
+              (<div className="dashboard-empty">
+                <h3>Only one coin detected</h3>
+                <p>In order to trade coins, BarterDEX require at least two coin. Run a coin wallet or add electrum coin.</p>
+              </div>)
+
 
     render() {
         const { installedCoins } = this.props.app.portfolio;
 
         return (
           <section className="dashboard">
-            { installedCoins.length > 1 ? this.renderDashboard() : this.renderNotice() }
+            { this.renderDashboard() }
+            { installedCoins.length === 0 && this.noticeNoCoin() }
+            { installedCoins.length === 1 && this.noticeSingle() }
           </section>
         )
     }

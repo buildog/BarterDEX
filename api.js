@@ -273,7 +273,12 @@ class Emitter extends EventEmitter {
         const url = 'http://127.0.0.1:7783';
         this.apiRequest({ data, url }).then((result) => {
             // body.portfolio.map((item) => item.balance = self.balance({ coin: item.coin, address: item.address }))
-            self.emit('setPortfolio', { portfolio: result.portfolio });
+
+            self.getCoins().then((coinsList) => {
+                self.emit('coinsList', coinsList)
+                self.emit('setPortfolio', { portfolio: result.portfolio });
+            })
+
             cb && cb();
         }).catch((error) => {
             self.emit('notifier', { error: 4, desc: marketmakerBin })

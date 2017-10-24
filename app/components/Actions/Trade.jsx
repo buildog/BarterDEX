@@ -69,7 +69,6 @@ class Trade extends React.Component {
     }
 
     pickRate = (info) => {
-        console.log(info);
         this.setState({
             selected: info.index,
             rate: info.original.price

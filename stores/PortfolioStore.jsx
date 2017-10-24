@@ -85,6 +85,7 @@ export default class PortfolioStore {
     }
 
     @action prepareCoinsList = (coins) => {
+        console.log(coins);
         const withIcons = addIcons(coins);
         const byIcon = withIcons.slice(0);
         byIcon.sort((a, b) => a.hasSVGIcon ? 0 : 1);
@@ -94,11 +95,6 @@ export default class PortfolioStore {
 
     @action setPortfolio = (portfolio) => {
         const self = this;
-
-        if (!self.autorefresh) {
-            self.autorefresh = setInterval(() => self.refresh(), 6000)
-        }
-
         this.portfolio = addIcons(portfolio)
     }
 

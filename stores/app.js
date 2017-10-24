@@ -30,6 +30,8 @@ export default class AppStore {
             self.coins = coins;
             self.userpass = userpass;
             self.mypubkey = mypubkey;
+            // start autorefresh of portfolio
+            self.portfolio.autorefresh = setInterval(() => self.portfolio.refresh(), 6000)
         });
 
         ipcRenderer.on('resetUserInfo', () => {
