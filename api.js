@@ -199,6 +199,13 @@ class Emitter extends EventEmitter {
         self.emit('loginCallback', { type: 'success' });
     }
 
+    marketSync() {
+        const self = this;
+        request('http://coincap.io/front', (error, response, body) => {
+            self.emit('marketUpdate', { data: JSON.parse(body) });
+        });
+    }
+
     checkMMStatus() {
         const self = this;
         portscanner.checkPortStatus(7783, '127.0.0.1', (error, status) => {

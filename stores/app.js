@@ -4,6 +4,7 @@ import LoaderStore from './LoaderStore';
 import NotifierStore from './NotifierStore';
 import PortfolioStore from './PortfolioStore'
 import OrderbookStore from './OrderbookStore'
+import MarketStore from './MarketStore'
 
 const shepherdIPC = (data) => { ipcRenderer.send('shepherd-command', data) }
 
@@ -18,11 +19,13 @@ export default class AppStore {
         this.notifier = new NotifierStore();
         this.loader = new LoaderStore();
         this.orderbook = new OrderbookStore();
+        this.market = new MarketStore();
 
         this.portfolio = new PortfolioStore({
             defaultFiat: { type: 'usd', symbol: '$' },
             defaultCrypto: 'KMD',
-            orderbookStore: this.orderbook
+            orderbookStore: this.orderbook,
+            marketStore: this.market
         });
 
         /* set userpass */
