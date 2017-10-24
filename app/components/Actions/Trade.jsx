@@ -74,9 +74,10 @@ class Trade extends React.Component {
     pickRate = (info) => {
         this.setState({
             selected: info.index,
-            rate: info.original.price,
             showOrderbook: false
         })
+
+        this.updateRate(info.original.price)
     }
 
     togglePrivate = () => {
@@ -106,15 +107,13 @@ class Trade extends React.Component {
 
 
     componentWillReact = () => {
-        const { trade, tradeRel, tradeBase } = this.props.app.portfolio;
-        const amountRel = this.state.amountRel;
+        const { tradeRel, tradeBase } = this.props.app.portfolio;
 
         if (this.state.rate === 0) {
             this.setState({ rate: this.getRate() });
         }
 
         this.setState({ orderBookMessage: `Fetching ${tradeBase.coin}/${tradeRel.coin} orderbook` });
-        this.updateAmountBase(amountRel);
     }
 
     trade = () => {
@@ -128,28 +127,38 @@ class Trade extends React.Component {
             relvolume: this.state.amountRel
         })
 
-        resetForm();
+        this.resetForm();
     }
 
+    validation = ({ amountRel, rate }) => {
+        let validation = false;
+        const { tradeRel } = this.props.app.portfolio;
+
+
+        const amount = amountRel != null ? amountRel : this.state.amountRel;
+        const price = rate != null ? rate : this.state.rate;
+
+        if (!price) {
+            validation = `enter a price`;
+        } else if (tradeRel.balance < amount) {
+            validation = (<div className="validation"><span>not enough {tradeRel.coin}</span><small>(max {tradeRel.balance})</small></div>);
+        } else if (!amount) {
+            validation = `enter buy ${tradeRel.coin} amount`;
+        }
+
+        this.setState({ validation, amountBase: amount / price });
+    }
 
     updateRate = (rate) => {
-        this.setState({ rate, selected: false })
+        const parsed = Number(rate);
+        this.setState({ rate: parsed, selected: false });
+        this.validation({ rate: parsed });
     }
 
     updateAmountRel = (amountRel) => {
-        const { tradeRel } = this.props.app.portfolio;
-        let validation = false;
-
-        if (tradeRel.balance < amountRel) {
-            validation = (<div className="validation"><span>not enough {tradeRel.coin}</span><small>(max {tradeRel.balance})</small></div>);
-        } else if (amountRel === '0' || amountRel === '') {
-            validation = `enter buy ${tradeRel.coin} amount`;
-        }
-        this.setState({ validation, amountRel, amountBase: amountRel / this.state.rate })
-    }
-
-    updateAmountBase = (amountRel) => {
-        this.setState({ amountBase: amountRel / this.state.rate })
+        const parsed = Number(amountRel);
+        this.setState({ amountRel: parsed });
+        this.validation({ amountRel: parsed });
     }
 
     privateIcon = () => (<span className="private-icon" dangerouslySetInnerHTML={{ __html: zoro }} />)
@@ -161,10 +170,6 @@ class Trade extends React.Component {
     closeSelects = () => { this.setState({ picker: false, showOrderbook: false }) }
 
     coinPicker = (type) => (<CoinPicker title={type === 'Base' ? 'Select a coin to buy' : 'Select a coin to sell'} type={type} onClose={() => this.resetForm()} />)
-
-    setMax = (amount) => {
-        this.setState({ amountRel: amount });
-    };
 
     render() {
         // portfolio
@@ -252,7 +257,7 @@ class Trade extends React.Component {
                         </span>
                         <div className="trade-amount_input-wrapper">
                           <input
-                            name="form-field-name"
+                            name="form-price"
                             type="number"
                             min="0"
                             placeholder="0.00"
@@ -282,13 +287,13 @@ class Trade extends React.Component {
                         <span className="label">
                           <span>Amount of { tradeRel.coin }</span>
                           <small>
-                            { this.state.amountRel !== tradeRel.balance && <button className="link" onClick={() => this.setMax(tradeRel.balance)}>Max</button> }
+                            { this.state.amountRel !== tradeRel.balance && <button className="link" onClick={() => this.updateAmountRel(tradeRel.balance)}>Max</button> }
                           </small>
                         </span>
 
                         <div className="trade-amount_input-wrapper">
                           <input
-                            name="form-field-name"
+                            name="form-amount"
                             type="number"
                             min="0"
                             placeholder="0.00"
