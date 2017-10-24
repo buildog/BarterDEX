@@ -1,23 +1,21 @@
 .component-header {
     display: flex;
     position: relative;
-    min-height: 18vh;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 20px 0px 30px;
+    padding: 20px 20px 20px 30px;
     background: $background-jaguar;
     color: $color-dark;
     width: 100%
 }
-
 
 .wallet-wallets-header-back {
     display: flex;
     align-items: center;
     margin-right: 20px;
     position: absolute;
-    top: 20px;
-    left: 10px;
+    top: 22px;
+    left: 0px;
 }
 
 .wallet-wallets-header-back i,
@@ -37,6 +35,15 @@
     padding: 0;
     font-size: 1.6em;
     font-weight: 600
+}
+
+.component-header-withBack {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.component-header-withBack h2 {
+    padding-left: 20px;
 }
 
 .component-header-centered h2 {

@@ -42,10 +42,9 @@ class Restricted extends React.Component {
           <content className={this.getClassState()}>
             <Header />
             <section className="app-view">
+              { this.privateRoute() }
               { hasLoading === 0 ? '' : <MainLoader /> }
               <Notifier />
-              { this.privateRoute() }
-
             </section>
             <Footer />
           </content>

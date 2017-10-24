@@ -35,21 +35,20 @@ class Wallet extends React.Component {
 
     render() {
         const coinCode = this.props.params.coin;
-        const { getCoin, tradeBase, tradeRel } = this.props.app.portfolio;
+        const { getCoin, tradeBase, tradeRel, renderBalance, portfolioRenderBTC } = this.props.app.portfolio;
         const coin = getCoin(coinCode);
 
         /* activate the coins */
 
         return (
           <section className={`wallet`}>
-            <header className={`wallet-wallets-header component-header component-header-centered ${coin.coin}`}>
+            <header className={`wallet-wallets-header component-header component-header-withBack ${coin.coin}`}>
               <Link className="wallet-wallets-header-back action primary right dark" to="/">
                 <i className="wallet-wallets-list-item_action" dangerouslySetInnerHTML={{ __html: arrow }} />
-                <span>back</span>
               </Link>
               <h2>
                 <div className="wallet-icon coin-colorized">{ coin.icon }</div>
-                <div className="wallet-coinName">{coin.name}</div>
+                <div className="wallet-coinName coin-colorized">{coin.name}</div>
                 <div className="wallet-balance">{ coin.balance } {coin.coin}</div>
               </h2>
             </header>

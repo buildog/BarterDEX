@@ -9009,7 +9009,6 @@ module.exports =
 	                    mainWindow = new _electron.BrowserWindow({
 	                        width: 400,
 	                        height: 720,
-	                        resizable: false,
 	                        show: false,
 	                        backgroundColor: '#959CAE'
 	                    });
@@ -9355,11 +9354,14 @@ module.exports =
 	                                console.log(err); // => null
 	                            }
 	                        });
-	                    } else {
+	                    } else if (!data.retry) {
 	                        console.log('port 7783 marketmaker is already in use, restarting markertmaker');
+	                        data.retry = true;
 	                        _this2.killMarketmaker(true).then(function () {
 	                            return _this2.startMarketMaker(data);
 	                        });
+	                    } else {
+	                        self.emit('notifier', { error: 1 });
 	                    }
 	                });
 	            } catch (e) {
@@ -9383,7 +9385,10 @@ module.exports =
 	                // maxBuffer: 1024 * 10000 // 10 mb
 	            }, function (error, stdout, stderr) {
 	                console.log('stdout: ' + stdout);
-	                console.log('stderr: ' + stderr);
+	                if (stderr.length) {
+	                    console.log('stderr: ' + stderr);
+	                    self.emit('notifier', { error: 9, desc: stderr });
+	                }
 	                console.log('exed');
 	            });
 	
@@ -9395,6 +9400,7 @@ module.exports =
 	            var self = this;
 	            _portscanner2.default.checkPortStatus(7783, '127.0.0.1', function (error, status) {
 	                self.emit('MMStatus', status);
+	                console.log(status);
 	            });
 	        }
 	    }, {

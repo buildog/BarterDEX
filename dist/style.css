@@ -558,6 +558,8 @@ code {
 
 /* crypto colors*/
 
+.coin-colorized { color: #4C84FF !important; }
+
 .ADC .coin-colorized { color: #3CB0E5!important; }
 
 .AEON .coin-colorized { color: #164450!important; }
@@ -2215,22 +2217,26 @@ input, [contenteditable=true], select, textarea {
     /* Ensure focus on inputs doesn't allow app dragging */
     -webkit-app-region: no-drag;
     border-radius: 4px;
+    border: 1px solid transparent;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+
 }
 
 input {
-    border: 0;
     height: 34px;
     padding: 2px 4px;
     width: auto;
 }
 
-input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-input[type="number"] {
-    -moz-appearance: textfield;
+input:focus, textarea:focus {
+    border: 1px solid #2188ff;
+    -webkit-box-shadow: inset 0 1px 2px rgba(27, 31, 35, .075), 0 0 0 0.2em rgba(3, 102, 214, .3);
+            box-shadow: inset 0 1px 2px rgba(27, 31, 35, .075), 0 0 0 0.2em rgba(3, 102, 214, .3);
 }
 
 [contenteditable=true] { max-width: 100% }
@@ -2349,7 +2355,6 @@ button.withBorder {
 .action > i svg {
     width: 20px;
     height: 20px;
-    fill: #FFF
 }
 
 .action:hover {
@@ -2366,6 +2371,8 @@ button.withBorder {
     -webkit-box-shadow: 0 6px 20px rgba(0, 0, 0, .14);
             box-shadow: 0 6px 20px rgba(0, 0, 0, .14);
 }
+
+.action:hover > i svg { fill: #FFF }
 
 /* primary */
 
@@ -2387,7 +2394,6 @@ button.withBorder {
 .action.dark {
     background-color: transparent;
     color: #04050A;
-    opacity: .4;
     -webkit-box-shadow: none;
             box-shadow: none
 }
@@ -2399,6 +2405,8 @@ button.withBorder {
 .action.dark > i {
     background: #04050A;
 }
+
+.action.dark > i svg { fill: #FFF }
 
 /* right */
 
@@ -2867,15 +2875,15 @@ video { min-height: 100vh }
 
 .ReactTable {
     border: 0;
-    background: #F4F5F9;
-    color: #04050A;
+    background: #04050A;
+    color: #FFF;
     width: 100%;
 }
 
 .rt-thead  {
-    background: #FFF;
+    background: #000;
     font-weight: 400;
-    color: #04050A;
+    color: #FFF;
 }
 
 .ReactTable .rt-thead .rt-th {
@@ -2893,7 +2901,6 @@ video { min-height: 100vh }
 }
 
 .ReactTable .-pagination {
-    background: #FFF;
     -webkit-box-shadow: none;
             box-shadow: none
 }
@@ -2910,11 +2917,11 @@ video { min-height: 100vh }
 }
 
 .ReactTable.-striped .rt-tr.-odd {
-    background: rgba(0, 0, 0, .02);
+    background: rgba(256, 256, 256, .05);
 }
 
 .ReactTable.-striped .rt-tr.selected {
-
+    color: #4C84FF;
 }
 
 .ReactTable .rt-thead .rt-th.-sort-asc:before, .ReactTable .rt-thead .rt-td.-sort-asc:before{
@@ -2951,14 +2958,13 @@ video { min-height: 100vh }
     display: -ms-flexbox;
     display: flex;
     position: relative;
-    min-height: 18vh;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
             justify-content: space-between;
-    padding: 20px 20px 0px 30px;
+    padding: 20px 20px 20px 30px;
     background: #F4F5F9;
     color: #04050A;
     width: 100%
@@ -2974,7 +2980,7 @@ video { min-height: 100vh }
     margin-right: 20px;
     position: absolute;
     top: 20px;
-    left: 10px;
+    left: 0px;
 }
 
 .wallet-wallets-header-back i, .wallet-wallets-header-back i svg {
@@ -2999,6 +3005,23 @@ video { min-height: 100vh }
     padding: 0;
     font-size: 1.6em;
     font-weight: 600
+}
+
+.component-header-withBack {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+}
+
+.component-header-withBack h2 {
+    padding-left: 20px;
 }
 
 .component-header-centered h2 {
@@ -3224,15 +3247,55 @@ video { min-height: 100vh }
     width: 100%
 }
 
-.trade > h2 {
-    font-size: 1em;
-    font-weight: 400;
-    color: #4C84FF;
+.trade-type {
+    list-style: none;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 0;
     margin: 0;
-    padding: 10px 10px 0px 10px;
+    color: #4C84FF;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #FFF;
+    z-index: 1000;
+}
+
+.trade-type li {
+    padding: 20px;
+}
+
+.trade-base {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+.trade-base > * {
+    margin-right: 4px;
+}
+
+.trade-base, .trade-base-wrapper, .trade-base-wrapper button {
+    width: 100%;
 }
 
 .trade-base button {
+    padding: 10px !important;
+    font-size: 1em;
     -webkit-box-shadow: 0 6px 20px rgba(0, 0, 0, .14) !important;
             box-shadow: 0 6px 20px rgba(0, 0, 0, .14) !important;
 }
@@ -3247,7 +3310,6 @@ video { min-height: 100vh }
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    padding: 10px 10px 20px 10px;
     background: #FFF;
 }
 
@@ -3287,7 +3349,8 @@ video { min-height: 100vh }
     -ms-flex-negative: 0;
         flex-shrink: 0;
     position: relative;
-    z-index: 0
+    z-index: 0;
+    overflow: auto;
 }
 
 .trade-orderbook  .rt-tbody {
@@ -3305,8 +3368,8 @@ video { min-height: 100vh }
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    position: absolute;
-    bottom: 20px;
+    padding: 10px;
+    bottom: 0px;
     left: 0;
     z-index: 100;
     -webkit-transform: translateY(10px);
@@ -3319,23 +3382,24 @@ video { min-height: 100vh }
 }
 
 .trade-action-wrapper {
-    min-width: 80%;
-    padding: 10px;
+    min-width: 100%;
     border-radius: 4px;
+    overflow: hidden;
     background: #FFF;
+    color: #04050A;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
     -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
                        0 0 0 1px rgba(0, 0, 0, .1),
                        0 12px 24px 0 rgba(31, 31, 31, .05);
@@ -3345,7 +3409,18 @@ video { min-height: 100vh }
 }
 
 .trade-amount {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
     width: 100%;
+}
+
+.trade-amount input {
+    min-width: 100%;
 }
 
 .trade-action-wrapper button { -webkit-box-shadow: none !important; box-shadow: none !important }
@@ -3364,17 +3439,67 @@ video { min-height: 100vh }
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    font-weight: bold;
     width: 100%;
 }
 
-.trade-amount_input input { color: #04050A }
+.trade-amount_input > * {
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+}
+
+.trade-amount_input > * > * {
+    width: 100%
+}
+
+.trade-amount_input {
+    padding: 10px;
+}
+
+.trade-amount label {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 100%;
+    font-weight: 400;
+}
+
+.trade-amount label > * {
+    margin-right: 4px;
+}
+
+.trade-amount label.trade-rel {
+    padding: 10px;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    background: #F4F5F9;
+}
+
+.trade-amount label.trade-rel strong { color: #04050A }
+
+.trade-amount label.trade-rel button {
+    background: #FFF;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05) !important;
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05) !important;
+}
 
 .trade-action-amountRel { display: -webkit-box; display: -ms-flexbox; display: flex }
 
@@ -3382,8 +3507,20 @@ video { min-height: 100vh }
 
 .trade-amount_input_rate {
     position: relative;
-    color: #777F8A;
-    top: -10px
+}
+
+.trade-amount_input > *, .trade-amount_input_rate > * {
+    width: 100%;
+}
+
+.trade-amount_input > * {
+    margin-bottom: 10px;
+}
+
+.trade-button {
+    width: 100%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
 /* contexts */
@@ -3432,19 +3569,6 @@ video { min-height: 100vh }
     width: 320px;
     height: 180px;
     resize: none;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
-                       0 0 0 1px rgba(0, 0, 0, .1),
-                       0 12px 24px 0 rgba(31, 31, 31, .05);
-            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
-                       0 0 0 1px rgba(0, 0, 0, .1),
-                       0 12px 24px 0 rgba(31, 31, 31, .05);
-    border: 1px solid transparent;
-}
-
-.login textarea:focus {
-    border: 1px solid #2188ff;
-    -webkit-box-shadow: inset 0 1px 2px rgba(27, 31, 35, .075), 0 0 0 0.2em rgba(3, 102, 214, .3);
-            box-shadow: inset 0 1px 2px rgba(27, 31, 35, .075), 0 0 0 0.2em rgba(3, 102, 214, .3);
 }
 
 .Placeholder {
@@ -3621,17 +3745,19 @@ video { min-height: 100vh }
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
-    -webkit-box-align: start;
-        -ms-flex-align: start;
-            align-items: flex-start;
+    height: 100vh;
     background: #F4F5F9;
 }
-
-.wallet .component-header { background: #FFF }
 
 .wallet-icon {
     width: 120px;
@@ -3639,12 +3765,12 @@ video { min-height: 100vh }
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    right: 20px;
+    top: 20px;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    position: absolute;
 }
 
 .wallet-icon > * {
@@ -3668,7 +3794,13 @@ video { min-height: 100vh }
 
 .wallet-wallets-header {
     -ms-flex-negative: 0;
-        flex-shrink: 0
+        flex-shrink: 0;
+    padding-bottom: 20px;
+    padding-top: 30px;
+}
+
+.wallet-balance, .wallet-coinName {
+    color: #04050A;
 }
 
 .wallet-balance {
@@ -3684,6 +3816,8 @@ video { min-height: 100vh }
     -webkit-box-flex: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
@@ -3695,7 +3829,6 @@ video { min-height: 100vh }
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    padding-bottom: 20px;
 
 }
 

@@ -14,6 +14,11 @@ import zoro from '../../static/zoro.svg';
 import invert from '../../static/invert.svg';
 import shuffle from '../../static/shuffle.svg';
 import arrow from '../../static/arrow.svg';
+import sell from '../../static/sell.svg';
+import send from '../../static/send.svg';
+import receive from '../../static/receive.svg';
+import history from '../../static/history.svg';
+import buy from '../../static/buy.svg';
 
 const orderbookColumns = [
     {
@@ -54,7 +59,7 @@ class Trade extends React.Component {
         const self = this;
         return classNames({
             trade: true,
-            'trade-ratePicked': self.state.rate > 0
+            'trade-ratePicked': true
         })
     }
 
@@ -94,7 +99,6 @@ class Trade extends React.Component {
 
 
     componentWillReact = () => {
-
         const { trade, tradeRel, tradeBase } = this.props.app.portfolio;
         const amountRel = this.state.amountRel;
 
@@ -113,13 +117,17 @@ class Trade extends React.Component {
             method: 'buy',
             base: tradeBase.coin,
             rel: tradeRel.coin,
-            price: this.state.rate ,
+            price: this.state.rate,
             relvolume: this.state.amountRel
         })
 
         resetForm();
     }
 
+
+    updateRate = (rate) => {
+        this.setState({ rate, selected: false })
+    }
 
     updateAmountRel = (amountRel) => {
         const { tradeRel } = this.props.app.portfolio;
@@ -130,7 +138,7 @@ class Trade extends React.Component {
         } else if (amountRel === '0' || amountRel === '') {
             validation = `enter buy ${tradeRel.coin} amount`;
         }
-        this.setState({ validation, amountRel, amountBase: amountRel / this.state.rate  })
+        this.setState({ validation, amountRel, amountBase: amountRel / this.state.rate })
     }
 
     updateAmountBase = (amountRel) => {
@@ -172,14 +180,116 @@ class Trade extends React.Component {
             { this.state.picker && this.coinPicker(this.state.picker) }
             <section className="trade-body">
 
-              <section className={`trade-base ${tradeRel.coin}`}>
-                <section className="trade-base-wrapper">
-                  <button onClick={() => self.openPicker('Rel')} className="action primary small arrow-down coin-bg">
-                    <span><span className="trade-base-icon">{tradeRel.icon}</span> { tradeRel.name } orderbook</span>
-                    <i dangerouslySetInnerHTML={{ __html: arrow }} />
+              <ul className="trade-type">
+
+                <li className="trade-type-item">
+                  <button>
+                    <div>
+                      <i dangerouslySetInnerHTML={{ __html: sell }} />
+                      <small>Sell</small>
+                    </div>
                   </button>
+                </li>
+
+                <li className="trade-type-item current">
+                  <button>
+                    <div>
+                      <i dangerouslySetInnerHTML={{ __html: buy }} />
+                      <small>Buy</small>
+                    </div>
+                  </button>
+                </li>
+
+                <li className="trade-type-item">
+                  <button>
+                    <div>
+                      <i dangerouslySetInnerHTML={{ __html: history }} />
+                      <small>History</small>
+                    </div>
+                  </button>
+                </li>
+
+                <li className="trade-type-item">
+                  <button>
+                    <div>
+                      <i dangerouslySetInnerHTML={{ __html: receive }} />
+                      <small>Wallet</small>
+                    </div>
+                  </button>
+                </li>
+
+
+              </ul>
+
+              <section className={`trade-action`}>
+                <section className="trade-action-wrapper">
+
+                  <div className={`trade-amount`}>
+
+                    <label className={`trade-rel ${tradeRel.coin}`}>
+                      <strong>Buy with </strong>
+                      <button onClick={() => self.openPicker('Rel')} className="action small arrow-down">
+                        <span><span className="trade-base-icon">{tradeRel.icon}</span> { tradeRel.name }</span>
+                        <i dangerouslySetInnerHTML={{ __html: arrow }} />
+                      </button>
+                    </label>
+
+                    <section className="trade-amount_input">
+                      <section className="trade-amount_input_price">
+                        <label>
+                          <span>Price</span>
+                          <small>({tradeRel.coin} for 1 { tradeBase.coin })</small>
+                        </label>
+                        <input
+                          name="form-field-name"
+                          type="number"
+                          min="0"
+                          placeholder="0.00"
+                          style={{ fontSize: 18 }}
+                          value={this.state.rate}
+                          onChange={(e) => this.updateRate(e.target.value)}
+                        />
+
+                      </section>
+                      <section className="trade-amount_input_amount">
+                        <label>
+                          <span>Amount of { tradeRel.coin }</span>
+                          <small><button>max</button></small>
+                        </label>
+
+                        <div>
+                          <input
+                            name="form-field-name"
+                            type="number"
+                            min="0"
+                            placeholder="0.00"
+                            style={{ fontSize: 18 }}
+                            value={this.state.amountRel}
+                            onChange={(e) => this.updateAmountRel(e.target.value)}
+                          />
+                        </div>
+
+                      </section>
+                    </section>
+
+                    <section className={`${tradeBase.coin}`}>
+                      <button className="trade-button withBorder action primary coin-bg" onClick={() => this.trade()} disabled={this.state.validation}>
+                        <span>{ this.state.validation ? this.state.validation :
+                        <div className="trade-action-amountRel">
+                          <span>Buy</span>
+                          <span>{this.state.amountBase}</span>
+                          <span>{tradeBase.coin}</span>
+                        </div> }
+                        </span>
+                        <i dangerouslySetInnerHTML={{ __html: shuffle }} />
+                      </button>
+                    </section>
+                  </div>
+
                 </section>
+
               </section>
+
 
               <section className={`trade-orderbook ${tradeRel.coin}`}>
                 <ReactTable
@@ -194,44 +304,6 @@ class Trade extends React.Component {
                       className: rowInfo && rowInfo.index === self.state.selected ? 'selected coin-colorized' : ''
                   })}
                 />
-              </section>
-              <section className="trade-amounts" />
-
-              <section className={`trade-action`}>
-                <section className="trade-action-wrapper">
-                  <div className={`trade-amount ${tradeRel.coin}`}>
-                    <section className="trade-amount_input coin-colorized">
-                      <label>Sell</label>
-                      <AutosizeInput
-                        name="form-field-name"
-                        type="number"
-                        min="0"
-                        placeholder="0.00"
-                        style={{ fontSize: 18 }}
-                        value={this.state.amountRel}
-                        onChange={(e) => this.updateAmountRel(e.target.value)}
-                      />
-                      <span>{ tradeRel.coin }</span>
-                    </section>
-                    <small className="trade-amount_input_rate">
-                        (@ 1 {tradeBase.coin} = { this.state.rate } {tradeRel.coin})
-                    </small>
-                  </div>
-
-                  <section className={`${tradeBase.coin}`}>
-                    <button className="withBorder action primary coin-bg" onClick={() => this.trade()} disabled={this.state.validation}>
-                      <span>{ this.state.validation ? this.state.validation :
-                      <div className="trade-action-amountRel">
-                        <span>{this.state.amountBase}</span>
-                        <span>{tradeBase.coin}</span>
-                      </div> }
-                      </span>
-                      <i dangerouslySetInnerHTML={{ __html: shuffle }} />
-                    </button>
-                  </section>
-
-                </section>
-
               </section>
 
             </section>

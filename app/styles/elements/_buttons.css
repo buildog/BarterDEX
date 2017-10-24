@@ -83,7 +83,6 @@ button.withBorder {
 .action > i svg {
     width: 20px;
     height: 20px;
-    fill: #FFF
 }
 
 
@@ -97,6 +96,8 @@ button.withBorder {
     transform:scale(1.1);
     box-shadow: 0 6px 20px rgba(0,0,0,.14);
 }
+
+.action:hover > i svg { fill: #FFF }
 
 /* primary */
 
@@ -114,7 +115,6 @@ button.withBorder {
 .action.dark {
     background-color: transparent;
     color: $color-dark;
-    opacity: .4;
     box-shadow: none
 }
 .action.dark:hover {
@@ -123,6 +123,8 @@ button.withBorder {
 .action.dark > i {
     background: $color-dark;
 }
+.action.dark > i svg { fill: #FFF }
+
 
 /* right */
 .action.primary.right {

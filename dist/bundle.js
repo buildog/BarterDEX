@@ -12952,6 +12952,10 @@ module.exports =
 	        8: {
 	            message: 'No active chain',
 	            critical: true
+	        },
+	        9: {
+	            message: 'MarketMaker crash',
+	            critical: true
 	        }
 	    },
 	    colors: (_colors = {
@@ -38742,7 +38746,7 @@ module.exports =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -38795,6 +38799,22 @@ module.exports =
 
 	var _arrow2 = _interopRequireDefault(_arrow);
 
+	var _sell = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../static/sell.svg\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+	var _sell2 = _interopRequireDefault(_sell);
+
+	var _receive = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../static/receive.svg\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+	var _receive2 = _interopRequireDefault(_receive);
+
+	var _history = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../static/history.svg\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+	var _history2 = _interopRequireDefault(_history);
+
+	var _buy = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../static/buy.svg\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+	var _buy2 = _interopRequireDefault(_buy);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -38806,341 +38826,465 @@ module.exports =
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var orderbookColumns = [{
-	    Header: 'Ask Price',
-	    accessor: 'price' // String-based value accessors!
+	  Header: 'Ask Price',
+	  accessor: 'price' // String-based value accessors!
 	}, {
-	    Header: 'Volume',
-	    accessor: 'maxvolume' // String-based value accessors!
+	  Header: 'Volume',
+	  accessor: 'maxvolume' // String-based value accessors!
 	}, {
-	    Header: 'UTXOs',
-	    accessor: 'numutxos' // String-based value accessors!
+	  Header: 'UTXOs',
+	  accessor: 'numutxos' // String-based value accessors!
 	}];
 
 	var Trade = (_dec = (0, _mobxReact.inject)('app'), _dec(_class = (0, _mobxReact.observer)(_class = (_temp = _class2 = function (_React$Component) {
-	    _inherits(Trade, _React$Component);
+	  _inherits(Trade, _React$Component);
 
-	    function Trade(props) {
-	        _classCallCheck(this, Trade);
+	  function Trade(props) {
+	    _classCallCheck(this, Trade);
 
-	        var _this = _possibleConstructorReturn(this, (Trade.__proto__ || Object.getPrototypeOf(Trade)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Trade.__proto__ || Object.getPrototypeOf(Trade)).call(this, props));
 
-	        _initialiseProps.call(_this);
+	    _initialiseProps.call(_this);
 
-	        var _this$props$app$portf = _this.props.app.portfolio,
-	            tradeBase = _this$props$app$portf.tradeBase,
-	            tradeRel = _this$props$app$portf.tradeRel;
+	    var _this$props$app$portf = _this.props.app.portfolio,
+	        tradeBase = _this$props$app$portf.tradeBase,
+	        tradeRel = _this$props$app$portf.tradeRel;
 
 
-	        _this.state = {
-	            privateTransaction: false,
-	            amountRel: '0.00',
-	            amountBase: '0.00',
-	            selected: 0,
-	            picker: false,
-	            rate: 0,
-	            validation: 'enter amount to continue'
+	    _this.state = {
+	      privateTransaction: false,
+	      amountRel: '0.00',
+	      amountBase: '0.00',
+	      selected: 0,
+	      picker: false,
+	      rate: 0,
+	      validation: 'enter amount to continue'
 
-	        };
-	        return _this;
-	    }
+	    };
+	    return _this;
+	  }
 
-	    _createClass(Trade, [{
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
+	  _createClass(Trade, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
 
-	            // portfolio
-	            var self = this;
-	            var _props$app$portfolio = this.props.app.portfolio,
-	                tradeBase = _props$app$portfolio.tradeBase,
-	                tradeRel = _props$app$portfolio.tradeRel,
-	                renderBalance = _props$app$portfolio.renderBalance;
-	            var asks = this.props.app.orderbook.asks;
+	      // portfolio
+	      var self = this;
+	      var _props$app$portfolio = this.props.app.portfolio,
+	          tradeBase = _props$app$portfolio.tradeBase,
+	          tradeRel = _props$app$portfolio.tradeRel,
+	          renderBalance = _props$app$portfolio.renderBalance;
+	      var asks = this.props.app.orderbook.asks;
 
-	            // default colors if not set in constants
+	      // default colors if not set in constants
 
-	            if (!_constants.colors[tradeRel.coin]) {
-	                _constants.colors[tradeRel.coin] = '#DDD';
-	            }
-	            if (!_constants.colors[tradeBase.coin]) {
-	                _constants.colors[tradeBase.coin] = '#FFF';
-	            }
+	      if (!_constants.colors[tradeRel.coin]) {
+	        _constants.colors[tradeRel.coin] = '#DDD';
+	      }
+	      if (!_constants.colors[tradeBase.coin]) {
+	        _constants.colors[tradeBase.coin] = '#FFF';
+	      }
 
-	            var backgroundStyle = {
-	                background: 'linear-gradient(180grad,' + _constants.colors[tradeRel.coin] + ',' + _constants.colors[tradeBase.coin] + ')'
-	            };
+	      var backgroundStyle = {
+	        background: 'linear-gradient(180grad,' + _constants.colors[tradeRel.coin] + ',' + _constants.colors[tradeBase.coin] + ')'
+	      };
 
-	            return _react2.default.createElement(
-	                'div',
-	                { className: this.getClassState() },
-	                this.state.picker && this.coinPicker(this.state.picker),
+	      return _react2.default.createElement(
+	        'div',
+	        { className: this.getClassState() },
+	        this.state.picker && this.coinPicker(this.state.picker),
+	        _react2.default.createElement(
+	          'section',
+	          { className: 'trade-body' },
+	          _react2.default.createElement(
+	            'ul',
+	            { className: 'trade-type' },
+	            _react2.default.createElement(
+	              'li',
+	              { className: 'trade-type-item' },
+	              _react2.default.createElement(
+	                'button',
+	                null,
 	                _react2.default.createElement(
-	                    'section',
-	                    { className: 'trade-body' },
-	                    _react2.default.createElement(
-	                        'section',
-	                        { className: 'trade-base ' + tradeRel.coin },
-	                        _react2.default.createElement(
-	                            'section',
-	                            { className: 'trade-base-wrapper' },
-	                            _react2.default.createElement(
-	                                'button',
-	                                { onClick: function onClick() {
-	                                        return self.openPicker('Rel');
-	                                    }, className: 'action primary small arrow-down coin-bg' },
-	                                _react2.default.createElement(
-	                                    'span',
-	                                    null,
-	                                    _react2.default.createElement(
-	                                        'span',
-	                                        { className: 'trade-base-icon' },
-	                                        tradeRel.icon
-	                                    ),
-	                                    ' ',
-	                                    tradeRel.name,
-	                                    ' orderbook'
-	                                ),
-	                                _react2.default.createElement('i', { dangerouslySetInnerHTML: { __html: _arrow2.default } })
-	                            )
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'section',
-	                        { className: 'trade-orderbook ' + tradeRel.coin },
-	                        _react2.default.createElement(_reactTable2.default, {
-	                            className: '-striped -highlight',
-	                            data: asks,
-	                            columns: orderbookColumns,
-	                            defaultSorted: [{ id: 'price' }],
-	                            noDataText: this.state.orderBookMessage,
-	                            showPaginationBottom: false,
-	                            getTrProps: function getTrProps(state, rowInfo) {
-	                                return {
-	                                    onClick: function onClick(e) {
-	                                        self.pickRate(rowInfo);
-	                                    },
-	                                    className: rowInfo && rowInfo.index === self.state.selected ? 'selected coin-colorized' : ''
-	                                };
-	                            }
-	                        })
-	                    ),
-	                    _react2.default.createElement('section', { className: 'trade-amounts' }),
-	                    _react2.default.createElement(
-	                        'section',
-	                        { className: 'trade-action' },
-	                        _react2.default.createElement(
-	                            'section',
-	                            { className: 'trade-action-wrapper' },
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'trade-amount ' + tradeRel.coin },
-	                                _react2.default.createElement(
-	                                    'section',
-	                                    { className: 'trade-amount_input coin-colorized' },
-	                                    _react2.default.createElement(
-	                                        'label',
-	                                        null,
-	                                        'Sell'
-	                                    ),
-	                                    _react2.default.createElement(_reactInputAutosize2.default, {
-	                                        name: 'form-field-name',
-	                                        type: 'number',
-	                                        min: '0',
-	                                        placeholder: '0.00',
-	                                        style: { fontSize: 18 },
-	                                        value: this.state.amountRel,
-	                                        onChange: function onChange(e) {
-	                                            return _this2.updateAmountRel(e.target.value);
-	                                        }
-	                                    }),
-	                                    _react2.default.createElement(
-	                                        'span',
-	                                        null,
-	                                        tradeRel.coin
-	                                    )
-	                                ),
-	                                _react2.default.createElement(
-	                                    'small',
-	                                    { className: 'trade-amount_input_rate' },
-	                                    '(@ 1 ',
-	                                    tradeBase.coin,
-	                                    ' = ',
-	                                    this.state.rate,
-	                                    ' ',
-	                                    tradeRel.coin,
-	                                    ')'
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                'section',
-	                                { className: '' + tradeBase.coin },
-	                                _react2.default.createElement(
-	                                    'button',
-	                                    { className: 'withBorder action primary coin-bg', onClick: function onClick() {
-	                                            return _this2.trade();
-	                                        }, disabled: this.state.validation },
-	                                    _react2.default.createElement(
-	                                        'span',
-	                                        null,
-	                                        this.state.validation ? this.state.validation : _react2.default.createElement(
-	                                            'div',
-	                                            { className: 'trade-action-amountRel' },
-	                                            _react2.default.createElement(
-	                                                'span',
-	                                                null,
-	                                                this.state.amountBase
-	                                            ),
-	                                            _react2.default.createElement(
-	                                                'span',
-	                                                null,
-	                                                tradeBase.coin
-	                                            )
-	                                        )
-	                                    ),
-	                                    _react2.default.createElement('i', { dangerouslySetInnerHTML: { __html: _shuffle2.default } })
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Trade;
-	}(_react2.default.Component), _initialiseProps = function _initialiseProps() {
-	    var _this3 = this;
-
-	    this.getClassState = function () {
-	        var self = _this3;
-	        return (0, _classnames2.default)({
-	            trade: true,
-	            'trade-ratePicked': self.state.rate > 0
-	        });
-	    };
-
-	    this.componentDidMount = function () {
-	        var self = _this3;
-	        self.resetForm();
-	    };
-
-	    this.pickRate = function (info) {
-	        console.log(info);
-	        _this3.setState({
-	            selected: info.index,
-	            rate: info.original.price
-	        });
-	    };
-
-	    this.togglePrivate = function () {
-	        _this3.setState({ privateTransaction: !_this3.state.privateTransaction });
-	    };
-
-	    this.getRate = function () {
-	        var asks = _this3.props.app.orderbook.asks;
-
-	        if (asks.length > 0) {
-	            return asks[0].price;
-	        }
-
-	        return 0;
-	    };
-
-	    this.resetForm = function () {
-	        // this.amountRelInput.focus();
-	        // this.amountRelInput.value = '';
-	        var _props$app$portfolio2 = _this3.props.app.portfolio,
-	            tradeRel = _props$app$portfolio2.tradeRel,
-	            tradeBase = _props$app$portfolio2.tradeBase;
-
-	        _this3.setState({ amountRel: 0, amountBase: 0, picker: false, rate: 0, orderBookMessage: 'Fetching ' + tradeBase.coin + '/' + tradeRel.coin + ' orderbook' });
-	    };
-
-	    this.componentWillReact = function () {
-	        var _props$app$portfolio3 = _this3.props.app.portfolio,
-	            trade = _props$app$portfolio3.trade,
-	            tradeRel = _props$app$portfolio3.tradeRel,
-	            tradeBase = _props$app$portfolio3.tradeBase;
-
-	        var amountRel = _this3.state.amountRel;
-
-	        if (_this3.state.rate === 0) {
-	            _this3.setState({ rate: _this3.getRate() });
-	        }
-
-	        _this3.setState({ orderBookMessage: 'Fetching ' + tradeBase.coin + '/' + tradeRel.coin + ' orderbook' });
-	        _this3.updateAmountBase(amountRel);
-	    };
-
-	    this.trade = function () {
-	        var _props$app$portfolio4 = _this3.props.app.portfolio,
-	            trade = _props$app$portfolio4.trade,
-	            tradeRel = _props$app$portfolio4.tradeRel,
-	            tradeBase = _props$app$portfolio4.tradeBase;
-
-
-	        trade({
-	            method: 'buy',
-	            base: tradeBase.coin,
-	            rel: tradeRel.coin,
-	            price: _this3.state.rate,
-	            relvolume: _this3.state.amountRel
-	        });
-
-	        resetForm();
-	    };
-
-	    this.updateAmountRel = function (amountRel) {
-	        var tradeRel = _this3.props.app.portfolio.tradeRel;
-
-	        var validation = false;
-
-	        if (tradeRel.balance < amountRel) {
-	            validation = _react2.default.createElement(
-	                'div',
-	                { className: 'validation' },
-	                _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    'not enough ',
-	                    tradeRel.coin
-	                ),
-	                _react2.default.createElement(
+	                  'div',
+	                  null,
+	                  _react2.default.createElement('i', { dangerouslySetInnerHTML: { __html: _sell2.default } }),
+	                  _react2.default.createElement(
 	                    'small',
 	                    null,
-	                    '(max ',
-	                    tradeRel.balance,
-	                    ')'
+	                    'Sell'
+	                  )
 	                )
-	            );
-	        } else if (amountRel === '0' || amountRel === '') {
-	            validation = 'enter buy ' + tradeRel.coin + ' amount';
-	        }
-	        _this3.setState({ validation: validation, amountRel: amountRel, amountBase: amountRel / _this3.state.rate });
-	    };
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'li',
+	              { className: 'trade-type-item' },
+	              _react2.default.createElement(
+	                'button',
+	                null,
+	                _react2.default.createElement(
+	                  'div',
+	                  null,
+	                  _react2.default.createElement('i', { dangerouslySetInnerHTML: { __html: _buy2.default } }),
+	                  _react2.default.createElement(
+	                    'small',
+	                    null,
+	                    'Buy'
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'li',
+	              { className: 'trade-type-item' },
+	              _react2.default.createElement(
+	                'button',
+	                null,
+	                _react2.default.createElement(
+	                  'div',
+	                  null,
+	                  _react2.default.createElement('i', { dangerouslySetInnerHTML: { __html: send } }),
+	                  _react2.default.createElement(
+	                    'small',
+	                    null,
+	                    'Send'
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'li',
+	              { className: 'trade-type-item' },
+	              _react2.default.createElement(
+	                'button',
+	                null,
+	                _react2.default.createElement(
+	                  'div',
+	                  null,
+	                  _react2.default.createElement('i', { dangerouslySetInnerHTML: { __html: _receive2.default } }),
+	                  _react2.default.createElement(
+	                    'small',
+	                    null,
+	                    'Receive'
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'li',
+	              { className: 'trade-type-item' },
+	              _react2.default.createElement(
+	                'button',
+	                null,
+	                _react2.default.createElement(
+	                  'div',
+	                  null,
+	                  _react2.default.createElement('i', { dangerouslySetInnerHTML: { __html: _history2.default } }),
+	                  _react2.default.createElement(
+	                    'small',
+	                    null,
+	                    'History'
+	                  )
+	                )
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'section',
+	            { className: 'trade-action' },
+	            _react2.default.createElement(
+	              'section',
+	              { className: 'trade-action-wrapper' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'trade-amount ' + tradeRel.coin },
+	                _react2.default.createElement(
+	                  'label',
+	                  { className: 'trade-rel' },
+	                  _react2.default.createElement(
+	                    'strong',
+	                    null,
+	                    'Trade for'
+	                  ),
+	                  _react2.default.createElement(
+	                    'button',
+	                    { onClick: function onClick() {
+	                        return self.openPicker('Rel');
+	                      }, className: 'action small arrow-down' },
+	                    _react2.default.createElement(
+	                      'span',
+	                      null,
+	                      _react2.default.createElement(
+	                        'span',
+	                        { className: 'trade-base-icon' },
+	                        tradeRel.icon
+	                      ),
+	                      ' ',
+	                      tradeRel.name
+	                    ),
+	                    _react2.default.createElement('i', { dangerouslySetInnerHTML: { __html: _arrow2.default } })
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'section',
+	                  { className: 'trade-amount_input' },
+	                  _react2.default.createElement(
+	                    'section',
+	                    { className: 'trade-amount_input_price' },
+	                    _react2.default.createElement(
+	                      'label',
+	                      null,
+	                      _react2.default.createElement(
+	                        'span',
+	                        null,
+	                        'Price'
+	                      ),
+	                      ' ',
+	                      _react2.default.createElement(
+	                        'small',
+	                        null,
+	                        '(',
+	                        tradeRel.coin,
+	                        ' for 1 ',
+	                        tradeBase.coin,
+	                        ')'
+	                      )
+	                    ),
+	                    _react2.default.createElement('input', {
+	                      name: 'form-field-name',
+	                      type: 'number',
+	                      min: '0',
+	                      placeholder: '0.00',
+	                      style: { fontSize: 18 },
+	                      value: this.state.rate,
+	                      onChange: function onChange(e) {
+	                        return _this2.updateRate(e.target.value);
+	                      }
+	                    })
+	                  ),
+	                  _react2.default.createElement(
+	                    'section',
+	                    { className: 'trade-amount_input_amount' },
+	                    _react2.default.createElement(
+	                      'label',
+	                      null,
+	                      'Amount of ',
+	                      tradeRel.coin
+	                    ),
+	                    _react2.default.createElement(
+	                      'div',
+	                      null,
+	                      _react2.default.createElement('input', {
+	                        name: 'form-field-name',
+	                        type: 'number',
+	                        min: '0',
+	                        placeholder: '0.00',
+	                        style: { fontSize: 18 },
+	                        value: this.state.amountRel,
+	                        onChange: function onChange(e) {
+	                          return _this2.updateAmountRel(e.target.value);
+	                        }
+	                      })
+	                    )
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'section',
+	                  { className: '' + tradeBase.coin },
+	                  _react2.default.createElement(
+	                    'button',
+	                    { className: 'trade-button withBorder action primary coin-bg', onClick: function onClick() {
+	                        return _this2.trade();
+	                      }, disabled: this.state.validation },
+	                    _react2.default.createElement(
+	                      'span',
+	                      null,
+	                      this.state.validation ? this.state.validation : _react2.default.createElement(
+	                        'div',
+	                        { className: 'trade-action-amountRel' },
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          this.state.amountBase
+	                        ),
+	                        _react2.default.createElement(
+	                          'span',
+	                          null,
+	                          tradeBase.coin
+	                        )
+	                      )
+	                    ),
+	                    _react2.default.createElement('i', { dangerouslySetInnerHTML: { __html: _shuffle2.default } })
+	                  )
+	                )
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'section',
+	            { className: 'trade-orderbook ' + tradeRel.coin },
+	            _react2.default.createElement(_reactTable2.default, {
+	              className: '-striped -highlight',
+	              data: asks,
+	              columns: orderbookColumns,
+	              defaultSorted: [{ id: 'price' }],
+	              noDataText: this.state.orderBookMessage,
+	              showPaginationBottom: false,
+	              getTrProps: function getTrProps(state, rowInfo) {
+	                return {
+	                  onClick: function onClick(e) {
+	                    self.pickRate(rowInfo);
+	                  },
+	                  className: rowInfo && rowInfo.index === self.state.selected ? 'selected coin-colorized' : ''
+	                };
+	              }
+	            })
+	          )
+	        )
+	      );
+	    }
+	  }]);
 
-	    this.updateAmountBase = function (amountRel) {
-	        _this3.setState({ amountBase: amountRel / _this3.state.rate });
-	    };
+	  return Trade;
+	}(_react2.default.Component), _initialiseProps = function _initialiseProps() {
+	  var _this3 = this;
 
-	    this.privateIcon = function () {
-	        return _react2.default.createElement('span', { className: 'private-icon', dangerouslySetInnerHTML: { __html: _zoro2.default } });
-	    };
+	  this.getClassState = function () {
+	    var self = _this3;
+	    return (0, _classnames2.default)({
+	      trade: true,
+	      'trade-ratePicked': true
+	    });
+	  };
 
-	    this.openPicker = function (type) {
-	        _this3.setState({ picker: type });
-	    };
+	  this.componentDidMount = function () {
+	    var self = _this3;
+	    self.resetForm();
+	  };
 
-	    this.closePicker = function () {
-	        _this3.resetForm();
-	        _this3.setState({ picker: false });
-	    };
+	  this.pickRate = function (info) {
+	    console.log(info);
+	    _this3.setState({
+	      selected: info.index,
+	      rate: info.original.price
+	    });
+	  };
 
-	    this.coinPicker = function (type) {
-	        return _react2.default.createElement(_.CoinPicker, { title: type === 'Base' ? 'Select a coin to buy' : 'Select a coin to sell', type: type, onClose: function onClose() {
-	                return _this3.closePicker();
-	            } });
-	    };
+	  this.togglePrivate = function () {
+	    _this3.setState({ privateTransaction: !_this3.state.privateTransaction });
+	  };
+
+	  this.getRate = function () {
+	    var asks = _this3.props.app.orderbook.asks;
+
+	    if (asks.length > 0) {
+	      return asks[0].price;
+	    }
+
+	    return 0;
+	  };
+
+	  this.resetForm = function () {
+	    // this.amountRelInput.focus();
+	    // this.amountRelInput.value = '';
+	    var _props$app$portfolio2 = _this3.props.app.portfolio,
+	        tradeRel = _props$app$portfolio2.tradeRel,
+	        tradeBase = _props$app$portfolio2.tradeBase;
+
+	    _this3.setState({ amountRel: 0, amountBase: 0, picker: false, rate: 0, orderBookMessage: 'Fetching ' + tradeBase.coin + '/' + tradeRel.coin + ' orderbook' });
+	  };
+
+	  this.componentWillReact = function () {
+	    var _props$app$portfolio3 = _this3.props.app.portfolio,
+	        trade = _props$app$portfolio3.trade,
+	        tradeRel = _props$app$portfolio3.tradeRel,
+	        tradeBase = _props$app$portfolio3.tradeBase;
+
+	    var amountRel = _this3.state.amountRel;
+
+	    if (_this3.state.rate === 0) {
+	      _this3.setState({ rate: _this3.getRate() });
+	    }
+
+	    _this3.setState({ orderBookMessage: 'Fetching ' + tradeBase.coin + '/' + tradeRel.coin + ' orderbook' });
+	    _this3.updateAmountBase(amountRel);
+	  };
+
+	  this.trade = function () {
+	    var _props$app$portfolio4 = _this3.props.app.portfolio,
+	        trade = _props$app$portfolio4.trade,
+	        tradeRel = _props$app$portfolio4.tradeRel,
+	        tradeBase = _props$app$portfolio4.tradeBase;
+
+
+	    trade({
+	      method: 'buy',
+	      base: tradeBase.coin,
+	      rel: tradeRel.coin,
+	      price: _this3.state.rate,
+	      relvolume: _this3.state.amountRel
+	    });
+
+	    resetForm();
+	  };
+
+	  this.updateRate = function (rate) {
+	    _this3.setState({ rate: rate, selected: false });
+	  };
+
+	  this.updateAmountRel = function (amountRel) {
+	    var tradeRel = _this3.props.app.portfolio.tradeRel;
+
+	    var validation = false;
+
+	    if (tradeRel.balance < amountRel) {
+	      validation = _react2.default.createElement(
+	        'div',
+	        { className: 'validation' },
+	        _react2.default.createElement(
+	          'span',
+	          null,
+	          'not enough ',
+	          tradeRel.coin
+	        ),
+	        _react2.default.createElement(
+	          'small',
+	          null,
+	          '(max ',
+	          tradeRel.balance,
+	          ')'
+	        )
+	      );
+	    } else if (amountRel === '0' || amountRel === '') {
+	      validation = 'enter buy ' + tradeRel.coin + ' amount';
+	    }
+	    _this3.setState({ validation: validation, amountRel: amountRel, amountBase: amountRel / _this3.state.rate });
+	  };
+
+	  this.updateAmountBase = function (amountRel) {
+	    _this3.setState({ amountBase: amountRel / _this3.state.rate });
+	  };
+
+	  this.privateIcon = function () {
+	    return _react2.default.createElement('span', { className: 'private-icon', dangerouslySetInnerHTML: { __html: _zoro2.default } });
+	  };
+
+	  this.openPicker = function (type) {
+	    _this3.setState({ picker: type });
+	  };
+
+	  this.closePicker = function () {
+	    _this3.resetForm();
+	    _this3.setState({ picker: false });
+	  };
+
+	  this.coinPicker = function (type) {
+	    return _react2.default.createElement(_.CoinPicker, { title: type === 'Base' ? 'Select a coin to buy' : 'Select a coin to sell', type: type, onClose: function onClose() {
+	        return _this3.closePicker();
+	      } });
+	  };
 	}, _temp)) || _class) || _class);
 	exports.default = Trade;
 	module.exports = exports['default'];
@@ -40190,7 +40334,9 @@ module.exports =
 	      var _props$app$portfolio = this.props.app.portfolio,
 	          getCoin = _props$app$portfolio.getCoin,
 	          tradeBase = _props$app$portfolio.tradeBase,
-	          tradeRel = _props$app$portfolio.tradeRel;
+	          tradeRel = _props$app$portfolio.tradeRel,
+	          renderBalance = _props$app$portfolio.renderBalance,
+	          portfolioRenderBTC = _props$app$portfolio.portfolioRenderBTC;
 
 	      var coin = getCoin(coinCode);
 
@@ -40201,16 +40347,11 @@ module.exports =
 	        { className: 'wallet' },
 	        _react2.default.createElement(
 	          'header',
-	          { className: 'wallet-wallets-header component-header component-header-centered ' + coin.coin },
+	          { className: 'wallet-wallets-header component-header component-header-withBack ' + coin.coin },
 	          _react2.default.createElement(
 	            _reactRouter.Link,
 	            { className: 'wallet-wallets-header-back action primary right dark', to: '/' },
-	            _react2.default.createElement('i', { className: 'wallet-wallets-list-item_action', dangerouslySetInnerHTML: { __html: _arrow2.default } }),
-	            _react2.default.createElement(
-	              'span',
-	              null,
-	              'back'
-	            )
+	            _react2.default.createElement('i', { className: 'wallet-wallets-list-item_action', dangerouslySetInnerHTML: { __html: _arrow2.default } })
 	          ),
 	          _react2.default.createElement(
 	            'h2',
@@ -40228,9 +40369,7 @@ module.exports =
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'wallet-balance' },
-	              coin.balance,
-	              ' ',
-	              coin.coin
+	              renderBalance(coin.coin)
 	            )
 	          )
 	        ),
@@ -41518,7 +41657,7 @@ module.exports =
 	        return function (short) {
 	            var opts = { format: '%v %c', code: short, maxFraction: 8 };
 	            var coin = _this9.getPortfolioCoin(short);
-	            return (0, _formatCurrency2.default)(coin.balance, opts);
+	            // return formatCurrency(coin.balance, opts)
 	        };
 	    }
 	}), _descriptor19 = _applyDecoratedDescriptor(_class.prototype, 'kmdTotal', [_mobx.action], {

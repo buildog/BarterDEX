@@ -1,19 +1,92 @@
 .trade,
 .trade-body {
-    width: 100%
+    width: 100%;
+    background: #FFF;
+}
+
+
+.trade-type {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    color: $color-primary;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    z-index: 1000;
+    background:$background-jaguar;
+}
+
+.trade-type-item {
+    padding: 10px;
+    flex-grow: 1;
+    border-bottom:  1px solid $grey;
+}
+
+.trade-type-item.current {
+    background: #FFF;
+    border-bottom: transparent;
+    color: $color-dark;
+    border-top: 1px solid $grey;
+}
+
+.trade-type-item.current:not(:first-of-type) {
+    border-left: 1px solid $grey;
+    border-top-left-radius: 4px;
+}
+
+.trade-type-item.current:not(:last-of-type) {
+    border-right: 1px solid $grey;
+    border-top-right-radius: 4px;
+}
+
+.trade-type-item.current i svg { fill: $color-dark }
+.trade-type-item.current i svg path { stroke: $color-dark !important }
+
+
+
+.trade-type-item button > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 60px;
+}
+
+
+.trade-type-item i svg {
+    width: 60px;
+    height: 20px;
+    fill: $color-primary;
+}
+
+.trade-type-item i svg path {
+    stroke: $color-primary !important;
 }
 
 
 
-.trade > h2 {
-    font-size: 1em;
-    font-weight: 400;
-    color: $blue;
-    margin: 0;
-    padding: 10px 10px 0px 10px;
+.trade-base {
+    display: flex;
+    align-items: center;
+}
+
+.trade-base > * {
+    margin-right: 4px;
+}
+
+.trade-base,
+.trade-base-wrapper,
+.trade-base-wrapper button {
+    width: 100%;
 }
 
 .trade-base button {
+    padding: 10px !important;
+    font-size: 1em;
     box-shadow: 0 6px 20px rgba(0,0,0,.14) !important;
 }
 
@@ -21,7 +94,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 10px 20px 10px;
     background: #FFF;
 }
 
@@ -46,7 +118,8 @@
     flex-grow: 1;
     flex-shrink: 0;
     position: relative;
-    z-index: 0
+    z-index: 0;
+    overflow: auto;
 }
 
 .trade-orderbook  .rt-tbody {
@@ -58,8 +131,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    bottom: 20px;
+    padding: 10px;
+    bottom: 0px;
     left: 0;
     z-index: 100;
     transform: translateY(10px);
@@ -70,19 +143,26 @@
 }
 
 .trade-action-wrapper {
-    min-width: 80%;
-    padding: 10px;
+    min-width: 100%;
     border-radius: 4px;
+    overflow: hidden;
     background: #FFF;
+    color: $color-dark;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     box-shadow: $box-shadow-inputs;
 }
 
 .trade-amount {
+    display: flex;
+    flex-direction: column;
     width: 100%;
+}
+
+.trade-amount input {
+    min-width: 100%;
 }
 
 .trade-action-wrapper button { box-shadow: none !important }
@@ -93,21 +173,79 @@
 }
 .trade-amount_input {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
     width: 100%;
 }
 
-.trade-amount_input input { color: $color-dark }
+
+
+.trade-amount_input > * {
+    flex-grow: 1;
+}
+
+.trade-amount_input > * > * {
+    width: 100%
+}
+
+.trade-amount_input {
+    padding: 10px;
+}
+
+.trade-amount label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    font-weight: 400;
+    padding: 4px;
+    justify-content: space-between;
+
+}
+
+.trade-amount label > * {
+    margin-right: 4px;
+
+}
+
+.trade-amount label.trade-rel {
+    padding: 10px;
+    background: $background-jaguar;
+}
+
+.trade-amount label.trade-rel strong { color: $color-dark }
+
+
+.trade-amount label.trade-rel button {
+    background: #FFF;
+    box-shadow: $box-shadow-inputs !important;
+}
+
+
+
+
 
 .trade-action-amountRel { display: flex }
 .trade-action-amountRel > * { margin-right: 4px }
 
 .trade-amount_input_rate {
     position: relative;
-    color: $color-primary;
-    top: -10px
+}
+
+
+.trade-amount_input > *,
+.trade-amount_input_rate > * {
+    width: 100%;
+}
+
+.trade-amount_input > * {
+    margin-bottom: 10px;
+}
+
+.trade-button {
+    width: 100%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
 /* contexts */

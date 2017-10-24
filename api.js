@@ -203,7 +203,6 @@ class Emitter extends EventEmitter {
         const self = this;
         portscanner.checkPortStatus(7783, '127.0.0.1', (error, status) => {
             self.emit('MMStatus', status);
-            console.log(status);
         })
     }
 

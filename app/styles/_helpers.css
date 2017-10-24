@@ -100,6 +100,7 @@ code {
 
 /* crypto colors*/
 
+.coin-colorized { color: $blue !important; }
 .ADC .coin-colorized { color: #3CB0E5!important; }
 .AEON .coin-colorized { color: #164450!important; }
 .AMP .coin-colorized { color: #048DD2!important; }

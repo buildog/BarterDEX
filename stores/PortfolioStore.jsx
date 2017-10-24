@@ -140,7 +140,7 @@ export default class PortfolioStore {
     @action renderBalance = (short) => {
         const opts = { format: '%v %c', code: short, maxFraction: 8 };
         const coin = this.getPortfolioCoin(short);
-        return formatCurrency(coin.balance, opts)
+        // return formatCurrency(coin.balance, opts)
     }
 
     portfolioRenderBTC = (short) => {
