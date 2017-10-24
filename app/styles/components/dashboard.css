@@ -33,10 +33,10 @@
     flex-direction: column;
     padding: 0;
     margin: 0;
-    border-radius: 4px;
     overflow: auto;
     background: #FFF;
-    max-height: 60vh
+    max-height: 60vh;
+    box-shadow: $box-shadow-inputs
 }
 
 .dashboard-wallets-list li {

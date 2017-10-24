@@ -8,8 +8,8 @@
 }
 
 .wallet-icon {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,8 +17,8 @@
 
 
 .wallet-icon > * {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
 }
 
 .wallet-icon i {
@@ -49,6 +49,8 @@
     font-weight: 400;
     font-size: .6em;
 }
+
+.wallet-balance { margin-bottom: 4px }
 
 .wallet-trade {
     display: flex;

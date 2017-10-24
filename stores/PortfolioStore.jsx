@@ -49,8 +49,9 @@ export default class PortfolioStore {
 
     colors = colors;
 
-    constructor({ defaultFiat, defaultCrypto, orderbookStore }) {
+    constructor({ defaultFiat, defaultCrypto, orderbookStore, marketStore }) {
         this.orderbook = orderbookStore;
+        this.market = marketStore;
         this.defaultCurrency = defaultFiat;
         this.defaultCrypto = defaultCrypto;
         this.formatFIAT = { format: '%s%v', symbol: this.defaultCurrency.symbol }
@@ -69,6 +70,7 @@ export default class PortfolioStore {
     }
 
     getPortfolioCoin = (short) => this.portfolio.filter((asset) => asset.coin === short)[0];
+    getMarket = (short) => this.market.getMarket().filter((asset) => asset.short === short)[0];
 
     /* @params { method, base, rel, price, relvolume }
     */
@@ -142,16 +144,19 @@ export default class PortfolioStore {
         return 0;
     }
 
-    portfolioRenderBTC = (short) => {
-        const self = this;
-        const amount = this.getPortfolioCoin(short).btcBalance;
-        return formatCurrency(amount, self.formatCrypto)
-    }
 
     portfolioRenderFIAT = (short) => {
         const self = this;
-        const amount = this.getPortfolioCoin(short)[this.defaultCurrency.type];
-        return formatCurrency(amount, self.formatFIAT)
+        const amount = this.getCoin(short).KMDvalue;
+
+        const KMD = this.getMarket('KMD');
+
+        if (KMD) {
+            const price = KMD.price;
+            return formatCurrency(amount * price, self.formatFIAT)
+        }
+
+        return '';
     }
 
     get24hEvolution = (short) => {

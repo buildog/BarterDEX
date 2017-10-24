@@ -47,7 +47,7 @@ class Wallet extends React.Component {
 
     render() {
         const coinCode = this.props.params.coin;
-        const { getCoin, tradeBase, tradeRel, renderBalance, portfolioRenderBTC } = this.props.app.portfolio;
+        const { getCoin, tradeBase, tradeRel, renderBalance, portfolioRenderFIAT } = this.props.app.portfolio;
         const coin = getCoin(coinCode);
 
         /* activate the coins */
@@ -63,6 +63,7 @@ class Wallet extends React.Component {
                 <div className="wallet-icon coin-colorized">{ coin.icon }</div>
                 <div className="wallet-coinName coin-colorized">{coin.name}</div>
                 <div className="wallet-balance">{ renderBalance(coin.coin) }</div>
+                <small className="wallet-balance">({ portfolioRenderFIAT(coin.coin) })</small>
               </h2>
             </header>
 

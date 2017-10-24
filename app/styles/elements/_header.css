@@ -14,14 +14,14 @@
     align-items: center;
     margin-right: 20px;
     position: absolute;
-    top: 22px;
+    top: 32px;
     left: 0px;
 }
 
 .wallet-wallets-header-back i,
 .wallet-wallets-header-back i svg {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
 }
 
 .wallet-wallets-header-back i {

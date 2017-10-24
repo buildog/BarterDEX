@@ -247,7 +247,7 @@ class Trade extends React.Component {
                     <section className="trade-amount_input">
                       <section className="trade-amount_input_price">
                         <span className="label">
-                          <span>Price</span>
+                          <span>Price in {tradeRel.coin}</span>
                           <small><button className="link">Ask</button> <button className="link" onClick={(e) => this.toggleOrderbook(e)}>{ this.state.showOrderbook ? 'Hide' : 'View'} orderbook</button></small>
                         </span>
                         <div className="trade-amount_input-wrapper">

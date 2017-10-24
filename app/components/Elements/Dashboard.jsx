@@ -13,7 +13,7 @@ class Dashboard extends React.Component {
 
     renderDashboard = () => {
         // const { tradeBase, tradeRel, coinsList } = this.props.app.portfolio;
-        const { installedCoins, colors, kmdTotal } = this.props.app.portfolio;
+        const { installedCoins, colors, kmdTotal, portfolioRenderFIAT } = this.props.app.portfolio;
 
         return (
           <section className="dashboard-wallets">

@@ -137,13 +137,14 @@
 .trade-orderbook {
     position: absolute;
     z-index: 100;
-    top: 110px;
-    left: 0;
+    top: 90px;
+    left: 0px;
     width: 100%;
     max-height: 100%;
     background: $color-dark;
     box-shadow: $box-shadow-inputs;
-    border-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
     overflow: auto;
 }
 
@@ -173,10 +174,7 @@
 .trade-action-wrapper {
     min-width: 100%;
     border-radius: 4px;
-    overflow: hidden;
     background: #FFF;
-    box-shadow: $box-shadow-inputs;
-
     color: $color-dark;
     display: flex;
     align-items: center;
@@ -191,7 +189,7 @@
 
 .trade-amount input {
     min-width: 100%;
-    padding: 24px 10px;
+    padding: 24px 10px 24px 14px;
 }
 
 .trade-action-wrapper button { box-shadow: none !important }
@@ -222,42 +220,38 @@
 .trade-amount_input-wrapper  { position: relative }
 .trade-amount_input-wrapper code {
     position: absolute;
-    top: 0;
-    right: 20px;
+    top: 10px;
+    right: 30px;
     z-index: 1;
     margin: 0;
-    height: 100%;
+    height: calc(100% - 20px);
     display: flex;
     align-items: center;
-    color: $color-primary;
-    background: transparent
-}
+    color: $blue;
+    border: 1px solid $blue;
+    opacity: .2;
 
-.trade-amount_input {
-    padding: 10px;
+
 }
 
 .trade-amount .label {
     display: flex;
     align-items: center;
     width: 100%;
-    font-weight: 400;
-    padding: 10px 4px;
+    font-weight: 600;
+    padding: 10px 4px 10px 10px;
     justify-content: space-between;
     pointer-events: none;
-
-
 }
 
-.trade-amount .label.trade-rel {
-    padding: 10px;
-    background: $background-jaguar;
-}
 
 .trade-rel > * {
     flex-grow: 1;
 }
 
+.trade-amount .label.trade-rel {
+    padding: 10px 4px 10px 4px
+}
 .trade-amount .label.trade-rel strong { color: $color-dark }
 
 
@@ -265,9 +259,10 @@
     background: #FFF;
     box-shadow: $box-shadow-inputs !important;
     width: 100%;
+    font-size: 1em
 }
 
-.trade-amount .label.trade-rel button span {
+.trade-amount .label.trade-rel button > span {
     justify-content: flex-start;
 }
 
@@ -304,15 +299,10 @@
 
 .trade-button {
     width: 100%;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
     padding: 30px 20px;
     font-size: 1em;
 }
 
-.trade-button:hover {
-    transform: none !important
-}
 
 /* contexts */
 
