@@ -111,30 +111,35 @@
 
 /* context */
 
-.dashboard-wallets-list li:hover {
+.dashboard-wallets-list-item:hover,
+.dashboard-wallets-list-item.enabling {
     z-index: 1;
     background: $blue;
 }
 
-.dashboard-wallets-list li:hover .coin-colorized,
-.dashboard-wallets-list li:hover svg {
+.dashboard-wallets-list-item:hover .coin-colorized,
+.dashboard-wallets-list-item:hover svg,
+.dashboard-wallets-list-item.enabling svg,
+.dashboard-wallets-list-item.enabling .coin-colorized {
     color: #FFF !important;
     fill: #FFF !important;
 }
 
-.dashboard-wallets-list li:hover .dashboard-wallets-list-item_icon {
+.dashboard-wallets-list-item:hover .dashboard-wallets-list-item_icon {
     transform:scale(1.05)
 }
-.dashboard-wallets-list li:hover .dashboard-wallets-list-item_balance {
+.dashboard-wallets-list-item:hover .dashboard-wallets-list-item_balance,
+.dashboard-wallets-list-item.enabling .dashboard-wallets-list-item_balance {
     color: #FFF;
     transform: translateX(2px)
 }
 
-.dashboard-wallets-list li:hover .dashboard-wallets-list-item_balance small {
+.dashboard-wallets-list-item:hover .dashboard-wallets-list-item_balance small,
+.dashboard-wallets-list-item.enabling .dashboard-wallets-list-item_balance small {
     color: rgba(256,256,256,0.4)
 }
 
-.dashboard-wallets-list li:hover .dashboard-wallets-list-item_action svg {
+.dashboard-wallets-list-item:hover .dashboard-wallets-list-item_action svg {
     fill: #FFF;
     transform: translateX(10px) scale(1.1)
 }
@@ -146,4 +151,12 @@
 
 .dashboard-empty h3 {
     text-align: center;
+}
+
+/* LOADER */
+
+
+
+.dashboard-wallets-list-item.enabling .dashboard-wallets-list-item_action svg {
+    transform: translateX(100px)
 }

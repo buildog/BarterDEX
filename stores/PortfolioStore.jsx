@@ -117,6 +117,7 @@ export default class PortfolioStore {
 
     // trade methods check if coin is activated
     @action setTrade = (coin, type) => {
+        console.log(coin);
         ipcRenderer.send('enableCoin', { coin: coin.coin, type })
     }
 
@@ -125,6 +126,7 @@ export default class PortfolioStore {
         this.setTrade({ coin }, 'Base');
         // search for the highest balance and activate as tradeRel
         const firstNotSelf = this.installedCoins.filter((installed) => installed.coin !== coin)[0];
+
         this.setTrade(firstNotSelf, 'Rel');
     }
 
@@ -142,10 +144,10 @@ export default class PortfolioStore {
     }
 
 
-    portfolioRenderFIAT = (short) => {
+    portfolioRenderFIAT = (short, wrap) => {
         const self = this;
-        console.log(this.getCoin(short));
         const amount = this.getCoin(short).KMDvalue;
+        let result = '';
 
         const KMD = this.getMarket('KMD');
 
@@ -154,7 +156,11 @@ export default class PortfolioStore {
             return formatCurrency(amount * price, self.formatFIAT)
         }
 
-        return '';
+        if (result && wrap) {
+            result = `(${result})`;
+        }
+
+        return result;
     }
 
     get24hEvolution = (short) => {

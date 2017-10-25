@@ -15,12 +15,10 @@ class Restricted extends React.Component {
 
     getClassState = () => {
         const { loader } = this.props.app;
-        const hasLoading = loader.store.length;
 
         return classNames({
             app: true,
-            'content-container': true,
-            loading: hasLoading
+            'content-container': true
         })
     }
 
@@ -34,16 +32,13 @@ class Restricted extends React.Component {
         return (<Login />);
     }
 
-    render() {
-        const { loader } = this.props.app;
-        const hasLoading = loader.store.length;
 
+    render() {
         return (
           <content className={this.getClassState()}>
             <Header />
             <section className="app-view">
               { this.privateRoute() }
-              { hasLoading === 0 ? '' : <MainLoader /> }
               <Notifier />
             </section>
             <Footer />

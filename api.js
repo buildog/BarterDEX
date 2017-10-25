@@ -19,6 +19,7 @@ class Emitter extends EventEmitter {
     constructor({ config }) {
         super();
         this.config = config;
+        this.logout = false;
     }
 
     apiRequest({ data, url }) {
@@ -80,7 +81,7 @@ class Emitter extends EventEmitter {
     // kill rogue marketmaker copies on start
     killMarketmaker(data) {
         const self = this;
-
+        self.logout = true;
         return new Promise((resolve) => {
             if (data === true) {
                 let marketmakerGrep;
@@ -133,6 +134,7 @@ class Emitter extends EventEmitter {
 
     startMarketMaker(data) {
         const self = this;
+        self.logout = false;
           // console.log(data.passphrase);
         try {
           // check if marketmaker instance is already running
@@ -191,7 +193,7 @@ class Emitter extends EventEmitter {
             console.log(`stdout: ${stdout}`);
             if (stderr.length) {
                 console.log(`stderr: ${stderr}`);
-                self.emit('notifier', { error: 9, desc: stderr });
+                !self.logout && self.emit('notifier', { error: 9, desc: stderr });
             }
             console.log('exed');
         });

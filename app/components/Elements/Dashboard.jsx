@@ -1,6 +1,8 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
 import { Link } from 'react-router';
+import classNames from 'classnames';
+
 import { Trade, Modal, CoinPicker } from '../';
 import plus from '../../static/plus.svg';
 import arrow from '../../static/arrow.svg';
@@ -11,9 +13,30 @@ import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 class Dashboard extends React.Component {
 
 
+    constructor(props) {
+        super(props);
+        this.state = { coinToEnable: '' }
+    }
+
+    setCoinToEnable = (coinToEnable) => {
+        this.setState({ coinToEnable })
+    }
+
+    getClassState = (coin) => {
+        const self = this;
+        // const { loader } = this.props.app;
+        // const activationLoader = loader.getLoader(4);
+        return classNames({
+            'dashboard-wallets-list-item': true,
+            [coin]: true,
+            enabling: self.state.coinToEnable === coin
+        })
+    }
+
     renderDashboard = () => {
         // const { tradeBase, tradeRel, coinsList } = this.props.app.portfolio;
         const { installedCoins, colors, kmdTotal, portfolioRenderFIAT } = this.props.app.portfolio;
+
 
         return (
           <section className="dashboard-wallets">
@@ -44,8 +67,8 @@ class Dashboard extends React.Component {
             </header>
             <ul className="dashboard-wallets-list">
               { installedCoins.map((installed) => (
-                <li key={installed.coin} className={`dashboard-wallets-list-item ${installed.coin}`}>
-                  <Link to={`/wallet/${installed.coin}`} activeClassName="active">
+                <li key={installed.coin} className={this.getClassState(installed.coin)}>
+                  <Link onClick={() => this.setCoinToEnable(installed.coin)} to={`/wallet/${installed.coin}`} activeClassName="active">
                     <div className="dashboard-wallets-list-item_icon coin-colorized"> { installed.icon }</div>
                     <div className="dashboard-wallets-list-item_balance">
                       <strong>{ installed.name }</strong>

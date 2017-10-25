@@ -11,6 +11,21 @@ import circles from '../../static/circles.svg';
 @observer
 class Wallet extends React.Component {
 
+    static preload({ params, stores }, callback) {
+        const { coin } = params;
+        const { autoSetTrade } = stores.app.portfolio;
+
+        autoSetTrade(coin);
+        /* wait for callaback?*/
+        const loop = setTimeout(() => {
+            const { tradeBase, tradeRel } = stores.app.portfolio;
+            if (tradeBase && tradeRel) {
+                clearInterval(loop);
+                callback();
+            }
+        }, 1000)
+    }
+
     getClassState = () => {
         const self = this;
         const { tradeBase, tradeRel } = this.props.app.portfolio;
@@ -19,12 +34,6 @@ class Wallet extends React.Component {
             wallet: true,
             'wallet-ready': tradeBase && tradeRel
         })
-    }
-
-    componentDidMount = () => {
-        const coinCode = this.props.params.coin;
-        const { autoSetTrade } = this.props.app.portfolio;
-        autoSetTrade(coinCode);
     }
 
     componentWillUnmount = () => {
@@ -46,7 +55,6 @@ class Wallet extends React.Component {
         const coinCode = this.props.params.coin;
         const { getCoin, getCache, renderBalance, portfolioRenderFIAT } = this.props.app.portfolio;
         const coin = getCoin(coinCode);
-
         /* activate the coins */
 
         return (
@@ -60,7 +68,7 @@ class Wallet extends React.Component {
                 <div className="wallet-icon coin-colorized">{ coin.icon }</div>
                 <div className="wallet-coinName coin-colorized">{coin.name}</div>
                 <div className="wallet-balance">{ renderBalance(coin.coin) }</div>
-                <small className="wallet-balance">({ portfolioRenderFIAT(coin.coin) })</small>
+                <small className="wallet-balance">{ portfolioRenderFIAT(coin.coin, true) }</small>
               </h2>
             </header>
 

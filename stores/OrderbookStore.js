@@ -14,15 +14,12 @@ export default class OrderbookStore {
     }
 
     @action updateOrderbook = ({ data }) => {
-        console.log(data);
         this.orderbook = data;
         this.asks = data.asks.filter((ask) => ask.numutxos > 0);
         this.bids = data.bids.filter((bid) => bid.numutxos > 0);
     }
 
     @action listenOrderbook = ({ base, rel }) => {
-        console.log(base);
-        console.log(rel);
         this.listener = setInterval(() => ipcRenderer.send('orderbook', { base, rel }), 6000);
     }
 

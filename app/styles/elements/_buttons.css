@@ -173,3 +173,8 @@ button.link:hover {
 .action.danger {
     background-color: $danger
 }
+
+
+.action.loading > i {
+    opacity: 0
+}
