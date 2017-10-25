@@ -75,11 +75,10 @@ class Trade extends React.Component {
 
     pickRate = (info) => {
         this.setState({
-            selected: info.index,
             showOrderbook: false
         })
 
-        this.updateRate(info.original.price)
+        this.updateRate(info.original.price, info.index)
     }
 
     togglePrivate = () => {
@@ -155,9 +154,9 @@ class Trade extends React.Component {
         this.setState({ validation, amountBase: amount / price });
     }
 
-    updateRate = (rate) => {
+    updateRate = (rate, selected = false) => {
         const parsed = formatNumber(rate);
-        this.setState({ rate: parsed, selected: false });
+        this.setState({ rate: parsed, selected });
         this.validation({ rate: parsed });
     }
 

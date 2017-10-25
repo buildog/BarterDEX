@@ -228,7 +228,8 @@ class Emitter extends EventEmitter {
             self.coins = coins;
 
             self.getCoins().then((coinsList) => {
-                self.emit('coinsList', coinsList)
+                self.emit('coinsList', coinsList);
+                console.log(coinsList);
                 self.emit('updateUserInfo', { coins, userpass, mypubkey });
             })
         }).catch((error) => {
