@@ -5,6 +5,9 @@
     flex-direction: column;
     background: $background-jaguar;
     height: 100vh;
+    transition: all .2s ease;
+    transform: translateY(0);
+    opacity: 1;
 }
 
 .wallet-icon {
@@ -36,7 +39,10 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    transition: all .2s ease;
+    transform: translateY(0);
 }
+
 
 .wallet-balance,
 .wallet-coinName {
@@ -76,21 +82,9 @@
 
 /* context */
 
-.wallet:not(.wallet-ready) .wallet-icon {
-    position: absolute;
-    top: 40vh;
-    right: calc(50% - 40px);
-    transform: scale(2);
-    transition: all .2s ease;
+.wallet:not(.wallet-ready) {
+    opacity: 0;
+    transform: translateY(-100px);
 }
 
-.wallet-trade .loader-svg {
-    position: absolute;
-    top: 50vh;
-
-}
-
-.wallet:not(.wallet-ready) .wallet-wallets-header h2 > *:not(.wallet-icon) {
-    transition: all .2s ease;
-    opacity: 0
-}
+.wallet:not(.wallet-ready) .wallet-wallets-header { transform: translateY(300px) }

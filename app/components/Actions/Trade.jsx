@@ -20,6 +20,8 @@ import history from '../../static/history.svg';
 import buy from '../../static/buy.svg';
 import charts from '../../static/charts.svg';
 
+const formatNumber = (str) => str;
+
 const orderbookColumns = [
     {
         Header: 'Ask Price',
@@ -103,6 +105,7 @@ class Trade extends React.Component {
         // this.amountRelInput.value = '';
         const { tradeRel, tradeBase } = this.props.app.portfolio;
         this.setState({ amountRel: 0, amountBase: 0, picker: false, rate: 0, orderBookMessage: `Fetching ${tradeBase.coin}/${tradeRel.coin} orderbook` })
+        this.validation({});
     }
 
 
@@ -110,7 +113,8 @@ class Trade extends React.Component {
         const { tradeRel, tradeBase } = this.props.app.portfolio;
 
         if (this.state.rate === 0) {
-            this.setState({ rate: this.getRate() });
+            const rate = this.getRate();
+            this.updateRate({ rate });
         }
 
         this.setState({ orderBookMessage: `Fetching ${tradeBase.coin}/${tradeRel.coin} orderbook` });
@@ -119,13 +123,15 @@ class Trade extends React.Component {
     trade = () => {
         const { trade, tradeRel, tradeBase } = this.props.app.portfolio;
 
-        trade({
+        const params = {
             method: 'buy',
             base: tradeBase.coin,
             rel: tradeRel.coin,
             price: this.state.rate,
             relvolume: this.state.amountRel
-        })
+        };
+
+        trade(params);
 
         this.resetForm();
     }
@@ -150,13 +156,13 @@ class Trade extends React.Component {
     }
 
     updateRate = (rate) => {
-        const parsed = Number(rate);
+        const parsed = formatNumber(rate);
         this.setState({ rate: parsed, selected: false });
         this.validation({ rate: parsed });
     }
 
     updateAmountRel = (amountRel) => {
-        const parsed = Number(amountRel);
+        const parsed = formatNumber(amountRel);
         this.setState({ amountRel: parsed });
         this.validation({ amountRel: parsed });
     }

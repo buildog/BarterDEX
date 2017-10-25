@@ -72,10 +72,20 @@ export default class PortfolioStore {
     getPortfolioCoin = (short) => this.portfolio.filter((asset) => asset.coin === short)[0];
     getMarket = (short) => this.market.getMarket().filter((asset) => asset.short === short)[0];
 
+    @action getCoin = (short) => this.installedCoins.filter((asset) => asset.coin === short)[0];
+
+    updateTrade = (coin, type) => {
+        this.orderbook.killListener();
+        this[`trade${type}`] = this.getCoin(coin);
+
+        if (this.tradeBase && this.tradeRel) {
+            this.orderbook.listenOrderbook({ base: this.tradeBase.coin, rel: this.tradeRel.coin });
+        }
+    }
+
     /* @params { method, base, rel, price, relvolume }
     */
 
-    @action getCoin = (short) => this.coinsList.filter((asset) => asset.coin === short)[0];
 
     @action trade = (params) => {
         ipcRenderer.send('trade', params)
@@ -87,11 +97,16 @@ export default class PortfolioStore {
     }
 
     @action prepareCoinsList = (coins) => {
+        const self = this;
         const withIcons = addIcons(coins);
         const byIcon = withIcons.slice(0);
         byIcon.sort((a, b) => a.hasSVGIcon ? 0 : 1);
         this.coinsList = byIcon;
         this.installedCoins = addIcons(this.coinsList.filter((coin) => coin.height > 0).sort((a, b) => a.balance > 0 ? 0 : 1));
+
+        // if (!self.autorefresh) {
+        //     self.autorefresh = setInterval(() => self.refresh(), 1000)
+        // }
     }
 
     @action setPortfolio = (portfolio) => {
@@ -100,24 +115,9 @@ export default class PortfolioStore {
     }
 
 
-    @action updateTrade = (coin, type) => {
-        this.orderbook.killListener();
-        this[`trade${type}`] = this.getPortfolioCoin(coin);
-
-        if (this.tradeBase && this.tradeRel) {
-            this.orderbook.listenOrderbook({ base: this.tradeBase.coin, rel: this.tradeRel.coin });
-        }
-    }
-
     // trade methods check if coin is activated
     @action setTrade = (coin, type) => {
-        const self = this;
-
-        // check if inside the portfolio, if not wait for backend event after activated
-        if (!self.getPortfolioCoin(coin.coin)) {
-            return self.enableCoin(coin.coin, type);
-        }
-        this.updateTrade(coin.coin, type);
+        ipcRenderer.send('enableCoin', { coin: coin.coin, type })
     }
 
     @action autoSetTrade = (coin) => {
@@ -128,15 +128,12 @@ export default class PortfolioStore {
         this.setTrade(firstNotSelf, 'Rel');
     }
 
-    @action enableCoin = (coin, type) => {
-        ipcRenderer.send('enableCoin', { coin, type })
-    }
 
     @action refresh = () => { ipcRenderer.send('refreshPortfolio') }
 
     @action renderBalance = (short) => {
         const opts = { format: '%v %c', code: short, maxFraction: 8 };
-        const coin = this.getPortfolioCoin(short);
+        const coin = this.getCoin(short);
         if (coin) {
             return formatCurrency(coin.balance, opts)
         }
@@ -147,6 +144,7 @@ export default class PortfolioStore {
 
     portfolioRenderFIAT = (short) => {
         const self = this;
+        console.log(this.getCoin(short));
         const amount = this.getCoin(short).KMDvalue;
 
         const KMD = this.getMarket('KMD');
@@ -194,21 +192,19 @@ export default class PortfolioStore {
         return ((total / this.portfolioTotal(false)) * 100).toFixed(2);
     }
 
-    // portfolioTotalBtc = (short = this.defaultCrypto) => {
-    //     const self = this;
-    //     const total = this.portfolioTotal(false);
-    //     const coinValue = this.getCoin(short).price;
-    //     return formatCurrency(total / coinValue, self.formatCrypto)
-    // }
-
 
     @action leave = () => {
         const self = this;
+
+        clearInterval(self.autorefresh);
+
+
+        // ipcRenderer.send('disableCoin', { coin: self.tradeBase })
+        // ipcRenderer.send('disableCoin', { coin: self.tradeRel })
+
         self.tradeBase = false;
         self.tradeRel = false;
         self.orderbook.killListener();
-
-        clearInterval(self.autorefresh);
     }
 
 }

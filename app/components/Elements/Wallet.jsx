@@ -21,6 +21,17 @@ class Wallet extends React.Component {
         })
     }
 
+    componentDidMount = () => {
+        const coinCode = this.props.params.coin;
+        const { autoSetTrade } = this.props.app.portfolio;
+        autoSetTrade(coinCode);
+    }
+
+    componentWillUnmount = () => {
+        const { leave } = this.props.app.portfolio;
+        leave();
+    }
+
     renderTrade = () => {
         const { tradeBase, tradeRel } = this.props.app.portfolio;
         if (tradeBase && tradeRel) {
@@ -29,25 +40,11 @@ class Wallet extends React.Component {
             </div>
             )
         }
-
-        return (<i className="loader-svg" dangerouslySetInnerHTML={{ __html: circles }} />);
     }
-
-    componentDidMount = () => {
-        const coinCode = this.props.params.coin;
-        const { autoSetTrade } = this.props.app.portfolio;
-        autoSetTrade(coinCode);
-    }
-
-    componentWillUnMount = () => {
-        const { leave } = this.props.app.portfolio;
-        leave();
-    }
-
 
     render() {
         const coinCode = this.props.params.coin;
-        const { getCoin, tradeBase, tradeRel, renderBalance, portfolioRenderFIAT } = this.props.app.portfolio;
+        const { getCoin, getCache, renderBalance, portfolioRenderFIAT } = this.props.app.portfolio;
         const coin = getCoin(coinCode);
 
         /* activate the coins */

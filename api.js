@@ -251,6 +251,22 @@ class Emitter extends EventEmitter {
         }));
     }
 
+    disableCoin({ coin = '', type }) {
+        const self = this;
+
+        const data = { userpass: self.userpass, method: 'disable', coin };
+        // electrum
+        // const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
+
+        const url = 'http://127.0.0.1:7783';
+
+        this.apiRequest({ data, url }).then((result) => {
+            self.fetchPortfolio(() => this.emit('updateTrade', { coin, type }));
+        }).catch((error) => {
+            self.emit('notifier', { error: 3 })
+        });
+    }
+
 
     enableCoin({ coin = '', type }) {
         const self = this;
@@ -260,33 +276,25 @@ class Emitter extends EventEmitter {
         // const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
 
         const url = 'http://127.0.0.1:7783';
-
+        console.log('enable');
         this.apiRequest({ data, url }).then((result) => {
             if (result.error) {
                 return self.emit('notifier', { error: 3, desc: result.error })
             }
-
-            console.log(`${coin} enabled for Trade${type}`);
-            console.log(result);
-            self.fetchPortfolio(() => this.emit('updateTrade', { coin, type }));
+            this.emit('updateTrade', { coin, type });
         }).catch((error) => {
             self.emit('notifier', { error: 3 })
         });
     }
 
-    fetchPortfolio(cb) {
+    fetchPortfolio() {
         const self = this;
         const data = { userpass: self.userpass, method: 'portfolio' };
         const url = 'http://127.0.0.1:7783';
         this.apiRequest({ data, url }).then((result) => {
             // body.portfolio.map((item) => item.balance = self.balance({ coin: item.coin, address: item.address }))
 
-            self.getCoins().then((coinsList) => {
-                self.emit('coinsList', coinsList)
-                self.emit('setPortfolio', { portfolio: result.portfolio });
-            })
-
-            cb && cb();
+            self.emit('setPortfolio', { portfolio: result.portfolio });
         }).catch((error) => {
             self.emit('notifier', { error: 4, desc: marketmakerBin })
         });
