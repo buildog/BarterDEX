@@ -3,7 +3,7 @@
     position: relative;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 20px 20px 30px;
+    padding: 20px;
     background: $background-jaguar;
     color: $color-dark;
     width: 100%
