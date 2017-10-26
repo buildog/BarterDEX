@@ -7,15 +7,19 @@
 */
 
 .modal {
-    position: fixed;
+    position: absolute;
     z-index: 1000;
     top: 0;
-    left: 0;
+    right: 0;
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    height: 100vh;
     background: $background-jaguar;
+    box-shadow: $box-shadow-inputs;
+    transform: scale(.8);
+    transform-origin: top right;
+    border-radius: 4px;
+    border-top-right-radius: 0;
+    overflow: auto;
 }
 
 .modal-header {
@@ -29,6 +33,8 @@
     box-shadow:  0 6px 20px rgba(0,0,0,.04);
     z-index: 1;
     background: #FFF;
+    display: none
+
 }
 
 .modal-header h1 {
@@ -36,7 +42,7 @@
     font-weight: 200;
     font-size: 1.6em;
     text-align: left;
-    color: $color-dark
+    color: $color-dark;
 
 }
 
@@ -89,4 +95,4 @@
     transition: all .32s ease-in-out;
     will-change: all;
 }
-.modal.modal-open { top: 0 }
+.modal  { top: 94% }

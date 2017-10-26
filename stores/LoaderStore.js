@@ -1,5 +1,6 @@
 import { observable } from 'mobx';
 import { ipcRenderer } from 'electron';
+import CONSTANTS from '../constants';
 
 export default class LoaderStore {
       @observable store = []; /* initial is pending Iguana bootstrap*/
@@ -10,6 +11,7 @@ export default class LoaderStore {
             this.updateLoading(arg);
         });
     }
+
 
     updateLoading = (args) => {
         const { type, key } = args;
@@ -23,5 +25,12 @@ export default class LoaderStore {
         }
 
         this.store = ghost;
+    }
+
+    getLoader = (key) => {
+        const store = this.store;
+        const result = store.filter((item) => item === key)[0];
+
+        return CONSTANTS.loading[result];
     }
 }

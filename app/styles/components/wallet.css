@@ -1,18 +1,21 @@
 .wallet {
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
-    background: $background-jaguar;
+    justify-content: flex-start;
+    flex-direction: column;
+    background: #FFF;
+    height: 100vh;
+    transition: all .2s ease;
+    transform: translateY(0);
+    opacity: 1;
 }
 
-.wallet .component-header { background: #FFF }
-
 .wallet-icon {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
 
 
@@ -30,8 +33,22 @@
 }
 
 .wallet-wallets-header {
-    flex-shrink: 0
+    flex-shrink: 0;
+    padding-bottom: 20px;
+    padding-top: 30px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all .2s ease;
+    transform: translateY(0);
 }
+
+
+.wallet-balance,
+.wallet-coinName {
+    color: $color-dark;
+}
+
 
 .wallet-balance {
     color: $color-dark;
@@ -39,23 +56,35 @@
     font-size: .6em;
 }
 
+.wallet-balance { margin-bottom: 4px }
+
 .wallet-trade {
     display: flex;
     flex-grow: 1;
+    flex-shrink: 0;
     flex-direction: column;
     width: 100%;
-    justify-content: center;
     align-items: center;
-    padding-bottom: 20px;
 
 }
 
 .wallet-exchange {
+    display: flex;
     text-align: center;
-    width: 100%
+    width: 100%;
+    flex-grow: 1
 }
 
 
 .wallet-trade-buy {
     margin-top: auto
 }
+
+/* context */
+
+.wallet:not(.wallet-ready) {
+    opacity: 0;
+    transform: translateY(-100px);
+}
+
+.wallet:not(.wallet-ready) .wallet-wallets-header { transform: translateY(300px) }

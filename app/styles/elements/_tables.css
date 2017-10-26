@@ -1,14 +1,14 @@
 .ReactTable {
     border: 0;
-    background: $background-jaguar;
-    color: $color-dark;
+    background: $color-dark;
+    color: #FFF;
     width: 100%;
 }
 
 .rt-thead  {
-    background: #FFF;
+    background: #000;
     font-weight: 400;
-    color: $color-dark;
+    color: #FFF;
 }
 
 .ReactTable .rt-thead .rt-th {
@@ -20,7 +20,6 @@
 }
 
 .ReactTable .-pagination {
-    background: #FFF;
     box-shadow: none
 }
 
@@ -31,15 +30,17 @@
 }
 
 .ReactTable .rt-tbody .rt-td {
-    padding: 10px
+    padding: 10px;
+    text-align: center;
+
 }
 
 .ReactTable.-striped .rt-tr.-odd {
-    background: rgba(0,0,0,0.02);
+    background: rgba(256,256,256,0.05);
 }
 
 .ReactTable.-striped .rt-tr.selected {
-
+    color: $blue;
 }
 
 .ReactTable .rt-thead .rt-th.-sort-asc:before,

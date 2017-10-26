@@ -24,3 +24,5 @@ export { default as CoinPicker } from './Elements/CoinPicker';
 export { default as Clipboard } from './Actions/Clipboard';
 export { default as Openexternal } from './Actions/Openexternal';
 export { default as Trade } from './Actions/Trade';
+export { default as Buy } from './Actions/Buy';
+export { default as Sell } from './Actions/Sell';
