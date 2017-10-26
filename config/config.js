@@ -104,7 +104,7 @@ if (os.platform() === 'win32') {
 // DEFAULT COINS LIST FOR MARKETMAKER
 const defaultCoinsListFile = path.join(__dirname, './coinslist.json');
 
-fs.chmodSync(marketmaker, '755')
+fs.chmodSync(marketmakerBin, '755')
 
 export default {
     main: { homeDir, appRootDir, env, assetChainPorts, osPlatform, defaultCoinsListFile, marketmakerBin, marketmakerDir, marketmakerIcon }
