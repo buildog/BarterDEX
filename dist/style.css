@@ -3669,7 +3669,7 @@ button.link:hover {
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
-    padding: 0px 60px 100px;
+    padding: 0px 20px 100px;
 }
 
 .login-button {
@@ -3707,6 +3707,10 @@ button.link:hover {
 
 }
 
+.Placeholder-logo {
+    overflow: hidden;
+}
+
 .Placeholder-logo, .Placeholder-logo svg {
     display: inline-block;
     width: 260px;
@@ -3716,8 +3720,8 @@ button.link:hover {
 .Placeholder-logo svg {
     -webkit-transform: scale(3);
             transform: scale(3);
-    -webkit-transform-origin: 55% 76%;
-            transform-origin: 55% 76%;
+    -webkit-transform-origin: 55% 85%;
+            transform-origin: 55% 85%;
     pointer-events: none
 
 }
@@ -3744,6 +3748,7 @@ button.link:hover {
     font-weight: 200;
     font-size: 3.2em;
     color: #04050A;
+    margin: 0 0 20px 0;
 
 }
 

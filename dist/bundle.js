@@ -41012,6 +41012,10 @@ module.exports =
 	      var nullValue = installedCoins.filter(function (coin) {
 	        return coin.balance > 0 && coin.KMDvalue === 0;
 	      });
+	      var hasBalances = installedCoins.filter(function (coin) {
+	        return coin.balance > 0;
+	      }).length > 0;
+
 	      return _react2.default.createElement(
 	        'section',
 	        { className: 'dashboard-wallets' },
@@ -41021,7 +41025,7 @@ module.exports =
 	          _react2.default.createElement(
 	            'h2',
 	            null,
-	            !nullValue.length && _react2.default.createElement(
+	            !nullValue.length && hasBalances && _react2.default.createElement(
 	              _recharts.ResponsiveContainer,
 	              { className: 'dashboard-balances-pie' },
 	              _react2.default.createElement(
@@ -41055,7 +41059,7 @@ module.exports =
 	              _react2.default.createElement(
 	                'span',
 	                null,
-	                !nullValue.length && kmdTotal()
+	                !nullValue.length && hasBalances && kmdTotal()
 	              )
 	            )
 	          ),
