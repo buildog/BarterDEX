@@ -10519,28 +10519,29 @@ module.exports =
 	    return paths[name].replace('bin', 'node_modules/' + name + '/bin').replace('app.asar', 'app.asar.unpacked');
 	};
 	
-	if (env === 'development') {
-	    marketmakerBin = paths.marketmaker;
-	} else {
-	    marketmakerBin = transformBinaryPath('marketmaker');
-	}
+	marketmakerBin = paths.marketmaker;
 	
 	if (_os2.default.platform() === 'darwin') {
 	    // fixPath();
 	    marketmakerDir = homeDir + '/Library/Application Support/marketmaker';
+	
+	    if (env !== 'development') {
+	        marketmakerBin = transformBinaryPath('marketmaker');
+	    }
 	}
 	
 	if (_os2.default.platform() === 'linux') {
 	    marketmakerDir = homeDir + '/.marketmaker';
+	    if (env !== 'development') {
+	        marketmakerBin = marketmakerBin.replace('app.asar', 'app.asar.unpacked');
+	    }
 	}
 	
 	if (_os2.default.platform() === 'win32') {
-	    marketmakerDir = ({"NODE_ENV":"production"}).APPDATA + '/marketmaker';
-	    marketmakerDir = _path2.default.normalize(marketmakerDir);
+	    marketmakerDir = homeDir + '/marketmaker';
+	    // marketmakerDir = path.normalize(marketmakerDir);
 	    marketmakerIcon = _path2.default.join(__dirname, '/app/assets/icons/agama_icons/agama_app_icon.ico');
 	}
-	
-	console.log(marketmakerDir);
 	
 	// DEFAULT COINS LIST FOR MARKETMAKER
 	var defaultCoinsListFile = _path2.default.join(__dirname, './coinslist.json');
