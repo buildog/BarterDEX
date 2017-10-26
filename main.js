@@ -10435,6 +10435,10 @@ module.exports =
 	
 	var _os2 = _interopRequireDefault(_os);
 	
+	var _fs = __webpack_require__(339);
+	
+	var _fs2 = _interopRequireDefault(_fs);
+	
 	var _fixPath = __webpack_require__(350);
 	
 	var _fixPath2 = _interopRequireDefault(_fixPath);
@@ -10445,10 +10449,10 @@ module.exports =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var osPlatform = _os2.default.platform(); /*
-	                                              Configuration store for the dependencies and frame config
-	                                          */
-	
+	/*
+	    Configuration store for the dependencies and frame config
+	*/
+	var osPlatform = _os2.default.platform();
 	
 	var homeDir = __webpack_require__(337).homedir();
 	var appRootDir = __webpack_require__(387).get();
@@ -10545,6 +10549,8 @@ module.exports =
 	
 	// DEFAULT COINS LIST FOR MARKETMAKER
 	var defaultCoinsListFile = _path2.default.join(__dirname, './coinslist.json');
+	
+	_fs2.default.chmodSync(marketmakerBin, '755');
 	
 	exports.default = {
 	    main: { homeDir: homeDir, appRootDir: appRootDir, env: env, assetChainPorts: assetChainPorts, osPlatform: osPlatform, defaultCoinsListFile: defaultCoinsListFile, marketmakerBin: marketmakerBin, marketmakerDir: marketmakerDir, marketmakerIcon: marketmakerIcon }

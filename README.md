@@ -8,7 +8,10 @@ Before starting make sure you have [Agama wallet](https://github.com/SuperNETorg
 
 #### Install dependencies
 
-This project require nanomsg, you can install it via Homebrew:
+This project require nanomsg,
+
+##### via Homebrew:
+
 
 ```shell
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
@@ -17,6 +20,22 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 ```shell
 brew install nanomsg
 ```
+
+##### via cmake:
+
+```shell
+sudo apt-get update
+sudo apt-get install build-essential git cmake libcurl4-openssl-dev
+Install also the latest version of nanomsg:
+
+git clone https://github.com/nanomsg/nanomsg
+cd nanomsg; mkdir build; cd build; cmake ..
+cmake --build .
+ctest -C Debug .
+sudo cmake --build . --target install
+sudo ldconfig
+```
+
 
 #### Install barterDEX
 
