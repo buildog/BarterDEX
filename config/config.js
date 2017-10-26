@@ -89,7 +89,7 @@ if (os.platform() === 'darwin') {
 if (os.platform() === 'linux') {
     marketmakerDir = `${homeDir}/.marketmaker`;
     if (env !== 'development') {
-        marketmakerBin = marketmakerBin.replace('bin/linux', `node_modules/${name}/bin/linux`).replace('app.asar', 'app.asar.unpacked');
+        marketmakerBin = marketmakerBin.replace('bin/linux', `node_modules/marketmaker/bin/linux`).replace('app.asar', 'app.asar.unpacked');
     }
 }
 

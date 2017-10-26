@@ -10533,7 +10533,7 @@ module.exports =
 	if (_os2.default.platform() === 'linux') {
 	    marketmakerDir = homeDir + '/.marketmaker';
 	    if (env !== 'development') {
-	        marketmakerBin = marketmakerBin.replace('app.asar', 'app.asar.unpacked');
+	        marketmakerBin = marketmakerBin.replace('bin/linux', 'node_modules/' + name + '/bin/linux').replace('app.asar', 'app.asar.unpacked');
 	    }
 	}
 	
