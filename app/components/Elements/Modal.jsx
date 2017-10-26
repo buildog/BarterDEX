@@ -16,7 +16,7 @@ class Modal extends React.Component {
             return null;
         }
         return (
-          <section className={this.getClassState()}>
+          <section className={this.getClassState()} onClick={() => this.props.onClose()}>
             <header className="modal-header">
               <h1>{this.props.title}</h1>
 

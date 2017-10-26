@@ -9,14 +9,21 @@ export const portfolioEvents = ({ api, emitter, listener }) => {
         api.enableCoin(params);
     });
 
-    listener.on('refreshPortfolio', () => api.fetchPortfolio());
+    listener.on('disableCoin', (e, params) => {
+        api.disableCoin(params);
+    });
+
+    listener.on('refreshPortfolio', () => {
+        api.fetchMarket();
+        api.fetchCoins();
+    });
 
     api.on('setPortfolio', (data) => {
         /* intercept callback from API and update the store */
         emitter.send('setPortfolio', data);
-        emitter.send('loading', { type: 'delete', key: 4 });
-        emitter.send('loading', { type: 'delete', key: 3 });
     })
+
+    api.on('marketUpdate', (data) => emitter.send('marketUpdate', data))
 
     api.on('coinsList', (coins) => { emitter.send('coinsList', coins) })
 }

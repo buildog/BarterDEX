@@ -23,9 +23,9 @@ class Header extends React.Component {
                 <i className="window-header-logo" dangerouslySetInnerHTML={{ __html: logo }} />
                 <h1 className="Placeholder-text">Barter<strong>DEX</strong></h1>
               </li>
-              { userpass.length > 0 ? <li className="window__controls_right">
-                <button className="action danger" onClick={() => this.logout()}>logout</button>
-              </li> : '' }
+              <li className="window__controls_right">
+                { userpass.length > 0 && <button className="action danger" onClick={() => this.logout()}>logout</button> }
+              </li>
             </ul>
 
           </header>

@@ -10,7 +10,10 @@ export const tradeEvents = ({ api, emitter, listener }) => {
     });
 
     // update trademethod when coins are activated
-    api.on('updateTrade', (params) => { emitter.send('updateTrade', params) })
+    api.on('updateTrade', (params) => {
+        emitter.send('loading', { type: 'delete', key: 4 });
+        emitter.send('updateTrade', params);
+    })
 
     // cb trade
     api.on('trade', (params) => {

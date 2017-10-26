@@ -1,4 +1,5 @@
 import React from 'react'
+import { browserHistory } from 'react-router';
 import { inject, observer } from 'mobx-react'
 import {
         Header,
@@ -15,18 +16,17 @@ class Restricted extends React.Component {
 
     getClassState = () => {
         const { loader } = this.props.app;
-        const hasLoading = loader.store.length;
+        const { errors } = this.props.app.notifier;
 
         return classNames({
             app: true,
             'content-container': true,
-            loading: hasLoading
+            loading: loader.store.length > 0 && errors.length === 0
         })
     }
 
     privateRoute = () => {
         const { userpass } = this.props.app;
-
         if (userpass) {
             return this.props.children;
         }
@@ -34,18 +34,14 @@ class Restricted extends React.Component {
         return (<Login />);
     }
 
-    render() {
-        const { loader } = this.props.app;
-        const hasLoading = loader.store.length;
 
+    render() {
         return (
           <content className={this.getClassState()}>
             <Header />
             <section className="app-view">
-              { hasLoading === 0 ? '' : <MainLoader /> }
-              <Notifier />
               { this.privateRoute() }
-
+              <Notifier />
             </section>
             <Footer />
           </content>

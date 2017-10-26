@@ -31,14 +31,19 @@ const stores = {
     win: new WinStore()
 };
 
+const preloader = (nextState, replace, callback) => {
+    const { userpass } = stores.app;
 
-// setTimeout(() => {
-//     /* let the app bootstrap and events beeing registered... */
-//     stores.win.startIguana();
-//     stores.win.watchMarket();
-//     stores.win.initializePortfolio();
-// }, 1000);
+    if (!userpass) {
+        replace({ pathname: '/', state: { nextPathname: nextState.location.pathname } })
+        return callback()
+    }
 
+    const nRoutes = nextState.routes.length
+    const component = nextState.routes[nRoutes - 1].component
+    const params = nextState.params
+    component.preload({ params, stores }, () => callback())
+}
 
 const App = ({ children }) => (
   <Provider {...stores}>
@@ -49,7 +54,7 @@ const App = ({ children }) => (
 const Routes = (
   <Route path="/" component={App}>
     <IndexRoute component={Dashboard} />
-    <Route path="/wallet/:coin" component={Wallet} />
+    <Route path="/wallet/:coin" component={Wallet} onEnter={preloader} />
   </Route>
 );
 

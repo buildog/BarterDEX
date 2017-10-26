@@ -93,12 +93,10 @@ if (os.platform() === 'linux') {
 }
 
 if (os.platform() === 'win32') {
-    marketmakerDir = `${process.env.APPDATA}/marketmaker`;
-    marketmakerDir = path.normalize(marketmakerDir);
+    marketmakerDir = `${homeDir}/marketmaker`;
+    // marketmakerDir = path.normalize(marketmakerDir);
     marketmakerIcon = path.join(__dirname, '/app/assets/icons/agama_icons/agama_app_icon.ico');
 }
-
-console.log(marketmakerDir);
 
 // DEFAULT COINS LIST FOR MARKETMAKER
 const defaultCoinsListFile = path.join(__dirname, './coinslist.json');

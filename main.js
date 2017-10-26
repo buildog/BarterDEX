@@ -9009,7 +9009,6 @@ module.exports =
 	                    mainWindow = new _electron.BrowserWindow({
 	                        width: 400,
 	                        height: 720,
-	                        resizable: false,
 	                        show: false,
 	                        backgroundColor: '#959CAE'
 	                    });
@@ -9205,6 +9204,7 @@ module.exports =
 	        var _this = _possibleConstructorReturn(this, (Emitter.__proto__ || Object.getPrototypeOf(Emitter)).call(this));
 	
 	        _this.config = config;
+	        _this.logout = false;
 	        return _this;
 	    }
 	
@@ -9275,7 +9275,7 @@ module.exports =
 	        key: 'killMarketmaker',
 	        value: function killMarketmaker(data) {
 	            var self = this;
-	
+	            self.logout = true;
 	            return new Promise(function (resolve) {
 	                if (data === true) {
 	                    var marketmakerGrep = void 0;
@@ -9305,14 +9305,14 @@ module.exports =
 	
 	                                if (error !== null) {
 	                                    console.log(pkillCmd + ' exec error: ' + error);
-	                                    self.emit('notifier', { error: 1 });
+	                                    // self.emit('notifier', { error: 1 });
 	                                }
 	                            });
 	                        }
 	
 	                        if (error !== null) {
 	                            console.log(marketmakerGrep + ' exec error: ' + error);
-	                            self.emit('notifier', { error: 1 });
+	                            // self.emit('notifier', { error: 1 });
 	                        } else {
 	                            self.emit('logoutCallback', { type: 'success' });
 	                            self.userpass = '';
@@ -9330,6 +9330,7 @@ module.exports =
 	            var _this2 = this;
 	
 	            var self = this;
+	            self.logout = false;
 	            // console.log(data.passphrase);
 	            try {
 	                // check if marketmaker instance is already running
@@ -9355,11 +9356,14 @@ module.exports =
 	                                console.log(err); // => null
 	                            }
 	                        });
-	                    } else {
+	                    } else if (!data.retry) {
 	                        console.log('port 7783 marketmaker is already in use, restarting markertmaker');
+	                        data.retry = true;
 	                        _this2.killMarketmaker(true).then(function () {
 	                            return _this2.startMarketMaker(data);
 	                        });
+	                    } else {
+	                        // self.emit('notifier', { error: 1 });
 	                    }
 	                });
 	            } catch (e) {
@@ -9383,11 +9387,31 @@ module.exports =
 	                // maxBuffer: 1024 * 10000 // 10 mb
 	            }, function (error, stdout, stderr) {
 	                console.log('stdout: ' + stdout);
-	                console.log('stderr: ' + stderr);
+	                if (stderr.length) {
+	                    console.log('stderr: ' + stderr);
+	                    !self.logout && self.emit('notifier', { error: 9, desc: stderr });
+	                }
 	                console.log('exed');
 	            });
 	
 	            self.emit('loginCallback', { type: 'success' });
+	        }
+	    }, {
+	        key: 'fetchMarket',
+	        value: function fetchMarket() {
+	            var self = this;
+	            (0, _request2.default)('http://coincap.io/front', function (error, response, body) {
+	                self.emit('marketUpdate', { data: JSON.parse(body) });
+	            });
+	        }
+	    }, {
+	        key: 'fetchCoins',
+	        value: function fetchCoins() {
+	            var self = this;
+	
+	            self.getCoins().then(function (coinsList) {
+	                self.emit('coinsList', coinsList);
+	            });
 	        }
 	    }, {
 	        key: 'checkMMStatus',
@@ -9447,13 +9471,38 @@ module.exports =
 	            });
 	        }
 	    }, {
-	        key: 'enableCoin',
-	        value: function enableCoin(_ref3) {
+	        key: 'disableCoin',
+	        value: function disableCoin(_ref3) {
 	            var _this4 = this;
 	
 	            var _ref3$coin = _ref3.coin,
 	                coin = _ref3$coin === undefined ? '' : _ref3$coin,
 	                type = _ref3.type;
+	
+	            var self = this;
+	
+	            var data = { userpass: self.userpass, method: 'disable', coin: coin };
+	            // electrum
+	            // const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
+	
+	            var url = 'http://127.0.0.1:7783';
+	
+	            this.apiRequest({ data: data, url: url }).then(function (result) {
+	                self.fetchPortfolio(function () {
+	                    return _this4.emit('updateTrade', { coin: coin, type: type });
+	                });
+	            }).catch(function (error) {
+	                self.emit('notifier', { error: 3 });
+	            });
+	        }
+	    }, {
+	        key: 'enableCoin',
+	        value: function enableCoin(_ref4) {
+	            var _this5 = this;
+	
+	            var _ref4$coin = _ref4.coin,
+	                coin = _ref4$coin === undefined ? '' : _ref4$coin,
+	                type = _ref4.type;
 	
 	            var self = this;
 	
@@ -9467,35 +9516,30 @@ module.exports =
 	                if (result.error) {
 	                    return self.emit('notifier', { error: 3, desc: result.error });
 	                }
-	
-	                console.log(coin + ' enabled for Trade' + type);
-	                console.log(result);
-	                self.fetchPortfolio(function () {
-	                    return _this4.emit('updateTrade', { coin: coin, type: type });
-	                });
+	                _this5.emit('updateTrade', { coin: coin, type: type });
 	            }).catch(function (error) {
 	                self.emit('notifier', { error: 3 });
 	            });
 	        }
 	    }, {
 	        key: 'fetchPortfolio',
-	        value: function fetchPortfolio(cb) {
+	        value: function fetchPortfolio() {
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'portfolio' };
 	            var url = 'http://127.0.0.1:7783';
 	            this.apiRequest({ data: data, url: url }).then(function (result) {
 	                // body.portfolio.map((item) => item.balance = self.balance({ coin: item.coin, address: item.address }))
+	
 	                self.emit('setPortfolio', { portfolio: result.portfolio });
-	                cb && cb();
 	            }).catch(function (error) {
 	                self.emit('notifier', { error: 4, desc: marketmakerBin });
 	            });
 	        }
 	    }, {
 	        key: 'orderbook',
-	        value: function orderbook(_ref4) {
-	            var base = _ref4.base,
-	                rel = _ref4.rel;
+	        value: function orderbook(_ref5) {
+	            var base = _ref5.base,
+	                rel = _ref5.rel;
 	
 	            var self = this;
 	            var data = { userpass: this.userpass, method: 'orderbook', base: base, rel: rel };
@@ -9508,9 +9552,9 @@ module.exports =
 	        }
 	    }, {
 	        key: 'balance',
-	        value: function balance(_ref5) {
-	            var coin = _ref5.coin,
-	                address = _ref5.address;
+	        value: function balance(_ref6) {
+	            var coin = _ref6.coin,
+	                address = _ref6.address;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'balance', coin: coin, address: address };
@@ -9524,20 +9568,29 @@ module.exports =
 	        }
 	    }, {
 	        key: 'trade',
-	        value: function trade(_ref6) {
-	            var _ref6$method = _ref6.method,
-	                method = _ref6$method === undefined ? 'buy' : _ref6$method,
-	                base = _ref6.base,
-	                rel = _ref6.rel,
-	                price = _ref6.price,
-	                relvolume = _ref6.relvolume;
+	        value: function trade(_ref7) {
+	            var _ref7$method = _ref7.method,
+	                method = _ref7$method === undefined ? 'buy' : _ref7$method,
+	                base = _ref7.base,
+	                rel = _ref7.rel,
+	                price = _ref7.price,
+	                relvolume = _ref7.relvolume,
+	                basevolume = _ref7.basevolume;
 	
 	            var self = this;
+	
 	            var data = { userpass: self.userpass, method: method, base: base, rel: rel, relvolume: relvolume, price: price };
+	
+	            if (method === 'buy') {
+	                data.relvolume = relvolume;
+	            } else {
+	                data.basevolume = basevolume;
+	            }
+	
 	            var url = 'http://127.0.0.1:7783';
 	            self.inventory({ coin: rel }).then(function () {
 	                self.apiRequest({ data: data, url: url }).then(function (result) {
-	                    console.log('buy order submitted');
+	                    console.log(method + ' order submitted');
 	                    console.log(result);
 	                    if (!result.error) {
 	                        self.emit('trade', result);
@@ -9551,18 +9604,18 @@ module.exports =
 	        }
 	    }, {
 	        key: 'sendrawtransaction',
-	        value: function sendrawtransaction(_ref7) {
-	            var _this5 = this;
+	        value: function sendrawtransaction(_ref8) {
+	            var _this6 = this;
 	
-	            var coin = _ref7.coin,
-	                signedtx = _ref7.signedtx;
+	            var coin = _ref8.coin,
+	                signedtx = _ref8.signedtx;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'sendrawtransaction', coin: coin, signedtx: signedtx };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this5.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this6.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('sendWithdraw ' + coin);
 	                    console.log(result);
 	                    resolve(result);
@@ -9574,11 +9627,11 @@ module.exports =
 	        }
 	    }, {
 	        key: 'withdraw',
-	        value: function withdraw(_ref8) {
-	            var _this6 = this;
+	        value: function withdraw(_ref9) {
+	            var _this7 = this;
 	
-	            var address = _ref8.address,
-	                coin = _ref8.coin;
+	            var address = _ref9.address,
+	                coin = _ref9.coin;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass,
@@ -9587,7 +9640,7 @@ module.exports =
 	                outputs: [_defineProperty({}, address, 0.001), _defineProperty({}, address, 0.002)] };
 	            var url = 'http://127.0.0.1:7783';
 	            return new Promise(function (resolve, reject) {
-	                return _this6.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this7.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('withdraw for ' + coin);
 	                    console.log(result);
 	                    resolve(result);
@@ -9599,17 +9652,17 @@ module.exports =
 	        }
 	    }, {
 	        key: 'inventory',
-	        value: function inventory(_ref11) {
-	            var _this7 = this;
+	        value: function inventory(_ref12) {
+	            var _this8 = this;
 	
-	            var coin = _ref11.coin;
+	            var coin = _ref12.coin;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'inventory', coin: coin };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this7.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this8.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('inventory for ' + coin);
 	                    console.log(result);
 	                    if (result.alice.length < 3) {
@@ -9629,18 +9682,18 @@ module.exports =
 	        }
 	    }, {
 	        key: 'listunspent',
-	        value: function listunspent(_ref12) {
-	            var _this8 = this;
+	        value: function listunspent(_ref13) {
+	            var _this9 = this;
 	
-	            var coin = _ref12.coin,
-	                address = _ref12.address;
+	            var coin = _ref13.coin,
+	                address = _ref13.address;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'listunspent', coin: coin, address: address };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this8.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this9.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('listunspent for ' + coin);
 	                    console.log(result);
 	                    resolve(result);
@@ -28493,15 +28546,22 @@ module.exports =
 	        api.enableCoin(params);
 	    });
 	
+	    listener.on('disableCoin', function (e, params) {
+	        api.disableCoin(params);
+	    });
+	
 	    listener.on('refreshPortfolio', function () {
-	        return api.fetchPortfolio();
+	        api.fetchMarket();
+	        api.fetchCoins();
 	    });
 	
 	    api.on('setPortfolio', function (data) {
 	        /* intercept callback from API and update the store */
 	        emitter.send('setPortfolio', data);
-	        emitter.send('loading', { type: 'delete', key: 4 });
-	        emitter.send('loading', { type: 'delete', key: 3 });
+	    });
+	
+	    api.on('marketUpdate', function (data) {
+	        return emitter.send('marketUpdate', data);
 	    });
 	
 	    api.on('coinsList', function (coins) {
@@ -28534,6 +28594,7 @@ module.exports =
 	
 	    // update trademethod when coins are activated
 	    api.on('updateTrade', function (params) {
+	        emitter.send('loading', { type: 'delete', key: 4 });
 	        emitter.send('updateTrade', params);
 	    });
 	

@@ -19,6 +19,7 @@ class Emitter extends EventEmitter {
     constructor({ config }) {
         super();
         this.config = config;
+        this.logout = false;
     }
 
     apiRequest({ data, url }) {
@@ -80,7 +81,7 @@ class Emitter extends EventEmitter {
     // kill rogue marketmaker copies on start
     killMarketmaker(data) {
         const self = this;
-
+        self.logout = true;
         return new Promise((resolve) => {
             if (data === true) {
                 let marketmakerGrep;
@@ -110,14 +111,14 @@ class Emitter extends EventEmitter {
 
                             if (error !== null) {
                                 console.log(`${pkillCmd} exec error: ${error}`);
-                                self.emit('notifier', { error: 1 });
+                                // self.emit('notifier', { error: 1 });
                             }
                         });
                     }
 
                     if (error !== null) {
                         console.log(`${marketmakerGrep} exec error: ${error}`);
-                        self.emit('notifier', { error: 1 });
+                        // self.emit('notifier', { error: 1 });
                     } else {
                         self.emit('logoutCallback', { type: 'success' });
                         self.userpass = '';
@@ -133,6 +134,7 @@ class Emitter extends EventEmitter {
 
     startMarketMaker(data) {
         const self = this;
+        self.logout = false;
           // console.log(data.passphrase);
         try {
           // check if marketmaker instance is already running
@@ -165,7 +167,7 @@ class Emitter extends EventEmitter {
                     data.retry = true;
                     this.killMarketmaker(true).then(() => this.startMarketMaker(data));
                 } else {
-                    self.emit('notifier', { error: 1 });
+                    // self.emit('notifier', { error: 1 });
                 }
             });
         } catch (e) {
@@ -191,7 +193,7 @@ class Emitter extends EventEmitter {
             console.log(`stdout: ${stdout}`);
             if (stderr.length) {
                 console.log(`stderr: ${stderr}`);
-                self.emit('notifier', { error: 9, desc: stderr });
+                !self.logout && self.emit('notifier', { error: 9, desc: stderr });
             }
             console.log('exed');
         });
@@ -199,11 +201,25 @@ class Emitter extends EventEmitter {
         self.emit('loginCallback', { type: 'success' });
     }
 
+    fetchMarket() {
+        const self = this;
+        request('http://coincap.io/front', (error, response, body) => {
+            self.emit('marketUpdate', { data: JSON.parse(body) });
+        });
+    }
+
+    fetchCoins() {
+        const self = this;
+
+        self.getCoins().then((coinsList) => {
+            self.emit('coinsList', coinsList);
+        })
+    }
+
     checkMMStatus() {
         const self = this;
         portscanner.checkPortStatus(7783, '127.0.0.1', (error, status) => {
             self.emit('MMStatus', status);
-            console.log(status);
         })
     }
 
@@ -220,7 +236,7 @@ class Emitter extends EventEmitter {
             self.coins = coins;
 
             self.getCoins().then((coinsList) => {
-                self.emit('coinsList', coinsList)
+                self.emit('coinsList', coinsList);
                 self.emit('updateUserInfo', { coins, userpass, mypubkey });
             })
         }).catch((error) => {
@@ -245,6 +261,22 @@ class Emitter extends EventEmitter {
         }));
     }
 
+    disableCoin({ coin = '', type }) {
+        const self = this;
+
+        const data = { userpass: self.userpass, method: 'disable', coin };
+        // electrum
+        // const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
+
+        const url = 'http://127.0.0.1:7783';
+
+        this.apiRequest({ data, url }).then((result) => {
+            self.fetchPortfolio(() => this.emit('updateTrade', { coin, type }));
+        }).catch((error) => {
+            self.emit('notifier', { error: 3 })
+        });
+    }
+
 
     enableCoin({ coin = '', type }) {
         const self = this;
@@ -259,23 +291,20 @@ class Emitter extends EventEmitter {
             if (result.error) {
                 return self.emit('notifier', { error: 3, desc: result.error })
             }
-
-            console.log(`${coin} enabled for Trade${type}`);
-            console.log(result);
-            self.fetchPortfolio(() => this.emit('updateTrade', { coin, type }));
+            this.emit('updateTrade', { coin, type });
         }).catch((error) => {
             self.emit('notifier', { error: 3 })
         });
     }
 
-    fetchPortfolio(cb) {
+    fetchPortfolio() {
         const self = this;
         const data = { userpass: self.userpass, method: 'portfolio' };
         const url = 'http://127.0.0.1:7783';
         this.apiRequest({ data, url }).then((result) => {
             // body.portfolio.map((item) => item.balance = self.balance({ coin: item.coin, address: item.address }))
+
             self.emit('setPortfolio', { portfolio: result.portfolio });
-            cb && cb();
         }).catch((error) => {
             self.emit('notifier', { error: 4, desc: marketmakerBin })
         });
@@ -302,13 +331,23 @@ class Emitter extends EventEmitter {
         });
     }
 
-    trade({ method = 'buy', base, rel, price, relvolume }) {
+    trade({ method = 'buy', base, rel, price, relvolume, basevolume }) {
         const self = this;
+
+
         const data = { userpass: self.userpass, method, base, rel, relvolume, price };
+
+        if (method === 'buy') {
+            data.relvolume = relvolume;
+        } else {
+            data.basevolume = basevolume;
+        }
+
+
         const url = 'http://127.0.0.1:7783';
         self.inventory({ coin: rel }).then(() => {
             self.apiRequest({ data, url }).then((result) => {
-                console.log(`buy order submitted`);
+                console.log(`${method} order submitted`);
                 console.log(result);
                 if (!result.error) {
                     self.emit('trade', result);
