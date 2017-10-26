@@ -37,11 +37,13 @@ class Dashboard extends React.Component {
         // const { tradeBase, tradeRel, coinsList } = this.props.app.portfolio;
         const { installedCoins, colors, kmdTotal, portfolioRenderFIAT } = this.props.app.portfolio;
         const nullValue = installedCoins.filter((coin) => coin.balance > 0 && coin.KMDvalue === 0);
+        const hasBalances = installedCoins.filter((coin) => coin.balance > 0).length > 0;
+
         return (
           <section className="dashboard-wallets">
             <header className="dashboard-wallets-header component-header">
               <h2>
-                { !nullValue.length && <ResponsiveContainer className="dashboard-balances-pie">
+                { !nullValue.length && hasBalances && <ResponsiveContainer className="dashboard-balances-pie">
                   <PieChart>
                     <Pie
                       data={installedCoins.filter((coin) => coin.KMDvalue > 0)}
@@ -56,7 +58,7 @@ class Dashboard extends React.Component {
                 </ResponsiveContainer> }
 
                 <div>Portfolio</div>
-                <small><span>{ !nullValue.length && kmdTotal()}</span></small>
+                <small><span>{ !nullValue.length && hasBalances && kmdTotal()}</span></small>
 
               </h2>
               <button className="dashboard-wallets-header-add action primary" disabled>
