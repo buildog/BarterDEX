@@ -56,7 +56,7 @@ class Login extends React.Component {
                   onChange={(e) => this.updatePassphase(e.target.value)}
                 />
                 <button
-                  disabled={this.state.passphrase.length === 0}
+                  disabled={this.state.passphrase.length === 0 || loginLoader}
                   className={this.getClassState()}
                   onClick={() => this.login()}
                 >

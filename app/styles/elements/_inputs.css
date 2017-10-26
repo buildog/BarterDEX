@@ -28,6 +28,13 @@ input {
     width: auto;
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
 input:focus,
 textarea:focus {
     border: 1px solid #2188ff;

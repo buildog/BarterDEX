@@ -15,7 +15,7 @@ export const portfolioEvents = ({ api, emitter, listener }) => {
 
     listener.on('refreshPortfolio', () => {
         api.fetchMarket();
-        api.fetchPortfolio();
+        api.fetchCoins();
     });
 
     api.on('setPortfolio', (data) => {

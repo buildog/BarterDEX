@@ -32,6 +32,13 @@ const stores = {
 };
 
 const preloader = (nextState, replace, callback) => {
+    const { userpass } = stores.app;
+
+    if (!userpass) {
+        replace({ pathname: '/', state: { nextPathname: nextState.location.pathname } })
+        return callback()
+    }
+
     const nRoutes = nextState.routes.length
     const component = nextState.routes[nRoutes - 1].component
     const params = nextState.params

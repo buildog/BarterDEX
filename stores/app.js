@@ -48,7 +48,7 @@ export default class AppStore {
             ipcRenderer.send('readyToQuit');
         })
 
-        // shepherdIPC({ command: 'logout' });
+        //  this.logout();
     }
 
   @action login = (passphrase) => {

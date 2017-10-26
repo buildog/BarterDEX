@@ -1,4 +1,5 @@
 import React from 'react'
+import { browserHistory } from 'react-router';
 import { inject, observer } from 'mobx-react'
 import {
         Header,
@@ -24,7 +25,6 @@ class Restricted extends React.Component {
 
     privateRoute = () => {
         const { userpass } = this.props.app;
-
         if (userpass) {
             return this.props.children;
         }

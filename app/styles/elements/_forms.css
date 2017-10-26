@@ -32,29 +32,30 @@
     border-bottom: 2px solid $blue;
 }
 
+.react-toggle:hover {
+    opacity: 1
+}
+
 .react-toggle--checked .react-toggle-track {
-    background: $purple
+    background: $color-dark
 }
 
 .react-toggle--checked .react-toggle-thumb {
-    border-color: $purple
+    border-color: $color-dark
 }
 
 .react-toggle-track {
-    background-color: #E0DCE9
+    background-color: $color-dark
 }
 
 
-.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: #E0DCE9
-}
 
 .react-toggle--checked .react-toggle-track {
-  background-color: $purple;
+  background-color: $color-dark
 }
 
 .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: $purple;
+  background-color: $color-dark
 }
 
 .react-toggle--focus .react-toggle-thumb {

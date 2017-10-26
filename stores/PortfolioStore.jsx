@@ -56,20 +56,16 @@ export default class PortfolioStore {
         this.defaultCrypto = defaultCrypto;
         this.formatFIAT = { format: '%s%v', symbol: this.defaultCurrency.symbol }
         this.formatCrypto = { format: '%v %c', code: defaultCrypto, maxFraction: 8 };
-        this.autorefresh = false;
+
         this.initializedtradeRel = false;
 
         const self = this;
 
-        ipcRenderer.on('setPortfolio', (e, { portfolio }) => { this.setPortfolio(portfolio) });
         ipcRenderer.on('coinsList', (e, coinsList) => { self.prepareCoinsList(coinsList) });
-
-        // trade methods after coin is activated
         ipcRenderer.on('updateTrade', (e, { coin, type }) => { self.updateTrade(coin, type) });
         ipcRenderer.on('trade', (e, result) => { self.tradeCb(result) });
     }
 
-    getPortfolioCoin = (short) => this.portfolio.filter((asset) => asset.coin === short)[0];
     getMarket = (short) => this.market.getMarket().filter((asset) => asset.short === short)[0];
 
     @action getCoin = (short) => this.installedCoins.filter((asset) => asset.coin === short)[0];
@@ -103,21 +99,9 @@ export default class PortfolioStore {
         byIcon.sort((a, b) => a.hasSVGIcon ? 0 : 1);
         this.coinsList = byIcon;
         this.installedCoins = addIcons(this.coinsList.filter((coin) => coin.height > 0).sort((a, b) => a.balance > 0 ? 0 : 1));
-
-        // if (!self.autorefresh) {
-        //     self.autorefresh = setInterval(() => self.refresh(), 1000)
-        // }
     }
 
-    @action setPortfolio = (portfolio) => {
-        const self = this;
-        this.portfolio = addIcons(portfolio)
-    }
-
-
-    // trade methods check if coin is activated
     @action setTrade = (coin, type) => {
-        console.log(coin);
         ipcRenderer.send('enableCoin', { coin: coin.coin, type })
     }
 
@@ -164,7 +148,7 @@ export default class PortfolioStore {
     }
 
     get24hEvolution = (short) => {
-        const coin = this.getPortfolioCoin(short);
+        const coin = this.getCoin(short);
         return coin.perc;
     }
 
@@ -201,13 +185,8 @@ export default class PortfolioStore {
 
     @action leave = () => {
         const self = this;
-
+        // autorefresh is set after updateUserInfo (app.js)
         clearInterval(self.autorefresh);
-
-
-        // ipcRenderer.send('disableCoin', { coin: self.tradeBase })
-        // ipcRenderer.send('disableCoin', { coin: self.tradeRel })
-
         self.tradeBase = false;
         self.tradeRel = false;
         self.orderbook.killListener();

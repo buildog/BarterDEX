@@ -3,7 +3,7 @@
     align-items: flex-start;
     justify-content: flex-start;
     flex-direction: column;
-    background: $background-jaguar;
+    background: #FFF;
     height: 100vh;
     transition: all .2s ease;
     transform: translateY(0);

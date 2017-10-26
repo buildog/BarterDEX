@@ -14,7 +14,6 @@ class Wallet extends React.Component {
     static preload({ params, stores }, callback) {
         const { coin } = params;
         const { autoSetTrade } = stores.app.portfolio;
-
         autoSetTrade(coin);
         /* wait for callaback?*/
         const loop = setTimeout(() => {
@@ -62,7 +61,6 @@ class Wallet extends React.Component {
             <header className={`wallet-wallets-header component-header component-header-centered component-header-withBack ${coin.coin}`}>
               <Link className="wallet-wallets-header-back action primary right dark" to="/">
                 <i className="wallet-wallets-list-item_action" dangerouslySetInnerHTML={{ __html: arrow }} />
-                <span className="wallet-wallets-header-back-helper">Back</span>
               </Link>
               <h2>
                 <div className="wallet-icon coin-colorized">{ coin.icon }</div>

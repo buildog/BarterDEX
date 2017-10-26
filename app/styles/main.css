@@ -20,10 +20,7 @@
 @import 'elements/_buttons';
 @import 'elements/_forms';
 @import 'elements/_progress';
-@import 'elements/_toggler';
 @import 'elements/_tooltip';
-@import 'elements/_controls';
-@import 'elements/_video';
 @import 'elements/_modal';
 @import 'elements/_tables';
 @import 'elements/_header';
@@ -55,6 +52,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 4px;
     background: $background-app;
 }
 
@@ -73,6 +71,8 @@ body {
     width: 100%;
     pointer-events: all;
     overflow: auto;
+    border-radius: 4px;
+
 }
 
 

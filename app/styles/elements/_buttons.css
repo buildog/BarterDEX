@@ -13,7 +13,6 @@ button {
     background: transparent;
     border: none;
     color: inherit;
-    font-weight: 600;
     padding: 0;
     cursor: pointer;
     transition: all .2s ease;
@@ -43,7 +42,6 @@ button.withBorder {
 button.link {
     border-bottom: 1px solid $blue;
     border-radius: 0;
-    margin-left: 6px;
 }
 
 button.link:hover {
@@ -85,10 +83,12 @@ button.link:hover {
     flex-grow: 1;
     display: flex;
     align-items: center;
-    justify-content: center;
 }
 
-.action.centered span { right: -16px }
+.action.centered span {
+    right: -16px;
+    justify-content: center;
+}
 
 .action > i {
     margin-left: 8px;

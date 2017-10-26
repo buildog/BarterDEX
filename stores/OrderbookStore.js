@@ -15,6 +15,7 @@ export default class OrderbookStore {
 
     @action updateOrderbook = ({ data }) => {
         this.orderbook = data;
+        console.log(data);
         this.asks = data.asks.filter((ask) => ask.numutxos > 0);
         this.bids = data.bids.filter((bid) => bid.numutxos > 0);
     }

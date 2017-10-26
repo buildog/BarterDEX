@@ -7,7 +7,6 @@
 .trade,
 .trade-body {
     width: 100%;
-    background: #FFF;
     flex-grow: 1;
     flex-shrink: 0
 }
@@ -35,26 +34,44 @@
 .trade-type-item {
     padding: 10px 10px 4px 10px;
     flex-grow: 1;
-    border-bottom:  1px solid $grey;
+    border: 1px solid transparent;
+    border-bottom-color: $grey;
     opacity: .5
 }
 
 .trade-type-item:hover,
-.trade-type-item.current { opacity: 1 }
+.trade-buy .trade-type-item-buy,
+.trade-sell .trade-type-item-sell,
+.trade-wallet .trade-type-item-wallet,
+.trade-charts .trade-type-item-charts,
+.trade-orders .trade-type-item-orders { opacity: 1 }
 
-.trade-type-item.current {
+.trade-buy .trade-type-item-buy,
+.trade-sell .trade-type-item-sell,
+.trade-wallet .trade-type-item-wallet,
+.trade-charts .trade-type-item-charts,
+.trade-orders .trade-type-item-orders {
     background: #FFF;
-    border-bottom: transparent;
+    border-bottom-color: transparent;
     color: $color-dark;
     border-top: 1px solid $grey;
+    font-weight: 600;
 }
 
-.trade-type-item.current:not(:first-of-type) {
+.trade-buy .trade-type-item-buy,
+.trade-sell .trade-type-item-sell,
+.trade-wallet .trade-type-item-wallet,
+.trade-charts .trade-type-item-charts,
+.trade-orders .trade-type-item-orders {
     border-left: 1px solid $grey;
     border-top-left-radius: 4px;
 }
 
-.trade-type-item.current:not(:last-of-type) {
+.trade-buy .trade-type-item-buy,
+.trade-sell .trade-type-item-sell,
+.trade-wallet .trade-type-item-wallet,
+.trade-charts .trade-type-item-charts,
+.trade-orders .trade-type-item-orders {
     border-right: 1px solid $grey;
     border-top-right-radius: 4px;
 }
@@ -65,11 +82,7 @@
     justify-content: center;
     flex-direction: column;
     width: 60px;
-    font-weight: 400;
 }
-
-.trade-type-item.current button > div { font-weight: 600 }
-
 
 .trade-type-item i svg {
     width: 60px;
@@ -135,12 +148,6 @@
 }
 
 .trade-orderbook {
-    position: absolute;
-    z-index: 100;
-    top: 90px;
-    left: 0px;
-    width: 100%;
-    max-height: 100%;
     background: $color-dark;
     box-shadow: $box-shadow-inputs;
     border-bottom-left-radius: 4px;
@@ -156,27 +163,24 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     padding: 10px;
     bottom: 0px;
     left: 0;
     z-index: 100;
-    transform: translateY(10px);
-    opacity: 0;
     transition: all .2s ease;
-    pointer-events: none;
     will-change: transform;
     z-index: 1;
 
 }
 
 .trade-action-wrapper {
+    flex-grow: 1;
     min-width: 100%;
     border-radius: 4px;
     background: #FFF;
     color: $color-dark;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     flex-direction: column;
 }
@@ -189,7 +193,10 @@
 
 .trade-amount input {
     min-width: 100%;
-    padding: 24px 10px 24px 14px;
+    position: absolute;
+    right: 0;
+    padding: 26px 10px 26px 14px;
+    font-weight: 600
 }
 
 .trade-action-wrapper button { box-shadow: none !important }
@@ -217,21 +224,24 @@
     width: 100%
 }
 
-.trade-amount_input-wrapper  { position: relative }
-.trade-amount_input-wrapper code {
-    position: absolute;
-    top: 10px;
-    right: 30px;
+.trade-amount_input-wrapper  {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 40px;
+    padding-right: 10px;
+
+}
+.trade-amount_input-wrapper .trade-setMax {
+    position: relative;
     z-index: 1;
-    margin: 0;
-    height: calc(100% - 20px);
     display: flex;
     align-items: center;
     color: $blue;
     border: 1px solid $blue;
-    opacity: .2;
-
-
+    padding: 7px 10px;
+    border-radius: 4px;
 }
 
 .trade-amount .label {
@@ -239,15 +249,30 @@
     align-items: center;
     width: 100%;
     font-weight: 600;
-    padding: 10px 4px 10px 10px;
-    justify-content: space-between;
-    pointer-events: none;
+    padding: 10px 4px 20px 10px;
+    justify-content: flex-end;
 }
 
+.trade-amount .label .label-title {
+    margin-right: auto;
+    font-weight: 400;
+}
+
+.trade-amount .label .link {
+    margin-left: 10px;
+}
+
+
+.trade-rel {
+    flex-direction: column;
+}
 
 .trade-rel > * {
     flex-grow: 1;
 }
+
+
+.action.trade-pair { padding: 0 }
 
 .trade-amount .label.trade-rel {
     padding: 10px 4px 10px 4px
@@ -257,7 +282,6 @@
 
 .trade-amount .label.trade-rel button {
     background: #FFF;
-    box-shadow: $box-shadow-inputs !important;
     width: 100%;
     font-size: 1em
 }
@@ -277,11 +301,40 @@
 }
 
 
+.trade-buy-label,
+.trade-sell-label {
+    position: absolute;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    left: -100px;
+}
+
+.trade-sell-label {
+    left: auto;
+    right: -90px;
+}
+
+.trade .react-toggle-track-check,
+.trade .react-toggle--checked .react-toggle-track-x {
+    opacity: .4
+}
+
+.trade .react-toggle--checked .react-toggle-track-check { opacity: 1 }
 
 
+.trade-action-amountRel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-weight: 600;
+}
 
-.trade-action-amountRel { display: flex }
-.trade-action-amountRel > * { margin-right: 4px }
+.trade-action-amountRel small {
+    font-weight: 200;
+    font-size: 1.2em
+}
 
 .trade-amount_input_rate {
     position: relative;
@@ -297,20 +350,44 @@
     margin-bottom: 10px;
 }
 
-.trade-button {
-    width: 100%;
-    padding: 30px 20px;
-    font-size: 1em;
+.trade-button-wrapper {
+    width: 100%
 }
 
-/*.trade-button  i {
-    transform: scale(1.2)
-}*/
+.trade-button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 30px 20px;
+    font-size: 1em;
+    justify-content: flex-start;
+    text-align: left;
+}
 
-/* contexts */
+.trade-button  i svg {
+    width: 40px;
+    height: 40px;
+}
 
-.trade-ratePicked .trade-action {
-    opacity: 1;
-    transform: translateY(0px);
-    pointer-events: all;
+
+/* charts */
+.trade-view-charts {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: #FFF;
+    font-size: 1em;
+    font-weight: 400
+}
+
+.trade-view-charts h3 {
+    font-size: 4em;
+}
+
+.trade-view-charts h3,
+.trade-view-charts h4 {
+    margin: 0;
+    text-transform: uppercase;
+    color: $color-dark
 }

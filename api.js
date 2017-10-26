@@ -111,14 +111,14 @@ class Emitter extends EventEmitter {
 
                             if (error !== null) {
                                 console.log(`${pkillCmd} exec error: ${error}`);
-                                self.emit('notifier', { error: 1 });
+                                // self.emit('notifier', { error: 1 });
                             }
                         });
                     }
 
                     if (error !== null) {
                         console.log(`${marketmakerGrep} exec error: ${error}`);
-                        self.emit('notifier', { error: 1 });
+                        // self.emit('notifier', { error: 1 });
                     } else {
                         self.emit('logoutCallback', { type: 'success' });
                         self.userpass = '';
@@ -167,7 +167,7 @@ class Emitter extends EventEmitter {
                     data.retry = true;
                     this.killMarketmaker(true).then(() => this.startMarketMaker(data));
                 } else {
-                    self.emit('notifier', { error: 1 });
+                    // self.emit('notifier', { error: 1 });
                 }
             });
         } catch (e) {
@@ -208,6 +208,14 @@ class Emitter extends EventEmitter {
         });
     }
 
+    fetchCoins() {
+        const self = this;
+
+        self.getCoins().then((coinsList) => {
+            self.emit('coinsList', coinsList);
+        })
+    }
+
     checkMMStatus() {
         const self = this;
         portscanner.checkPortStatus(7783, '127.0.0.1', (error, status) => {
@@ -229,7 +237,6 @@ class Emitter extends EventEmitter {
 
             self.getCoins().then((coinsList) => {
                 self.emit('coinsList', coinsList);
-                console.log(coinsList);
                 self.emit('updateUserInfo', { coins, userpass, mypubkey });
             })
         }).catch((error) => {
@@ -279,7 +286,7 @@ class Emitter extends EventEmitter {
         // const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
 
         const url = 'http://127.0.0.1:7783';
-        console.log('enable');
+
         this.apiRequest({ data, url }).then((result) => {
             if (result.error) {
                 return self.emit('notifier', { error: 3, desc: result.error })
