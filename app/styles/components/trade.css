@@ -4,6 +4,16 @@
     flex-direction: column;
 }
 
+.trade-processing {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.trade-processing h3 { font-weight: 200 }
+
 .trade,
 .trade-body {
     width: 100%;

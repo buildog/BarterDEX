@@ -62,7 +62,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 4px;
     background: $background-app;
 }
 
@@ -81,12 +80,7 @@ body {
     width: 100%;
     pointer-events: all;
     overflow: auto;
-    border-radius: 4px;
-
 }
-
-
-
 
 
 .app.content-container .window-footer { z-index: 0 }

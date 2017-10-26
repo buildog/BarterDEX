@@ -12,6 +12,8 @@ import shuffle from '../../static/shuffle.svg';
 import arrow from '../../static/arrow.svg';
 import sell from '../../static/sell.svg';
 import buy from '../../static/buy.svg';
+import circles from '../../static/circles.svg';
+
 
 const formatNumber = (str) => str;
 
@@ -186,9 +188,16 @@ class Trade extends React.Component {
         const { asks, bids } = this.props.app.orderbook;
         const orderbook = asks;
 
+        const { loader } = this.props.app;
+        const orderLoader = loader.getLoader(5);
+
+
         return (
           <section className={this.getClassState()}>
-            <section className="trade-action-wrapper">
+            { orderLoader ? <div className="trade-processing">
+              <i className="loader-svg" dangerouslySetInnerHTML={{ __html: circles }} />
+              <h3>PROCESSING YOUR ORDER</h3>
+            </div> : <section className="trade-action-wrapper">
 
               <div className={`trade-amount`}>
 
@@ -260,7 +269,7 @@ class Trade extends React.Component {
 
 
               <section className={`trade-button-wrapper ${tradeBase.coin}`}>
-                <button className="trade-button withBorder action primary coin-bg" onClick={() => this.trade()} disabled={this.state.validation}>
+                <button className="trade-button withBorder action primary coin-bg" disabled={orderLoader} onClick={() => this.trade()} disabled={this.state.validation}>
                   <div className="trade-action-amountRel">
                     <small className="trade-action-amountRel-title"> { this.state.validation ? 'VALIDATION' : 'BUY' }</small>
                     { this.state.validation ? this.state.validation : <span>{this.state.amountRel} {tradeBase.coin}</span> }
@@ -271,7 +280,7 @@ class Trade extends React.Component {
               </section>
 
 
-            </section>
+            </section> }
 
           </section>
         );

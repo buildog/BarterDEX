@@ -12,6 +12,7 @@ import shuffle from '../../static/shuffle.svg';
 import arrow from '../../static/arrow.svg';
 import sell from '../../static/sell.svg';
 import buy from '../../static/buy.svg';
+import circles from '../../static/circles.svg';
 
 const formatNumber = (str) => str;
 
@@ -180,9 +181,17 @@ class Trade extends React.Component {
         const { asks, bids } = this.props.app.orderbook;
         const orderbook = bids;
 
+        const { loader } = this.props.app;
+        const orderLoader = loader.getLoader(5);
+
+
         return (
           <section className={this.getClassState()}>
-            <section className="trade-action-wrapper">
+
+            { orderLoader ? <div className="trade-processing">
+              <i className="loader-svg" dangerouslySetInnerHTML={{ __html: circles }} />
+              <h3>PROCESSING YOUR ORDER</h3>
+            </div> : <section className="trade-action-wrapper">
 
               <div className={`trade-amount`}>
 
@@ -272,7 +281,7 @@ class Trade extends React.Component {
               </section>
 
 
-            </section>
+            </section> }
 
           </section>
         );
