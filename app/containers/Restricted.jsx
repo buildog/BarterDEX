@@ -16,10 +16,12 @@ class Restricted extends React.Component {
 
     getClassState = () => {
         const { loader } = this.props.app;
+        const { errors } = this.props.app.notifier;
 
         return classNames({
             app: true,
-            'content-container': true
+            'content-container': true,
+            loading: loader.store.length > 0 && errors.length === 0
         })
     }
 

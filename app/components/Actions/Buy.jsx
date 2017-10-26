@@ -41,6 +41,7 @@ class Trade extends React.Component {
             amountRel: 0,
             amountBase: 0,
             selected: 0,
+            autoMax: false,
             picker: false,
             rate: 0,
             flow: 'buy',
@@ -49,6 +50,15 @@ class Trade extends React.Component {
 
         }
     }
+
+    getClassState = () => {
+        const self = this;
+        return classNames({
+            'trade-action': true,
+            'trade-action-max': this.state.autoMax
+        })
+    }
+
 
     componentDidMount = () => {
         const self = this;
@@ -92,12 +102,6 @@ class Trade extends React.Component {
 
     componentWillReact = () => {
         const { tradeRel, tradeBase } = this.props.app.portfolio;
-
-        if (this.state.rate === 0) {
-            const rate = this.getRate();
-            this.updateRate(rate);
-        }
-
         this.setState({ orderBookMessage: `Fetching ${tradeBase.coin}/${tradeRel.coin} orderbook` });
     }
 
@@ -109,7 +113,7 @@ class Trade extends React.Component {
             base: tradeBase.coin,
             rel: tradeRel.coin,
             price: this.state.rate,
-            relvolume: this.state.amountRel
+            relvolume: this.state.amountRel * this.state.rate
         };
 
         trade(params);
@@ -127,44 +131,48 @@ class Trade extends React.Component {
 
         if (!price) {
             validation = `price is empty`;
-        } else if (tradeRel.balance < amount) {
+        } else if ((tradeRel.balance / price) < amount) {
             validation = (<div className="validation"><span>not enough {tradeRel.coin}</span><small>(max {tradeRel.balance})</small></div>);
         } else if (!amount) {
             validation = `${tradeRel.coin} amount is empty`;
         }
 
-        this.setState({ validation, amountBase: amount / price });
+        this.setState({ validation });
+    }
+
+
+    setMax = () => {
+        const { tradeRel } = this.props.app.portfolio;
+        this.updateAmountRel(tradeRel.balance / this.state.rate);
     }
 
     updateRate = (rate, selected = false) => {
         const parsed = formatNumber(rate);
         this.setState({ rate: parsed, selected });
         this.validation({ rate: parsed });
+
+        this.state.autoMax && setTimeout(() => this.setMax())
     }
 
     updateAmountRel = (amountRel) => {
         const parsed = formatNumber(amountRel);
+        const { tradeRel } = this.props.app.portfolio;
+
+        if (amountRel * this.state.rate === tradeRel.balance) {
+            this.setState({ autoMax: true })
+        } else {
+            this.setState({ autoMax: false })
+        }
+
+
         this.setState({ amountRel: parsed });
         this.validation({ amountRel: parsed });
     }
 
-    privateIcon = () => (<span className="private-icon" dangerouslySetInnerHTML={{ __html: zoro }} />)
-    sellIcon = () => (<div className="trade-sell-label">
-      <span>Sell</span>
-      <span className="private-icon" dangerouslySetInnerHTML={{ __html: sell }} />
-    </div>)
-    buyIcon = () => (<div className="trade-buy-label">
-      <span>Buy</span>
-      <span className="private-icon" dangerouslySetInnerHTML={{ __html: buy }} />
-    </div>)
 
     togglePicker = (e, type) => {
         this.setState({ picker: this.state.picker ? false : type });
         e.stopPropagation();
-    }
-
-    toggleFlow = () => {
-        this.setState({ flow: this.state.flow === 'buy' ? 'sell' : 'buy' })
     }
 
     closeSelects = () => { this.setState({ picker: false, showOrderbook: false }) }
@@ -179,7 +187,7 @@ class Trade extends React.Component {
         const orderbook = asks;
 
         return (
-          <section className={`trade-action`}>
+          <section className={this.getClassState()}>
             <section className="trade-action-wrapper">
 
               <div className={`trade-amount`}>
@@ -188,10 +196,8 @@ class Trade extends React.Component {
                 <section className="trade-amount_input">
                   <section className="trade-amount_input_price">
                     <span className="label">
-                      <span className="label-title">Price</span>
+                      <span className="label-title">Price for 1 {tradeBase.coin}</span>
                       <small>
-                        <button className="link">Bid</button>
-                        <button className="link">Ask</button>
                         <button className="link" onClick={(e) => this.toggleOrderbook(e)}>{ this.state.showOrderbook ? 'Hide' : 'View'} orderbook</button>
                       </small>
                     </span>
@@ -232,7 +238,7 @@ class Trade extends React.Component {
                   </section>
                   <section className="trade-amount_input_amount">
                     <span className="label">
-                      <span className="label-title">{`Amount of ${tradeRel.coin} to sell`}</span>
+                      <span className="label-title">{`Amount of ${tradeBase.coin} to buy`}</span>
                     </span>
                     <div className="trade-amount_input-wrapper">
                       <input
@@ -244,7 +250,7 @@ class Trade extends React.Component {
                         value={this.state.amountRel}
                         onChange={(e) => this.updateAmountRel(e.target.value)}
                       />
-                      { this.state.amountRel < tradeRel.balance && <button className="trade-setMax" onClick={() => this.updateAmountRel(tradeRel.balance)}>Max</button> }
+                      <button className="trade-setMax" onClick={() => this.setMax()}>Max</button>
                     </div>
 
                   </section>
@@ -256,8 +262,9 @@ class Trade extends React.Component {
               <section className={`trade-button-wrapper ${tradeBase.coin}`}>
                 <button className="trade-button withBorder action primary coin-bg" onClick={() => this.trade()} disabled={this.state.validation}>
                   <div className="trade-action-amountRel">
-                    <small> { this.state.validation ? 'VALIDATION' : 'ORDER' }</small>
-                    { this.state.validation ? this.state.validation : <span>{this.state.amountBase} {tradeBase.coin}</span> }
+                    <small className="trade-action-amountRel-title"> { this.state.validation ? 'VALIDATION' : 'BUY' }</small>
+                    { this.state.validation ? this.state.validation : <span>{this.state.amountRel} {tradeBase.coin}</span> }
+                    { this.state.validation ? '' : <small>(for {this.state.amountRel * this.state.rate } {tradeRel.coin})</small> }
                   </div>
                   <i dangerouslySetInnerHTML={{ __html: shuffle }} />
                 </button>

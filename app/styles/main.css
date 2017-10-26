@@ -48,6 +48,16 @@ body {
     max-height: 100vh;
 }
 
+/*.content-container.loading * {
+    pointer-events: none !important;
+    cursor: default !important;
+}
+
+.content-container.loading input,
+.content-container.loading textarea {
+    opacity: .4
+}*/
+
 .app.content-container {
     flex-direction: column;
     align-items: center;

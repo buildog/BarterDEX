@@ -331,13 +331,23 @@ class Emitter extends EventEmitter {
         });
     }
 
-    trade({ method = 'buy', base, rel, price, relvolume }) {
+    trade({ method = 'buy', base, rel, price, relvolume, basevolume }) {
         const self = this;
+
+
         const data = { userpass: self.userpass, method, base, rel, relvolume, price };
+
+        if (method === 'buy') {
+            data.relvolume = relvolume;
+        } else {
+            data.basevolume = basevolume;
+        }
+
+
         const url = 'http://127.0.0.1:7783';
         self.inventory({ coin: rel }).then(() => {
             self.apiRequest({ data, url }).then((result) => {
-                console.log(`buy order submitted`);
+                console.log(`${method} order submitted`);
                 console.log(result);
                 if (!result.error) {
                     self.emit('trade', result);

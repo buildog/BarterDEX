@@ -32,7 +32,7 @@
 }
 
 .trade-type-item {
-    padding: 10px 10px 4px 10px;
+    padding: 10px 8px 2px 8px;
     flex-grow: 1;
     border: 1px solid transparent;
     border-bottom-color: $grey;
@@ -53,9 +53,9 @@
 .trade-orders .trade-type-item-orders {
     background: #FFF;
     border-bottom-color: transparent;
-    color: $color-dark;
-    border-top: 1px solid $grey;
+    border-top-color: $grey;
     font-weight: 600;
+    color: $color-dark;
 }
 
 .trade-buy .trade-type-item-buy,
@@ -238,10 +238,21 @@
     z-index: 1;
     display: flex;
     align-items: center;
-    color: $blue;
-    border: 1px solid $blue;
+    color: $grey;
+    border: 1px solid $grey;
     padding: 7px 10px;
     border-radius: 4px;
+}
+
+.trade-amount_input-wrapper .trade-setMax:hover {
+    color: $blue;
+    border: 1px solid $blue;
+}
+
+.trade-action-max .trade-amount_input-wrapper .trade-setMax {
+    background: $blue;
+    color: #FFF;
+    pointer-events: none
 }
 
 .trade-amount .label {
@@ -333,8 +344,10 @@
 
 .trade-action-amountRel small {
     font-weight: 200;
-    font-size: 1.2em
+
 }
+
+.trade-action-amountRel-title { font-size: 1.2em }
 
 .trade-amount_input_rate {
     position: relative;
