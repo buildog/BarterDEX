@@ -73,7 +73,6 @@ let marketmakerIcon;
 /* Handle binaries paths */
 const marketmaker = require('marketmaker').path;
 
-fs.chmodSync(marketmaker, '755');
 
 const paths = { marketmaker };
 const transformBinaryPath = (name) => paths[name].replace('bin', `node_modules/${name}/bin`).replace('app.asar', 'app.asar.unpacked');
@@ -105,6 +104,7 @@ if (os.platform() === 'win32') {
 // DEFAULT COINS LIST FOR MARKETMAKER
 const defaultCoinsListFile = path.join(__dirname, './coinslist.json');
 
+fs.chmodSync(marketmaker, '755')
 
 export default {
     main: { homeDir, appRootDir, env, assetChainPorts, osPlatform, defaultCoinsListFile, marketmakerBin, marketmakerDir, marketmakerIcon }
