@@ -163,9 +163,11 @@ class Emitter extends EventEmitter {
             passphrase: data.passphrase.trim()
         };
 
+        params = JSON.stringify(params);
+
         if (osPlatform !== 'win32') {
             params.coins = data.coinslist;
-            params = `'${JSON.stringify(params)}'`;
+            params = `'${params}'`;
         } else {
             params = params.replace(/"/g, '\\"')
         }
