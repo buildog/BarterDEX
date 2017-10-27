@@ -9431,9 +9431,6 @@ module.exports =
 	            var url = 'http://127.0.0.1:7783';
 	
 	            this.apiRequest({ data: data, url: url }).then(function (result) {
-	                console.log(data);
-	                console.log(result);
-	
 	                var userpass = result.userpass,
 	                    mypubkey = result.mypubkey;
 	
@@ -25562,6 +25559,8 @@ module.exports =
 	
 	    api.on('updateUserInfo', function (data) {
 	        emitter.send('updateUserInfo', data);
+	        emitter.send('loading', { type: 'delete', key: 1 });
+	        emitter.send('loading', { type: 'delete', key: 2 });
 	    });
 	};
 
@@ -25608,8 +25607,6 @@ module.exports =
 	
 	    api.on('coinsList', function (coins) {
 	        emitter.send('coinsList', coins);
-	        emitter.send('loading', { type: 'delete', key: 1 });
-	        emitter.send('loading', { type: 'delete', key: 2 });
 	    });
 	};
 

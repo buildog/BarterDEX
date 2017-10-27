@@ -49,40 +49,12 @@ class Emitter extends EventEmitter {
         });
     }
 
-    startIguana() {
-        const data = { herd: 'iguana' };
-        const url = 'http://127.0.0.1:17777/shepherd/herd';
-
-        this.apiRequest({ data, url }).then((result) => {
-            const AjaxOutputData = JSON.parse(data);
-        })
-    }
-
-    startCorsproxy() {
-        const data = { herd: 'corsproxy' };
-        const url = 'http://127.0.0.1:17777/shepherd/herd';
-
-        this.apiRequest({ data, url }).then((result) => {
-            const AjaxOutputData = JSON.parse(result);
-        })
-    }
-
-
-    startKomodod() {
-        const data = { herd: 'komodod' };
-        const url = 'http://127.0.0.1:17777/shepherd/herd';
-
-        this.apiRequest({ data, url }).then((result) => {
-            const AjaxOutputData = JSON.parse(result);
-        })
-    }
-
 
     // kill rogue marketmaker copies on start
     killMarketmaker(data) {
         const self = this;
         self.userLogout = true;
-        return new Promise((resolve) => {
+        return new Promise(() => {
             if (data === true) {
                 let marketmakerGrep;
 
