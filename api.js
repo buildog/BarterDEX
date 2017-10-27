@@ -122,8 +122,9 @@ class Emitter extends EventEmitter {
             portscanner.checkPortStatus(7783, '127.0.0.1', (error, status) => {
             // Status is 'open' if currently in use or 'closed' if available
                 if (status === 'closed') {
-                    const coinsListFile = `${marketmakerDir}/coinslist.json`;
-                    const coinslist = fs.readJsonSync(coinsListFile, { throws: false });
+                    const coinsListFile = `${marketmakerDir}/coins.json`;
+                    console.log(defaultCoinsListFile);
+                    const coinslist = fs.readJsonSync(defaultCoinsListFile, { throws: false });
                     fs.pathExists(coinsListFile, (err, exists) => {
                         if (exists === true) {
                             self.execMarketMaker({ coinslist, passphrase });
@@ -160,9 +161,12 @@ class Emitter extends EventEmitter {
             gui: 'buildog',
             client: 1,
             userhome: homeDir,
-            passphrase: data.passphrase.trim(),
-            coins: data.coinslist
+            passphrase: data.passphrase.trim()
         };
+
+        if (osPlatform !== 'win32') {
+            customParam.coins = data.coinslist
+        }
 
         console.log(customParam);
 

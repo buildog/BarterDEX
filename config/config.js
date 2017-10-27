@@ -102,7 +102,7 @@ if (os.platform() === 'win32') {
 }
 
 // DEFAULT COINS LIST FOR MARKETMAKER
-const defaultCoinsListFile = path.join(__dirname, './coinslist.json');
+const defaultCoinsListFile = path.join(__dirname, './coins.json');
 
 
 export default {
