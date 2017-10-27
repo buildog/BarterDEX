@@ -103,7 +103,7 @@ if (os.platform() === 'win32') {
     marketmakerDir = marketmakerDir.replace(/\\\\/g, '\\')
 
     if (env !== 'development') {
-        marketmakerBin = marketmakerBin.replace('bin/win32', `node_modules/marketmaker/bin/win32`).replace('app.asar', 'app.asar.unpacked');
+        marketmakerBin = marketmakerBin.replace('bin/win32', `node_modules/marketmaker/bin/win32`).replace('app.asar', 'app.asar.unpacked/node_modules');
     }
 }
 
