@@ -99,7 +99,7 @@ if (os.platform() === 'win32') {
     // marketmakerDir = path.normalize(marketmakerDir);
     marketmakerIcon = path.join(__dirname, '/app/assets/icons/agama_icons/agama_app_icon.ico');
 
-    homeDir = homeDir.replace(/\\\\/g, '\\'); s
+    homeDir = homeDir.replace(/\\\\/g, '\\');
     marketmakerDir = marketmakerDir.replace(/\\\\/g, '\\')
 
     if (env !== 'development') {
