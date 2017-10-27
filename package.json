@@ -104,8 +104,11 @@
       "icon": "resources/osx/icon.icns",
       "category": "your.app.category.type"
     },
+    "linux": {
+      "icon": "resources/icons/icon.png",
+    },
     "dmg": {
-      "icon": "resources/icons/app.png"
+      "icon": "resources/icons/icon.png"
     }
   },
   "dependencies": {
