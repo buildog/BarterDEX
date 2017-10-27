@@ -21,7 +21,8 @@ const config = merge(baseConfig, {
         'source-map-support',
         'request',
         'mailgun-js',
-        'os'
+        'os',
+        'appdata-path'
     ]
 })
 
