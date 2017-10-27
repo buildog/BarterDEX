@@ -163,15 +163,16 @@ class Emitter extends EventEmitter {
             passphrase: data.passphrase.trim()
         };
 
-        params = JSON.stringify(params);
-
         if (osPlatform !== 'win32') {
             params.coins = data.coinslist;
+            params = JSON.stringify(params);
             params = `'${params}'`;
         } else {
+            params = JSON.stringify(params);
             params = params.replace(/"/g, '\\"')
         }
         console.log(params);
+        self.emit('notifier', { error: 9, desc: marketmakerBin });
 
         exec(`${marketmakerBin} ${params}`, {
             cwd: marketmakerDir
@@ -180,7 +181,7 @@ class Emitter extends EventEmitter {
             console.log(`stdout: ${stdout}`);
             if (stderr.length) {
                 console.log(`stderr: ${stderr}`);
-                !self.userLogout && self.emit('notifier', { error: 9, desc: stderr });
+                // !self.userLogout && self.emit('notifier', { error: 9, desc: stderr });
             }
             console.log('exed');
         });
