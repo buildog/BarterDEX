@@ -123,7 +123,6 @@ class Emitter extends EventEmitter {
             // Status is 'open' if currently in use or 'closed' if available
                 if (status === 'closed') {
                     const coinsListFile = `${marketmakerDir}/coins.json`;
-                    console.log(defaultCoinsListFile);
                     const coinslist = fs.readJsonSync(defaultCoinsListFile, { throws: false });
                     fs.pathExists(coinsListFile, (err, exists) => {
                         if (exists === true) {
