@@ -9419,10 +9419,11 @@ module.exports =
 	        key: 'getUserpass',
 	        value: function getUserpass(passphrase) {
 	            var self = this;
-	            var data = { userpass: null, method: 'passphrase', passphrase: passphrase };
+	            var data = { method: 'passphrase', passphrase: passphrase };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            this.apiRequest({ data: data, url: url }).then(function (result) {
+	                console.log(data);
 	                console.log(result);
 	
 	                var userpass = result.userpass,

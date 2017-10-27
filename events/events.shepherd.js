@@ -27,7 +27,7 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
             api.startMarketMaker({ passphrase: arg.passphrase });
             break;
         case 'logout':
-            api.killMarketmaker(true);
+            api.logout();
             break;
         default:
             break;

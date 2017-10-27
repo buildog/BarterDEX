@@ -120,15 +120,22 @@ class Emitter extends EventEmitter {
                         console.log(`${marketmakerGrep} exec error: ${error}`);
                         // self.emit('notifier', { error: 1 });
                     } else {
-                        self.emit('logoutCallback', { type: 'success' });
-                        self.userpass = '';
-                        self.mypubkey = '';
-                        self.coins = '';
-                        resolve('killed marketmaker');
+                        // self.emit('logoutCallback', { type: 'success' });
+                        // self.userpass = '';
+                        // self.mypubkey = '';
+                        // self.coins = '';
+                        // resolve('killed marketmaker');
                     }
                 });
             }
         });
+    }
+
+    logout() {
+        self.emit('logoutCallback', { type: 'success' });
+        self.userpass = '';
+        self.mypubkey = '';
+        self.coins = '';
     }
 
 
@@ -223,10 +230,11 @@ class Emitter extends EventEmitter {
 
     getUserpass(passphrase) {
         const self = this;
-        const data = { userpass: null, method: 'passphrase', passphrase };
+        const data = { method: 'passphrase', passphrase };
         const url = 'http://127.0.0.1:7783';
 
         this.apiRequest({ data, url }).then((result) => {
+            console.log(data);
             console.log(result);
 
             const { userpass, mypubkey } = result;
