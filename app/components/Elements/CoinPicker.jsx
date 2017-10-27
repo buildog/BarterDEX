@@ -24,14 +24,18 @@ class CoinPicker extends React.Component {
         const { installedCoins, tradeBase, tradeRel } = this.props.app.portfolio;
         const currentTrade = { tradeBase, tradeRel };
         const notSelf = this.props.type === 'Rel' ? 'tradeBase' : 'tradeRel';
-
-        const nonZeroBalance = installedCoins.filter((item) => item.balance > 0 && item.coin !== currentTrade[notSelf].coin);
+        let coins;
+        if (!this.props.allowZero) {
+            coins = installedCoins.filter((item) => item.balance > 0 && item.coin !== currentTrade[notSelf].coin);
+        } else {
+            coins = installedCoins
+        }
 
         return (
           <Modal show={this.state.isPickerOpen} title={this.props.title} onClose={this.props.onClose}>
             <div className="coinList">
               {
-                      nonZeroBalance.map((coin) => (
+                      coins.map((coin) => (
                         <button key={coin.coin} onClick={(e) => this.setTrade(e, coin)} className={`coinList-coin withBorder ${coin.coin}`}>
                           <div className="coinList-wrapper">
                             <div className="coinList-coin-logo coin-colorized">{ coin.icon }</div>

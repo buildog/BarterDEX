@@ -172,7 +172,7 @@ class Trade extends React.Component {
 
     closeSelects = () => { this.setState({ picker: false, showOrderbook: false }) }
 
-    coinPicker = (type) => (<CoinPicker title={type === 'Base' ? 'Select a coin to buy' : 'Select a coin to sell'} type={type} onClose={() => this.resetForm()} />)
+    coinPicker = (type) => (<CoinPicker title={type === 'Base' ? 'Select a coin to buy' : 'Select a coin to sell'} type={type} allowZero onClose={() => this.resetForm()} />)
 
     render() {
         // portfolio
