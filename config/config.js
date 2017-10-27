@@ -94,9 +94,9 @@ if (os.platform() === 'linux') {
 }
 
 if (os.platform() === 'win32') {
-    homeDir = `${homeDir}\AppData`;
+    homeDir += '\AppData\Roaming';
 
-    marketmakerDir = `${homeDir}/marketmaker`;
+    marketmakerDir = `${homeDir}\marketmaker`;
     // marketmakerDir = path.normalize(marketmakerDir);
     marketmakerIcon = path.join(__dirname, '/app/assets/icons/agama_icons/agama_app_icon.ico');
 }
