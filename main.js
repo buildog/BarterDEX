@@ -9204,7 +9204,7 @@ module.exports =
 	        var _this = _possibleConstructorReturn(this, (Emitter.__proto__ || Object.getPrototypeOf(Emitter)).call(this));
 	
 	        _this.config = config;
-	        _this.logout = false;
+	        _this.userLogout = false;
 	        return _this;
 	    }
 	
@@ -9275,7 +9275,7 @@ module.exports =
 	        key: 'killMarketmaker',
 	        value: function killMarketmaker(data) {
 	            var self = this;
-	            self.logout = true;
+	            self.userLogout = true;
 	            return new Promise(function (resolve) {
 	                if (data === true) {
 	                    var marketmakerGrep = void 0;
@@ -9314,21 +9314,29 @@ module.exports =
 	                            console.log(marketmakerGrep + ' exec error: ' + error);
 	                            // self.emit('notifier', { error: 1 });
 	                        } else {
-	                            self.emit('logoutCallback', { type: 'success' });
-	                            self.userpass = '';
-	                            self.mypubkey = '';
-	                            self.coins = '';
-	                            resolve('killed marketmaker');
-	                        }
+	                                // self.emit('logoutCallback', { type: 'success' });
+	                                // self.userpass = '';
+	                                // self.mypubkey = '';
+	                                // self.coins = '';
+	                                // resolve('killed marketmaker');
+	                            }
 	                    });
 	                }
 	            });
 	        }
 	    }, {
+	        key: 'logout',
+	        value: function logout() {
+	            self.userpass = '';
+	            self.mypubkey = '';
+	            self.coins = '';
+	            self.emit('logoutCallback', { type: 'success' });
+	        }
+	    }, {
 	        key: 'startMarketMaker',
 	        value: function startMarketMaker(data) {
 	            var self = this;
-	            self.logout = false;
+	            self.userLogout = false;
 	            var passphrase = data.passphrase.trim();
 	
 	            // console.log(data.passphrase);
@@ -9383,7 +9391,7 @@ module.exports =
 	                console.log('stdout: ' + stdout);
 	                if (stderr.length) {
 	                    console.log('stderr: ' + stderr);
-	                    !self.logout && self.emit('notifier', { error: 9, desc: stderr });
+	                    !self.userLogout && self.emit('notifier', { error: 9, desc: stderr });
 	                }
 	                console.log('exed');
 	            });
@@ -25370,7 +25378,7 @@ module.exports =
 	    var close = function close() {
 	        // On OS X it is common for applications and their menu bar
 	        // to stay active until the user quits explicitly with Cmd + Q
-	        _electronLog2.default.info('All windows closed. shutting down marketmaker');
+	        _electronLog2.default.info('All windows closed. Shutting down');
 	        emitter.send('willClose');
 	    };
 	
@@ -25509,7 +25517,7 @@ module.exports =
 	                api.startMarketMaker({ passphrase: arg.passphrase });
 	                break;
 	            case 'logout':
-	                api.killMarketmaker(true);
+	                api.logout();
 	                break;
 	            default:
 	                break;
