@@ -156,7 +156,7 @@ class Emitter extends EventEmitter {
     execMarketMaker(data) {
         const self = this;
           // start marketmaker via exec
-        const customParam = {
+        let params = {
             gui: 'buildog',
             client: 1,
             userhome: homeDir,
@@ -164,12 +164,14 @@ class Emitter extends EventEmitter {
         };
 
         if (osPlatform !== 'win32') {
-            customParam.coins = data.coinslist
+            params.coins = data.coinslist;
+            params = `'${JSON.stringify(params)}'`;
+        } else {
+            params = params.replace(/"/g, '\\"')
         }
+        console.log(params);
 
-        console.log(customParam);
-
-        exec(`${marketmakerBin} '${JSON.stringify(customParam)}'`, {
+        exec(`${marketmakerBin} ${params}`, {
             cwd: marketmakerDir
             // maxBuffer: 1024 * 10000 // 10 mb
         }, (error, stdout, stderr) => {
