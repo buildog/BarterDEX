@@ -3,7 +3,6 @@
 */
 import os from 'os';
 import fs from 'fs';
-import fixPath from 'fix-path';
 import path from 'path';
 
 const osPlatform = os.platform();
@@ -92,9 +91,6 @@ if (os.platform() === 'linux') {
     marketmakerDir = `${homeDir}/.marketmaker`;
     if (env !== 'development') {
         marketmakerBin = marketmakerBin.replace('bin/linux', `node_modules/marketmaker/bin/linux`).replace('app.asar', 'app.asar.unpacked');
-    } else {
-        // linux has issue with permission
-        fs.chmodSync(marketmakerBin, '755')
     }
 }
 

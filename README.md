@@ -26,7 +26,6 @@ brew install nanomsg
 ```shell
 sudo apt-get update
 sudo apt-get install build-essential git cmake libcurl4-openssl-dev
-Install also the latest version of nanomsg:
 
 git clone https://github.com/nanomsg/nanomsg
 cd nanomsg; mkdir build; cd build; cmake ..
