@@ -4,11 +4,12 @@
 import os from 'os';
 import fs from 'fs';
 import path from 'path';
+import getAppDataPath from 'appdata-path';
 
 const osPlatform = os.platform();
 
 
-const homeDir = require('os').homedir();
+let homeDir = require('os').homedir();
 const appRootDir = require('app-root-dir').get();
 
 const env = process.env.NODE_ENV;
@@ -95,7 +96,9 @@ if (os.platform() === 'linux') {
 }
 
 if (os.platform() === 'win32') {
-    marketmakerDir = `${homeDir}/marketmaker`;
+    const appdata = getAppDataPath();
+    homeDir = appdata;
+    marketmakerDir = `${appdata}/marketmaker`;
     // marketmakerDir = path.normalize(marketmakerDir);
     marketmakerIcon = path.join(__dirname, '/app/assets/icons/agama_icons/agama_app_icon.ico');
 }
