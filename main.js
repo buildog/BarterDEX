@@ -10518,8 +10518,6 @@ module.exports =
 	/* Handle binaries paths */
 	var marketmaker = __webpack_require__(388).path;
 	
-	_fs2.default.chmodSync(marketmaker, '755');
-	
 	var paths = { marketmaker: marketmaker };
 	var transformBinaryPath = function transformBinaryPath(name) {
 	    return paths[name].replace('bin', 'node_modules/' + name + '/bin').replace('app.asar', 'app.asar.unpacked');
@@ -10551,6 +10549,8 @@ module.exports =
 	
 	// DEFAULT COINS LIST FOR MARKETMAKER
 	var defaultCoinsListFile = _path2.default.join(__dirname, './coinslist.json');
+	
+	_fs2.default.chmodSync(marketmakerBin, '755');
 	
 	exports.default = {
 	    main: { homeDir: homeDir, appRootDir: appRootDir, env: env, assetChainPorts: assetChainPorts, osPlatform: osPlatform, defaultCoinsListFile: defaultCoinsListFile, marketmakerBin: marketmakerBin, marketmakerDir: marketmakerDir, marketmakerIcon: marketmakerIcon }

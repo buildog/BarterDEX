@@ -92,6 +92,9 @@ if (os.platform() === 'linux') {
     marketmakerDir = `${homeDir}/.marketmaker`;
     if (env !== 'development') {
         marketmakerBin = marketmakerBin.replace('bin/linux', `node_modules/marketmaker/bin/linux`).replace('app.asar', 'app.asar.unpacked');
+    } else {
+        // linux has issue with permission
+        fs.chmodSync(marketmakerBin, '755')
     }
 }
 
@@ -104,7 +107,6 @@ if (os.platform() === 'win32') {
 // DEFAULT COINS LIST FOR MARKETMAKER
 const defaultCoinsListFile = path.join(__dirname, './coinslist.json');
 
-fs.chmodSync(marketmakerBin, '755')
 
 export default {
     main: { homeDir, appRootDir, env, assetChainPorts, osPlatform, defaultCoinsListFile, marketmakerBin, marketmakerDir, marketmakerIcon }
