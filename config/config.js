@@ -99,8 +99,12 @@ if (os.platform() === 'win32') {
     // marketmakerDir = path.normalize(marketmakerDir);
     marketmakerIcon = path.join(__dirname, '/app/assets/icons/agama_icons/agama_app_icon.ico');
 
-    homeDir = homeDir.replace(/\\\\/g, '\\');
+    homeDir = homeDir.replace(/\\\\/g, '\\'); s
     marketmakerDir = marketmakerDir.replace(/\\\\/g, '\\')
+
+    if (env !== 'development') {
+        marketmakerBin = marketmakerBin.replace('bin/win32', `node_modules/marketmaker/bin/win32`).replace('app.asar', 'app.asar.unpacked');
+    }
 }
 
 // DEFAULT COINS LIST FOR MARKETMAKER
