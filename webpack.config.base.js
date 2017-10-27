@@ -36,7 +36,7 @@ export default {
     plugins: [
         new CopyWebpackPlugin([
             { from: './app/static', to: path.join(__dirname, './dist/static') },
-            { from: './config/coinslist.json', to: path.join(__dirname, './') }
+            { from: './config/coins.json', to: path.join(__dirname, './') }
         ]),
         new ExtractTextPlugin('style.css', { allChunks: true })
     ]

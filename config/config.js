@@ -8,8 +8,7 @@ import path from 'path';
 const osPlatform = os.platform();
 
 
-const homeDir = require('os').homedir();
-const appRootDir = require('app-root-dir').get();
+let homeDir = require('os').homedir();
 
 const env = process.env.NODE_ENV;
 const assetChainPorts = {
@@ -95,15 +94,23 @@ if (os.platform() === 'linux') {
 }
 
 if (os.platform() === 'win32') {
-    marketmakerDir = `${homeDir}/marketmaker`;
+    homeDir += '\\AppData\\Roaming';
+    marketmakerDir = `${homeDir}\\marketmaker`;
     // marketmakerDir = path.normalize(marketmakerDir);
     marketmakerIcon = path.join(__dirname, '/app/assets/icons/agama_icons/agama_app_icon.ico');
+
+    homeDir = homeDir.replace(/\\\\/g, '\\');
+    marketmakerDir = marketmakerDir.replace(/\\\\/g, '\\')
+
+    if (env !== 'development') {
+        marketmakerBin = marketmakerBin.replace('bin', 'node_modules\\marketmaker\\bin').replace('app.asar', 'app.asar.unpacked');
+    }
 }
 
 // DEFAULT COINS LIST FOR MARKETMAKER
-const defaultCoinsListFile = path.join(__dirname, './coinslist.json');
+const defaultCoinsListFile = path.join(__dirname, './coins.json');
 
 
 export default {
-    main: { homeDir, appRootDir, env, assetChainPorts, osPlatform, defaultCoinsListFile, marketmakerBin, marketmakerDir, marketmakerIcon }
+    main: { homeDir, env, assetChainPorts, osPlatform, defaultCoinsListFile, marketmakerBin, marketmakerDir, marketmakerIcon }
 }

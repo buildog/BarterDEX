@@ -19,7 +19,7 @@ class Emitter extends EventEmitter {
     constructor({ config }) {
         super();
         this.config = config;
-        this.logout = false;
+        this.userLogout = false;
     }
 
     apiRequest({ data, url }) {
@@ -49,40 +49,12 @@ class Emitter extends EventEmitter {
         });
     }
 
-    startIguana() {
-        const data = { herd: 'iguana' };
-        const url = 'http://127.0.0.1:17777/shepherd/herd';
-
-        this.apiRequest({ data, url }).then((result) => {
-            const AjaxOutputData = JSON.parse(data);
-        })
-    }
-
-    startCorsproxy() {
-        const data = { herd: 'corsproxy' };
-        const url = 'http://127.0.0.1:17777/shepherd/herd';
-
-        this.apiRequest({ data, url }).then((result) => {
-            const AjaxOutputData = JSON.parse(result);
-        })
-    }
-
-
-    startKomodod() {
-        const data = { herd: 'komodod' };
-        const url = 'http://127.0.0.1:17777/shepherd/herd';
-
-        this.apiRequest({ data, url }).then((result) => {
-            const AjaxOutputData = JSON.parse(result);
-        })
-    }
-
 
     // kill rogue marketmaker copies on start
     killMarketmaker(data) {
         const self = this;
-        self.logout = true;
-        return new Promise((resolve) => {
+        self.userLogout = true;
+        return new Promise(() => {
             if (data === true) {
                 let marketmakerGrep;
 
@@ -120,30 +92,38 @@ class Emitter extends EventEmitter {
                         console.log(`${marketmakerGrep} exec error: ${error}`);
                         // self.emit('notifier', { error: 1 });
                     } else {
-                        self.emit('logoutCallback', { type: 'success' });
-                        self.userpass = '';
-                        self.mypubkey = '';
-                        self.coins = '';
-                        resolve('killed marketmaker');
+                        // self.emit('logoutCallback', { type: 'success' });
+                        // self.userpass = '';
+                        // self.mypubkey = '';
+                        // self.coins = '';
+                        // resolve('killed marketmaker');
                     }
                 });
             }
         });
     }
 
+    logout() {
+        this.userpass = '';
+        this.mypubkey = '';
+        this.coins = '';
+        this.emit('logoutCallback', { type: 'success' });
+    }
+
 
     startMarketMaker(data) {
         const self = this;
-        self.logout = false;
+        self.userLogout = false;
+        const passphrase = data.passphrase.trim();
+
           // console.log(data.passphrase);
         try {
           // check if marketmaker instance is already running
             portscanner.checkPortStatus(7783, '127.0.0.1', (error, status) => {
             // Status is 'open' if currently in use or 'closed' if available
                 if (status === 'closed') {
-                    const passphrase = data.passphrase;
-                    const coinsListFile = `${marketmakerDir}/coinslist.json`;
-                    const coinslist = fs.readJsonSync(coinsListFile, { throws: false });
+                    const coinsListFile = `${marketmakerDir}/coins.json`;
+                    const coinslist = fs.readJsonSync(defaultCoinsListFile, { throws: false });
                     fs.pathExists(coinsListFile, (err, exists) => {
                         if (exists === true) {
                             self.execMarketMaker({ coinslist, passphrase });
@@ -162,12 +142,9 @@ class Emitter extends EventEmitter {
                             console.log(err) // => null
                         }
                     })
-                } else if (!data.retry) {
-                    console.log(`port 7783 marketmaker is already in use, restarting markertmaker`);
-                    data.retry = true;
-                    this.killMarketmaker(true).then(() => this.startMarketMaker(data));
                 } else {
-                    // self.emit('notifier', { error: 1 });
+                    console.log(`port 7783 marketmaker is already in use`);
+                    self.emit('loginCallback', { type: 'success', passphrase });
                 }
             });
         } catch (e) {
@@ -179,26 +156,36 @@ class Emitter extends EventEmitter {
     execMarketMaker(data) {
         const self = this;
           // start marketmaker via exec
-        const customParam = {
+        let params = {
             gui: 'buildog',
             client: 1,
             userhome: homeDir,
-            passphrase: data.passphrase.trim(),
-            coins: data.coinslist
+            passphrase: data.passphrase.trim()
         };
-        exec(`${marketmakerBin} '${JSON.stringify(customParam)}'`, {
+
+        if (osPlatform !== 'win32') {
+            params.coins = data.coinslist;
+            params = JSON.stringify(params);
+            params = `'${params}'`;
+        } else {
+            params = JSON.stringify(params);
+            params = params.replace(/"/g, '\\"')
+        }
+        console.log(params);
+
+        exec(`${marketmakerBin} ${params}`, {
             cwd: marketmakerDir
             // maxBuffer: 1024 * 10000 // 10 mb
         }, (error, stdout, stderr) => {
             console.log(`stdout: ${stdout}`);
             if (stderr.length) {
                 console.log(`stderr: ${stderr}`);
-                !self.logout && self.emit('notifier', { error: 9, desc: stderr });
+                !self.userLogout && self.emit('notifier', { error: 9, desc: stderr });
             }
             console.log('exed');
         });
 
-        self.emit('loginCallback', { type: 'success' });
+        self.emit('loginCallback', { type: 'success', passphrase: data.passphrase });
     }
 
     fetchMarket() {
@@ -223,21 +210,20 @@ class Emitter extends EventEmitter {
         })
     }
 
-    getUserpass() {
+    getUserpass(passphrase) {
         const self = this;
-        const data = { userpass: null, method: 'enable', coin: '' };
+        const data = { method: 'passphrase', passphrase };
         const url = 'http://127.0.0.1:7783';
 
         this.apiRequest({ data, url }).then((result) => {
-            const { coins, userpass, mypubkey } = result;
+            const { userpass, mypubkey } = result;
 
             self.userpass = userpass;
             self.mypubkey = mypubkey;
-            self.coins = coins;
 
             self.getCoins().then((coinsList) => {
                 self.emit('coinsList', coinsList);
-                self.emit('updateUserInfo', { coins, userpass, mypubkey });
+                self.emit('updateUserInfo', { userpass, mypubkey });
             })
         }).catch((error) => {
             self.emit('notifier', { error: 2, desc: error })

@@ -9204,7 +9204,7 @@ module.exports =
 	        var _this = _possibleConstructorReturn(this, (Emitter.__proto__ || Object.getPrototypeOf(Emitter)).call(this));
 	
 	        _this.config = config;
-	        _this.logout = false;
+	        _this.userLogout = false;
 	        return _this;
 	    }
 	
@@ -9275,7 +9275,7 @@ module.exports =
 	        key: 'killMarketmaker',
 	        value: function killMarketmaker(data) {
 	            var self = this;
-	            self.logout = true;
+	            self.userLogout = true;
 	            return new Promise(function (resolve) {
 	                if (data === true) {
 	                    var marketmakerGrep = void 0;
@@ -9314,30 +9314,37 @@ module.exports =
 	                            console.log(marketmakerGrep + ' exec error: ' + error);
 	                            // self.emit('notifier', { error: 1 });
 	                        } else {
-	                            self.emit('logoutCallback', { type: 'success' });
-	                            self.userpass = '';
-	                            self.mypubkey = '';
-	                            self.coins = '';
-	                            resolve('killed marketmaker');
-	                        }
+	                                // self.emit('logoutCallback', { type: 'success' });
+	                                // self.userpass = '';
+	                                // self.mypubkey = '';
+	                                // self.coins = '';
+	                                // resolve('killed marketmaker');
+	                            }
 	                    });
 	                }
 	            });
 	        }
 	    }, {
+	        key: 'logout',
+	        value: function logout() {
+	            this.userpass = '';
+	            this.mypubkey = '';
+	            this.coins = '';
+	            this.emit('logoutCallback', { type: 'success' });
+	        }
+	    }, {
 	        key: 'startMarketMaker',
 	        value: function startMarketMaker(data) {
-	            var _this2 = this;
-	
 	            var self = this;
-	            self.logout = false;
+	            self.userLogout = false;
+	            var passphrase = data.passphrase.trim();
+	
 	            // console.log(data.passphrase);
 	            try {
 	                // check if marketmaker instance is already running
 	                _portscanner2.default.checkPortStatus(7783, '127.0.0.1', function (error, status) {
 	                    // Status is 'open' if currently in use or 'closed' if available
 	                    if (status === 'closed') {
-	                        var passphrase = data.passphrase;
 	                        var coinsListFile = marketmakerDir + '/coinslist.json';
 	                        var coinslist = _fsExtra2.default.readJsonSync(coinsListFile, { throws: false });
 	                        _fsExtra2.default.pathExists(coinsListFile, function (err, exists) {
@@ -9356,14 +9363,9 @@ module.exports =
 	                                console.log(err); // => null
 	                            }
 	                        });
-	                    } else if (!data.retry) {
-	                        console.log('port 7783 marketmaker is already in use, restarting markertmaker');
-	                        data.retry = true;
-	                        _this2.killMarketmaker(true).then(function () {
-	                            return _this2.startMarketMaker(data);
-	                        });
 	                    } else {
-	                        // self.emit('notifier', { error: 1 });
+	                        console.log('port 7783 marketmaker is already in use');
+	                        self.emit('loginCallback', { type: 'success', passphrase: passphrase });
 	                    }
 	                });
 	            } catch (e) {
@@ -9389,12 +9391,12 @@ module.exports =
 	                console.log('stdout: ' + stdout);
 	                if (stderr.length) {
 	                    console.log('stderr: ' + stderr);
-	                    !self.logout && self.emit('notifier', { error: 9, desc: stderr });
+	                    !self.userLogout && self.emit('notifier', { error: 9, desc: stderr });
 	                }
 	                console.log('exed');
 	            });
 	
-	            self.emit('loginCallback', { type: 'success' });
+	            self.emit('loginCallback', { type: 'success', passphrase: data.passphrase });
 	        }
 	    }, {
 	        key: 'fetchMarket',
@@ -9423,24 +9425,22 @@ module.exports =
 	        }
 	    }, {
 	        key: 'getUserpass',
-	        value: function getUserpass() {
+	        value: function getUserpass(passphrase) {
 	            var self = this;
-	            var data = { userpass: null, method: 'enable', coin: '' };
+	            var data = { method: 'passphrase', passphrase: passphrase };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            this.apiRequest({ data: data, url: url }).then(function (result) {
-	                var coins = result.coins,
-	                    userpass = result.userpass,
+	                var userpass = result.userpass,
 	                    mypubkey = result.mypubkey;
 	
 	
 	                self.userpass = userpass;
 	                self.mypubkey = mypubkey;
-	                self.coins = coins;
 	
 	                self.getCoins().then(function (coinsList) {
 	                    self.emit('coinsList', coinsList);
-	                    self.emit('updateUserInfo', { coins: coins, userpass: userpass, mypubkey: mypubkey });
+	                    self.emit('updateUserInfo', { userpass: userpass, mypubkey: mypubkey });
 	                });
 	            }).catch(function (error) {
 	                self.emit('notifier', { error: 2, desc: error });
@@ -9455,14 +9455,14 @@ module.exports =
 	    }, {
 	        key: 'getCoins',
 	        value: function getCoins() {
-	            var _this3 = this;
+	            var _this2 = this;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'getcoins' };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this3.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this2.apiRequest({ data: data, url: url }).then(function (result) {
 	                    resolve(result);
 	                }).catch(function (error) {
 	                    console.log('error getcoin ' + coin);
@@ -9473,7 +9473,7 @@ module.exports =
 	    }, {
 	        key: 'disableCoin',
 	        value: function disableCoin(_ref3) {
-	            var _this4 = this;
+	            var _this3 = this;
 	
 	            var _ref3$coin = _ref3.coin,
 	                coin = _ref3$coin === undefined ? '' : _ref3$coin,
@@ -9489,7 +9489,7 @@ module.exports =
 	
 	            this.apiRequest({ data: data, url: url }).then(function (result) {
 	                self.fetchPortfolio(function () {
-	                    return _this4.emit('updateTrade', { coin: coin, type: type });
+	                    return _this3.emit('updateTrade', { coin: coin, type: type });
 	                });
 	            }).catch(function (error) {
 	                self.emit('notifier', { error: 3 });
@@ -9498,7 +9498,7 @@ module.exports =
 	    }, {
 	        key: 'enableCoin',
 	        value: function enableCoin(_ref4) {
-	            var _this5 = this;
+	            var _this4 = this;
 	
 	            var _ref4$coin = _ref4.coin,
 	                coin = _ref4$coin === undefined ? '' : _ref4$coin,
@@ -9516,7 +9516,7 @@ module.exports =
 	                if (result.error) {
 	                    return self.emit('notifier', { error: 3, desc: result.error });
 	                }
-	                _this5.emit('updateTrade', { coin: coin, type: type });
+	                _this4.emit('updateTrade', { coin: coin, type: type });
 	            }).catch(function (error) {
 	                self.emit('notifier', { error: 3 });
 	            });
@@ -9605,7 +9605,7 @@ module.exports =
 	    }, {
 	        key: 'sendrawtransaction',
 	        value: function sendrawtransaction(_ref8) {
-	            var _this6 = this;
+	            var _this5 = this;
 	
 	            var coin = _ref8.coin,
 	                signedtx = _ref8.signedtx;
@@ -9615,7 +9615,7 @@ module.exports =
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this6.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this5.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('sendWithdraw ' + coin);
 	                    console.log(result);
 	                    resolve(result);
@@ -9628,7 +9628,7 @@ module.exports =
 	    }, {
 	        key: 'withdraw',
 	        value: function withdraw(_ref9) {
-	            var _this7 = this;
+	            var _this6 = this;
 	
 	            var address = _ref9.address,
 	                coin = _ref9.coin;
@@ -9640,7 +9640,7 @@ module.exports =
 	                outputs: [_defineProperty({}, address, 0.001), _defineProperty({}, address, 0.002)] };
 	            var url = 'http://127.0.0.1:7783';
 	            return new Promise(function (resolve, reject) {
-	                return _this7.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this6.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('withdraw for ' + coin);
 	                    console.log(result);
 	                    resolve(result);
@@ -9653,7 +9653,7 @@ module.exports =
 	    }, {
 	        key: 'inventory',
 	        value: function inventory(_ref12) {
-	            var _this8 = this;
+	            var _this7 = this;
 	
 	            var coin = _ref12.coin;
 	
@@ -9662,7 +9662,7 @@ module.exports =
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this8.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this7.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('inventory for ' + coin);
 	                    console.log(result);
 	                    if (result.alice.length < 3) {
@@ -9683,7 +9683,7 @@ module.exports =
 	    }, {
 	        key: 'listunspent',
 	        value: function listunspent(_ref13) {
-	            var _this9 = this;
+	            var _this8 = this;
 	
 	            var coin = _ref13.coin,
 	                address = _ref13.address;
@@ -9693,7 +9693,7 @@ module.exports =
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this9.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this8.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('listunspent for ' + coin);
 	                    console.log(result);
 	                    resolve(result);
@@ -25375,7 +25375,7 @@ module.exports =
 	    var close = function close() {
 	        // On OS X it is common for applications and their menu bar
 	        // to stay active until the user quits explicitly with Cmd + Q
-	        _electronLog2.default.info('All windows closed. shutting down marketmaker');
+	        _electronLog2.default.info('All windows closed. Shutting down');
 	        emitter.send('willClose');
 	    };
 	
@@ -25493,6 +25493,7 @@ module.exports =
 	
 	var mmsState = MMStates.initial;
 	var checkMMInterval = void 0;
+	var passphrase = void 0;
 	
 	var stopMMStatus = function stopMMStatus() {
 	    mmsState = MMStates.initial;
@@ -25513,7 +25514,7 @@ module.exports =
 	                api.startMarketMaker({ passphrase: arg.passphrase });
 	                break;
 	            case 'logout':
-	                api.killMarketmaker(true);
+	                api.logout();
 	                break;
 	            default:
 	                break;
@@ -25522,6 +25523,7 @@ module.exports =
 	
 	    api.on('logoutCallback', function (data) {
 	        if (!data.error) {
+	            passphrase = '';
 	            stopMMStatus();
 	            emitter.send('resetUserInfo', data);
 	        }
@@ -25530,6 +25532,7 @@ module.exports =
 	    api.on('loginCallback', function (data) {
 	        if (!data.error) {
 	            // start to check if MMS is running
+	            passphrase = data.passphrase;
 	            stopMMStatus();
 	            checkMMInterval = setInterval(function () {
 	                return api.checkMMStatus();
@@ -25549,14 +25552,14 @@ module.exports =
 	
 	        if (status === MMStates.open && mmsState !== MMStates.open) {
 	            // first market open > store userpass
-	            api.getUserpass();
+	            api.getUserpass(passphrase);
 	            mmsState = MMStates.open;
 	        }
 	    });
 	
 	    api.on('updateUserInfo', function (data) {
-	        emitter.send('loading', { type: 'delete', key: 1 });
 	        emitter.send('updateUserInfo', data);
+	        emitter.send('loading', { type: 'delete', key: 1 });
 	        emitter.send('loading', { type: 'delete', key: 2 });
 	    });
 	};
