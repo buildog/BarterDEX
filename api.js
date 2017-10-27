@@ -163,6 +163,9 @@ class Emitter extends EventEmitter {
             passphrase: data.passphrase.trim(),
             coins: data.coinslist
         };
+
+        console.log(customParam);
+
         exec(`${marketmakerBin} '${JSON.stringify(customParam)}'`, {
             cwd: marketmakerDir
             // maxBuffer: 1024 * 10000 // 10 mb
