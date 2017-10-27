@@ -4,13 +4,11 @@
 import os from 'os';
 import fs from 'fs';
 import path from 'path';
-import getAppDataPath from 'appdata-path';
 
 const osPlatform = os.platform();
 
 
 let homeDir = require('os').homedir();
-const appRootDir = require('app-root-dir').get();
 
 const env = process.env.NODE_ENV;
 const assetChainPorts = {
@@ -96,9 +94,9 @@ if (os.platform() === 'linux') {
 }
 
 if (os.platform() === 'win32') {
-    const appdata = getAppDataPath();
-    homeDir = appdata;
-    marketmakerDir = `${appdata}/marketmaker`;
+    homeDir = `${homeDir}\AppData`;
+
+    marketmakerDir = `${homeDir}/marketmaker`;
     // marketmakerDir = path.normalize(marketmakerDir);
     marketmakerIcon = path.join(__dirname, '/app/assets/icons/agama_icons/agama_app_icon.ico');
 }
@@ -108,5 +106,5 @@ const defaultCoinsListFile = path.join(__dirname, './coinslist.json');
 
 
 export default {
-    main: { homeDir, appRootDir, env, assetChainPorts, osPlatform, defaultCoinsListFile, marketmakerBin, marketmakerDir, marketmakerIcon }
+    main: { homeDir, env, assetChainPorts, osPlatform, defaultCoinsListFile, marketmakerBin, marketmakerDir, marketmakerIcon }
 }
