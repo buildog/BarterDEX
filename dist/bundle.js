@@ -40354,7 +40354,7 @@ module.exports =
 	        };
 
 	        _this.coinPicker = function (type) {
-	            return _react2.default.createElement(_.CoinPicker, { title: type === 'Base' ? 'Select a coin to buy' : 'Select a coin to sell', type: type, onClose: function onClose() {
+	            return _react2.default.createElement(_.CoinPicker, { title: type === 'Base' ? 'Select a coin to buy' : 'Select a coin to sell', type: type, allowZero: true, onClose: function onClose() {
 	                    return _this.resetForm();
 	                } });
 	        };
@@ -40821,7 +40821,7 @@ module.exports =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -40845,87 +40845,91 @@ module.exports =
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var CoinPicker = (_dec = (0, _mobxReact.inject)('app'), _dec(_class = (0, _mobxReact.observer)(_class = function (_React$Component) {
-	  _inherits(CoinPicker, _React$Component);
+	    _inherits(CoinPicker, _React$Component);
 
-	  function CoinPicker(props) {
-	    _classCallCheck(this, CoinPicker);
+	    function CoinPicker(props) {
+	        _classCallCheck(this, CoinPicker);
 
-	    var _this = _possibleConstructorReturn(this, (CoinPicker.__proto__ || Object.getPrototypeOf(CoinPicker)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (CoinPicker.__proto__ || Object.getPrototypeOf(CoinPicker)).call(this, props));
 
-	    _this.setTrade = function (e, coin) {
-	      var setTrade = _this.props.app.portfolio.setTrade;
+	        _this.setTrade = function (e, coin) {
+	            var setTrade = _this.props.app.portfolio.setTrade;
 
-	      setTrade(coin, _this.props.type);
-	      // autoclose after selection
-	      _this.props.onClose && _this.props.onClose();
-	    };
+	            setTrade(coin, _this.props.type);
+	            // autoclose after selection
+	            _this.props.onClose && _this.props.onClose();
+	        };
 
-	    _this.state = {
-	      isPickerOpen: true
-	    };
-	    return _this;
-	  }
-
-	  _createClass(CoinPicker, [{
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-
-	      var _props$app$portfolio = this.props.app.portfolio,
-	          installedCoins = _props$app$portfolio.installedCoins,
-	          tradeBase = _props$app$portfolio.tradeBase,
-	          tradeRel = _props$app$portfolio.tradeRel;
-
-	      var currentTrade = { tradeBase: tradeBase, tradeRel: tradeRel };
-	      var notSelf = this.props.type === 'Rel' ? 'tradeBase' : 'tradeRel';
-
-	      var nonZeroBalance = installedCoins.filter(function (item) {
-	        return item.balance > 0 && item.coin !== currentTrade[notSelf].coin;
-	      });
-
-	      return _react2.default.createElement(
-	        _.Modal,
-	        { show: this.state.isPickerOpen, title: this.props.title, onClose: this.props.onClose },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'coinList' },
-	          nonZeroBalance.map(function (coin) {
-	            return _react2.default.createElement(
-	              'button',
-	              { key: coin.coin, onClick: function onClick(e) {
-	                  return _this2.setTrade(e, coin);
-	                }, className: 'coinList-coin withBorder ' + coin.coin },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'coinList-wrapper' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'coinList-coin-logo coin-colorized' },
-	                  coin.icon
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'coinList-coin-name' },
-	                  _react2.default.createElement(
-	                    'h2',
-	                    { className: 'coin-colorized' },
-	                    coin.name,
-	                    _react2.default.createElement(
-	                      'small',
-	                      null,
-	                      coin.smartaddress
-	                    )
-	                  )
-	                )
-	              )
-	            );
-	          })
-	        )
-	      );
+	        _this.state = {
+	            isPickerOpen: true
+	        };
+	        return _this;
 	    }
-	  }]);
 
-	  return CoinPicker;
+	    _createClass(CoinPicker, [{
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            var _props$app$portfolio = this.props.app.portfolio,
+	                installedCoins = _props$app$portfolio.installedCoins,
+	                tradeBase = _props$app$portfolio.tradeBase,
+	                tradeRel = _props$app$portfolio.tradeRel;
+
+	            var currentTrade = { tradeBase: tradeBase, tradeRel: tradeRel };
+	            var notSelf = this.props.type === 'Rel' ? 'tradeBase' : 'tradeRel';
+	            var coins = void 0;
+	            if (!this.props.allowZero) {
+	                coins = installedCoins.filter(function (item) {
+	                    return item.balance > 0 && item.coin !== currentTrade[notSelf].coin;
+	                });
+	            } else {
+	                coins = installedCoins;
+	            }
+
+	            return _react2.default.createElement(
+	                _.Modal,
+	                { show: this.state.isPickerOpen, title: this.props.title, onClose: this.props.onClose },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'coinList' },
+	                    coins.map(function (coin) {
+	                        return _react2.default.createElement(
+	                            'button',
+	                            { key: coin.coin, onClick: function onClick(e) {
+	                                    return _this2.setTrade(e, coin);
+	                                }, className: 'coinList-coin withBorder ' + coin.coin },
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'coinList-wrapper' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'coinList-coin-logo coin-colorized' },
+	                                    coin.icon
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'coinList-coin-name' },
+	                                    _react2.default.createElement(
+	                                        'h2',
+	                                        { className: 'coin-colorized' },
+	                                        coin.name,
+	                                        _react2.default.createElement(
+	                                            'small',
+	                                            null,
+	                                            coin.smartaddress
+	                                        )
+	                                    )
+	                                )
+	                            )
+	                        );
+	                    })
+	                )
+	            );
+	        }
+	    }]);
+
+	    return CoinPicker;
 	}(_react2.default.Component)) || _class) || _class);
 	exports.default = CoinPicker;
 	module.exports = exports['default'];
@@ -43531,10 +43535,8 @@ module.exports =
 	    /* set userpass */
 	    _electron.ipcRenderer.on('updateUserInfo', function (e, _ref) {
 	        var userpass = _ref.userpass,
-	            coins = _ref.coins,
 	            mypubkey = _ref.mypubkey;
 
-	        self.coins = coins;
 	        self.userpass = userpass;
 	        self.mypubkey = mypubkey;
 	        // start autorefresh of portfolio

@@ -29,8 +29,7 @@ export default class AppStore {
         });
 
         /* set userpass */
-        ipcRenderer.on('updateUserInfo', (e, { userpass, coins, mypubkey }) => {
-            self.coins = coins;
+        ipcRenderer.on('updateUserInfo', (e, { userpass, mypubkey }) => {
             self.userpass = userpass;
             self.mypubkey = mypubkey;
             // start autorefresh of portfolio
