@@ -105,7 +105,10 @@
       "category": "your.app.category.type"
     },
     "linux": {
-        "icon": "resources/icons/app.png"
+        "icon": "resources/icons/",
+        "target": [
+          "AppImage"
+        ]
     },
     "dmg": {
       "icon": "resources/icons/app.png"
