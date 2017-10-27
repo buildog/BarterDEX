@@ -171,7 +171,6 @@ class Emitter extends EventEmitter {
             params = JSON.stringify(params);
             params = params.replace(/"/g, '\\"')
         }
-        console.log(params);
 
         exec(`${marketmakerBin} ${params}`, {
             cwd: marketmakerDir
