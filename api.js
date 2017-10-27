@@ -132,10 +132,10 @@ class Emitter extends EventEmitter {
     }
 
     logout() {
-        self.userpass = '';
-        self.mypubkey = '';
-        self.coins = '';
-        self.emit('logoutCallback', { type: 'success' });
+        this.userpass = '';
+        this.mypubkey = '';
+        this.coins = '';
+        this.emit('logoutCallback', { type: 'success' });
     }
 
 
@@ -234,9 +234,6 @@ class Emitter extends EventEmitter {
         const url = 'http://127.0.0.1:7783';
 
         this.apiRequest({ data, url }).then((result) => {
-            console.log(data);
-            console.log(result);
-
             const { userpass, mypubkey } = result;
 
             self.userpass = userpass;

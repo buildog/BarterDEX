@@ -9327,10 +9327,10 @@ module.exports =
 	    }, {
 	        key: 'logout',
 	        value: function logout() {
-	            self.userpass = '';
-	            self.mypubkey = '';
-	            self.coins = '';
-	            self.emit('logoutCallback', { type: 'success' });
+	            this.userpass = '';
+	            this.mypubkey = '';
+	            this.coins = '';
+	            this.emit('logoutCallback', { type: 'success' });
 	        }
 	    }, {
 	        key: 'startMarketMaker',
@@ -25561,9 +25561,7 @@ module.exports =
 	    });
 	
 	    api.on('updateUserInfo', function (data) {
-	        emitter.send('loading', { type: 'delete', key: 1 });
 	        emitter.send('updateUserInfo', data);
-	        emitter.send('loading', { type: 'delete', key: 2 });
 	    });
 	};
 
@@ -25610,6 +25608,8 @@ module.exports =
 	
 	    api.on('coinsList', function (coins) {
 	        emitter.send('coinsList', coins);
+	        emitter.send('loading', { type: 'delete', key: 1 });
+	        emitter.send('loading', { type: 'delete', key: 2 });
 	    });
 	};
 

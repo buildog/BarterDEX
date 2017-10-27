@@ -69,8 +69,8 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
     })
 
     api.on('updateUserInfo', (data) => {
-        emitter.send('loading', { type: 'delete', key: 1 });
         emitter.send('updateUserInfo', data);
+        emitter.send('loading', { type: 'delete', key: 1 });
         emitter.send('loading', { type: 'delete', key: 2 });
     })
 }
