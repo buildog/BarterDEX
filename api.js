@@ -219,9 +219,9 @@ class Emitter extends EventEmitter {
 
             self.userpass = userpass;
             self.mypubkey = mypubkey;
-
             self.getCoins().then((coinsList) => {
-                self.emit('coinsList', coinsList);
+                // coinsList may return an object instead of an array if it's the first call which return the userpass.
+                self.emit('coinsList', coinsList.coins || coinsList);
                 self.emit('updateUserInfo', { userpass, mypubkey });
             })
         }).catch((error) => {

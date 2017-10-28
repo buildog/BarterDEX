@@ -1,5 +1,6 @@
 import React from 'react'
 import { ipcRenderer } from 'electron';
+import { hashHistory } from 'react-router';
 import { observer, inject } from 'mobx-react';
 import close from '../../static/traffic-light-close.svg';
 import minimize from '../../static/traffic-light-minimize.svg';
@@ -11,7 +12,10 @@ import logo from '../../static/favicon.svg';
 class Header extends React.Component {
 
 
-    logout = () => { this.props.app.logout() }
+    logout = () => {
+        this.props.app.logout();
+        hashHistory.push('/');
+    }
 
     render() {
         const { userpass } = this.props.app;
