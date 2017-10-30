@@ -43408,11 +43408,8 @@ module.exports =
 
 	        return function () {
 	            var self = _this7;
-	            // autorefresh is set after updateUserInfo (app.js)
-	            clearInterval(self.autorefresh);
 	            self.tradeBase = false;
 	            self.tradeRel = false;
-	            self.orderbook.killListener();
 	        };
 	    }
 	})), _class);
@@ -43589,8 +43586,11 @@ module.exports =
 	        var _this2 = this;
 
 	        return function () {
+	            var self = _this2;
 	            // send login passphrase
-	            _this2.portfolio.leave();
+	            clearInterval(self.portfolio.autorefresh);
+	            self.orderbook.killListener();
+	            self.portfolio.leave();
 	            shepherdIPC({ command: 'logout' });
 	        };
 	    }
