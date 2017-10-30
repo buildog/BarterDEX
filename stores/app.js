@@ -56,8 +56,11 @@ export default class AppStore {
   }
 
   @action logout = () => {
+      const self = this;
       // send login passphrase
-      this.portfolio.leave();
+      clearInterval(self.portfolio.autorefresh);
+      self.orderbook.killListener();
+      self.portfolio.leave();
       shepherdIPC({ command: 'logout' });
   }
 

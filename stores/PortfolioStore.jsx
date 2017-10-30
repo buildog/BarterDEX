@@ -185,11 +185,8 @@ export default class PortfolioStore {
 
     @action leave = () => {
         const self = this;
-        // autorefresh is set after updateUserInfo (app.js)
-        clearInterval(self.autorefresh);
         self.tradeBase = false;
         self.tradeRel = false;
-        self.orderbook.killListener();
     }
 
 }

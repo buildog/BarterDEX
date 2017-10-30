@@ -53,7 +53,7 @@ module.exports =
 
 	var _reactDom = __webpack_require__(119);
 
-	var _reactRouter = __webpack_require__(70);
+	var _reactRouter = __webpack_require__(56);
 
 	var _mobxReact = __webpack_require__(21);
 
@@ -143,7 +143,7 @@ module.exports =
 
 	'use strict';
 
-	module.exports = __webpack_require__(56);
+	module.exports = __webpack_require__(57);
 
 
 /***/ }),
@@ -7844,7 +7844,7 @@ module.exports =
 /* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(63),
+	var Symbol = __webpack_require__(64),
 	    getRawTag = __webpack_require__(373),
 	    objectToString = __webpack_require__(401);
 
@@ -8038,7 +8038,7 @@ module.exports =
 
 	var _Legend2 = _interopRequireDefault(_Legend);
 
-	var _Curve = __webpack_require__(60);
+	var _Curve = __webpack_require__(61);
 
 	var _Curve2 = _interopRequireDefault(_Curve);
 
@@ -8054,7 +8054,7 @@ module.exports =
 
 	var _Dot2 = _interopRequireDefault(_Dot);
 
-	var _Rectangle = __webpack_require__(61);
+	var _Rectangle = __webpack_require__(62);
 
 	var _Rectangle2 = _interopRequireDefault(_Rectangle);
 
@@ -11800,6 +11800,167 @@ module.exports =
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	exports.__esModule = true;
+	exports.createMemoryHistory = exports.hashHistory = exports.browserHistory = exports.applyRouterMiddleware = exports.formatPattern = exports.useRouterHistory = exports.match = exports.routerShape = exports.locationShape = exports.PropTypes = exports.RoutingContext = exports.RouterContext = exports.createRoutes = exports.useRoutes = exports.RouteContext = exports.Lifecycle = exports.History = exports.Route = exports.Redirect = exports.IndexRoute = exports.IndexRedirect = exports.withRouter = exports.IndexLink = exports.Link = exports.Router = undefined;
+
+	var _RouteUtils = __webpack_require__(39);
+
+	Object.defineProperty(exports, 'createRoutes', {
+	  enumerable: true,
+	  get: function get() {
+	    return _RouteUtils.createRoutes;
+	  }
+	});
+
+	var _PropTypes2 = __webpack_require__(137);
+
+	Object.defineProperty(exports, 'locationShape', {
+	  enumerable: true,
+	  get: function get() {
+	    return _PropTypes2.locationShape;
+	  }
+	});
+	Object.defineProperty(exports, 'routerShape', {
+	  enumerable: true,
+	  get: function get() {
+	    return _PropTypes2.routerShape;
+	  }
+	});
+
+	var _PatternUtils = __webpack_require__(55);
+
+	Object.defineProperty(exports, 'formatPattern', {
+	  enumerable: true,
+	  get: function get() {
+	    return _PatternUtils.formatPattern;
+	  }
+	});
+
+	var _Router2 = __webpack_require__(786);
+
+	var _Router3 = _interopRequireDefault(_Router2);
+
+	var _Link2 = __webpack_require__(222);
+
+	var _Link3 = _interopRequireDefault(_Link2);
+
+	var _IndexLink2 = __webpack_require__(780);
+
+	var _IndexLink3 = _interopRequireDefault(_IndexLink2);
+
+	var _withRouter2 = __webpack_require__(799);
+
+	var _withRouter3 = _interopRequireDefault(_withRouter2);
+
+	var _IndexRedirect2 = __webpack_require__(781);
+
+	var _IndexRedirect3 = _interopRequireDefault(_IndexRedirect2);
+
+	var _IndexRoute2 = __webpack_require__(782);
+
+	var _IndexRoute3 = _interopRequireDefault(_IndexRoute2);
+
+	var _Redirect2 = __webpack_require__(223);
+
+	var _Redirect3 = _interopRequireDefault(_Redirect2);
+
+	var _Route2 = __webpack_require__(784);
+
+	var _Route3 = _interopRequireDefault(_Route2);
+
+	var _History2 = __webpack_require__(779);
+
+	var _History3 = _interopRequireDefault(_History2);
+
+	var _Lifecycle2 = __webpack_require__(783);
+
+	var _Lifecycle3 = _interopRequireDefault(_Lifecycle2);
+
+	var _RouteContext2 = __webpack_require__(785);
+
+	var _RouteContext3 = _interopRequireDefault(_RouteContext2);
+
+	var _useRoutes2 = __webpack_require__(798);
+
+	var _useRoutes3 = _interopRequireDefault(_useRoutes2);
+
+	var _RouterContext2 = __webpack_require__(92);
+
+	var _RouterContext3 = _interopRequireDefault(_RouterContext2);
+
+	var _RoutingContext2 = __webpack_require__(787);
+
+	var _RoutingContext3 = _interopRequireDefault(_RoutingContext2);
+
+	var _PropTypes3 = _interopRequireDefault(_PropTypes2);
+
+	var _match2 = __webpack_require__(796);
+
+	var _match3 = _interopRequireDefault(_match2);
+
+	var _useRouterHistory2 = __webpack_require__(228);
+
+	var _useRouterHistory3 = _interopRequireDefault(_useRouterHistory2);
+
+	var _applyRouterMiddleware2 = __webpack_require__(789);
+
+	var _applyRouterMiddleware3 = _interopRequireDefault(_applyRouterMiddleware2);
+
+	var _browserHistory2 = __webpack_require__(790);
+
+	var _browserHistory3 = _interopRequireDefault(_browserHistory2);
+
+	var _hashHistory2 = __webpack_require__(794);
+
+	var _hashHistory3 = _interopRequireDefault(_hashHistory2);
+
+	var _createMemoryHistory2 = __webpack_require__(225);
+
+	var _createMemoryHistory3 = _interopRequireDefault(_createMemoryHistory2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.Router = _Router3.default; /* components */
+
+	exports.Link = _Link3.default;
+	exports.IndexLink = _IndexLink3.default;
+	exports.withRouter = _withRouter3.default;
+
+	/* components (configuration) */
+
+	exports.IndexRedirect = _IndexRedirect3.default;
+	exports.IndexRoute = _IndexRoute3.default;
+	exports.Redirect = _Redirect3.default;
+	exports.Route = _Route3.default;
+
+	/* mixins */
+
+	exports.History = _History3.default;
+	exports.Lifecycle = _Lifecycle3.default;
+	exports.RouteContext = _RouteContext3.default;
+
+	/* utils */
+
+	exports.useRoutes = _useRoutes3.default;
+	exports.RouterContext = _RouterContext3.default;
+	exports.RoutingContext = _RoutingContext3.default;
+	exports.PropTypes = _PropTypes3.default;
+	exports.match = _match3.default;
+	exports.useRouterHistory = _useRouterHistory3.default;
+	exports.applyRouterMiddleware = _applyRouterMiddleware3.default;
+
+	/* histories */
+
+	exports.browserHistory = _browserHistory3.default;
+	exports.hashHistory = _hashHistory3.default;
+	exports.createMemoryHistory = _createMemoryHistory3.default;
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
 	 *
@@ -11815,7 +11976,7 @@ module.exports =
 	var ReactBaseClasses = __webpack_require__(234);
 	var ReactChildren = __webpack_require__(816);
 	var ReactDOMFactories = __webpack_require__(817);
-	var ReactElement = __webpack_require__(57);
+	var ReactElement = __webpack_require__(58);
 	var ReactPropTypes = __webpack_require__(818);
 	var ReactVersion = __webpack_require__(819);
 
@@ -11931,7 +12092,7 @@ module.exports =
 	module.exports = React;
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -12274,7 +12435,7 @@ module.exports =
 	module.exports = ReactElement;
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12387,7 +12548,7 @@ module.exports =
 	exports.default = XAxis;
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12498,7 +12659,7 @@ module.exports =
 	exports.default = YAxis;
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12684,7 +12845,7 @@ module.exports =
 	exports.default = Curve;
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12918,7 +13079,7 @@ module.exports =
 	exports.default = Rectangle;
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -13015,7 +13176,7 @@ module.exports =
 	module.exports = exports['default'];
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var root = __webpack_require__(28);
@@ -13027,7 +13188,7 @@ module.exports =
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var baseMatches = __webpack_require__(349),
@@ -13064,7 +13225,7 @@ module.exports =
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var isFunction = __webpack_require__(10),
@@ -13103,7 +13264,7 @@ module.exports =
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -13379,7 +13540,7 @@ module.exports =
 	module.exports = EventPluginHub;
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -13392,7 +13553,7 @@ module.exports =
 
 	'use strict';
 
-	var EventPluginHub = __webpack_require__(66);
+	var EventPluginHub = __webpack_require__(67);
 	var EventPluginUtils = __webpack_require__(123);
 
 	var accumulateInto = __webpack_require__(213);
@@ -13515,7 +13676,7 @@ module.exports =
 	module.exports = EventPropagators;
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports) {
 
 	/**
@@ -13563,7 +13724,7 @@ module.exports =
 	module.exports = ReactInstanceMap;
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -13622,167 +13783,6 @@ module.exports =
 	SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 
 	module.exports = SyntheticUIEvent;
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.__esModule = true;
-	exports.createMemoryHistory = exports.hashHistory = exports.browserHistory = exports.applyRouterMiddleware = exports.formatPattern = exports.useRouterHistory = exports.match = exports.routerShape = exports.locationShape = exports.PropTypes = exports.RoutingContext = exports.RouterContext = exports.createRoutes = exports.useRoutes = exports.RouteContext = exports.Lifecycle = exports.History = exports.Route = exports.Redirect = exports.IndexRoute = exports.IndexRedirect = exports.withRouter = exports.IndexLink = exports.Link = exports.Router = undefined;
-
-	var _RouteUtils = __webpack_require__(39);
-
-	Object.defineProperty(exports, 'createRoutes', {
-	  enumerable: true,
-	  get: function get() {
-	    return _RouteUtils.createRoutes;
-	  }
-	});
-
-	var _PropTypes2 = __webpack_require__(137);
-
-	Object.defineProperty(exports, 'locationShape', {
-	  enumerable: true,
-	  get: function get() {
-	    return _PropTypes2.locationShape;
-	  }
-	});
-	Object.defineProperty(exports, 'routerShape', {
-	  enumerable: true,
-	  get: function get() {
-	    return _PropTypes2.routerShape;
-	  }
-	});
-
-	var _PatternUtils = __webpack_require__(55);
-
-	Object.defineProperty(exports, 'formatPattern', {
-	  enumerable: true,
-	  get: function get() {
-	    return _PatternUtils.formatPattern;
-	  }
-	});
-
-	var _Router2 = __webpack_require__(786);
-
-	var _Router3 = _interopRequireDefault(_Router2);
-
-	var _Link2 = __webpack_require__(222);
-
-	var _Link3 = _interopRequireDefault(_Link2);
-
-	var _IndexLink2 = __webpack_require__(780);
-
-	var _IndexLink3 = _interopRequireDefault(_IndexLink2);
-
-	var _withRouter2 = __webpack_require__(799);
-
-	var _withRouter3 = _interopRequireDefault(_withRouter2);
-
-	var _IndexRedirect2 = __webpack_require__(781);
-
-	var _IndexRedirect3 = _interopRequireDefault(_IndexRedirect2);
-
-	var _IndexRoute2 = __webpack_require__(782);
-
-	var _IndexRoute3 = _interopRequireDefault(_IndexRoute2);
-
-	var _Redirect2 = __webpack_require__(223);
-
-	var _Redirect3 = _interopRequireDefault(_Redirect2);
-
-	var _Route2 = __webpack_require__(784);
-
-	var _Route3 = _interopRequireDefault(_Route2);
-
-	var _History2 = __webpack_require__(779);
-
-	var _History3 = _interopRequireDefault(_History2);
-
-	var _Lifecycle2 = __webpack_require__(783);
-
-	var _Lifecycle3 = _interopRequireDefault(_Lifecycle2);
-
-	var _RouteContext2 = __webpack_require__(785);
-
-	var _RouteContext3 = _interopRequireDefault(_RouteContext2);
-
-	var _useRoutes2 = __webpack_require__(798);
-
-	var _useRoutes3 = _interopRequireDefault(_useRoutes2);
-
-	var _RouterContext2 = __webpack_require__(92);
-
-	var _RouterContext3 = _interopRequireDefault(_RouterContext2);
-
-	var _RoutingContext2 = __webpack_require__(787);
-
-	var _RoutingContext3 = _interopRequireDefault(_RoutingContext2);
-
-	var _PropTypes3 = _interopRequireDefault(_PropTypes2);
-
-	var _match2 = __webpack_require__(796);
-
-	var _match3 = _interopRequireDefault(_match2);
-
-	var _useRouterHistory2 = __webpack_require__(228);
-
-	var _useRouterHistory3 = _interopRequireDefault(_useRouterHistory2);
-
-	var _applyRouterMiddleware2 = __webpack_require__(789);
-
-	var _applyRouterMiddleware3 = _interopRequireDefault(_applyRouterMiddleware2);
-
-	var _browserHistory2 = __webpack_require__(790);
-
-	var _browserHistory3 = _interopRequireDefault(_browserHistory2);
-
-	var _hashHistory2 = __webpack_require__(794);
-
-	var _hashHistory3 = _interopRequireDefault(_hashHistory2);
-
-	var _createMemoryHistory2 = __webpack_require__(225);
-
-	var _createMemoryHistory3 = _interopRequireDefault(_createMemoryHistory2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.Router = _Router3.default; /* components */
-
-	exports.Link = _Link3.default;
-	exports.IndexLink = _IndexLink3.default;
-	exports.withRouter = _withRouter3.default;
-
-	/* components (configuration) */
-
-	exports.IndexRedirect = _IndexRedirect3.default;
-	exports.IndexRoute = _IndexRoute3.default;
-	exports.Redirect = _Redirect3.default;
-	exports.Route = _Route3.default;
-
-	/* mixins */
-
-	exports.History = _History3.default;
-	exports.Lifecycle = _Lifecycle3.default;
-	exports.RouteContext = _RouteContext3.default;
-
-	/* utils */
-
-	exports.useRoutes = _useRoutes3.default;
-	exports.RouterContext = _RouterContext3.default;
-	exports.RoutingContext = _RoutingContext3.default;
-	exports.PropTypes = _PropTypes3.default;
-	exports.match = _match3.default;
-	exports.useRouterHistory = _useRouterHistory3.default;
-	exports.applyRouterMiddleware = _applyRouterMiddleware3.default;
-
-	/* histories */
-
-	exports.browserHistory = _browserHistory3.default;
-	exports.hashHistory = _hashHistory3.default;
-	exports.createMemoryHistory = _createMemoryHistory3.default;
 
 /***/ }),
 /* 71 */
@@ -14974,7 +14974,7 @@ module.exports =
 
 	'use strict';
 
-	var SyntheticUIEvent = __webpack_require__(69);
+	var SyntheticUIEvent = __webpack_require__(70);
 	var ViewportMetrics = __webpack_require__(212);
 
 	var getEventModifierState = __webpack_require__(131);
@@ -19450,7 +19450,7 @@ module.exports =
 
 	var arrayLikeKeys = __webpack_require__(330),
 	    baseKeys = __webpack_require__(347),
-	    isArrayLike = __webpack_require__(65);
+	    isArrayLike = __webpack_require__(66);
 
 	/**
 	 * Creates an array of the own enumerable property names of `object`.
@@ -21665,7 +21665,7 @@ module.exports =
 	var ReactPropTypesSecret = __webpack_require__(747);
 	var propTypesFactory = __webpack_require__(198);
 
-	var React = __webpack_require__(56);
+	var React = __webpack_require__(57);
 	var PropTypes = propTypesFactory(React.isValidElement);
 
 	var invariant = __webpack_require__(5);
@@ -21929,7 +21929,7 @@ module.exports =
 	var _prodInvariant = __webpack_require__(9);
 
 	var ReactCurrentOwner = __webpack_require__(36);
-	var ReactInstanceMap = __webpack_require__(68);
+	var ReactInstanceMap = __webpack_require__(69);
 	var ReactInstrumentation = __webpack_require__(24);
 	var ReactUpdates = __webpack_require__(30);
 
@@ -23597,7 +23597,7 @@ module.exports =
 
 	var _reactSmooth2 = _interopRequireDefault(_reactSmooth);
 
-	var _Curve = __webpack_require__(60);
+	var _Curve = __webpack_require__(61);
 
 	var _Curve2 = _interopRequireDefault(_Curve);
 
@@ -24205,7 +24205,7 @@ module.exports =
 
 	var _reactSmooth2 = _interopRequireDefault(_reactSmooth);
 
-	var _Rectangle = __webpack_require__(61);
+	var _Rectangle = __webpack_require__(62);
 
 	var _Rectangle2 = _interopRequireDefault(_Rectangle);
 
@@ -24703,7 +24703,7 @@ module.exports =
 
 	var _PureRender2 = _interopRequireDefault(_PureRender);
 
-	var _Curve = __webpack_require__(60);
+	var _Curve = __webpack_require__(61);
 
 	var _Curve2 = _interopRequireDefault(_Curve);
 
@@ -25247,7 +25247,7 @@ module.exports =
 
 	var _ZAxis2 = _interopRequireDefault(_ZAxis);
 
-	var _Curve = __webpack_require__(60);
+	var _Curve = __webpack_require__(61);
 
 	var _Curve2 = _interopRequireDefault(_Curve);
 
@@ -29657,7 +29657,7 @@ module.exports =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var eq = __webpack_require__(113),
-	    isArrayLike = __webpack_require__(65),
+	    isArrayLike = __webpack_require__(66),
 	    isIndex = __webpack_require__(111),
 	    isObject = __webpack_require__(29);
 
@@ -30217,7 +30217,7 @@ module.exports =
 
 	var baseExtremum = __webpack_require__(83),
 	    baseGt = __webpack_require__(175),
-	    baseIteratee = __webpack_require__(64);
+	    baseIteratee = __webpack_require__(65);
 
 	/**
 	 * This method is like `_.max` except that it accepts `iteratee` which is
@@ -31594,14 +31594,14 @@ module.exports =
 
 	var DOMLazyTree = __webpack_require__(52);
 	var DOMProperty = __webpack_require__(53);
-	var React = __webpack_require__(56);
+	var React = __webpack_require__(57);
 	var ReactBrowserEventEmitter = __webpack_require__(87);
 	var ReactCurrentOwner = __webpack_require__(36);
 	var ReactDOMComponentTree = __webpack_require__(14);
 	var ReactDOMContainerInfo = __webpack_require__(728);
 	var ReactDOMFeatureFlags = __webpack_require__(730);
 	var ReactFeatureFlags = __webpack_require__(207);
-	var ReactInstanceMap = __webpack_require__(68);
+	var ReactInstanceMap = __webpack_require__(69);
 	var ReactInstrumentation = __webpack_require__(24);
 	var ReactMarkupChecksum = __webpack_require__(744);
 	var ReactReconciler = __webpack_require__(54);
@@ -32133,7 +32133,7 @@ module.exports =
 
 	var _prodInvariant = __webpack_require__(9);
 
-	var React = __webpack_require__(56);
+	var React = __webpack_require__(57);
 
 	var invariant = __webpack_require__(5);
 
@@ -37154,7 +37154,7 @@ module.exports =
 
 	var _ChartUtils = __webpack_require__(17);
 
-	var _Rectangle = __webpack_require__(61);
+	var _Rectangle = __webpack_require__(62);
 
 	var _Rectangle2 = _interopRequireDefault(_Rectangle);
 
@@ -37775,7 +37775,7 @@ module.exports =
 
 	var _Sector2 = _interopRequireDefault(_Sector);
 
-	var _Curve = __webpack_require__(60);
+	var _Curve = __webpack_require__(61);
 
 	var _Curve2 = _interopRequireDefault(_Curve);
 
@@ -40241,7 +40241,7 @@ module.exports =
 	                tradeBase = _this$props$app$portf.tradeBase,
 	                tradeRel = _this$props$app$portf.tradeRel;
 
-	            _this.setState({ amountBase: 0, picker: false, rate: 0, orderBookMessage: 'Fetching ' + tradeRel.coin + '/' + tradeBase.coin + ' orderbook' });
+	            _this.setState({ amountBase: 0, picker: false, rate: 0, orderBookMessage: 'Fetching ' + tradeBase.coin + '/' + tradeRel.coin + ' orderbook' });
 	            _this.validation({});
 	        };
 
@@ -40256,7 +40256,7 @@ module.exports =
 	                tradeBase = _this$props$app$portf2.tradeBase,
 	                tradeRel = _this$props$app$portf2.tradeRel;
 
-	            _this.setState({ orderBookMessage: 'Fetching ' + tradeRel.coin + '/' + tradeBase.coin + ' orderbook' });
+	            _this.setState({ orderBookMessage: 'Fetching ' + tradeBase.coin + '/' + tradeRel.coin + ' orderbook' });
 	        };
 
 	        _this.trade = function () {
@@ -40954,7 +40954,7 @@ module.exports =
 
 	var _mobxReact = __webpack_require__(21);
 
-	var _reactRouter = __webpack_require__(70);
+	var _reactRouter = __webpack_require__(56);
 
 	var _classnames = __webpack_require__(4);
 
@@ -41213,7 +41213,7 @@ module.exports =
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _reactRouter = __webpack_require__(70);
+	var _reactRouter = __webpack_require__(56);
 
 	var _fullscreen = __webpack_require__(887);
 
@@ -41285,6 +41285,8 @@ module.exports =
 
 	var _electron = __webpack_require__(31);
 
+	var _reactRouter = __webpack_require__(56);
+
 	var _mobxReact = __webpack_require__(21);
 
 	var _trafficLightClose = __webpack_require__(891);
@@ -41323,6 +41325,7 @@ module.exports =
 
 	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Header.__proto__ || Object.getPrototypeOf(Header)).call.apply(_ref, [this].concat(args))), _this), _this.logout = function () {
 	      _this.props.app.logout();
+	      _reactRouter.hashHistory.push('/');
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
@@ -41547,7 +41550,7 @@ module.exports =
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _constants = __webpack_require__(62);
+	var _constants = __webpack_require__(63);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
@@ -41755,7 +41758,7 @@ module.exports =
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _constants = __webpack_require__(62);
+	var _constants = __webpack_require__(63);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
@@ -41885,7 +41888,7 @@ module.exports =
 
 	var _mobxReact = __webpack_require__(21);
 
-	var _reactRouter = __webpack_require__(70);
+	var _reactRouter = __webpack_require__(56);
 
 	var _ = __webpack_require__(37);
 
@@ -42055,7 +42058,7 @@ module.exports =
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(70);
+	var _reactRouter = __webpack_require__(56);
 
 	var _mobxReact = __webpack_require__(21);
 
@@ -42498,7 +42501,7 @@ module.exports =
 
 	var _electron = __webpack_require__(31);
 
-	var _constants = __webpack_require__(62);
+	var _constants = __webpack_require__(63);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
@@ -42716,7 +42719,7 @@ module.exports =
 
 	var _electron = __webpack_require__(31);
 
-	var _constants = __webpack_require__(62);
+	var _constants = __webpack_require__(63);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
@@ -43021,7 +43024,7 @@ module.exports =
 
 	var _formatCurrency2 = _interopRequireDefault(_formatCurrency);
 
-	var _constants = __webpack_require__(62);
+	var _constants = __webpack_require__(63);
 
 	var _helpers = __webpack_require__(273);
 
@@ -49635,7 +49638,7 @@ module.exports =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var baseEach = __webpack_require__(173),
-	    isArrayLike = __webpack_require__(65);
+	    isArrayLike = __webpack_require__(66);
 
 	/**
 	 * The base implementation of `_.map` without support for iteratee shorthands.
@@ -49730,7 +49733,7 @@ module.exports =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var arrayMap = __webpack_require__(81),
-	    baseIteratee = __webpack_require__(64),
+	    baseIteratee = __webpack_require__(65),
 	    baseMap = __webpack_require__(348),
 	    baseSortBy = __webpack_require__(356),
 	    baseUnary = __webpack_require__(110),
@@ -49956,7 +49959,7 @@ module.exports =
 /* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(63),
+	var Symbol = __webpack_require__(64),
 	    arrayMap = __webpack_require__(81),
 	    isArray = __webpack_require__(13),
 	    isSymbol = __webpack_require__(51);
@@ -50128,7 +50131,7 @@ module.exports =
 /* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isArrayLike = __webpack_require__(65);
+	var isArrayLike = __webpack_require__(66);
 
 	/**
 	 * Creates a `baseEach` or `baseEachRight` function.
@@ -50250,7 +50253,7 @@ module.exports =
 /* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(63),
+	var Symbol = __webpack_require__(64),
 	    Uint8Array = __webpack_require__(325),
 	    eq = __webpack_require__(113),
 	    equalArrays = __webpack_require__(180),
@@ -50527,7 +50530,7 @@ module.exports =
 /* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(63);
+	var Symbol = __webpack_require__(64);
 
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -50881,7 +50884,7 @@ module.exports =
 /* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(63),
+	var Symbol = __webpack_require__(64),
 	    isArguments = __webpack_require__(114),
 	    isArray = __webpack_require__(13);
 
@@ -51761,7 +51764,7 @@ module.exports =
 
 	var arrayFilter = __webpack_require__(171),
 	    baseFilter = __webpack_require__(332),
-	    baseIteratee = __webpack_require__(64),
+	    baseIteratee = __webpack_require__(65),
 	    isArray = __webpack_require__(13);
 
 	/**
@@ -51889,7 +51892,7 @@ module.exports =
 /* 419 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isArrayLike = __webpack_require__(65),
+	var isArrayLike = __webpack_require__(66),
 	    isObjectLike = __webpack_require__(33);
 
 	/**
@@ -52113,7 +52116,7 @@ module.exports =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var baseExtremum = __webpack_require__(83),
-	    baseIteratee = __webpack_require__(64),
+	    baseIteratee = __webpack_require__(65),
 	    baseLt = __webpack_require__(176);
 
 	/**
@@ -52272,7 +52275,7 @@ module.exports =
 /* 429 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseIteratee = __webpack_require__(64),
+	var baseIteratee = __webpack_require__(65),
 	    baseSum = __webpack_require__(357);
 
 	/**
@@ -69063,7 +69066,7 @@ module.exports =
 
 	'use strict';
 
-	var EventPropagators = __webpack_require__(67);
+	var EventPropagators = __webpack_require__(68);
 	var ExecutionEnvironment = __webpack_require__(20);
 	var FallbackCompositionState = __webpack_require__(721);
 	var SyntheticCompositionEvent = __webpack_require__(758);
@@ -69666,8 +69669,8 @@ module.exports =
 
 	'use strict';
 
-	var EventPluginHub = __webpack_require__(66);
-	var EventPropagators = __webpack_require__(67);
+	var EventPluginHub = __webpack_require__(67);
+	var EventPropagators = __webpack_require__(68);
 	var ExecutionEnvironment = __webpack_require__(20);
 	var ReactDOMComponentTree = __webpack_require__(14);
 	var ReactUpdates = __webpack_require__(30);
@@ -70056,7 +70059,7 @@ module.exports =
 
 	'use strict';
 
-	var EventPropagators = __webpack_require__(67);
+	var EventPropagators = __webpack_require__(68);
 	var ReactDOMComponentTree = __webpack_require__(14);
 	var SyntheticMouseEvent = __webpack_require__(88);
 
@@ -70680,11 +70683,11 @@ module.exports =
 	var _prodInvariant = __webpack_require__(9),
 	    _assign = __webpack_require__(12);
 
-	var React = __webpack_require__(56);
+	var React = __webpack_require__(57);
 	var ReactComponentEnvironment = __webpack_require__(126);
 	var ReactCurrentOwner = __webpack_require__(36);
 	var ReactErrorUtils = __webpack_require__(127);
-	var ReactInstanceMap = __webpack_require__(68);
+	var ReactInstanceMap = __webpack_require__(69);
 	var ReactInstrumentation = __webpack_require__(24);
 	var ReactNodeTypes = __webpack_require__(211);
 	var ReactReconciler = __webpack_require__(54);
@@ -71703,7 +71706,7 @@ module.exports =
 	var DOMNamespaces = __webpack_require__(121);
 	var DOMProperty = __webpack_require__(53);
 	var DOMPropertyOperations = __webpack_require__(203);
-	var EventPluginHub = __webpack_require__(66);
+	var EventPluginHub = __webpack_require__(67);
 	var EventPluginRegistry = __webpack_require__(122);
 	var ReactBrowserEventEmitter = __webpack_require__(87);
 	var ReactDOMComponentFlags = __webpack_require__(204);
@@ -73152,7 +73155,7 @@ module.exports =
 
 	var _assign = __webpack_require__(12);
 
-	var React = __webpack_require__(56);
+	var React = __webpack_require__(57);
 	var ReactDOMComponentTree = __webpack_require__(14);
 	var ReactDOMSelect = __webpack_require__(205);
 
@@ -74132,7 +74135,7 @@ module.exports =
 
 	'use strict';
 
-	var EventPluginHub = __webpack_require__(66);
+	var EventPluginHub = __webpack_require__(67);
 
 	function runEventQueueInBatch(events) {
 	  EventPluginHub.enqueueEvents(events);
@@ -74324,7 +74327,7 @@ module.exports =
 	'use strict';
 
 	var DOMProperty = __webpack_require__(53);
-	var EventPluginHub = __webpack_require__(66);
+	var EventPluginHub = __webpack_require__(67);
 	var EventPluginUtils = __webpack_require__(123);
 	var ReactComponentEnvironment = __webpack_require__(126);
 	var ReactEmptyComponent = __webpack_require__(206);
@@ -74414,7 +74417,7 @@ module.exports =
 	var _prodInvariant = __webpack_require__(9);
 
 	var ReactComponentEnvironment = __webpack_require__(126);
-	var ReactInstanceMap = __webpack_require__(68);
+	var ReactInstanceMap = __webpack_require__(69);
 	var ReactInstrumentation = __webpack_require__(24);
 
 	var ReactCurrentOwner = __webpack_require__(36);
@@ -75797,7 +75800,7 @@ module.exports =
 
 	'use strict';
 
-	var EventPropagators = __webpack_require__(67);
+	var EventPropagators = __webpack_require__(68);
 	var ExecutionEnvironment = __webpack_require__(20);
 	var ReactDOMComponentTree = __webpack_require__(14);
 	var ReactInputSelection = __webpack_require__(209);
@@ -75991,7 +75994,7 @@ module.exports =
 	var _prodInvariant = __webpack_require__(9);
 
 	var EventListener = __webpack_require__(161);
-	var EventPropagators = __webpack_require__(67);
+	var EventPropagators = __webpack_require__(68);
 	var ReactDOMComponentTree = __webpack_require__(14);
 	var SyntheticAnimationEvent = __webpack_require__(756);
 	var SyntheticClipboardEvent = __webpack_require__(757);
@@ -76002,7 +76005,7 @@ module.exports =
 	var SyntheticDragEvent = __webpack_require__(759);
 	var SyntheticTouchEvent = __webpack_require__(763);
 	var SyntheticTransitionEvent = __webpack_require__(764);
-	var SyntheticUIEvent = __webpack_require__(69);
+	var SyntheticUIEvent = __webpack_require__(70);
 	var SyntheticWheelEvent = __webpack_require__(765);
 
 	var emptyFunction = __webpack_require__(22);
@@ -76372,7 +76375,7 @@ module.exports =
 
 	'use strict';
 
-	var SyntheticUIEvent = __webpack_require__(69);
+	var SyntheticUIEvent = __webpack_require__(70);
 
 	/**
 	 * @interface FocusEvent
@@ -76449,7 +76452,7 @@ module.exports =
 
 	'use strict';
 
-	var SyntheticUIEvent = __webpack_require__(69);
+	var SyntheticUIEvent = __webpack_require__(70);
 
 	var getEventCharCode = __webpack_require__(130);
 	var getEventKey = __webpack_require__(770);
@@ -76535,7 +76538,7 @@ module.exports =
 
 	'use strict';
 
-	var SyntheticUIEvent = __webpack_require__(69);
+	var SyntheticUIEvent = __webpack_require__(70);
 
 	var getEventModifierState = __webpack_require__(131);
 
@@ -76807,7 +76810,7 @@ module.exports =
 
 	var ReactCurrentOwner = __webpack_require__(36);
 	var ReactDOMComponentTree = __webpack_require__(14);
-	var ReactInstanceMap = __webpack_require__(68);
+	var ReactInstanceMap = __webpack_require__(69);
 
 	var getHostComponentFromComposite = __webpack_require__(215);
 	var invariant = __webpack_require__(5);
@@ -81885,7 +81888,7 @@ module.exports =
 	'use strict';
 
 	var PooledClass = __webpack_require__(815);
-	var ReactElement = __webpack_require__(57);
+	var ReactElement = __webpack_require__(58);
 
 	var emptyFunction = __webpack_require__(22);
 	var traverseAllChildren = __webpack_require__(825);
@@ -82077,7 +82080,7 @@ module.exports =
 
 	'use strict';
 
-	var ReactElement = __webpack_require__(57);
+	var ReactElement = __webpack_require__(58);
 
 	/**
 	 * Create a factory that creates HTML tag elements.
@@ -82248,7 +82251,7 @@ module.exports =
 
 	'use strict';
 
-	var _require = __webpack_require__(57),
+	var _require = __webpack_require__(58),
 	    isValidElement = _require.isValidElement;
 
 	var factory = __webpack_require__(198);
@@ -82288,7 +82291,7 @@ module.exports =
 	var _require = __webpack_require__(234),
 	    Component = _require.Component;
 
-	var _require2 = __webpack_require__(57),
+	var _require2 = __webpack_require__(58),
 	    isValidElement = _require2.isValidElement;
 
 	var ReactNoopUpdateQueue = __webpack_require__(237);
@@ -82444,7 +82447,7 @@ module.exports =
 
 	var _prodInvariant = __webpack_require__(71);
 
-	var ReactElement = __webpack_require__(57);
+	var ReactElement = __webpack_require__(58);
 
 	var invariant = __webpack_require__(5);
 
@@ -83469,11 +83472,11 @@ module.exports =
 
 	var _Area2 = _interopRequireDefault(_Area);
 
-	var _XAxis = __webpack_require__(58);
+	var _XAxis = __webpack_require__(59);
 
 	var _XAxis2 = _interopRequireDefault(_XAxis);
 
-	var _YAxis = __webpack_require__(59);
+	var _YAxis = __webpack_require__(60);
 
 	var _YAxis2 = _interopRequireDefault(_YAxis);
 
@@ -83508,11 +83511,11 @@ module.exports =
 
 	var _Bar2 = _interopRequireDefault(_Bar);
 
-	var _XAxis = __webpack_require__(58);
+	var _XAxis = __webpack_require__(59);
 
 	var _XAxis2 = _interopRequireDefault(_XAxis);
 
-	var _YAxis = __webpack_require__(59);
+	var _YAxis = __webpack_require__(60);
 
 	var _YAxis2 = _interopRequireDefault(_YAxis);
 
@@ -83559,11 +83562,11 @@ module.exports =
 
 	var _Scatter2 = _interopRequireDefault(_Scatter);
 
-	var _XAxis = __webpack_require__(58);
+	var _XAxis = __webpack_require__(59);
 
 	var _XAxis2 = _interopRequireDefault(_XAxis);
 
-	var _YAxis = __webpack_require__(59);
+	var _YAxis = __webpack_require__(60);
 
 	var _YAxis2 = _interopRequireDefault(_YAxis);
 
@@ -83602,11 +83605,11 @@ module.exports =
 
 	var _Line2 = _interopRequireDefault(_Line);
 
-	var _XAxis = __webpack_require__(58);
+	var _XAxis = __webpack_require__(59);
 
 	var _XAxis2 = _interopRequireDefault(_XAxis);
 
-	var _YAxis = __webpack_require__(59);
+	var _YAxis = __webpack_require__(60);
 
 	var _YAxis2 = _interopRequireDefault(_YAxis);
 
@@ -83871,7 +83874,7 @@ module.exports =
 
 	var _Tooltip2 = _interopRequireDefault(_Tooltip);
 
-	var _Rectangle = __webpack_require__(61);
+	var _Rectangle = __webpack_require__(62);
 
 	var _Rectangle2 = _interopRequireDefault(_Rectangle);
 
@@ -84595,11 +84598,11 @@ module.exports =
 
 	var _Scatter2 = _interopRequireDefault(_Scatter);
 
-	var _XAxis = __webpack_require__(58);
+	var _XAxis = __webpack_require__(59);
 
 	var _XAxis2 = _interopRequireDefault(_XAxis);
 
-	var _YAxis = __webpack_require__(59);
+	var _YAxis = __webpack_require__(60);
 
 	var _YAxis2 = _interopRequireDefault(_YAxis);
 
@@ -84669,7 +84672,7 @@ module.exports =
 
 	var _Layer2 = _interopRequireDefault(_Layer);
 
-	var _Rectangle = __webpack_require__(61);
+	var _Rectangle = __webpack_require__(62);
 
 	var _Rectangle2 = _interopRequireDefault(_Rectangle);
 
@@ -85860,11 +85863,11 @@ module.exports =
 
 	var _Sector3 = _interopRequireDefault(_Sector2);
 
-	var _Curve2 = __webpack_require__(60);
+	var _Curve2 = __webpack_require__(61);
 
 	var _Curve3 = _interopRequireDefault(_Curve2);
 
-	var _Rectangle2 = __webpack_require__(61);
+	var _Rectangle2 = __webpack_require__(62);
 
 	var _Rectangle3 = _interopRequireDefault(_Rectangle2);
 
@@ -85948,11 +85951,11 @@ module.exports =
 
 	var _Scatter3 = _interopRequireDefault(_Scatter2);
 
-	var _XAxis2 = __webpack_require__(58);
+	var _XAxis2 = __webpack_require__(59);
 
 	var _XAxis3 = _interopRequireDefault(_XAxis2);
 
-	var _YAxis2 = __webpack_require__(59);
+	var _YAxis2 = __webpack_require__(60);
 
 	var _YAxis3 = _interopRequireDefault(_YAxis2);
 

@@ -16,7 +16,7 @@
     "hot-server": "node -r babel-register server.js",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\"",
     "release": "npm run dist && npm run package-all",
-    "package-all": "build -mwl",
+    "package-all": "npm run dist &&  build -mwl",
     "package-mac": "build -m",
     "package-win": "build -w",
     "package-linux": "build -l"
