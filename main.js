@@ -25317,7 +25317,8 @@ module.exports =
 	    });
 	
 	    // Close properly
-	    var close = function close() {
+	    var close = function close(event) {
+	        event && event.preventDefault();
 	        // On OS X it is common for applications and their menu bar
 	        // to stay active until the user quits explicitly with Cmd + Q
 	        _electronLog2.default.info('All windows closed. Shutting down');
@@ -25388,8 +25389,8 @@ module.exports =
 	        Close window
 	    */
 	
-	    listener.on('close', function () {
-	        return close();
+	    listener.on('close', function (event) {
+	        return close(event);
 	    });
 	    app.on('will-quit', function () {
 	        return close();

@@ -95,4 +95,8 @@ export const electronEvents = ({ app, mainWindow, api, listener, emitter }) => {
 
     listener.on('close', (event) => close(event));
     app.on('will-quit', () => close());
+
+    app.on('window-all-closed', () => {
+        app.quit();
+    });
 }
