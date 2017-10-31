@@ -172,7 +172,7 @@ class Emitter extends EventEmitter {
             params = params.replace(/"/g, '\\"')
         }
 
-        exec(`${marketmakerBin} ${params}`, {
+        exec(`"${marketmakerBin}" ${params}`, {
             cwd: marketmakerDir
             // maxBuffer: 1024 * 10000 // 10 mb
         }, (error, stdout, stderr) => {
