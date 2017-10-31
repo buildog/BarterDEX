@@ -7,6 +7,8 @@ import formatCurrency from 'format-currency';
 import { colors } from '../constants'
 import { coinName } from '../app/helpers'
 import * as Icon from 'react-cryptocoins';
+import MNZ from '../app/static/coins/mnz.svg';
+
 
 const capitalize = (string) => string.toLowerCase().charAt(0).toUpperCase() + string.slice(1).toLowerCase()
 
@@ -24,7 +26,11 @@ const addIcons = (coins) => coins.map((item) => {
         item.icon = (<TagName />);
         item.hasSVGIcon = true;
     } else {
-        item.icon = (<i className={`coin-icon-placeholder ${item.coin}`}>{ item.coin[0] }</i>)
+        if (coin === 'Mnz') {
+            item.icon = (<i className={`coin-icon-svg ${item.coin}`} dangerouslySetInnerHTML={{ __html: MNZ }} />)
+        } else {
+            item.icon = (<i className={`coin-icon-placeholder ${item.coin}`}>{ item.coin[0] }</i>)
+        }
         item.hasSVGIcon = false;
     }
 

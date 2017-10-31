@@ -39961,7 +39961,7 @@ module.exports =
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _copy = __webpack_require__(885);
+	var _copy = __webpack_require__(886);
 
 	var _copy2 = _interopRequireDefault(_copy);
 
@@ -40615,11 +40615,11 @@ module.exports =
 
 	var _sell2 = _interopRequireDefault(_sell);
 
-	var _receive = __webpack_require__(890);
+	var _receive = __webpack_require__(891);
 
 	var _receive2 = _interopRequireDefault(_receive);
 
-	var _history = __webpack_require__(888);
+	var _history = __webpack_require__(889);
 
 	var _history2 = _interopRequireDefault(_history);
 
@@ -40962,7 +40962,7 @@ module.exports =
 
 	var _ = __webpack_require__(37);
 
-	var _plus = __webpack_require__(889);
+	var _plus = __webpack_require__(890);
 
 	var _plus2 = _interopRequireDefault(_plus);
 
@@ -41215,11 +41215,11 @@ module.exports =
 
 	var _reactRouter = __webpack_require__(56);
 
-	var _fullscreen = __webpack_require__(887);
+	var _fullscreen = __webpack_require__(888);
 
 	var _fullscreen2 = _interopRequireDefault(_fullscreen);
 
-	var _fullscreenExit = __webpack_require__(886);
+	var _fullscreenExit = __webpack_require__(887);
 
 	var _fullscreenExit2 = _interopRequireDefault(_fullscreenExit);
 
@@ -41289,11 +41289,11 @@ module.exports =
 
 	var _mobxReact = __webpack_require__(21);
 
-	var _trafficLightClose = __webpack_require__(891);
+	var _trafficLightClose = __webpack_require__(892);
 
 	var _trafficLightClose2 = _interopRequireDefault(_trafficLightClose);
 
-	var _trafficLightMinimize = __webpack_require__(892);
+	var _trafficLightMinimize = __webpack_require__(893);
 
 	var _trafficLightMinimize2 = _interopRequireDefault(_trafficLightMinimize);
 
@@ -42479,7 +42479,9 @@ module.exports =
 	        case 'ZAR':
 	            name = 'South African Rand';
 	            break;
-
+	        case 'MNZ':
+	            name = 'Monaize';
+	            break;
 	    }
 	    return name;
 	};
@@ -43032,6 +43034,10 @@ module.exports =
 
 	var Icon = _interopRequireWildcard(_reactCryptocoins);
 
+	var _mnz = __webpack_require__(885);
+
+	var _mnz2 = _interopRequireDefault(_mnz);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -43096,16 +43102,24 @@ module.exports =
 	            coin = capitalize(coin);
 	        }
 
+	        if (coin === 'Revs') {
+	            coin = 'MNZ';
+	        }
+
 	        if (Icon[coin]) {
 	            var TagName = Icon[coin];
 	            item.icon = _react2.default.createElement(TagName, null);
 	            item.hasSVGIcon = true;
 	        } else {
-	            item.icon = _react2.default.createElement(
-	                'i',
-	                { className: 'coin-icon-placeholder ' + item.coin },
-	                item.coin[0]
-	            );
+	            if (coin === 'MNZ') {
+	                item.icon = _react2.default.createElement('i', { className: 'coin-icon-svg ' + item.coin, dangerouslySetInnerHTML: { __html: _mnz2.default } });
+	            } else {
+	                item.icon = _react2.default.createElement(
+	                    'i',
+	                    { className: 'coin-icon-placeholder ' + item.coin },
+	                    item.coin[0]
+	                );
+	            }
 	            item.hasSVGIcon = false;
 	        }
 
@@ -48107,7 +48121,7 @@ module.exports =
 /* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	const assert = __webpack_require__(893)
+	const assert = __webpack_require__(894)
 	const formatNumber = __webpack_require__(315)
 
 	const defaultOptions = {
@@ -86326,7 +86340,7 @@ module.exports =
 	});
 	exports.SYNC_EVENT = exports.eventCenter = undefined;
 
-	var _events = __webpack_require__(894);
+	var _events = __webpack_require__(895);
 
 	var _events2 = _interopRequireDefault(_events);
 
@@ -87191,58 +87205,64 @@ module.exports =
 /* 885 */
 /***/ (function(module, exports) {
 
-	module.exports = "<svg id=\"Layer_1\" style=\"enable-background:new 0 0 512 512;\" version=\"1.1\" viewBox=\"0 0 512 512\" xml:space=\"preserve\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><g><polygon points=\"304,96 288,96 288,176 368,176 368,160 304,160 \"></polygon><path d=\"M325.3,64H160v48h-48v336h240v-48h48V139L325.3,64z M336,432H128V128h32v272h176V432z M384,384H176V80h142.7l65.3,65.6V384 z\"></path></g></svg>"
+	module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" id=\"Calque_1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 50 50\" style=\"enable-background:new 0 0 148 50;\" xml:space=\"preserve\"><style type=\"text/css\"> .st0{fill:#7F368A;} .st1{fill:#222E3B;} .st2{fill:url(#SVGID_1_);} .st3{fill:url(#SVGID_2_);} .st4{fill:url(#SVGID_3_);} .st5{fill:url(#SVGID_4_);} </style><g><g><path class=\"st0\" d=\"M25.3,2.7c12.4,0,22.5,10.1,22.5,22.5S37.7,47.7,25.3,47.7S2.8,37.6,2.8,25.2S12.9,2.7,25.3,2.7 M25.3,0.9 C11.8,0.9,0.9,11.8,0.9,25.2c0,13.5,10.9,24.4,24.4,24.4c13.5,0,24.4-10.9,24.4-24.4C49.6,11.8,38.7,0.9,25.3,0.9L25.3,0.9z\"></path></g><path class=\"st1\" d=\"M15.9,17.9\"></path><g><g><linearGradient id=\"SVGID_1_\" gradientUnits=\"userSpaceOnUse\" x1=\"27.0903\" y1=\"25.233\" x2=\"39.8986\" y2=\"25.233\"><stop offset=\"0\" style=\"stop-color:#B92484\"></stop><stop offset=\"2.267800e-02\" style=\"stop-color:#B92484\"></stop><stop offset=\"1\" style=\"stop-color:#7D358B\"></stop></linearGradient><path class=\"st2\" d=\"M39.9,34.5c-0.2-1.2-0.6-2.4-0.9-3.5c-0.3-1.2-0.6-2.4-0.9-3.6c-0.8-3-1.6-6-2.4-9c-0.2-0.7-0.3-1.4-0.5-2.1 c-0.1-0.3-0.2-0.7-0.5-0.9c-0.3-0.1-0.6-0.1-0.9-0.1c-0.4,0-0.8,0-1.2,0c-0.8,0-1.7,0-2.5,0c-0.6,0-1.1,0-1.7,0.1 c-0.5,0.1-1,0.4-1.2,0.9c-0.1,0.2,0,0.5,0.2,0.6c0.1,0.1,0.3,0,0.4-0.1c0.1,0,0.4-0.3,0.5-0.3l4.7,17.3l0,0c0,0,0,0.1,0,0.1 c0.1,0.4,0.3,0.8,0.6,0.9c0.2,0.1,0.4,0.2,0.7,0.2h0.5h0.8h2.4h1.3C39.6,35.1,40,34.9,39.9,34.5z\"></path></g><g><linearGradient id=\"SVGID_2_\" gradientUnits=\"userSpaceOnUse\" x1=\"15.5385\" y1=\"25.233\" x2=\"28.3467\" y2=\"25.233\"><stop offset=\"0\" style=\"stop-color:#B92484\"></stop><stop offset=\"2.267800e-02\" style=\"stop-color:#B92484\"></stop><stop offset=\"1\" style=\"stop-color:#7D358B\"></stop></linearGradient><path class=\"st3\" d=\"M28.3,34.5c-0.2-1.2-0.6-2.4-0.9-3.5c-0.3-1.2-0.6-2.4-0.9-3.6c-0.8-3-1.6-6-2.4-9c-0.2-0.7-0.3-1.4-0.5-2.1 c-0.1-0.3-0.2-0.7-0.5-0.9c-0.3-0.1-0.6-0.1-0.9-0.1c-0.4,0-0.8,0-1.2,0c-0.8,0-1.7,0-2.5,0c-0.6,0-1.1,0-1.7,0.1 c-0.5,0.1-1,0.4-1.2,0.9c-0.1,0.2,0,0.5,0.2,0.6c0.1,0.1,0.3,0,0.4-0.1c0.1,0,0.4-0.3,0.5-0.3l4.7,17.3l0,0c0,0,0,0.1,0,0.1 c0.1,0.4,0.3,0.8,0.6,0.9c0.2,0.1,0.4,0.2,0.7,0.2h0.5h0.8h2.4h1.3C28,35.1,28.4,34.9,28.3,34.5z\"></path></g><linearGradient id=\"SVGID_3_\" gradientUnits=\"userSpaceOnUse\" x1=\"10.6421\" y1=\"26.4844\" x2=\"19.0604\" y2=\"26.4844\"><stop offset=\"0\" style=\"stop-color:#B92484\"></stop><stop offset=\"2.267800e-02\" style=\"stop-color:#B92484\"></stop><stop offset=\"1\" style=\"stop-color:#7D358B\"></stop></linearGradient><path class=\"st4\" d=\"M19.1,30.7l-3.2-12.5h0c0-0.2-0.2-0.4-0.5-0.4c-0.2,0-0.4,0.2-0.5,0.4l0,0L10.7,34l0,0c0,0.1,0,0.2,0,0.2 c0,0.5,0.4,1,1,1H17c0.4,0,0.8-0.3,0.9-0.7l0,0L19.1,30.7z\"></path><linearGradient id=\"SVGID_4_\" gradientUnits=\"userSpaceOnUse\" x1=\"25.9319\" y1=\"25.223\" x2=\"30.8865\" y2=\"25.223\"><stop offset=\"0\" style=\"stop-color:#B92484\"></stop><stop offset=\"2.267800e-02\" style=\"stop-color:#B92484\"></stop><stop offset=\"1\" style=\"stop-color:#7D358B\"></stop></linearGradient><path class=\"st5\" d=\"M30.9,30.4l-3.5-12.6h0c0-0.2-0.2-0.3-0.4-0.3c-0.2,0-0.4,0.1-0.4,0.3h0l-0.7,2.5l3.5,12.2l0,0l0,0 c0.1,0.2,0.2,0.3,0.4,0.3c0.2,0,0.3-0.1,0.4-0.3l0,0L30.9,30.4z\"></path></g></g></svg>"
 
 /***/ }),
 /* 886 */
 /***/ (function(module, exports) {
 
-	module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" viewBox=\"0 0 24 24\"><path d=\"M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z\"></path></svg>"
+	module.exports = "<svg id=\"Layer_1\" style=\"enable-background:new 0 0 512 512;\" version=\"1.1\" viewBox=\"0 0 512 512\" xml:space=\"preserve\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><g><polygon points=\"304,96 288,96 288,176 368,176 368,160 304,160 \"></polygon><path d=\"M325.3,64H160v48h-48v336h240v-48h48V139L325.3,64z M336,432H128V128h32v272h176V432z M384,384H176V80h142.7l65.3,65.6V384 z\"></path></g></svg>"
 
 /***/ }),
 /* 887 */
 /***/ (function(module, exports) {
 
-	module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"#000\" viewBox=\"0 0 24 24\"><path d=\"M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z\"></path></svg>"
+	module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" viewBox=\"0 0 24 24\"><path d=\"M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z\"></path></svg>"
 
 /***/ }),
 /* 888 */
 /***/ (function(module, exports) {
 
-	module.exports = "<svg id=\"Layer_1\" style=\"enable-background:new 0 0 30 30;\" version=\"1.1\" viewBox=\"0 0 30 30\" xml:space=\"preserve\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><path d=\"M16.414,13.586c0.781,0.781,0.781,2.047,0,2.828c-0.781,0.781-2.047,0.781-2.828,0c-0.544-0.544-3.044-4.418-4.508-6.715 C8.818,9.292,9.292,8.818,9.699,9.078C11.996,10.542,15.87,13.041,16.414,13.586z\"></path><path d=\"M6.58,7.93 C4.971,9.841,4,12.306,4,15c0,6.075,4.925,11,11,11s11-4.925,11-11S21.075,4,15,4v4\" style=\"fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;\"></path></svg>"
+	module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"#000\" viewBox=\"0 0 24 24\"><path d=\"M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z\"></path></svg>"
 
 /***/ }),
 /* 889 */
 /***/ (function(module, exports) {
 
-	module.exports = "<svg id=\"Layer_1\" style=\"enable-background:new 0 0 512 512;\" version=\"1.1\" viewBox=\"0 0 512 512\" xml:space=\"preserve\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><polygon points=\"448,224 288,224 288,64 224,64 224,224 64,224 64,288 224,288 224,448 288,448 288,288 448,288 \"></polygon></svg>"
+	module.exports = "<svg id=\"Layer_1\" style=\"enable-background:new 0 0 30 30;\" version=\"1.1\" viewBox=\"0 0 30 30\" xml:space=\"preserve\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><path d=\"M16.414,13.586c0.781,0.781,0.781,2.047,0,2.828c-0.781,0.781-2.047,0.781-2.828,0c-0.544-0.544-3.044-4.418-4.508-6.715 C8.818,9.292,9.292,8.818,9.699,9.078C11.996,10.542,15.87,13.041,16.414,13.586z\"></path><path d=\"M6.58,7.93 C4.971,9.841,4,12.306,4,15c0,6.075,4.925,11,11,11s11-4.925,11-11S21.075,4,15,4v4\" style=\"fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;\"></path></svg>"
 
 /***/ }),
 /* 890 */
 /***/ (function(module, exports) {
 
-	module.exports = "<svg id=\"Layer_1\" style=\"enable-background:new 0 0 30 30;\" version=\"1.1\" viewBox=\"0 0 30 30\" xml:space=\"preserve\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><path d=\"M10,4H6C4.895,4,4,4.895,4,6v4c0,1.105,0.895,2,2,2h4c1.105,0,2-0.895,2-2V6C12,4.895,11.105,4,10,4z M10,10H6V6h4V10z M9,9 H7V7h2V9z\"></path><path d=\"M10,18H6c-1.105,0-2,0.895-2,2v4c0,1.105,0.895,2,2,2h4c1.105,0,2-0.895,2-2v-4C12,18.895,11.105,18,10,18z M10,24H6v-4h4 V24z M9,23H7v-2h2V23z\"></path><path d=\"M24,4h-4c-1.105,0-2,0.895-2,2v4c0,1.105,0.895,2,2,2h4c1.105,0,2-0.895,2-2V6C26,4.895,25.105,4,24,4z M24,10h-4V6h4V10z M23,9h-2V7h2V9z\"></path><rect height=\"2\" width=\"2\" x=\"14\" y=\"6\"></rect><rect height=\"2\" width=\"2\" x=\"14\" y=\"10\"></rect><rect height=\"2\" width=\"2\" x=\"14\" y=\"14\"></rect><rect height=\"2\" width=\"2\" x=\"10\" y=\"14\"></rect><rect height=\"2\" width=\"2\" x=\"6\" y=\"14\"></rect><rect height=\"2\" width=\"2\" x=\"18\" y=\"14\"></rect><rect height=\"2\" width=\"2\" x=\"22\" y=\"14\"></rect><rect height=\"2\" width=\"2\" x=\"16\" y=\"16\"></rect><rect height=\"2\" width=\"2\" x=\"20\" y=\"16\"></rect><rect height=\"2\" width=\"2\" x=\"18\" y=\"18\"></rect><rect height=\"2\" width=\"2\" x=\"14\" y=\"18\"></rect><rect height=\"2\" width=\"2\" x=\"16\" y=\"20\"></rect><rect height=\"2\" width=\"2\" x=\"18\" y=\"22\"></rect><rect height=\"2\" width=\"2\" x=\"16\" y=\"24\"></rect><rect height=\"2\" width=\"2\" x=\"24\" y=\"16\"></rect><rect height=\"2\" width=\"2\" x=\"24\" y=\"20\"></rect><rect height=\"2\" width=\"2\" x=\"20\" y=\"20\"></rect><rect height=\"2\" width=\"2\" x=\"20\" y=\"24\"></rect><rect height=\"2\" width=\"2\" x=\"22\" y=\"22\"></rect><rect height=\"2\" width=\"2\" x=\"22\" y=\"18\"></rect><rect height=\"2\" width=\"2\" x=\"14\" y=\"22\"></rect></svg>"
+	module.exports = "<svg id=\"Layer_1\" style=\"enable-background:new 0 0 512 512;\" version=\"1.1\" viewBox=\"0 0 512 512\" xml:space=\"preserve\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><polygon points=\"448,224 288,224 288,64 224,64 224,224 64,224 64,288 224,288 224,448 288,448 288,288 448,288 \"></polygon></svg>"
 
 /***/ }),
 /* 891 */
 /***/ (function(module, exports) {
 
-	module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 12 12\"><defs><linearGradient id=\"bc\" x1=\"50%\" x2=\"50%\" y1=\"0%\" y2=\"100%\"><stop stop-color=\"#E1453F\" offset=\"0%\"></stop><stop stop-color=\"#E0443E\" offset=\"100%\"></stop></linearGradient><ellipse id=\"a\" cx=\"6\" cy=\"6\" rx=\"6\" ry=\"6\"></ellipse><mask id=\"c\" width=\"12\" height=\"12\" x=\"0\" y=\"0\" fill=\"white\"><use xlink:href=\"#a\"></use></mask></defs><g fill=\"none\" fill-rule=\"evenodd\"><use fill=\"#ff6159\" stroke=\"url(#bc)\" mask=\"url(#c)\" xlink:href=\"#a\"></use><g class=\"hidden\" stroke=\"#4D0000\" transform=\"translate(3 3)\" stroke-linecap=\"round\"><path d=\"M0.5,0.5 L5.5,5.5\"></path><path d=\"M0.5,0.5 L5.5,5.5\" transform=\"matrix(-1 0 0 1 6 0)\"></path></g></g></svg>"
+	module.exports = "<svg id=\"Layer_1\" style=\"enable-background:new 0 0 30 30;\" version=\"1.1\" viewBox=\"0 0 30 30\" xml:space=\"preserve\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><path d=\"M10,4H6C4.895,4,4,4.895,4,6v4c0,1.105,0.895,2,2,2h4c1.105,0,2-0.895,2-2V6C12,4.895,11.105,4,10,4z M10,10H6V6h4V10z M9,9 H7V7h2V9z\"></path><path d=\"M10,18H6c-1.105,0-2,0.895-2,2v4c0,1.105,0.895,2,2,2h4c1.105,0,2-0.895,2-2v-4C12,18.895,11.105,18,10,18z M10,24H6v-4h4 V24z M9,23H7v-2h2V23z\"></path><path d=\"M24,4h-4c-1.105,0-2,0.895-2,2v4c0,1.105,0.895,2,2,2h4c1.105,0,2-0.895,2-2V6C26,4.895,25.105,4,24,4z M24,10h-4V6h4V10z M23,9h-2V7h2V9z\"></path><rect height=\"2\" width=\"2\" x=\"14\" y=\"6\"></rect><rect height=\"2\" width=\"2\" x=\"14\" y=\"10\"></rect><rect height=\"2\" width=\"2\" x=\"14\" y=\"14\"></rect><rect height=\"2\" width=\"2\" x=\"10\" y=\"14\"></rect><rect height=\"2\" width=\"2\" x=\"6\" y=\"14\"></rect><rect height=\"2\" width=\"2\" x=\"18\" y=\"14\"></rect><rect height=\"2\" width=\"2\" x=\"22\" y=\"14\"></rect><rect height=\"2\" width=\"2\" x=\"16\" y=\"16\"></rect><rect height=\"2\" width=\"2\" x=\"20\" y=\"16\"></rect><rect height=\"2\" width=\"2\" x=\"18\" y=\"18\"></rect><rect height=\"2\" width=\"2\" x=\"14\" y=\"18\"></rect><rect height=\"2\" width=\"2\" x=\"16\" y=\"20\"></rect><rect height=\"2\" width=\"2\" x=\"18\" y=\"22\"></rect><rect height=\"2\" width=\"2\" x=\"16\" y=\"24\"></rect><rect height=\"2\" width=\"2\" x=\"24\" y=\"16\"></rect><rect height=\"2\" width=\"2\" x=\"24\" y=\"20\"></rect><rect height=\"2\" width=\"2\" x=\"20\" y=\"20\"></rect><rect height=\"2\" width=\"2\" x=\"20\" y=\"24\"></rect><rect height=\"2\" width=\"2\" x=\"22\" y=\"22\"></rect><rect height=\"2\" width=\"2\" x=\"22\" y=\"18\"></rect><rect height=\"2\" width=\"2\" x=\"14\" y=\"22\"></rect></svg>"
 
 /***/ }),
 /* 892 */
 /***/ (function(module, exports) {
 
-	module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 12 12\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs><linearGradient id=\"e\" x1=\"50%\" x2=\"50%\" y1=\"0%\" y2=\"100%\"><stop stop-color=\"#DFA023\" offset=\"0%\"></stop><stop stop-color=\"#DF9F22\" offset=\"100%\"></stop></linearGradient><ellipse id=\"d\" cx=\"6\" cy=\"6\" rx=\"6\" ry=\"6\"></ellipse><mask id=\"f\" width=\"12\" height=\"12\" x=\"0\" y=\"0\" fill=\"white\"><use xlink:href=\"#a\"></use></mask></defs><g fill=\"none\" fill-rule=\"evenodd\"><use fill=\"#FFC02F\" stroke=\"url(#e)\" mask=\"url(#f)\" xlink:href=\"#d\"></use><path class=\"hidden\" stroke=\"#995700\" d=\"M2,6 L10,6\"></path></g></svg>"
+	module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 12 12\"><defs><linearGradient id=\"bc\" x1=\"50%\" x2=\"50%\" y1=\"0%\" y2=\"100%\"><stop stop-color=\"#E1453F\" offset=\"0%\"></stop><stop stop-color=\"#E0443E\" offset=\"100%\"></stop></linearGradient><ellipse id=\"a\" cx=\"6\" cy=\"6\" rx=\"6\" ry=\"6\"></ellipse><mask id=\"c\" width=\"12\" height=\"12\" x=\"0\" y=\"0\" fill=\"white\"><use xlink:href=\"#a\"></use></mask></defs><g fill=\"none\" fill-rule=\"evenodd\"><use fill=\"#ff6159\" stroke=\"url(#bc)\" mask=\"url(#c)\" xlink:href=\"#a\"></use><g class=\"hidden\" stroke=\"#4D0000\" transform=\"translate(3 3)\" stroke-linecap=\"round\"><path d=\"M0.5,0.5 L5.5,5.5\"></path><path d=\"M0.5,0.5 L5.5,5.5\" transform=\"matrix(-1 0 0 1 6 0)\"></path></g></g></svg>"
 
 /***/ }),
 /* 893 */
 /***/ (function(module, exports) {
 
-	module.exports = require("assert");
+	module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 12 12\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs><linearGradient id=\"e\" x1=\"50%\" x2=\"50%\" y1=\"0%\" y2=\"100%\"><stop stop-color=\"#DFA023\" offset=\"0%\"></stop><stop stop-color=\"#DF9F22\" offset=\"100%\"></stop></linearGradient><ellipse id=\"d\" cx=\"6\" cy=\"6\" rx=\"6\" ry=\"6\"></ellipse><mask id=\"f\" width=\"12\" height=\"12\" x=\"0\" y=\"0\" fill=\"white\"><use xlink:href=\"#a\"></use></mask></defs><g fill=\"none\" fill-rule=\"evenodd\"><use fill=\"#FFC02F\" stroke=\"url(#e)\" mask=\"url(#f)\" xlink:href=\"#d\"></use><path class=\"hidden\" stroke=\"#995700\" d=\"M2,6 L10,6\"></path></g></svg>"
 
 /***/ }),
 /* 894 */
+/***/ (function(module, exports) {
+
+	module.exports = require("assert");
+
+/***/ }),
+/* 895 */
 /***/ (function(module, exports) {
 
 	module.exports = require("events");

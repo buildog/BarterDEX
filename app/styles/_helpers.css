@@ -101,6 +101,7 @@ code {
 /* crypto colors*/
 
 .coin-colorized { color: $blue !important; }
+.MNZ .coin-colorized { color: #242E3A!important; }
 .ADC .coin-colorized { color: #3CB0E5!important; }
 .AEON .coin-colorized { color: #164450!important; }
 .AMP .coin-colorized { color: #048DD2!important; }
@@ -241,6 +242,7 @@ code {
 
 
 
+.MNZ .coin-colorized svg { fill: #A52986 !important; }
 .ADC .coin-colorized svg { fill: #3CB0E5!important; }
 .AEON .coin-colorized svg { fill: #164450!important; }
 .AMP .coin-colorized svg { fill: #048DD2!important; }
@@ -381,7 +383,7 @@ code {
 
 
 
-
+.MNZ .coin-bg { background-color: #242E3A!important }
 .ADC .coin-bg { background-color: #3CB0E5!important; }
 .AEON .coin-bg { background-color: #164450!important; }
 .AMP .coin-bg { background-color: #048DD2!important; }
