@@ -314,6 +314,9 @@ export const coinName = (coin) => {
     case 'MNZ':
         name = 'Monaize';
         break;
+    default:
+        name = coin;
+        break;
     }
     return name;
 }
