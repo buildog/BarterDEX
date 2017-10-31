@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react'
 import { Link } from 'react-router';
 import classNames from 'classnames';
 
-import { Trade, Modal, CoinPicker } from '../';
+import { CoinPicker } from '../';
 import plus from '../../static/plus.svg';
 import arrow from '../../static/arrow.svg';
 import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
@@ -15,7 +15,10 @@ class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { coinToEnable: '' }
+        this.state = {
+            coinToEnable: '',
+            picker: false
+        }
     }
 
     setCoinToEnable = (coinToEnable) => {
@@ -32,6 +35,14 @@ class Dashboard extends React.Component {
             enabling: self.state.coinToEnable === coin
         })
     }
+    togglePicker = (e) => {
+        this.setState({ picker: !this.state.picker });
+        e.stopPropagation();
+    }
+
+    electrumPicker = () => (<ul>
+      <li>test</li>
+    </ul>)
 
     renderDashboard = () => {
         // const { tradeBase, tradeRel, coinsList } = this.props.app.portfolio;
@@ -61,10 +72,13 @@ class Dashboard extends React.Component {
                 <small><span>{ !nullValue.length && hasBalances && kmdTotal()}</span></small>
 
               </h2>
-              <button className="dashboard-wallets-header-add action primary" disabled>
-                <span>electrum (soon)</span>
-                <i dangerouslySetInnerHTML={{ __html: plus }} />
-              </button>
+              <div>
+                <button className="dashboard-wallets-header-add action primary" onClick={(e) => this.togglePicker(e)}>
+                  <span>add coins</span>
+                  <i dangerouslySetInnerHTML={{ __html: plus }} />
+                </button>
+                { this.state.picker && this.electrumPicker(this.state.picker) }
+              </div>
             </header>
             <ul className="dashboard-wallets-list">
               { installedCoins.map((installed) => (
