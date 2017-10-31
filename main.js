@@ -9644,15 +9644,15 @@ module.exports =
 	                return _this7.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('inventory for ' + coin);
 	                    console.log(result);
-	                    if (result.alice.length < 3) {
-	                        self.withdraw({ address: result.alice[0].address, coin: result.alice[0].coin }).then(function (withdrawResult) {
-	                            self.sendrawtransaction({ coin: coin, signedtx: withdrawResult.hex }).then(function () {
-	                                resolve(result);
-	                            });
-	                        });
-	                    } else {
-	                        resolve(result);
-	                    }
+	                    // if (result.alice.length < 3) {
+	                    //     self.withdraw({ address: result.alice[0].address, coin: result.alice[0].coin }).then((withdrawResult) => {
+	                    //         self.sendrawtransaction({ coin, signedtx: withdrawResult.hex }).then(() => {
+	                    //             resolve(result);
+	                    //         })
+	                    //     })
+	                    // } else {
+	                    resolve(result);
+	                    // }
 	                }).catch(function (error) {
 	                    console.log('error inventory ' + coin);
 	                    reject(error);

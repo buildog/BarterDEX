@@ -560,6 +560,8 @@ code {
 
 .coin-colorized { color: #4C84FF !important; }
 
+.MNZ .coin-colorized { color: #242E3A!important; }
+
 .ADC .coin-colorized { color: #3CB0E5!important; }
 
 .AEON .coin-colorized { color: #164450!important; }
@@ -834,6 +836,8 @@ code {
 
 .REVS .coin-colorized { color: #FF6600!important; }
 
+.MNZ .coin-colorized svg { fill: #A52986 !important; }
+
 .ADC .coin-colorized svg { fill: #3CB0E5!important; }
 
 .AEON .coin-colorized svg { fill: #164450!important; }
@@ -1105,6 +1109,8 @@ code {
 .ZEC .coin-colorized svg { fill: #e5a93d!important; }
 
 .ZEIT .coin-colorized svg { fill: #ACACAC!important; }
+
+.MNZ .coin-bg { background-color: #242E3A!important }
 
 .ADC .coin-bg { background-color: #3CB0E5!important; }
 
@@ -3899,6 +3905,7 @@ button.link:hover {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
+    margin-bottom: 10px;
 }
 
 .wallet-icon > * {
