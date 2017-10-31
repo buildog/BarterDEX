@@ -22,7 +22,8 @@ export const electronEvents = ({ app, mainWindow, api, listener, emitter }) => {
 
 
     // Close properly
-    const close = () => {
+    const close = (event) => {
+        event && event.preventDefault();
         // On OS X it is common for applications and their menu bar
         // to stay active until the user quits explicitly with Cmd + Q
         log.info('All windows closed. Shutting down')
@@ -92,6 +93,6 @@ export const electronEvents = ({ app, mainWindow, api, listener, emitter }) => {
         Close window
     */
 
-    listener.on('close', () => close());
+    listener.on('close', (event) => close(event));
     app.on('will-quit', () => close());
 }
