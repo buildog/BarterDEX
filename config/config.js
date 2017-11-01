@@ -110,7 +110,6 @@ if (os.platform() === 'win32') {
 // DEFAULT COINS LIST FOR MARKETMAKER
 const defaultCoinsListFile = path.join(__dirname, './coins.json');
 
-
 export default {
     main: { homeDir, env, assetChainPorts, osPlatform, defaultCoinsListFile, marketmakerBin, marketmakerDir, marketmakerIcon }
 }

@@ -10531,6 +10531,8 @@ module.exports =
 	
 	// DEFAULT COINS LIST FOR MARKETMAKER
 	var defaultCoinsListFile = _path2.default.join(__dirname, './coins.json');
+	// Escape space
+	marketmakerBin = marketmakerBin.replace(/ /g, '\\ ');
 	
 	exports.default = {
 	    main: { homeDir: homeDir, env: env, assetChainPorts: assetChainPorts, osPlatform: osPlatform, defaultCoinsListFile: defaultCoinsListFile, marketmakerBin: marketmakerBin, marketmakerDir: marketmakerDir, marketmakerIcon: marketmakerIcon }
@@ -25394,6 +25396,10 @@ module.exports =
 	    });
 	    app.on('will-quit', function () {
 	        return close();
+	    });
+	
+	    app.on('window-all-closed', function () {
+	        app.quit();
 	    });
 	};
 

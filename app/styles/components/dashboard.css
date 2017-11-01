@@ -35,7 +35,6 @@
     margin: 0;
     overflow: auto;
     background: #FFF;
-    max-height: 60vh;
     box-shadow: $box-shadow-inputs
 }
 
