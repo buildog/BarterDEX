@@ -274,7 +274,7 @@ class Trade extends React.Component {
                   <div className="trade-action-amountRel">
                     <small className="trade-action-amountRel-title"> { this.state.validation ? 'VALIDATION' : 'SELL' }</small>
                     { this.state.validation ? this.state.validation : <span>{this.state.amountBase} {tradeBase.coin}</span> }
-                    { this.state.validation ? '' : <small>(for {this.state.amountBase / this.state.rate } {tradeRel.coin})</small> }
+                    { this.state.validation ? '' : <small>(for {this.state.amountBase * this.state.rate } {tradeRel.coin})</small> }
                   </div>
                   <i dangerouslySetInnerHTML={{ __html: shuffle }} />
                 </button>
