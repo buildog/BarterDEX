@@ -83,7 +83,7 @@ class Dashboard extends React.Component {
             <ul className="dashboard-wallets-list">
               { installedCoins.map((installed) => (
                 <li key={installed.coin} className={this.getClassState(installed.coin)}>
-                  <Link onClick={() => this.setCoinToEnable(installed.coin)} to={`/wallet/${installed.coin}`} activeClassName="active">
+                  <Link onClick={() => this.setCoinToEnable(installed.coin)} className={installed.coin} to={`/wallet/${installed.coin}`} activeClassName="active">
                     <div className="dashboard-wallets-list-item_icon coin-colorized"> { installed.icon }</div>
                     <div className="dashboard-wallets-list-item_balance">
                       <strong>{ installed.name }</strong>
