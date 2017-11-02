@@ -5,7 +5,8 @@ const CONSTANTS = {
         2: 'Marketmaker Initialization',
         3: 'Porfolio fetch',
         4: 'Coin activation',
-        5: 'Processing trade order'
+        5: 'Processing trade order',
+        6: 'Processing withdraw'
 
     },
     error: {
@@ -50,6 +51,10 @@ const CONSTANTS = {
         9: {
             message: 'MarketMaker crash',
             critical: true
+        },
+        10: {
+            message: 'Withdraw failed',
+            loadingKeys: [6]
         }
     },
     colors: {

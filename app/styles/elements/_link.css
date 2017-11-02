@@ -1,4 +1,4 @@
 a {
-    color: $blue;
     cursor: pointer;
+    color: $color-dark;
 }

@@ -2,13 +2,14 @@ import React from 'react'
 import { observer, inject } from 'mobx-react';
 import classNames from 'classnames';
 
-import { Buy, Sell } from '../';
+import { Buy, Sell, Balance } from '../';
 
 import sell from '../../static/sell.svg';
 import receive from '../../static/receive.svg';
-import history from '../../static/history.svg';
+import orderbook2 from '../../static/orderbook2.svg';
 import buy from '../../static/buy.svg';
 import charts from '../../static/charts.svg';
+import shuffle from '../../static/shuffle.svg';
 
 @inject('app')
 @observer
@@ -30,11 +31,14 @@ class Trade extends React.Component {
 
     setFlow = (type) => this.setState({ flow: `trade-${type.flow}` })
 
+
     render() {
         // portfolio
+        const { tradeBase } = this.props.app.portfolio;
 
         return (
           <div className={this.getClassState()}>
+
             <section className="trade-body">
 
               <ul className="trade-type">
@@ -49,16 +53,8 @@ class Trade extends React.Component {
                 <li className="trade-type-item trade-type-item-buy">
                   <button onClick={() => this.setFlow({ flow: 'buy' })}>
                     <div>
-                      <i dangerouslySetInnerHTML={{ __html: buy }} />
-                      <small>Buy</small>
-                    </div>
-                  </button>
-                </li>
-                <li className="trade-type-item trade-type-item-sell">
-                  <button onClick={() => this.setFlow({ flow: 'sell' })}>
-                    <div>
-                      <i dangerouslySetInnerHTML={{ __html: sell }} />
-                      <small>Sell</small>
+                      <i dangerouslySetInnerHTML={{ __html: shuffle }} />
+                      <small>Exchange</small>
                     </div>
                   </button>
                 </li>
@@ -73,14 +69,18 @@ class Trade extends React.Component {
                 <li className="trade-type-item trade-type-item-orders">
                   <button onClick={() => this.setFlow({ flow: 'orders' })}>
                     <div>
-                      <i dangerouslySetInnerHTML={{ __html: history }} />
+                      <i dangerouslySetInnerHTML={{ __html: orderbook2 }} />
                       <small>Orders</small>
                     </div>
                   </button>
                 </li>
               </ul>
 
-              { (this.state.flow === 'trade-charts' || this.state.flow === 'trade-wallet' || this.state.flow === 'trade-orders') && <div className="trade-view-charts">
+              { this.state.flow === 'trade-buy' && <Buy /> }
+              { this.state.flow === 'trade-wallet' && <Balance /> }
+              { this.state.flow === 'trade-sell' && <Sell /> }
+
+              { (this.state.flow === 'trade-charts' || this.state.flow === 'trade-orders') && <div className="trade-view-charts">
                 <h3>{ '😰' }</h3>
                 <h4>sorry!</h4>
                 <p>this feature is not yet available</p>
@@ -88,9 +88,6 @@ class Trade extends React.Component {
 
 
             </section>
-            { this.state.flow === 'trade-buy' && <Buy /> }
-            { this.state.flow === 'trade-sell' && <Sell /> }
-
           </div>
         );
     }

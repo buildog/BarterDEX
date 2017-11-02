@@ -18,6 +18,7 @@
 @import 'elements/_notifier';
 @import 'elements/_inputs';
 @import 'elements/_buttons';
+@import 'elements/_list';
 @import 'elements/_forms';
 @import 'elements/_progress';
 @import 'elements/_tooltip';
@@ -31,6 +32,7 @@
 @import 'components/login';
 @import 'components/coinList';
 @import 'components/wallet';
+@import 'components/balance';
 
 
 body {

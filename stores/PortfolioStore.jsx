@@ -25,12 +25,11 @@ const addIcons = (coins) => coins.map((item) => {
         const TagName = Icon[coin];
         item.icon = (<TagName />);
         item.hasSVGIcon = true;
+    } else if (coin === 'Mnz') {
+        item.icon = (<i className={`coin-icon-svg ${item.coin}`} dangerouslySetInnerHTML={{ __html: MNZ }} />)
+        item.hasSVGIcon = true;
     } else {
-        if (coin === 'Mnz') {
-            item.icon = (<i className={`coin-icon-svg ${item.coin}`} dangerouslySetInnerHTML={{ __html: MNZ }} />)
-        } else {
-            item.icon = (<i className={`coin-icon-placeholder ${item.coin}`}>{ item.coin[0] }</i>)
-        }
+        item.icon = (<i className={`coin-icon-placeholder ${item.coin}`}>{ item.coin[0] }</i>)
         item.hasSVGIcon = false;
     }
 
@@ -45,6 +44,7 @@ export default class PortfolioStore {
      @observable installedCoins = [];
      @observable tradeBase = false;
      @observable tradeRel = false;
+     @observable withdrawConfirm = false;
 
      @observable fiatRates = {
          eur: 3000,
@@ -70,6 +70,8 @@ export default class PortfolioStore {
         ipcRenderer.on('coinsList', (e, coinsList) => { self.prepareCoinsList(coinsList) });
         ipcRenderer.on('updateTrade', (e, { coin, type }) => { self.updateTrade(coin, type) });
         ipcRenderer.on('trade', (e, result) => { self.tradeCb(result) });
+        ipcRenderer.on('confirmWithdraw', (e, result) => { self.withdrawConfirm = result });
+        ipcRenderer.on('sendrawtransaction', (e, result) => { self.withdrawConfirm = false });
     }
 
     getMarket = (short) => this.market.getMarket().filter((asset) => asset.short === short)[0];
@@ -85,9 +87,16 @@ export default class PortfolioStore {
         }
     }
 
+    confirmWithdraw = () => {
+        ipcRenderer.send('withdrawConfirm', this.withdrawConfirm)
+    }
+
     /* @params { method, base, rel, price, relvolume }
     */
 
+    @action withdraw = (params) => {
+        ipcRenderer.send('withdraw', params)
+    }
 
     @action trade = (params) => {
         ipcRenderer.send('trade', params)
@@ -104,18 +113,31 @@ export default class PortfolioStore {
         const byIcon = withIcons.slice(0);
         byIcon.sort((a, b) => a.hasSVGIcon ? 0 : 1);
         this.coinsList = byIcon;
-        this.installedCoins = addIcons(this.coinsList.filter((coin) => coin.height > 0).sort((a, b) => a.balance > 0 ? 0 : 1));
+
+        this.installedCoins = addIcons(this.coinsList.filter((coin) => coin.status === 'active').sort((a, b) => a.balance > 0 ? 0 : 1));
+
+        if (self.tradeRel) {
+            self.tradeRel.balance = self.getCoin(self.tradeRel.coin).balance
+        }
+
+        if (self.tradeBase) {
+            self.tradeBase.balance = self.getCoin(self.tradeBase.coin).balance
+        }
+    }
+
+    @action enableElectrum = (coin) => {
+        ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true })
     }
 
     @action setTrade = (coin, type) => {
-        ipcRenderer.send('enableCoin', { coin: coin.coin, type })
+        ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum: !coin.installed })
     }
 
     @action autoSetTrade = (coin) => {
         // activate the coin and set as rradeBase
-        this.setTrade({ coin }, 'Base');
+        this.setTrade(coin, 'Base');
         // search for the highest balance and activate as tradeRel
-        const firstNotSelf = this.installedCoins.filter((installed) => installed.coin !== coin)[0];
+        const firstNotSelf = this.coinsList.filter((installed) => installed.coin !== coin.coin)[1];
 
         this.setTrade(firstNotSelf, 'Rel');
     }
@@ -134,9 +156,9 @@ export default class PortfolioStore {
     }
 
 
-    portfolioRenderFIAT = (short, wrap) => {
+    portfolioRenderFIAT = (coin, wrap) => {
         const self = this;
-        const amount = this.getCoin(short).KMDvalue;
+        const amount = coin.KMDvalue;
         let result = '';
 
         const KMD = this.getMarket('KMD');

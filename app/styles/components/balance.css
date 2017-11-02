@@ -1,0 +1,44 @@
+.balance-action {
+    padding: 20px 10px 10px;
+}
+
+
+.balance-qr {
+    display: flex;
+}
+
+
+.balance-deposit-address {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    overflow: hidden;
+    padding: 10px 10px 30px;
+}
+
+.balance-deposit-body {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.balance-deposit-address button {
+    background: #FFF;
+    box-shadow: $box-shadow-inputs;
+    overflow-wrap: break-word;
+    width: 100%;
+    padding: 4 10px;
+    justify-content: space-between;
+    min-height: 54px;
+}
+
+.balance-deposit-address button span {
+    display: inline-block;
+    overflow-wrap: break-word;
+    width: calc(100% - 80px);
+    text-align: left;
+    font-size: .8em;
+
+}

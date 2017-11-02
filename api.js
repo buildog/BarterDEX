@@ -190,7 +190,7 @@ class Emitter extends EventEmitter {
     fetchMarket() {
         const self = this;
         request('http://coincap.io/front', (error, response, body) => {
-            self.emit('marketUpdate', { data: JSON.parse(body) });
+            body && self.emit('marketUpdate', { data: JSON.parse(body) });
         });
     }
 
@@ -263,20 +263,26 @@ class Emitter extends EventEmitter {
     }
 
 
-    enableCoin({ coin = '', type }) {
+    enableCoin({ coin = '', type, electrum = false }) {
         const self = this;
+        let data;
 
-        const data = { userpass: self.userpass, method: 'enable', coin };
-        // electrum
-        // const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
-
+        if (electrum) {
+            data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
+        } else {
+            data = { userpass: self.userpass, method: 'enable', coin };
+        }
         const url = 'http://127.0.0.1:7783';
 
         this.apiRequest({ data, url }).then((result) => {
             if (result.error) {
                 return self.emit('notifier', { error: 3, desc: result.error })
             }
-            this.emit('updateTrade', { coin, type });
+            self.getCoins().then((coinsList) => {
+                self.emit('coinsList', coinsList);
+                self.emit('coinEnabled', { coin });
+                type && this.emit('updateTrade', { coin, type });
+            })
         }).catch((error) => {
             self.emit('notifier', { error: 3 })
         });
@@ -355,22 +361,30 @@ class Emitter extends EventEmitter {
             console.log(`sendWithdraw ${coin}`);
             console.log(result);
             resolve(result);
+            self.emit('sendrawtransaction', result);
         }).catch((error) => {
             console.log(`error sendWithdraw ${coin}`)
             reject(error);
         }));
     }
 
-    withdraw({ address, coin }) {
+    withdraw({ address, coin, amount }) {
         const self = this;
         const data = { userpass: self.userpass,
             method: 'withdraw',
             coin,
-            outputs: [{ [address]: 0.001 }, { [address]: 0.002 }] };
+            outputs: [{ [address]: amount }] };
+
+        console.log(data);
         const url = 'http://127.0.0.1:7783';
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             console.log(`withdraw for ${coin}`);
             console.log(result);
+            if (result.complete === 'success') {
+                self.emit('confirmWithdraw', result);
+            } else {
+                self.emit('notifier', { error: 10 })
+            }
             resolve(result);
         }).catch((error) => {
             console.log('error withdraw')

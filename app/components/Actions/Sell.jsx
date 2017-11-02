@@ -221,10 +221,10 @@ class Trade extends React.Component {
                         value={this.state.rate}
                         onChange={(e) => this.updateRate(e.target.value)}
                       />
-                      <div className={`${tradeRel.coin}`}>
+                      <div>
                         { this.state.picker && this.coinPicker(this.state.picker) }
-                        <button onClick={(e) => self.togglePicker(e, 'Rel')} className="trade-pair action small arrow-down coin-colorized">
-                          <span><span className="trade-base-icon">{tradeRel.icon}</span> { tradeRel.name }</span>
+                        <button onClick={(e) => self.togglePicker(e, 'Rel')} className={`trade-pair action small arrow-down ${tradeRel.coin}`}>
+                          <strong className="coin-colorized"><span className="trade-base-icon">{tradeRel.icon}</span> { tradeRel.name }</strong>
                           <i dangerouslySetInnerHTML={{ __html: arrow }} />
                         </button>
                       </div>
@@ -274,7 +274,7 @@ class Trade extends React.Component {
                   <div className="trade-action-amountRel">
                     <small className="trade-action-amountRel-title"> { this.state.validation ? 'VALIDATION' : 'SELL' }</small>
                     { this.state.validation ? this.state.validation : <span>{this.state.amountBase} {tradeBase.coin}</span> }
-                    { this.state.validation ? '' : <small>(for {this.state.amountBase / this.state.rate } {tradeRel.coin})</small> }
+                    { this.state.validation ? '' : <small>(for {this.state.amountBase * this.state.rate } {tradeRel.coin})</small> }
                   </div>
                   <i dangerouslySetInnerHTML={{ __html: shuffle }} />
                 </button>

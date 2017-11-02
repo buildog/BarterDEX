@@ -3,8 +3,7 @@ import { inject, observer } from 'mobx-react'
 import { Link } from 'react-router';
 import classNames from 'classnames';
 
-import { Trade, Modal, CoinPicker } from '../';
-import plus from '../../static/plus.svg';
+import { CoinPicker } from '../';
 import arrow from '../../static/arrow.svg';
 import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
@@ -15,7 +14,9 @@ class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { coinToEnable: '' }
+        this.state = {
+            coinToEnable: ''
+        }
     }
 
     setCoinToEnable = (coinToEnable) => {
@@ -27,11 +28,17 @@ class Dashboard extends React.Component {
         // const { loader } = this.props.app;
         // const activationLoader = loader.getLoader(4);
         return classNames({
-            'dashboard-wallets-list-item': true,
+            'coinList-coin': true,
             [coin]: true,
             enabling: self.state.coinToEnable === coin
         })
     }
+
+    enableCoin = (e, coin) => {
+        const { enableElectrum } = this.props.app.portfolio;
+        enableElectrum(coin);
+    }
+
 
     renderDashboard = () => {
         // const { tradeBase, tradeRel, coinsList } = this.props.app.portfolio;
@@ -61,21 +68,23 @@ class Dashboard extends React.Component {
                 <small><span>{ !nullValue.length && hasBalances && kmdTotal()}</span></small>
 
               </h2>
-              <button className="dashboard-wallets-header-add action primary" disabled>
-                <span>electrum (soon)</span>
-                <i dangerouslySetInnerHTML={{ __html: plus }} />
-              </button>
+              <CoinPicker onSelected={(e, coin) => this.enableCoin(e, coin)} />
             </header>
+
+
+            { installedCoins.length === 0 && this.noticeNoCoin() }
+
+
             <ul className="dashboard-wallets-list">
               { installedCoins.map((installed) => (
                 <li key={installed.coin} className={this.getClassState(installed.coin)}>
-                  <Link onClick={() => this.setCoinToEnable(installed.coin)} to={`/wallet/${installed.coin}`} activeClassName="active">
-                    <div className="dashboard-wallets-list-item_icon coin-colorized"> { installed.icon }</div>
-                    <div className="dashboard-wallets-list-item_balance">
+                  <Link onClick={() => this.setCoinToEnable(installed.coin)} className={installed.coin} to={`/wallet/${installed.coin}/${installed.installed}`} activeClassName="active">
+                    <div className="coinList-coin_icon coin-colorized"> { installed.icon }</div>
+                    <div className="coinList-coin_balance">
                       <strong>{ installed.name }</strong>
                       <small>{ installed.balance } { installed.coin }</small>
                     </div>
-                    <button className="dashboard-wallets-list-item_action" dangerouslySetInnerHTML={{ __html: arrow }} />
+                    <button className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
                   </Link>
                 </li>))}
             </ul>
@@ -85,32 +94,15 @@ class Dashboard extends React.Component {
     }
 
     noticeNoCoin = () =>
-        // const { installedCoins } = this.props.app.portfolio;
-        // const { updateErrors } = this.props.app.notifier;
-        // updateErrors({ error: 1, desc: 'you must have at least 2 coin wallet running in order to trade them on BarterDEX' });
          (<div className="dashboard-empty">
-           <h3>No coin detected</h3>
-           <p>We didn't detected any coin wallet running on your machine. Run a coin wallet or add electrum coin.</p>
+           <h3>No active coin detected</h3>
+           <p>We didn't detected any coin wallet running on your machine. Run a coin wallet or add electrum coin via the top right button.</p>
          </div>)
 
-    noticeSingle = () =>
-             // const { installedCoins } = this.props.app.portfolio;
-             // const { updateErrors } = this.props.app.notifier;
-             // updateErrors({ error: 1, desc: 'you must have at least 2 coin wallet running in order to trade them on BarterDEX' });
-              (<div className="dashboard-empty">
-                <h3>Only one coin detected</h3>
-                <p>In order to trade coins, BarterDEX require at least two coin. Run a coin wallet or add electrum coin.</p>
-              </div>)
-
-
     render() {
-        const { installedCoins } = this.props.app.portfolio;
-
         return (
           <section className="dashboard">
             { this.renderDashboard() }
-            { installedCoins.length === 0 && this.noticeNoCoin() }
-            { installedCoins.length === 1 && this.noticeSingle() }
           </section>
         )
     }

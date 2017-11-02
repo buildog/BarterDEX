@@ -2,6 +2,7 @@
 .trade-body {
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
 }
 
 .trade-processing {
@@ -23,7 +24,6 @@
 
 .trade-body {
     position: relative;
-    z-index: 10;
     transition: all .2s ease;
     will-change: transform;
 }
@@ -42,6 +42,7 @@
 }
 
 .trade-type-item {
+    height: 70px;
     padding: 10px 8px 2px 8px;
     flex-grow: 1;
     border: 1px solid transparent;
@@ -94,7 +95,8 @@
     width: 60px;
 }
 
-.trade-type-item i svg {
+.trade-type-item i svg,
+.trade-type-item canvas {
     width: 60px;
     height: 30px;
     fill: $color-dark;
@@ -104,6 +106,12 @@
 
 .trade-type-item i svg path {
     stroke: $color-dark !important;
+}
+
+
+.wallet:not(.wallet-ready) {
+    opacity: 0;
+    transform: translateY(-100px);
 }
 
 
@@ -137,16 +145,23 @@
 }
 
 .trade-base-icon {
-    border-radius: 50%;
-    box-shadow: $box-shadow-inputs;
     margin-right: 6px;
     width: 30px;
     height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(256,256,256,0.1);
-    transform: rotate(10deg);
+    overflow: hidden;
+}
+
+.trade-base-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.trade-base-icon svg {
+    width: 36px;
+    height: 36px;
 }
 
 .trade-base-icon i {
@@ -191,7 +206,7 @@
     color: $color-dark;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     flex-direction: column;
 }
 
@@ -201,15 +216,14 @@
     width: 100%;
 }
 
-.trade-amount input {
+.trade-amount_input-wrapper input {
     min-width: 100%;
     position: absolute;
     right: 0;
-    padding: 26px 10px 26px 14px;
+    padding: 25px 10px 25px 14px;
     font-weight: 600
 }
 
-.trade-action-wrapper button { box-shadow: none !important }
 
 .trade-action-wrapper button div.validation {
     display: flex;
@@ -240,9 +254,9 @@
     align-items: center;
     justify-content: flex-end;
     height: 40px;
-    padding-right: 10px;
-
 }
+
+
 .trade-amount_input-wrapper .trade-setMax {
     position: relative;
     z-index: 1;
@@ -252,6 +266,7 @@
     border: 1px solid $grey;
     padding: 7px 10px;
     border-radius: 4px;
+    margin-right: 10px;
 }
 
 .trade-amount_input-wrapper .trade-setMax:hover {
@@ -265,23 +280,6 @@
     pointer-events: none
 }
 
-.trade-amount .label {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    font-weight: 600;
-    padding: 10px 4px 20px 10px;
-    justify-content: flex-end;
-}
-
-.trade-amount .label .label-title {
-    margin-right: auto;
-    font-weight: 400;
-}
-
-.trade-amount .label .link {
-    margin-left: 10px;
-}
 
 
 .trade-rel {
@@ -294,7 +292,12 @@
 
 
 .action.trade-pair { padding: 0 }
-
+.action.trade-pair > strong {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1
+}
 .trade-amount .label.trade-rel {
     padding: 10px 4px 10px 4px
 }
@@ -359,6 +362,11 @@
 
 .trade-action-amountRel-title { font-size: 1.2em }
 
+.trade-amount_input_address,
+.trade-amount_input_amount {
+    margin-bottom: 20px;
+}
+
 .trade-amount_input_rate {
     position: relative;
 }
@@ -370,7 +378,7 @@
 }
 
 .trade-amount_input > * {
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
 .trade-button-wrapper {
@@ -384,12 +392,110 @@
     font-size: 1em;
     justify-content: flex-start;
     text-align: left;
+    box-shadow: none !important
 }
 
 .trade-button  i svg {
     width: 40px;
     height: 40px;
 }
+
+/* deposit */
+
+.trade-deposit {
+    box-shadow: $box-shadow-inputs;
+    border-radius: 4px;
+    padding: 0 10px 10px
+}
+
+.trade-deposit,
+.trade-deposit-body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.trade-deposit,
+.trade-deposit-body,
+.trade-deposit-address {
+    width: 100%;
+}
+
+
+.trade-deposit-address {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%
+}
+
+.trade-deposit-address button {
+    text-align: left;
+    box-shadow: $box-shadow-inputs;
+    color: $color-dark;
+    margin-top: 10px;
+    background: #FFF;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.trade-deposit-address button span {
+    display: inline-block;
+    overflow-wrap: break-word;
+    max-width: calc(100% - 80px);
+    text-align: left;
+    font-size: .8em;
+
+}
+
+.trade-deposit h2 {
+    font-size: 1.2em;
+    margin: 0
+}
+
+.trade-deposit-amount {
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+.trade-deposit-amount-left {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    padding-right: 10px;
+}
+
+.trade-deposit-amount-left i,
+.trade-deposit-amount-left i svg {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.trade-deposit-amount-left i {
+    margin-left: 4px;
+}
+
+.trade-deposit-amount p {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    text-align: left;
+ }
+
+
+
+.trade-deposit-amount-left-balance {
+    color: $color-dark;
+    opacity: .5
+}
+
 
 
 /* charts */

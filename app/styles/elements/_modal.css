@@ -7,22 +7,13 @@
 */
 
 .modal {
-    position: absolute;
+    position: relative;
     z-index: 1000;
-    top: 0;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    background: $background-jaguar;
-    box-shadow: $box-shadow-inputs;
-    transform: scale(.8);
-    transform-origin: top right;
-    border-radius: 4px;
-    border-top-right-radius: 0;
-    overflow: auto;
+    text-align: left;
 }
 
 .modal-header {
+    position: fixed;
     display: flex;
     width: 100%;
     height: 80px;
@@ -88,11 +79,40 @@
     fill: #FFF;
 }
 
+.modal-content-overlay {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    padding: 110px 10px 10px;
+    transform: translateY(-20px) scale(.95);
+    will-change: transform;
+    transition: all .1s ease;
+    pointer-events: none
+}
+
+.modal-content-overlay > ul {
+    overflow: auto;
+    max-height: calc(100% - 100px);
+    box-shadow: $box-shadow-inputs;
+    border-radius: 6px;
+    will-change: transform;
+}
 
 /* animation state */
 .modal {
-    top: -100vh;
     transition: all .32s ease-in-out;
     will-change: all;
 }
-.modal  { top: 94% }
+
+.modal-display-content.modal-content-overlay {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.modal-display-content.modal-content-overlay > ul { pointer-events: all }

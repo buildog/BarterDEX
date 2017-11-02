@@ -54,7 +54,7 @@ const App = ({ children }) => (
 const Routes = (
   <Route path="/" component={App}>
     <IndexRoute component={Dashboard} />
-    <Route path="/wallet/:coin" component={Wallet} onEnter={preloader} />
+    <Route path="/wallet/:coin/:installed" component={Wallet} onEnter={preloader} />
   </Route>
 );
 

@@ -14,7 +14,7 @@
     align-items: center;
     margin-right: 20px;
     position: absolute;
-    top: 32px;
+    top: 10px;
     left: 0px;
 }
 
@@ -24,7 +24,7 @@
     height: 40px;
 }
 
-.wallet-wallets-header-back i {
+.wallet-wallets-header-back i svg {
     transform: rotate(-180deg) !important;
 }
 
