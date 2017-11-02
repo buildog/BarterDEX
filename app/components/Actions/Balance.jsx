@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import QRCode from 'qrcode.react';
 import { Clipboard } from '../';
 import send from '../../static/send.svg';
+import circles from '../../static/circles.svg';
 
 const formatNumber = (str) => str;
 
@@ -194,14 +195,20 @@ class Balance extends React.Component {
       { this.renderButton() }
     </div>)
 
+    renderLoader = () => (<div className="trade-processing">
+      <i className="loader-svg" dangerouslySetInnerHTML={{ __html: circles }} />
+      <h3>PROCESSING YOUR WITHDRAW</h3>
+    </div>)
+
     render() {
         const { tradeBase, withdrawConfirm } = this.props.app.portfolio;
+        const { loader } = this.props.app;
+        const withdrawLoader = loader.getLoader(6);
 
         return (
-          <section className={this.getClassState()}>
+          withdrawLoader ? this.renderLoader() : <section className={this.getClassState()}>
             { withdrawConfirm ? this.renderConfirm(withdrawConfirm) : this.renderDeposit() }
             { tradeBase.balance > 0 && !withdrawConfirm ? this.renderWithdraw() : '' }
-
           </section>
         );
     }

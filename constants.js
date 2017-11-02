@@ -53,7 +53,8 @@ const CONSTANTS = {
             critical: true
         },
         10: {
-            message: 'Withdraw failed'
+            message: 'Withdraw failed',
+            loadingKeys: [6]
         }
     },
     colors: {

@@ -469,15 +469,27 @@
     padding-right: 10px;
 }
 
+.trade-deposit-amount-left i,
+.trade-deposit-amount-left i svg {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.trade-deposit-amount-left i {
+    margin-left: 4px;
+}
+
 .trade-deposit-amount p {
+    display: flex;
+    align-items: center;
     margin: 0;
     text-align: left;
  }
 
-.trade-deposit-amount p svg {
-    position: relative;
-    top: 6px
-}
+
 
 .trade-deposit-amount-left-balance {
     color: $color-dark;

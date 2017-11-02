@@ -287,14 +287,14 @@ class Trade extends React.Component {
         const { tradeRel } = this.props.app.portfolio;
         return (
           <section className="trade-deposit">
-            <div className={`trade-deposit-body ${tradeRel.coin}`}>
+            <div className={`trade-deposit-body`}>
               <section className="trade-deposit-amount">
-                <section className="trade-deposit-amount-left"><p>
-                  <span>Awaiting deposit of</span>
+                <section className={`trade-deposit-amount-left ${tradeRel.coin}`}><p>
+                  <span>Awaiting {tradeRel.name} deposit of</span>
                 </p>
-                  <p>
+                  <p className="coin-colorized">
                     <strong>{ (this.state.amountRel * this.state.rate) - tradeRel.balance } { tradeRel.coin }</strong>
-                    <i> {tradeRel.icon}</i>
+                    <i>{tradeRel.icon}</i>
                   </p>
                   <p className="trade-deposit-amount-left-balance"><small>current balance {tradeRel.balance} {tradeRel.coin} </small></p>
                 </section>

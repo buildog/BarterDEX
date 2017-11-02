@@ -374,11 +374,13 @@ class Emitter extends EventEmitter {
             method: 'withdraw',
             coin,
             outputs: [{ [address]: amount }] };
+
+        console.log(data);
         const url = 'http://127.0.0.1:7783';
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             console.log(`withdraw for ${coin}`);
             console.log(result);
-            if (result.complete) {
+            if (result.complete === 'success') {
                 self.emit('confirmWithdraw', result);
             } else {
                 self.emit('notifier', { error: 10 })
