@@ -184,7 +184,12 @@ export default class PortfolioStore {
         const self = this;
         /* call reduce() on the array, passing a callback
         that adds all the values together */
-        const amount = self.installedCoins.reduce((accumulator, coin) => accumulator + coin.KMDvalue, 0);
+        const amount = self.installedCoins.reduce((accumulator, coin) => {
+            if (coin.KMDvalue) {
+                return accumulator + coin.KMDvalue
+            }
+            return accumulator
+        }, 0);
         if (format) {
             return formatCurrency(amount, self.formatCrypto)
         }
