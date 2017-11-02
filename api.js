@@ -278,15 +278,12 @@ class Emitter extends EventEmitter {
             if (result.error) {
                 return self.emit('notifier', { error: 3, desc: result.error })
             }
-            if (type) {
-                return this.emit('updateTrade', { coin, type });
-            }
-
             self.getCoins().then((coinsList) => {
                 console.log(coinsList);
 
                 self.emit('coinsList', coinsList);
                 self.emit('coinEnabled', { coin });
+                type && this.emit('updateTrade', { coin, type });
             })
         }).catch((error) => {
             self.emit('notifier', { error: 3 })

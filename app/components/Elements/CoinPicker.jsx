@@ -39,21 +39,15 @@ class CoinPicker extends React.Component {
         })
     }
 
-    setTrade = (e, coin) => {
-        const { setTrade } = this.props.app.portfolio;
-        setTrade(coin, this.props.type);
-        // autoclose after selection
-        this.props.onClose && this.props.onClose();
-    }
-
     toggle = () => {
         this.setState({ isPickerOpen: !this.state.isPickerOpen })
     }
 
     renderBtn = () => {
         if (!this.state.isPickerOpen) {
-            if (this.props.trade) {
-                const { tradeRel } = this.props.app.portfolio;
+            const { tradeRel } = this.props.app.portfolio;
+
+            if (this.props.trade && tradeRel) {
                 return (<button className="action arrow-down " onClick={(e) => this.toggle(e)}>
                   <span className={tradeRel.coin}>
                     <span className="trade-base-icon coin-colorized">{tradeRel.icon}</span>

@@ -240,7 +240,7 @@ code {
 
 
 
-.MNZ > .coin-colorized svg { fill: #A52986 !important; }
+.MNZ > .coin-colorized svg path { fill: #B92484 !important; }
 .ADC > .coin-colorized svg { fill: #3CB0E5!important; }
 .AEON > .coin-colorized svg { fill: #164450!important; }
 .AMP > .coin-colorized svg { fill: #048DD2!important; }

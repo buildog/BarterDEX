@@ -149,6 +149,17 @@
     justify-content: center;
     background-color: rgba(256,256,256,0.1);
     transform: rotate(10deg);
+    overflow: hidden;
+}
+
+.trade-base-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.trade-base-icon svg {
+    width: 36px;
+    height: 36px;
 }
 
 .trade-base-icon i {
@@ -393,6 +404,7 @@
     font-size: 1em;
     justify-content: flex-start;
     text-align: left;
+    box-shadow: none !important
 }
 
 .trade-button  i svg {

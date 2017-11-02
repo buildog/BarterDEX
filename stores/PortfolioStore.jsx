@@ -25,12 +25,11 @@ const addIcons = (coins) => coins.map((item) => {
         const TagName = Icon[coin];
         item.icon = (<TagName />);
         item.hasSVGIcon = true;
+    } else if (coin === 'Mnz') {
+        item.icon = (<i className={`coin-icon-svg ${item.coin}`} dangerouslySetInnerHTML={{ __html: MNZ }} />)
+        item.hasSVGIcon = true;
     } else {
-        if (coin === 'Mnz') {
-            item.icon = (<i className={`coin-icon-svg ${item.coin}`} dangerouslySetInnerHTML={{ __html: MNZ }} />)
-        } else {
-            item.icon = (<i className={`coin-icon-placeholder ${item.coin}`}>{ item.coin[0] }</i>)
-        }
+        item.icon = (<i className={`coin-icon-placeholder ${item.coin}`}>{ item.coin[0] }</i>)
         item.hasSVGIcon = false;
     }
 
@@ -105,6 +104,14 @@ export default class PortfolioStore {
         byIcon.sort((a, b) => a.hasSVGIcon ? 0 : 1);
         this.coinsList = byIcon;
         this.installedCoins = addIcons(this.coinsList.filter((coin) => coin.status === 'active').sort((a, b) => a.balance > 0 ? 0 : 1));
+
+        if (self.tradeRel) {
+            self.tradeRel.balance = self.getCoin(self.tradeRel.coin).balance
+        }
+
+        if (self.tradeBase) {
+            self.tradeBase.balance = self.getCoin(self.tradeBase.coin).balance
+        }
     }
 
     @action enableElectrum = (coin) => {

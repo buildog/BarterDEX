@@ -107,6 +107,7 @@ class Trade extends React.Component {
     componentWillReact = () => {
         const { tradeRel, tradeBase } = this.props.app.portfolio;
         this.setState({ orderBookMessage: `Fetching ${tradeBase.coin}/${tradeRel.coin} orderbook` });
+        this.validation({ amountRel: this.state.amountRel, rate: this.state.rate });
     }
 
     trade = () => {
@@ -173,6 +174,13 @@ class Trade extends React.Component {
         this.validation({ amountRel: parsed });
     }
 
+    tradeWith = (e, coin) => {
+        const { setTrade } = this.props.app.portfolio;
+        setTrade(coin, 'Rel');
+        // autoclose after selection
+        this.props.onClose && this.props.onClose();
+    }
+
 
     closeSelects = () => { this.setState({ picker: false, showOrderbook: false }) }
 
@@ -216,7 +224,7 @@ class Trade extends React.Component {
             value={this.state.rate}
             onChange={(e) => this.updateRate(e.target.value)}
           />
-          <CoinPicker onSelected={(e, coin) => this.enableCoin(e, coin)} trade />
+          <CoinPicker onSelected={(e, coin) => this.tradeWith(e, coin)} trade />
         </div>
 
         { this.state.showOrderbook && this.renderOrderbook() }
@@ -302,7 +310,7 @@ class Trade extends React.Component {
         // portfolio
         const { loader } = this.props.app;
         const orderLoader = loader.getLoader(5);
-        const { tradeBase, tradeRel } = this.props.app.portfolio;
+        const { tradeRel } = this.props.app.portfolio;
 
         return (
           <section className={this.getClassState()}>
