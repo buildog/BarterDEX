@@ -3,5 +3,7 @@
   display: flex;
   align-items: center;
 }
-.window__controls a svg { transition: all .3s ease }
-.window__controls:hover a svg .hidden { display: inherit !important }
+.window__controls a svg {
+    transition: all .3s ease;
+    will-change: transform;
+}

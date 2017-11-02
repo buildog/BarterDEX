@@ -42,6 +42,9 @@ class Balance extends React.Component {
         return (
           <section className="balance-deposit">
             <div className={`balance-deposit-body ${tradeBase.coin}`}>
+              <section className="balance-qr">
+                <QRCode size={124} value={tradeBase.smartaddress} />
+              </section>
               <section className="balance-deposit-address">
                 <Clipboard copyLabel={tradeBase.smartaddress} value={tradeBase.smartaddress} />
               </section>

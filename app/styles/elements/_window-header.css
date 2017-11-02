@@ -27,16 +27,23 @@
 }
 
 .window-header-logo,
+.window-header-logo i,
 .window-header-logo svg {
     display: flex;
     flex-shrink: 0;
     width: 30px;
-    height: 40px;
+    height: 30px;
 }
+
+.window-header-logo { margin-bottom: 6px }
 
 .window-header-logo svg {
     transform: scale(5);
     transform-origin: 55% 76%;
+}
+
+.window-header-logo svg g {
+    fill: #FFF !important
 
 }
 
@@ -71,6 +78,8 @@
 .window-header:hover ul {
     opacity: 1;
     transform: translateY(0px);
+    will-change: transform;
+
 }
 
 /* TITLE */
@@ -85,12 +94,13 @@
     justify-content: center;
     flex-direction: column;
     z-index: 0;
-    pointer-events: none
+    pointer-events: none;
+    will-change: transform;
+
 }
 
 .window__title h1 {
     font-size: 1em;
-    margin: -10px 0 0;
     color: #FFF
 }
 

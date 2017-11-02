@@ -3,11 +3,10 @@ import { observer, inject } from 'mobx-react';
 import classNames from 'classnames';
 
 import { Buy, Sell, Balance } from '../';
-import QRCode from 'qrcode.react';
 
 import sell from '../../static/sell.svg';
 import receive from '../../static/receive.svg';
-import history from '../../static/history.svg';
+import orderbook2 from '../../static/orderbook2.svg';
 import buy from '../../static/buy.svg';
 import charts from '../../static/charts.svg';
 import shuffle from '../../static/shuffle.svg';
@@ -60,7 +59,7 @@ class Trade extends React.Component {
                 <li className="trade-type-item trade-type-item-wallet">
                   <button onClick={() => this.setFlow({ flow: 'wallet' })}>
                     <div>
-                      <i><QRCode size={30} value={tradeBase.smartaddress} /></i>
+                      <i dangerouslySetInnerHTML={{ __html: receive }} />
                       <small>Wallet</small>
                     </div>
                   </button>
@@ -68,12 +67,16 @@ class Trade extends React.Component {
                 <li className="trade-type-item trade-type-item-orders">
                   <button onClick={() => this.setFlow({ flow: 'orders' })}>
                     <div>
-                      <i dangerouslySetInnerHTML={{ __html: history }} />
+                      <i dangerouslySetInnerHTML={{ __html: orderbook2 }} />
                       <small>Orders</small>
                     </div>
                   </button>
                 </li>
               </ul>
+
+              { this.state.flow === 'trade-buy' && <Buy /> }
+              { this.state.flow === 'trade-wallet' && <Balance /> }
+              { this.state.flow === 'trade-sell' && <Sell /> }
 
               { (this.state.flow === 'trade-charts' || this.state.flow === 'trade-orders') && <div className="trade-view-charts">
                 <h3>{ '😰' }</h3>
@@ -81,9 +84,6 @@ class Trade extends React.Component {
                 <p>this feature is not yet available</p>
                 </div> }
 
-              { this.state.flow === 'trade-buy' && <Buy /> }
-              { this.state.flow === 'trade-wallet' && <Balance /> }
-              { this.state.flow === 'trade-sell' && <Sell /> }
 
             </section>
           </div>
