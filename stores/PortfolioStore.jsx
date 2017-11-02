@@ -44,6 +44,7 @@ export default class PortfolioStore {
      @observable installedCoins = [];
      @observable tradeBase = false;
      @observable tradeRel = false;
+     @observable withdrawConfirm = false;
 
      @observable fiatRates = {
          eur: 3000,
@@ -69,6 +70,8 @@ export default class PortfolioStore {
         ipcRenderer.on('coinsList', (e, coinsList) => { self.prepareCoinsList(coinsList) });
         ipcRenderer.on('updateTrade', (e, { coin, type }) => { self.updateTrade(coin, type) });
         ipcRenderer.on('trade', (e, result) => { self.tradeCb(result) });
+        ipcRenderer.on('confirmWithdraw', (e, result) => { self.withdrawConfirm = result });
+        ipcRenderer.on('sendrawtransaction', (e, result) => { self.withdrawConfirm = false });
     }
 
     getMarket = (short) => this.market.getMarket().filter((asset) => asset.short === short)[0];
@@ -84,9 +87,16 @@ export default class PortfolioStore {
         }
     }
 
+    confirmWithdraw = () => {
+        ipcRenderer.send('withdrawConfirm', this.withdrawConfirm)
+    }
+
     /* @params { method, base, rel, price, relvolume }
     */
 
+    @action withdraw = (params) => {
+        ipcRenderer.send('withdraw', params)
+    }
 
     @action trade = (params) => {
         ipcRenderer.send('trade', params)
@@ -103,6 +113,7 @@ export default class PortfolioStore {
         const byIcon = withIcons.slice(0);
         byIcon.sort((a, b) => a.hasSVGIcon ? 0 : 1);
         this.coinsList = byIcon;
+
         this.installedCoins = addIcons(this.coinsList.filter((coin) => coin.status === 'active').sort((a, b) => a.balance > 0 ? 0 : 1));
 
         if (self.tradeRel) {
@@ -126,7 +137,7 @@ export default class PortfolioStore {
         // activate the coin and set as rradeBase
         this.setTrade(coin, 'Base');
         // search for the highest balance and activate as tradeRel
-        const firstNotSelf = this.installedCoins.filter((installed) => installed.coin !== coin.coin)[0];
+        const firstNotSelf = this.coinsList.filter((installed) => installed.coin !== coin.coin)[1];
 
         this.setTrade(firstNotSelf, 'Rel');
     }

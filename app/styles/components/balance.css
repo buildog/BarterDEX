@@ -4,7 +4,6 @@
 
 
 .balance-qr {
-    width: 100%;
     display: flex;
 }
 
@@ -14,7 +13,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: calc(100% - 140px);
+    flex-grow: 1;
+    overflow: hidden;
+    padding: 10px 10px 30px;
 }
 
 .balance-deposit-body {
@@ -30,6 +31,7 @@
     width: 100%;
     padding: 4 10px;
     justify-content: space-between;
+    min-height: 54px;
 }
 
 .balance-deposit-address button span {

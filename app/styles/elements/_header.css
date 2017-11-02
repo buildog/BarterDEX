@@ -24,7 +24,7 @@
     height: 40px;
 }
 
-.wallet-wallets-header-back i {
+.wallet-wallets-header-back i svg {
     transform: rotate(-180deg) !important;
 }
 

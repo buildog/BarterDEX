@@ -73,7 +73,6 @@ class Dashboard extends React.Component {
 
 
             { installedCoins.length === 0 && this.noticeNoCoin() }
-            { installedCoins.length === 1 && this.noticeSingle() }
 
 
             <ul className="dashboard-wallets-list">
@@ -99,13 +98,6 @@ class Dashboard extends React.Component {
            <h3>No active coin detected</h3>
            <p>We didn't detected any coin wallet running on your machine. Run a coin wallet or add electrum coin via the top right button.</p>
          </div>)
-
-    noticeSingle = () =>
-          (<div className="dashboard-empty">
-            <h3>Only one active coin detected</h3>
-            <p>In order to trade coins, BarterDEX require at least <strong>two coin</strong>. Run a coin wallet or add electrum coin via the top right button.</p>
-          </div>)
-
 
     render() {
         return (

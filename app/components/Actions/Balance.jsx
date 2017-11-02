@@ -24,15 +24,18 @@ class Balance extends React.Component {
     }
 
     getClassState = () => {
+        const { tradeBase } = this.props.app.portfolio;
         const self = this;
         return classNames({
-            'balance-action': true
+            'balance-action': true,
+            'trade-action-max': this.state.amount === tradeBase.balance
         })
     }
 
 
     setMax = () => {
-
+        const { tradeBase } = this.props.app.portfolio;
+        this.updateAmount(tradeBase.balance);
     }
 
 
@@ -42,29 +45,35 @@ class Balance extends React.Component {
 
     updateAddress = (address) => {
         this.setState({ address })
+        this.validation({ address, amount: this.state.amount });
     }
 
-    updateAmount = (amount) => {
-        const parsed = formatNumber(amount);
-        const { tradeRel } = this.props.app.portfolio;
+    updateAmount = (e) => {
+        if (e.target.validity.valid) {
+            const amount = e.target.value;
+            const parsed = formatNumber(amount);
+            const { tradeBase } = this.props.app.portfolio;
 
-        if (amount === tradeRel.balance) {
-            this.setState({ autoMax: true })
-        } else {
-            this.setState({ autoMax: false })
+            if (amount === tradeBase.balance) {
+                this.setState({ autoMax: true })
+            } else {
+                this.setState({ autoMax: false })
+            }
+
+
+            this.setState({ amount: parsed });
+            this.validation({ amount: parsed, address: this.state.address });
         }
-
-
-        this.setState({ amount: parsed });
-        this.validation({ amount: parsed });
     }
 
 
-    validation = ({ amount }) => {
+    validation = (params) => {
         let validation = false;
         const { tradeBase } = this.props.app.portfolio;
+        const amount = params.amount;
+        const address = params.address;
 
-        if (this.state.address === '') {
+        if (address === '') {
             validation = `address is empty`;
         } else if (tradeBase.balance < amount) {
             validation = (<div className="validation"><span>not enough {tradeBase.coin}</span><small>(max {tradeBase.balance})</small></div>);
@@ -76,7 +85,17 @@ class Balance extends React.Component {
     }
 
 
-    withdraw = () => {}
+    withdraw = () => {
+        const { withdraw, tradeBase } = this.props.app.portfolio;
+
+        const params = {
+            address: this.state.address,
+            coin: tradeBase.coin,
+            amount: this.state.amount
+        };
+
+        withdraw(params);
+    }
 
     renderDeposit = () => {
         const { tradeBase } = this.props.app.portfolio;
@@ -102,7 +121,7 @@ class Balance extends React.Component {
     renderButton = () => {
         const { loader } = this.props.app;
         const orderLoader = loader.getLoader(6);
-        const { tradeBase, tradeRel } = this.props.app.portfolio;
+        const { tradeBase } = this.props.app.portfolio;
         return (
           <section className={`trade-button-wrapper ${tradeBase.coin}`}>
             <button className="trade-button withBorder action primary coin-bg" disabled={orderLoader} onClick={() => this.withdraw()} disabled={this.state.validation}>
@@ -116,26 +135,23 @@ class Balance extends React.Component {
         )
     }
 
-    renderAddress = () => {
-        const { tradeBase } = this.props.app.portfolio;
-        return (
-          <section className="trade-amount_input_address">
-            <span className="label">
-              <strong className="label-title">Withdraw to</strong>
-            </span>
-            <div className="trade-amount_input-wrapper">
-              <input
-                name="form-amount"
-                placeholder="addresse"
-                style={{ fontSize: 18 }}
-                value={this.state.address}
-                onChange={(e) => this.updateAddress(e.target.value)}
-              />
-              { tradeBase.balance > 0 && <button className="trade-setMax" onClick={() => this.setMax()}>Max</button> }
-            </div>
+    renderAddress = () => (
+      <section className="trade-amount_input_address">
+        <span className="label">
+          <strong className="label-title">Withdraw to</strong>
+        </span>
+        <div className="trade-amount_input-wrapper">
+          <input
+            name="form-amount"
+            type="text"
+            placeholder="addresse"
+            style={{ fontSize: 18 }}
+            value={this.state.address}
+            onChange={(e) => this.updateAddress(e.target.value)}
+          />
+        </div>
 
-          </section>)
-    }
+      </section>)
 
     renderAmount = () => {
         const { tradeBase } = this.props.app.portfolio;
@@ -149,10 +165,11 @@ class Balance extends React.Component {
                 name="form-amount"
                 type="number"
                 min="0"
+                step="any"
                 placeholder="0.00"
                 style={{ fontSize: 18 }}
                 value={this.state.amount}
-                onChange={(e) => this.updateAmount(e.target.value)}
+                onChange={(e) => this.updateAmount(e)}
               />
               { tradeBase.balance > 0 && <button className="trade-setMax" onClick={() => this.setMax()}>Max</button> }
             </div>
@@ -160,13 +177,31 @@ class Balance extends React.Component {
           </section>)
     }
 
+    renderConfirm = (withdrawConfirm) => (
+      <div className="deposit-withdrawConfirm">
+        <h3>Confirm withdraw</h3>
+        <ul>
+          { withdrawConfirm.tx.vout.map((key, i) => (
+            <li key={i}>{ key.satoshis }</li>
+                ))}
+        </ul>
+      </div>
+        )
+
+    renderWithdraw = () => (<div className="deposit-withdraw">
+      { this.renderAddress() }
+      { this.renderAmount() }
+      { this.renderButton() }
+    </div>)
+
     render() {
+        const { tradeBase, withdrawConfirm } = this.props.app.portfolio;
+
         return (
           <section className={this.getClassState()}>
-            { this.renderDeposit() }
-            { this.renderAddress() }
-            { this.renderAmount() }
-            { this.renderButton() }
+            { withdrawConfirm ? this.renderConfirm(withdrawConfirm) : this.renderDeposit() }
+            { tradeBase.balance > 0 && !withdrawConfirm ? this.renderWithdraw() : '' }
+
           </section>
         );
     }

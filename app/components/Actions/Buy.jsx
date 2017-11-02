@@ -151,27 +151,33 @@ class Trade extends React.Component {
         this.updateAmountRel(tradeRel.balance / this.state.rate);
     }
 
-    updateRate = (rate, selected = false) => {
-        const parsed = formatNumber(rate);
-        this.setState({ rate: parsed, selected });
-        this.validation({ rate: parsed });
+    updateRate = (e, selected = false) => {
+        if (e.target.validity.valid) {
+            const rate = e.target.value;
+            const parsed = formatNumber(rate);
+            this.setState({ rate: parsed, selected });
+            this.validation({ rate: parsed });
 
-        this.state.autoMax && setTimeout(() => this.setMax())
+            this.state.autoMax && setTimeout(() => this.setMax())
+        }
     }
 
-    updateAmountRel = (amountRel) => {
-        const parsed = formatNumber(amountRel);
-        const { tradeRel } = this.props.app.portfolio;
+    updateAmountRel = (e) => {
+        if (e.target.validity.valid) {
+            const amountRel = e.target.value;
+            const parsed = formatNumber(amountRel);
+            const { tradeRel } = this.props.app.portfolio;
 
-        if (amountRel * this.state.rate === tradeRel.balance) {
-            this.setState({ autoMax: true })
-        } else {
-            this.setState({ autoMax: false })
+            if (amountRel * this.state.rate === tradeRel.balance) {
+                this.setState({ autoMax: true })
+            } else {
+                this.setState({ autoMax: false })
+            }
+
+
+            this.setState({ amountRel: parsed });
+            this.validation({ amountRel: parsed });
         }
-
-
-        this.setState({ amountRel: parsed });
-        this.validation({ amountRel: parsed });
     }
 
     tradeWith = (e, coin) => {
@@ -219,10 +225,11 @@ class Trade extends React.Component {
             name="form-price"
             type="number"
             min="0"
+            step="any"
             placeholder="0.00"
             style={{ fontSize: 18 }}
             value={this.state.rate}
-            onChange={(e) => this.updateRate(e.target.value)}
+            onChange={(e) => this.updateRate(e)}
           />
           <CoinPicker onSelected={(e, coin) => this.tradeWith(e, coin)} trade />
         </div>
@@ -244,10 +251,11 @@ class Trade extends React.Component {
                 name="form-amount"
                 type="number"
                 min="0"
+                step="any"
                 placeholder="0.00"
                 style={{ fontSize: 18 }}
                 value={this.state.amountRel}
-                onChange={(e) => this.updateAmountRel(e.target.value)}
+                onChange={(e) => this.updateAmountRel(e)}
               />
               { tradeRel.balance > 0 && this.state.rate > 0 && <button className="trade-setMax" onClick={() => this.setMax()}>Max</button> }
             </div>

@@ -18,6 +18,17 @@ export const portfolioEvents = ({ api, emitter, listener }) => {
         api.fetchCoins();
     });
 
+
+    listener.on('withdraw', (e, params) => {
+        emitter.send('loading', { type: 'add', key: 6 });
+        api.withdraw(params)
+    });
+
+    listener.on('withdrawConfirm', (e, params) => {
+        emitter.send('loading', { type: 'add', key: 6 });
+        api.sendrawtransaction(params)
+    });
+
     api.on('setPortfolio', (data) => {
         /* intercept callback from API and update the store */
         emitter.send('setPortfolio', data);
@@ -30,4 +41,15 @@ export const portfolioEvents = ({ api, emitter, listener }) => {
     api.on('marketUpdate', (data) => emitter.send('marketUpdate', data))
 
     api.on('coinsList', (coins) => { emitter.send('coinsList', coins) })
+
+
+    api.on('confirmWithdraw', (data) => {
+        /* intercept callback from API and update the store */
+        emitter.send('confirmWithdraw', data);
+    })
+
+    api.on('sendrawtransaction', (data) => {
+        /* intercept callback from API and update the store */
+        emitter.send('sendrawtransaction', data);
+    })
 }
