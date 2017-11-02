@@ -109,6 +109,12 @@
 }
 
 
+.wallet:not(.wallet-ready) {
+    opacity: 0;
+    transform: translateY(-100px);
+}
+
+
 
 .trade-base {
     display: flex;
@@ -139,16 +145,12 @@
 }
 
 .trade-base-icon {
-    border-radius: 50%;
-    box-shadow: $box-shadow-inputs;
     margin-right: 6px;
     width: 30px;
     height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(256,256,256,0.1);
-    transform: rotate(10deg);
     overflow: hidden;
 }
 
@@ -214,7 +216,7 @@
     width: 100%;
 }
 
-.trade-amount input {
+.trade-amount_input-wrapper input {
     min-width: 100%;
     position: absolute;
     right: 0;
@@ -278,25 +280,6 @@
     pointer-events: none
 }
 
-.trade-amount .label {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    font-weight: 600;
-    padding: 10px 4px 20px 10px;
-    justify-content: flex-end;
-}
-
-.trade-amount .label .label-title {
-    margin-right: auto;
-    font-weight: 400;
-    font-size: 1.1em;
-    opacity: .3
-}
-
-.trade-amount .label .link {
-    margin-left: 10px;
-}
 
 
 .trade-rel {
@@ -379,6 +362,11 @@
 
 .trade-action-amountRel-title { font-size: 1.2em }
 
+.trade-amount_input_address,
+.trade-amount_input_amount {
+    margin-bottom: 20px;
+}
+
 .trade-amount_input_rate {
     position: relative;
 }
@@ -439,15 +427,26 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%
 }
 
 .trade-deposit-address button {
-    width: 100%;
     text-align: left;
     box-shadow: $box-shadow-inputs;
     color: $color-dark;
     margin-top: 10px;
     background: #FFF;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.trade-deposit-address button span {
+    display: inline-block;
+    overflow-wrap: break-word;
+    max-width: calc(100% - 80px);
+    text-align: left;
+    font-size: .8em;
+
 }
 
 .trade-deposit h2 {

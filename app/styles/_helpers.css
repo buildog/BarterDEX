@@ -40,6 +40,13 @@
     font-size: 22px;
 }
 
+.coin-icon-placeholder,
+.coin-icon-svg {
+    background: rgba(256,256,256,0.1);
+    box-shadow: $box-shadow-inputs;
+    border-radius: 50% !important;
+}
+
 .large-number {
     letter-spacing: -2px
 }

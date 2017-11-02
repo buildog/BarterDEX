@@ -31,12 +31,14 @@ class Trade extends React.Component {
 
     setFlow = (type) => this.setState({ flow: `trade-${type.flow}` })
 
+
     render() {
         // portfolio
         const { tradeBase } = this.props.app.portfolio;
 
         return (
           <div className={this.getClassState()}>
+
             <section className="trade-body">
 
               <ul className="trade-type">

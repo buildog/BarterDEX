@@ -145,9 +145,9 @@ export default class PortfolioStore {
     }
 
 
-    portfolioRenderFIAT = (short, wrap) => {
+    portfolioRenderFIAT = (coin, wrap) => {
         const self = this;
-        const amount = this.getCoin(short).KMDvalue;
+        const amount = coin.KMDvalue;
         let result = '';
 
         const KMD = this.getMarket('KMD');

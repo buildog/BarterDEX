@@ -13,7 +13,7 @@ class Clipboard extends React.Component {
     copyToClipboard = () => {
         clipboard.writeText(this.props.value);
         this.setState({ copySuccess: 'Copied!' });
-        setTimeout(() => this.setState({ copySuccess: this.props.copyLabel || 'Copy' }), 2000)
+        setTimeout(() => this.setState({ copySuccess: this.props.copyLabel || 'Copy' }), 500)
     }
 
     render() {

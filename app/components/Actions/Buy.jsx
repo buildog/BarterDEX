@@ -290,7 +290,7 @@ class Trade extends React.Component {
                   </p>
                   <p className="trade-deposit-amount-left-balance"><small>current balance {tradeRel.balance} {tradeRel.coin} </small></p>
                 </section>
-                <QRCode size={78} value={tradeRel.smartaddress} />
+                <QRCode size={88} value={tradeRel.smartaddress} />
               </section>
               <section className="trade-deposit-address">
                 <Clipboard copyLabel={tradeRel.smartaddress} value={tradeRel.smartaddress} />

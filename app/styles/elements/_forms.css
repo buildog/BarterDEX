@@ -16,6 +16,28 @@
     margin-bottom: 20px;
 }
 
+.label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    font-weight: 600;
+    padding: 10px 4px 20px 10px;
+    justify-content: flex-end;
+}
+
+.label .label-title {
+    margin-right: auto;
+    font-weight: 400;
+    font-size: 1.1em;
+    opacity: .5;
+    color: $color-dark
+}
+
+.label .link {
+    margin-left: 10px;
+}
+
+
 .legend {
     width: 100%;
     display: inline-flex;

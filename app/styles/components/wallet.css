@@ -83,9 +83,5 @@
 
 /* context */
 
-.wallet:not(.wallet-ready) {
-    opacity: 0;
-    transform: translateY(-100px);
-}
 
 .wallet:not(.wallet-ready) .wallet-wallets-header { transform: translateY(300px) }
