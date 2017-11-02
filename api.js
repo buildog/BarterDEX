@@ -263,20 +263,31 @@ class Emitter extends EventEmitter {
     }
 
 
-    enableCoin({ coin = '', type }) {
+    enableCoin({ coin = '', type, electrum = false }) {
         const self = this;
+        let data;
 
-        const data = { userpass: self.userpass, method: 'enable', coin };
-        // electrum
-        // const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
-
+        if (electrum) {
+            data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
+        } else {
+            data = { userpass: self.userpass, method: 'enable', coin };
+        }
         const url = 'http://127.0.0.1:7783';
 
         this.apiRequest({ data, url }).then((result) => {
             if (result.error) {
                 return self.emit('notifier', { error: 3, desc: result.error })
             }
-            this.emit('updateTrade', { coin, type });
+            if (type) {
+                return this.emit('updateTrade', { coin, type });
+            }
+
+            self.getCoins().then((coinsList) => {
+                console.log(coinsList);
+
+                self.emit('coinsList', coinsList);
+                self.emit('coinEnabled', { coin });
+            })
         }).catch((error) => {
             self.emit('notifier', { error: 3 })
         });

@@ -12,9 +12,10 @@ import circles from '../../static/circles.svg';
 class Wallet extends React.Component {
 
     static preload({ params, stores }, callback) {
-        const { coin } = params;
+        const { coin, installed } = params;
         const { autoSetTrade } = stores.app.portfolio;
-        autoSetTrade(coin);
+
+        autoSetTrade({ coin, installed: Boolean.valueOf(installed)() });
         /* wait for callaback?*/
         const loop = setTimeout(() => {
             const { tradeBase, tradeRel } = stores.app.portfolio;
@@ -58,11 +59,11 @@ class Wallet extends React.Component {
 
         return (
           <section className={this.getClassState()}>
-            <header className={`wallet-wallets-header component-header component-header-centered component-header-withBack ${coin.coin}`}>
+            <header className={`wallet-wallets-header component-header component-header-centered component-header-withBack`}>
               <Link className="wallet-wallets-header-back action primary right dark" to="/">
                 <i className="wallet-wallets-list-item_action" dangerouslySetInnerHTML={{ __html: arrow }} />
               </Link>
-              <h2>
+              <h2 className={coin.coin}>
                 <div className="wallet-icon coin-colorized">{ coin.icon }</div>
                 <div className="wallet-coinName coin-colorized">{coin.name}</div>
                 <div className="wallet-balance">{ renderBalance(coin.coin) }</div>

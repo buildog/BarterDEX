@@ -3,8 +3,10 @@ import React from 'react'
 import { observer, inject } from 'mobx-react';
 import ReactTable from 'react-table'
 import classNames from 'classnames';
+import QRCode from 'qrcode.react';
 
-import { CoinPicker } from '../';
+
+import { CoinPicker, Clipboard } from '../';
 
 import * as Icon from 'react-cryptocoins';
 import zoro from '../../static/zoro.svg';
@@ -172,115 +174,149 @@ class Trade extends React.Component {
     }
 
 
-    togglePicker = (e, type) => {
-        this.setState({ picker: this.state.picker ? false : type });
-        e.stopPropagation();
-    }
-
     closeSelects = () => { this.setState({ picker: false, showOrderbook: false }) }
 
-    coinPicker = (type) => (<CoinPicker title={type === 'Base' ? 'Select a coin to buy' : 'Select a coin to sell'} type={type} onClose={() => this.resetForm()} />)
+    renderOrderbook = () => {
+        const { asks } = this.props.app.orderbook;
+        const orderbook = asks;
+
+        return (
+          <section className="trade-orderbook">
+            <ReactTable
+              className="-striped -highlight"
+              data={orderbook}
+              columns={orderbookColumns}
+              defaultSorted={[{ id: 'price' }]}
+              noDataText={this.state.orderBookMessage}
+              showPaginationBottom={false}
+              style={{ height: '280px' }}
+              getTrProps={(state, rowInfo) => ({
+                  onClick: e => { self.pickRate(rowInfo) },
+                  className: rowInfo && rowInfo.index === self.state.selected ? 'selected coin-colorized' : ''
+              })}
+            /> </section>
+        )
+    }
+
+    renderPrice = () => (
+      <section className="trade-amount_input_price">
+        <span className="label">
+          <strong className="label-title">Price</strong>
+          <small>
+            <button className="link" onClick={(e) => this.toggleOrderbook(e)}>{ this.state.showOrderbook ? 'Hide' : 'View'} orderbook</button>
+          </small>
+        </span>
+        <div className="trade-amount_input-wrapper">
+          <input
+            name="form-price"
+            type="number"
+            min="0"
+            placeholder="0.00"
+            style={{ fontSize: 18 }}
+            value={this.state.rate}
+            onChange={(e) => this.updateRate(e.target.value)}
+          />
+          <CoinPicker onSelected={(e, coin) => this.enableCoin(e, coin)} trade />
+        </div>
+
+        { this.state.showOrderbook && this.renderOrderbook() }
+
+      </section>
+        )
+
+    renderAmount = () => {
+        const { tradeRel } = this.props.app.portfolio;
+        return (
+          <section className="trade-amount_input_amount">
+            <span className="label">
+              <strong className="label-title">Amount</strong>
+            </span>
+            <div className="trade-amount_input-wrapper">
+              <input
+                name="form-amount"
+                type="number"
+                min="0"
+                placeholder="0.00"
+                style={{ fontSize: 18 }}
+                value={this.state.amountRel}
+                onChange={(e) => this.updateAmountRel(e.target.value)}
+              />
+              { tradeRel.balance > 0 && this.state.rate > 0 && <button className="trade-setMax" onClick={() => this.setMax()}>Max</button> }
+            </div>
+
+          </section>
+        )
+    }
+
+
+    renderButton = () => {
+        const { loader } = this.props.app;
+        const orderLoader = loader.getLoader(5);
+        const { tradeBase, tradeRel } = this.props.app.portfolio;
+        return (
+          <section className={`trade-button-wrapper ${tradeBase.coin}`}>
+            <button className="trade-button withBorder action primary coin-bg" disabled={orderLoader} onClick={() => this.trade()} disabled={this.state.validation}>
+              <div className="trade-action-amountRel">
+                <small className="trade-action-amountRel-title"> { this.state.validation ? 'VALIDATION' : 'BUY' }</small>
+                { this.state.validation ? this.state.validation : <span>{this.state.amountRel} {tradeBase.coin}</span> }
+                { this.state.validation ? '' : <small>(for {this.state.amountRel * this.state.rate } {tradeRel.coin})</small> }
+              </div>
+              <i dangerouslySetInnerHTML={{ __html: shuffle }} />
+            </button>
+          </section>
+        )
+    }
+
+    renderDeposit = () => {
+        const { tradeRel } = this.props.app.portfolio;
+        return (
+          <section className="trade-deposit">
+            <div className={`trade-deposit-body ${tradeRel.coin}`}>
+              <section className="trade-deposit-amount">
+                <section className="trade-deposit-amount-left"><p>
+                  <span>Awaiting deposit of</span>
+                </p>
+                  <p>
+                    <strong>{ (this.state.amountRel * this.state.rate) - tradeRel.balance } { tradeRel.coin }</strong>
+                    <i> {tradeRel.icon}</i>
+                  </p>
+                  <p className="trade-deposit-amount-left-balance"><small>current balance {tradeRel.balance} {tradeRel.coin} </small></p>
+                </section>
+                <QRCode size={78} value={tradeRel.smartaddress} />
+              </section>
+              <section className="trade-deposit-address">
+                <Clipboard copyLabel={tradeRel.smartaddress} value={tradeRel.smartaddress} />
+              </section>
+
+            </div>
+          </section>
+        )
+    }
+
+    renderLoader = () => (<div className="trade-processing">
+      <i className="loader-svg" dangerouslySetInnerHTML={{ __html: circles }} />
+      <h3>PROCESSING YOUR ORDER</h3>
+    </div>)
 
     render() {
         // portfolio
-        const self = this;
-        const { tradeBase, tradeRel } = this.props.app.portfolio;
-        const { asks, bids } = this.props.app.orderbook;
-        const orderbook = asks;
-
         const { loader } = this.props.app;
         const orderLoader = loader.getLoader(5);
-
+        const { tradeBase, tradeRel } = this.props.app.portfolio;
 
         return (
           <section className={this.getClassState()}>
-            { orderLoader ? <div className="trade-processing">
-              <i className="loader-svg" dangerouslySetInnerHTML={{ __html: circles }} />
-              <h3>PROCESSING YOUR ORDER</h3>
-            </div> : <section className="trade-action-wrapper">
-
-              <div className={`trade-amount`}>
-
-
+            { orderLoader ? this.renderLoader() :
+            <section className="trade-action-wrapper">
+              <div className="trade-amount">
                 <section className="trade-amount_input">
-                  <section className="trade-amount_input_price">
-                    <span className="label">
-                      <span className="label-title">Price for 1 {tradeBase.coin}</span>
-                      <small>
-                        <button className="link" onClick={(e) => this.toggleOrderbook(e)}>{ this.state.showOrderbook ? 'Hide' : 'View'} orderbook</button>
-                      </small>
-                    </span>
-                    <div className="trade-amount_input-wrapper">
-                      <input
-                        name="form-price"
-                        type="number"
-                        min="0"
-                        placeholder="0.00"
-                        style={{ fontSize: 18 }}
-                        value={this.state.rate}
-                        onChange={(e) => this.updateRate(e.target.value)}
-                      />
-                      <div className={`${tradeRel.coin}`}>
-                        { this.state.picker && this.coinPicker(this.state.picker) }
-                        <button onClick={(e) => self.togglePicker(e, 'Rel')} className="trade-pair action small arrow-down coin-colorized">
-                          <span><span className="trade-base-icon">{tradeRel.icon}</span> { tradeRel.name }</span>
-                          <i dangerouslySetInnerHTML={{ __html: arrow }} />
-                        </button>
-                      </div>
-                    </div>
-
-                    { this.state.showOrderbook && <section className="trade-orderbook">
-                      <ReactTable
-                        className="-striped -highlight"
-                        data={orderbook}
-                        columns={orderbookColumns}
-                        defaultSorted={[{ id: 'price' }]}
-                        noDataText={this.state.orderBookMessage}
-                        showPaginationBottom={false}
-                        style={{ height: '280px' }}
-                        getTrProps={(state, rowInfo) => ({
-                            onClick: e => { self.pickRate(rowInfo) },
-                            className: rowInfo && rowInfo.index === self.state.selected ? 'selected coin-colorized' : ''
-                        })}
-                      /> </section>}
-
-                  </section>
-                  <section className="trade-amount_input_amount">
-                    <span className="label">
-                      <span className="label-title">{`Amount of ${tradeBase.coin} to buy`}</span>
-                    </span>
-                    <div className="trade-amount_input-wrapper">
-                      <input
-                        name="form-amount"
-                        type="number"
-                        min="0"
-                        placeholder="0.00"
-                        style={{ fontSize: 18 }}
-                        value={this.state.amountRel}
-                        onChange={(e) => this.updateAmountRel(e.target.value)}
-                      />
-                      <button className="trade-setMax" onClick={() => this.setMax()}>Max</button>
-                    </div>
-
-                  </section>
+                  { this.renderPrice() }
+                  { this.renderAmount() }
                 </section>
-
               </div>
-
-
-              <section className={`trade-button-wrapper ${tradeBase.coin}`}>
-                <button className="trade-button withBorder action primary coin-bg" disabled={orderLoader} onClick={() => this.trade()} disabled={this.state.validation}>
-                  <div className="trade-action-amountRel">
-                    <small className="trade-action-amountRel-title"> { this.state.validation ? 'VALIDATION' : 'BUY' }</small>
-                    { this.state.validation ? this.state.validation : <span>{this.state.amountRel} {tradeBase.coin}</span> }
-                    { this.state.validation ? '' : <small>(for {this.state.amountRel * this.state.rate } {tradeRel.coin})</small> }
-                  </div>
-                  <i dangerouslySetInnerHTML={{ __html: shuffle }} />
-                </button>
-              </section>
-
-
             </section> }
+
+            { tradeRel.balance >= (this.state.amountRel * this.state.rate) ? this.renderButton() : this.renderDeposit() }
 
           </section>
         );

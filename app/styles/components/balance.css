@@ -1,0 +1,22 @@
+.balance-deposit {
+    padding: 10px;
+}
+
+
+.balance-qr {
+    padding: 20px 0
+}
+
+
+.balance-deposit-address {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.balance-deposit-address button {
+    background: transparent;
+    box-shadow: $box-shadow-inputs;
+    padding: 20px;
+}

@@ -104,18 +104,22 @@ export default class PortfolioStore {
         const byIcon = withIcons.slice(0);
         byIcon.sort((a, b) => a.hasSVGIcon ? 0 : 1);
         this.coinsList = byIcon;
-        this.installedCoins = addIcons(this.coinsList.filter((coin) => coin.height > 0).sort((a, b) => a.balance > 0 ? 0 : 1));
+        this.installedCoins = addIcons(this.coinsList.filter((coin) => coin.status === 'active').sort((a, b) => a.balance > 0 ? 0 : 1));
+    }
+
+    @action enableElectrum = (coin) => {
+        ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true })
     }
 
     @action setTrade = (coin, type) => {
-        ipcRenderer.send('enableCoin', { coin: coin.coin, type })
+        ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum: !coin.installed })
     }
 
     @action autoSetTrade = (coin) => {
         // activate the coin and set as rradeBase
-        this.setTrade({ coin }, 'Base');
+        this.setTrade(coin, 'Base');
         // search for the highest balance and activate as tradeRel
-        const firstNotSelf = this.installedCoins.filter((installed) => installed.coin !== coin)[0];
+        const firstNotSelf = this.installedCoins.filter((installed) => installed.coin !== coin.coin)[0];
 
         this.setTrade(firstNotSelf, 'Rel');
     }

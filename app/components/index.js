@@ -26,3 +26,4 @@ export { default as Openexternal } from './Actions/Openexternal';
 export { default as Trade } from './Actions/Trade';
 export { default as Buy } from './Actions/Buy';
 export { default as Sell } from './Actions/Sell';
+export { default as Balance } from './Actions/Balance';

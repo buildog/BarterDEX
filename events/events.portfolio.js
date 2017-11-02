@@ -23,6 +23,10 @@ export const portfolioEvents = ({ api, emitter, listener }) => {
         emitter.send('setPortfolio', data);
     })
 
+    api.on('coinEnabled', () => {
+        emitter.send('loading', { type: 'delete', key: 4 });
+    })
+
     api.on('marketUpdate', (data) => emitter.send('marketUpdate', data))
 
     api.on('coinsList', (coins) => { emitter.send('coinsList', coins) })

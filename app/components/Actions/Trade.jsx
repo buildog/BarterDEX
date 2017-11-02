@@ -2,13 +2,15 @@ import React from 'react'
 import { observer, inject } from 'mobx-react';
 import classNames from 'classnames';
 
-import { Buy, Sell } from '../';
+import { Buy, Sell, Balance } from '../';
+import QRCode from 'qrcode.react';
 
 import sell from '../../static/sell.svg';
 import receive from '../../static/receive.svg';
 import history from '../../static/history.svg';
 import buy from '../../static/buy.svg';
 import charts from '../../static/charts.svg';
+import shuffle from '../../static/shuffle.svg';
 
 @inject('app')
 @observer
@@ -32,6 +34,7 @@ class Trade extends React.Component {
 
     render() {
         // portfolio
+        const { tradeBase } = this.props.app.portfolio;
 
         return (
           <div className={this.getClassState()}>
@@ -49,23 +52,15 @@ class Trade extends React.Component {
                 <li className="trade-type-item trade-type-item-buy">
                   <button onClick={() => this.setFlow({ flow: 'buy' })}>
                     <div>
-                      <i dangerouslySetInnerHTML={{ __html: buy }} />
-                      <small>Buy</small>
-                    </div>
-                  </button>
-                </li>
-                <li className="trade-type-item trade-type-item-sell">
-                  <button onClick={() => this.setFlow({ flow: 'sell' })}>
-                    <div>
-                      <i dangerouslySetInnerHTML={{ __html: sell }} />
-                      <small>Sell</small>
+                      <i dangerouslySetInnerHTML={{ __html: shuffle }} />
+                      <small>Exchange</small>
                     </div>
                   </button>
                 </li>
                 <li className="trade-type-item trade-type-item-wallet">
                   <button onClick={() => this.setFlow({ flow: 'wallet' })}>
                     <div>
-                      <i dangerouslySetInnerHTML={{ __html: receive }} />
+                      <i><QRCode size={30} value={tradeBase.smartaddress} /></i>
                       <small>Wallet</small>
                     </div>
                   </button>
@@ -80,17 +75,17 @@ class Trade extends React.Component {
                 </li>
               </ul>
 
-              { (this.state.flow === 'trade-charts' || this.state.flow === 'trade-wallet' || this.state.flow === 'trade-orders') && <div className="trade-view-charts">
+              { (this.state.flow === 'trade-charts' || this.state.flow === 'trade-orders') && <div className="trade-view-charts">
                 <h3>{ '😰' }</h3>
                 <h4>sorry!</h4>
                 <p>this feature is not yet available</p>
                 </div> }
 
+              { this.state.flow === 'trade-buy' && <Buy /> }
+              { this.state.flow === 'trade-wallet' && <Balance /> }
+              { this.state.flow === 'trade-sell' && <Sell /> }
 
             </section>
-            { this.state.flow === 'trade-buy' && <Buy /> }
-            { this.state.flow === 'trade-sell' && <Sell /> }
-
           </div>
         );
     }

@@ -16,7 +16,7 @@
     left: 0;
     top: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 2000;
 }
 
 .notifier-title {
@@ -49,17 +49,17 @@
     pointer-events: all;
 }
 
-.notifier-list {
+.notifier-items {
     @extend .flexColumnCenter;
     flex-shrink: 0;
-    list-style: none;
+    items-style: none;
     padding: 0;
     margin: 0;
     font-size: 1em;
     width: 100%;
 }
 
-.notifier-list li {
+.notifier-items li {
     flex-shrink: 0;
     width: 100%;
     text-align: center;
@@ -67,7 +67,7 @@
     text-overflow: ellipsis;
 }
 
-.notifier-list-close {
+.notifier-close {
     width: 200px;
     background: #04050A;
     margin: 20px;

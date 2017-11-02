@@ -221,10 +221,10 @@ class Trade extends React.Component {
                         value={this.state.rate}
                         onChange={(e) => this.updateRate(e.target.value)}
                       />
-                      <div className={`${tradeRel.coin}`}>
+                      <div>
                         { this.state.picker && this.coinPicker(this.state.picker) }
-                        <button onClick={(e) => self.togglePicker(e, 'Rel')} className="trade-pair action small arrow-down coin-colorized">
-                          <span><span className="trade-base-icon">{tradeRel.icon}</span> { tradeRel.name }</span>
+                        <button onClick={(e) => self.togglePicker(e, 'Rel')} className={`trade-pair action small arrow-down ${tradeRel.coin}`}>
+                          <strong className="coin-colorized"><span className="trade-base-icon">{tradeRel.icon}</span> { tradeRel.name }</strong>
                           <i dangerouslySetInnerHTML={{ __html: arrow }} />
                         </button>
                       </div>

@@ -50,10 +50,10 @@ class Notifier extends React.Component {
               <i className="notifier-title-icon" dangerouslySetInnerHTML={{ __html: angry }} />
               <h1 className="notifier-title-text">{ this.state.isCritical ? 'That\'s bad!' : 'Sorry!'}</h1>
             </div>
-            <ul className="notifier-list">
+            <ul className="notifier-items">
               { this.state.listErrors }
-              { !this.state.isCritical && <button onClick={() => clearAllErrors()} className="notifier-list-close">OK</button> }
-              { this.state.isCritical && <button onClick={() => refreshApp()} className="notifier-list-close">Retry</button> }
+              { !this.state.isCritical && <button onClick={() => clearAllErrors()} className="notifier-close">OK</button> }
+              { this.state.isCritical && <button onClick={() => refreshApp()} className="notifier-close">Retry</button> }
             </ul>
           </div>
         );

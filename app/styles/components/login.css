@@ -1,9 +1,10 @@
-
+.login {
+    height: 100vh
+}
 
 .login,
 .login .form {
     display: flex;
-    height: 100%;
     overflow: auto;
     align-items: center;
     justify-content: center;
