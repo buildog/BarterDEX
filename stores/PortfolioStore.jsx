@@ -159,12 +159,14 @@ export default class PortfolioStore {
     @action setTrade = (coin, type) => {
         let ipaddr;
         let port;
-
+        console.log(coin);
         const electrum = !coin.installed;
+        console.log(electrum);
         if (electrum) {
             const electrumConf = electrumConfig.filter((svr) => svr.coin === coin.coin)[0];
             ipaddr = electrumConf.ipaddr;
             port = electrumConf.port;
+            console.log(ipaddr);
         }
         ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum, ipaddr, port })
     }
@@ -173,8 +175,11 @@ export default class PortfolioStore {
         // activate the coin and set as rradeBase
         this.setTrade(coin, 'Base');
         // search for the highest balance and activate as tradeRel
-        const firstNotSelf = this.installedCoins.filter((installed) => installed.coin !== coin.coin)[0];
-
+        let firstNotSelf = this.installedCoins.filter((installed) => installed.coin !== coin.coin)[0];
+        if (!firstNotSelf) {
+            const availableElectrum = ['MNZ', 'BTC', 'KMD', 'REVS', 'MONA', 'CHIPS', 'DOGE', 'JUMBLR', 'LTC', 'ZEC'];
+            firstNotSelf = this.coinsList.filter((item) => availableElectrum.indexOf(item.coin) !== -1 && item.coin !== coin.coin)[0];
+        }
         this.setTrade(firstNotSelf, 'Rel');
     }
 

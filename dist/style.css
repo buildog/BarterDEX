@@ -483,6 +483,17 @@
     font-size: 22px;
 }
 
+.coin-icon-placeholder, .coin-icon-svg {
+    background: rgba(256, 256, 256, .1);
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+    border-radius: 50% !important;
+}
+
 .large-number {
     letter-spacing: -2px
 }
@@ -534,7 +545,7 @@ code {
             align-items: center;
 }
 
-.flexColumnCenter, .notifier-list {
+.flexColumnCenter, .notifier-items {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -556,559 +567,555 @@ code {
     cursor: default !important;
 }
 
-/* crypto colors*/
+.MNZ > .coin-colorized { color: #242E3A!important; }
 
-.coin-colorized { color: #4C84FF !important; }
+.ADC > .coin-colorized { color: #3CB0E5!important; }
 
-.MNZ .coin-colorized { color: #242E3A!important; }
+.AEON > .coin-colorized { color: #164450!important; }
 
-.ADC .coin-colorized { color: #3CB0E5!important; }
+.AMP > .coin-colorized { color: #048DD2!important; }
 
-.AEON .coin-colorized { color: #164450!important; }
+.ANC > .coin-colorized { color: #000!important; }
 
-.AMP .coin-colorized { color: #048DD2!important; }
+.ARCH > .coin-colorized { color: #002652!important; }
 
-.ANC .coin-colorized { color: #000!important; }
+.ARDR > .coin-colorized { color: #1162a1!important; }
 
-.ARCH .coin-colorized { color: #002652!important; }
+.AUR > .coin-colorized { color: #136c5e!important; }
 
-.ARDR .coin-colorized { color: #1162a1!important; }
+.BANX > .coin-colorized { color: #225BA6!important; }
 
-.AUR .coin-colorized { color: #136c5e!important; }
+.BAT > .coin-colorized { color: #9e1f63!important; }
 
-.BANX .coin-colorized { color: #225BA6!important; }
+.BAY > .coin-colorized { color: #584ba1!important; }
 
-.BAT .coin-colorized { color: #9e1f63!important; }
+.BC > .coin-colorized { color: #202121!important; }
 
-.BAY .coin-colorized { color: #584ba1!important; }
+.BCN > .coin-colorized { color: #964F51!important; }
 
-.BC .coin-colorized { color: #202121!important; }
+.BFT > .coin-colorized { color: #4fc3f7!important; }
 
-.BCN .coin-colorized { color: #964F51!important; }
+.BRK > .coin-colorized { color: #194fa0!important; }
 
-.BFT .coin-colorized { color: #4fc3f7!important; }
+.BRX > .coin-colorized { color: #a8c300!important; }
 
-.BRK .coin-colorized { color: #194fa0!important; }
+.BSD > .coin-colorized { color: #1186E7!important; }
 
-.BRX .coin-colorized { color: #a8c300!important; }
+.BTA > .coin-colorized { color: #210094!important; }
 
-.BSD .coin-colorized { color: #1186E7!important; }
+.BTC > .coin-colorized, .BCC > .coin-colorized { color: #F7931A!important; }
 
-.BTA .coin-colorized { color: #210094!important; }
+.BTCD > .coin-colorized { color: #2A72DC!important; }
 
-.BTC .coin-colorized, .BCC .coin-colorized { color: #F7931A!important; }
+.BTS > .coin-colorized { color: #03A9E0!important; }
 
-.BTCD .coin-colorized { color: #2A72DC!important; }
+.CLAM > .coin-colorized { color: #D6AB31!important; }
 
-.BTS .coin-colorized { color: #03A9E0!important; }
+.CLOAK > .coin-colorized { color: #DF3F1E!important; }
 
-.CLAM .coin-colorized { color: #D6AB31!important; }
+.DAO > .coin-colorized { color: #FF3B3B!important; }
 
-.CLOAK .coin-colorized { color: #DF3F1E!important; }
+.DASH > .coin-colorized { color: #1c75bc!important; }
 
-.DAO .coin-colorized { color: #FF3B3B!important; }
+.DCR > .coin-colorized { color: #3b7cfb!important; }
 
-.DASH .coin-colorized { color: #1c75bc!important; }
+.DCT > .coin-colorized { color: #008770!important; }
 
-.DCR .coin-colorized { color: #3b7cfb!important; }
+.DGB > .coin-colorized { color: #0066cc!important; }
 
-.DCT .coin-colorized { color: #008770!important; }
+.DGD > .coin-colorized, .DGX > .coin-colorized { color: #D8A24A!important; }
 
-.DGB .coin-colorized { color: #0066cc!important; }
+.DMD > .coin-colorized { color: #5497b2!important; }
 
-.DGD .coin-colorized, .DGX .coin-colorized { color: #D8A24A!important; }
+.DOGE > .coin-colorized { color: #BA9F33!important; }
 
-.DMD .coin-colorized { color: #5497b2!important; }
+.EMC > .coin-colorized { color: #674c8c!important; }
 
-.DOGE .coin-colorized { color: #BA9F33!important; }
+.EOS > .coin-colorized { color: #19191A!important; }
 
-.EMC .coin-colorized { color: #674c8c!important; }
+.ERC > .coin-colorized { color: #101E84!important; }
 
-.EOS .coin-colorized { color: #19191A!important; }
+.ETC > .coin-colorized { color: #669073!important; }
 
-.ERC .coin-colorized { color: #101E84!important; }
+.ETH > .coin-colorized { color: #282828!important; }
 
-.ETC .coin-colorized { color: #669073!important; }
+.FC2 > .coin-colorized { color: #040405!important; }
 
-.ETH .coin-colorized { color: #282828!important; }
+.FCT > .coin-colorized { color: #2175BB!important; }
 
-.FC2 .coin-colorized { color: #040405!important; }
+.FLO > .coin-colorized { color: #1358C8!important; }
 
-.FCT .coin-colorized { color: #2175BB!important; }
+.FRK > .coin-colorized { color: #0633cd!important; }
 
-.FLO .coin-colorized { color: #1358C8!important; }
+.FTC > .coin-colorized { color: #679EF1!important; }
 
-.FRK .coin-colorized { color: #0633cd!important; }
+.GAME > .coin-colorized { color: #ed1b24!important; }
 
-.FTC .coin-colorized { color: #679EF1!important; }
+.GDC > .coin-colorized { color: #E9A226!important; }
 
-.GAME .coin-colorized { color: #ed1b24!important; }
+.GEMZ > .coin-colorized { color: #e86060!important; }
 
-.GDC .coin-colorized { color: #E9A226!important; }
+.GLD > .coin-colorized { color: #E8BE24!important; }
 
-.GEMZ .coin-colorized { color: #e86060!important; }
+.GNO > .coin-colorized { color: #00A6C4!important; }
 
-.GLD .coin-colorized { color: #E8BE24!important; }
+.GNT > .coin-colorized { color: #00d6e3!important; }
 
-.GNO .coin-colorized { color: #00A6C4!important; }
+.GOLOS > .coin-colorized { color: #2670B7!important; }
 
-.GNT .coin-colorized { color: #00d6e3!important; }
+.GRC > .coin-colorized { color: #88A13C!important; }
 
-.GOLOS .coin-colorized { color: #2670B7!important; }
+.GRS > .coin-colorized { color: #648FA0!important; }
 
-.GRC .coin-colorized { color: #88A13C!important; }
+.HEAT > .coin-colorized { color: #ff5606!important; }
 
-.GRS .coin-colorized { color: #648FA0!important; }
+.ICN > .coin-colorized { color: #4c6f8c!important; }
 
-.HEAT .coin-colorized { color: #ff5606!important; }
+.IFC > .coin-colorized { color: #ed272d!important; }
 
-.ICN .coin-colorized { color: #4c6f8c!important; }
+.INCNT > .coin-colorized { color: #f2932f!important; }
 
-.IFC .coin-colorized { color: #ed272d!important; }
+.IOC > .coin-colorized { color: #2fa3de!important; }
 
-.INCNT .coin-colorized { color: #f2932f!important; }
+.IOTA > .coin-colorized { color: #FFFFFF!important; }
 
-.IOC .coin-colorized { color: #2fa3de!important; }
+.JBS > .coin-colorized { color: #1A8BCD!important; }
 
-.IOTA .coin-colorized { color: #FFFFFF!important; }
+.KMD > .coin-colorized { color: #326464!important; }
 
-.JBS .coin-colorized { color: #1A8BCD!important; }
+.KOBO > .coin-colorized { color: #80C342!important; }
 
-.KMD .coin-colorized { color: #326464!important; }
+.KORE > .coin-colorized { color: #DF4124!important; }
 
-.KOBO .coin-colorized { color: #80C342!important; }
+.LBC > .coin-colorized { color: #015C47!important; }
 
-.KORE .coin-colorized { color: #DF4124!important; }
+.LDOGE > .coin-colorized { color: #ffcc00!important; }
 
-.LBC .coin-colorized { color: #015C47!important; }
+.LISK > .coin-colorized { color: #1A6896!important; }
 
-.LDOGE .coin-colorized { color: #ffcc00!important; }
+.LTC > .coin-colorized { color: #838383!important; }
 
-.LISK .coin-colorized { color: #1A6896!important; }
+.MAID > .coin-colorized { color: #5492D6!important; }
 
-.LTC .coin-colorized { color: #838383!important; }
+.MCO > .coin-colorized { color: #0D3459!important; }
 
-.MAID .coin-colorized { color: #5492D6!important; }
+.MINT > .coin-colorized { color: #006835!important; }
 
-.MCO .coin-colorized { color: #0D3459!important; }
+.MONA > .coin-colorized { color: #a99364!important; }
 
-.MINT .coin-colorized { color: #006835!important; }
+.MRC > .coin-colorized { color: #4279bd!important; }
 
-.MONA .coin-colorized { color: #a99364!important; }
+.MSC > .coin-colorized { color: #1D4983!important; }
 
-.MRC .coin-colorized { color: #4279bd!important; }
+.MTR > .coin-colorized { color: #b92429!important; }
 
-.MSC .coin-colorized { color: #1D4983!important; }
+.MUE > .coin-colorized { color: #f5a10e!important; }
 
-.MTR .coin-colorized { color: #b92429!important; }
+.NBT > .coin-colorized { color: #FFC93D!important; }
 
-.MUE .coin-colorized { color: #f5a10e!important; }
+.NEO > .coin-colorized { color: #58BF00!important; }
 
-.NBT .coin-colorized { color: #FFC93D!important; }
+.NEOS > .coin-colorized { color: #1d1d1b!important; }
 
-.NEO .coin-colorized { color: #58BF00!important; }
+.NEU > .coin-colorized { color: #2983c0!important; }
 
-.NEOS .coin-colorized { color: #1d1d1b!important; }
+.NLG > .coin-colorized { color: #003E7E!important; }
 
-.NEU .coin-colorized { color: #2983c0!important; }
+.NMC > .coin-colorized { color: #6787B7!important; }
 
-.NLG .coin-colorized { color: #003E7E!important; }
+.NOTE > .coin-colorized { color: #42daff!important; }
 
-.NMC .coin-colorized { color: #6787B7!important; }
+.NVC > .coin-colorized { color: #ecab41!important; }
 
-.NOTE .coin-colorized { color: #42daff!important; }
+.NXT > .coin-colorized { color: #008FBB!important; }
 
-.NVC .coin-colorized { color: #ecab41!important; }
+.OK > .coin-colorized { color: #0165A4!important; }
 
-.NXT .coin-colorized { color: #008FBB!important; }
+.OMG > .coin-colorized { color: #1A53F0!important; }
 
-.OK .coin-colorized { color: #0165A4!important; }
+.OMNI > .coin-colorized { color: #18347E!important; }
 
-.OMG .coin-colorized { color: #1A53F0!important; }
+.OPAL > .coin-colorized { color: #7193AA!important; }
 
-.OMNI .coin-colorized { color: #18347E!important; }
+.PART > .coin-colorized { color: #05D5A3!important; }
 
-.OPAL .coin-colorized { color: #7193AA!important; }
+.PIGGY > .coin-colorized { color: #F27A7A!important; }
 
-.PART .coin-colorized { color: #05D5A3!important; }
+.PINK > .coin-colorized { color: #ED31CA!important; }
 
-.PIGGY .coin-colorized { color: #F27A7A!important; }
+.PIVX > .coin-colorized { color: #3b2f4d!important; }
 
-.PINK .coin-colorized { color: #ED31CA!important; }
+.POT > .coin-colorized { color: #105B2F!important; }
 
-.PIVX .coin-colorized { color: #3b2f4d!important; }
+.PPC > .coin-colorized { color: #3FA30C!important; }
 
-.POT .coin-colorized { color: #105B2F!important; }
+.QRK > .coin-colorized { color: #22AABF!important; }
 
-.PPC .coin-colorized { color: #3FA30C!important; }
+.RADS > .coin-colorized { color: #924cea!important; }
 
-.QRK .coin-colorized { color: #22AABF!important; }
+.RBIES > .coin-colorized { color: #C62436!important; }
 
-.RADS .coin-colorized { color: #924cea!important; }
+.RBT > .coin-colorized { color: #0d4982!important; }
 
-.RBIES .coin-colorized { color: #C62436!important; }
+.RBY > .coin-colorized { color: #D31F26!important; }
 
-.RBT .coin-colorized { color: #0d4982!important; }
+.RDD > .coin-colorized { color: #ED1C24!important; }
 
-.RBY .coin-colorized { color: #D31F26!important; }
+.REP > .coin-colorized { color: #40a2cb!important; }
 
-.RDD .coin-colorized { color: #ED1C24!important; }
+.RISE > .coin-colorized { color: #43CEA2!important; }
 
-.REP .coin-colorized { color: #40a2cb!important; }
+.SAR > .coin-colorized { color: #1B72B8!important; }
 
-.RISE .coin-colorized { color: #43CEA2!important; }
+.SCOT > .coin-colorized { color: #3498DB!important; }
 
-.SAR .coin-colorized { color: #1B72B8!important; }
+.SDC > .coin-colorized { color: #981D2D!important; }
 
-.SCOT .coin-colorized { color: #3498DB!important; }
+.SIA > .coin-colorized { color: #00CBA0!important; }
 
-.SDC .coin-colorized { color: #981D2D!important; }
+.SJCX > .coin-colorized { color: #003366!important; }
 
-.SIA .coin-colorized { color: #00CBA0!important; }
+.SLG > .coin-colorized { color: #5A6875!important; }
 
-.SJCX .coin-colorized { color: #003366!important; }
+.SLS > .coin-colorized { color: #1EB549!important; }
 
-.SLG .coin-colorized { color: #5A6875!important; }
+.SNRG > .coin-colorized { color: #160363!important; }
 
-.SLS .coin-colorized { color: #1EB549!important; }
+.START > .coin-colorized { color: #01AEF0!important; }
 
-.SNRG .coin-colorized { color: #160363!important; }
+.STEEM > .coin-colorized { color: #1A5099!important; }
 
-.START .coin-colorized { color: #01AEF0!important; }
+.STR > .coin-colorized { color: #08B5E5!important; }
 
-.STEEM .coin-colorized { color: #1A5099!important; }
+.STRAT > .coin-colorized { color: #2398dd!important; }
 
-.STR .coin-colorized { color: #08B5E5!important; }
+.SWIFT > .coin-colorized { color: #428BCA!important; }
 
-.STRAT .coin-colorized { color: #2398dd!important; }
+.SYNC > .coin-colorized { color: #008DD2!important; }
 
-.SWIFT .coin-colorized { color: #428BCA!important; }
+.SYS > .coin-colorized { color: #0098DA!important; }
 
-.SYNC .coin-colorized { color: #008DD2!important; }
+.TRIG > .coin-colorized { color: #1fbff4!important; }
 
-.SYS .coin-colorized { color: #0098DA!important; }
+.TX > .coin-colorized { color: #1F8BCC!important; }
 
-.TRIG .coin-colorized { color: #1fbff4!important; }
+.UBQ > .coin-colorized { color: #00ec8d!important; }
 
-.TX .coin-colorized { color: #1F8BCC!important; }
+.UNITY > .coin-colorized { color: #ED8527!important; }
 
-.UBQ .coin-colorized { color: #00ec8d!important; }
+.USDT > .coin-colorized { color: #2CA07A!important; }
 
-.UNITY .coin-colorized { color: #ED8527!important; }
+.VIOR > .coin-colorized { color: #1F52A4!important; }
 
-.USDT .coin-colorized { color: #2CA07A!important; }
+.VNL > .coin-colorized { color: #404249!important; }
 
-.VIOR .coin-colorized { color: #1F52A4!important; }
+.VPN > .coin-colorized { color: #589700!important; }
 
-.VNL .coin-colorized { color: #404249!important; }
+.VRC > .coin-colorized { color: #418bca!important; }
 
-.VPN .coin-colorized { color: #589700!important; }
+.VTC > .coin-colorized { color: #1b5c2e!important; }
 
-.VRC .coin-colorized { color: #418bca!important; }
+.WAVES > .coin-colorized { color: #24aad6!important; }
 
-.VTC .coin-colorized { color: #1b5c2e!important; }
+.XAI > .coin-colorized { color: #2ef99f!important; }
 
-.WAVES .coin-colorized { color: #24aad6!important; }
+.XBS > .coin-colorized { color: #d3261d!important; }
 
-.XAI .coin-colorized { color: #2ef99f!important; }
+.XCP > .coin-colorized { color: #EC1550!important; }
 
-.XBS .coin-colorized { color: #d3261d!important; }
+.XEM > .coin-colorized { color: #41bf76!important; }
 
-.XCP .coin-colorized { color: #EC1550!important; }
+.XMR > .coin-colorized { color: #FF6600!important; }
 
-.XEM .coin-colorized { color: #41bf76!important; }
+.XPM > .coin-colorized { color: #e5b625!important; }
 
-.XMR .coin-colorized { color: #FF6600!important; }
+.XRP > .coin-colorized { color: #346AA9!important; }
 
-.XPM .coin-colorized { color: #e5b625!important; }
+.XTZ > .coin-colorized { color: #A6DF00!important; }
 
-.XRP .coin-colorized { color: #346AA9!important; }
+.XVG > .coin-colorized { color: #42AFB2!important; }
 
-.XTZ .coin-colorized { color: #A6DF00!important; }
+.YBC > .coin-colorized { color: #D6C154!important; }
 
-.XVG .coin-colorized { color: #42AFB2!important; }
+.ZEC > .coin-colorized { color: #e5a93d!important; }
 
-.YBC .coin-colorized { color: #D6C154!important; }
+.ZEIT > .coin-colorized { color: #ACACAC!important; }
 
-.ZEC .coin-colorized { color: #e5a93d!important; }
+.REVS > .coin-colorized { color: #FF6600!important; }
 
-.ZEIT .coin-colorized { color: #ACACAC!important; }
+.MNZ > .coin-colorized svg path { fill: #B92484 !important; }
 
-.REVS .coin-colorized { color: #FF6600!important; }
+.ADC > .coin-colorized svg { fill: #3CB0E5!important; }
 
-.MNZ .coin-colorized svg { fill: #A52986 !important; }
+.AEON > .coin-colorized svg { fill: #164450!important; }
 
-.ADC .coin-colorized svg { fill: #3CB0E5!important; }
+.AMP > .coin-colorized svg { fill: #048DD2!important; }
 
-.AEON .coin-colorized svg { fill: #164450!important; }
+.ANC > .coin-colorized svg { fill: #000!important; }
 
-.AMP .coin-colorized svg { fill: #048DD2!important; }
+.ARCH > .coin-colorized svg { fill: #002652!important; }
 
-.ANC .coin-colorized svg { fill: #000!important; }
+.ARDR > .coin-colorized svg { fill: #1162a1!important; }
 
-.ARCH .coin-colorized svg { fill: #002652!important; }
+.AUR > .coin-colorized svg { fill: #136c5e!important; }
 
-.ARDR .coin-colorized svg { fill: #1162a1!important; }
+.BANX > .coin-colorized svg { fill: #225BA6!important; }
 
-.AUR .coin-colorized svg { fill: #136c5e!important; }
+.BAT > .coin-colorized svg { fill: #9e1f63!important; }
 
-.BANX .coin-colorized svg { fill: #225BA6!important; }
+.BAY > .coin-colorized svg { fill: #584ba1!important; }
 
-.BAT .coin-colorized svg { fill: #9e1f63!important; }
+.BC > .coin-colorized svg { fill: #202121!important; }
 
-.BAY .coin-colorized svg { fill: #584ba1!important; }
+.BCN > .coin-colorized svg { fill: #964F51!important; }
 
-.BC .coin-colorized svg { fill: #202121!important; }
+.BFT > .coin-colorized svg { fill: #4fc3f7!important; }
 
-.BCN .coin-colorized svg { fill: #964F51!important; }
+.BRK > .coin-colorized svg { fill: #194fa0!important; }
 
-.BFT .coin-colorized svg { fill: #4fc3f7!important; }
+.BRX > .coin-colorized svg { fill: #a8c300!important; }
 
-.BRK .coin-colorized svg { fill: #194fa0!important; }
+.BSD > .coin-colorized svg { fill: #1186E7!important; }
 
-.BRX .coin-colorized svg { fill: #a8c300!important; }
+.BTA > .coin-colorized svg { fill: #210094!important; }
 
-.BSD .coin-colorized svg { fill: #1186E7!important; }
+.BTC > .coin-colorized svg, .BCC > .coin-colorized svg { fill: #F7931A!important; }
 
-.BTA .coin-colorized svg { fill: #210094!important; }
+.BTCD > .coin-colorized svg { fill: #2A72DC!important; }
 
-.BTC .coin-colorized svg, .BCC .coin-colorized svg { fill: #F7931A!important; }
+.BTS > .coin-colorized svg { fill: #03A9E0!important; }
 
-.BTCD .coin-colorized svg { fill: #2A72DC!important; }
+.CLAM > .coin-colorized svg { fill: #D6AB31!important; }
 
-.BTS .coin-colorized svg { fill: #03A9E0!important; }
+.CLOAK > .coin-colorized svg { fill: #DF3F1E!important; }
 
-.CLAM .coin-colorized svg { fill: #D6AB31!important; }
+.DAO > .coin-colorized svg { fill: #FF3B3B!important; }
 
-.CLOAK .coin-colorized svg { fill: #DF3F1E!important; }
+.DASH > .coin-colorized svg { fill: #1c75bc!important; }
 
-.DAO .coin-colorized svg { fill: #FF3B3B!important; }
+.DCR > .coin-colorized svg { fill: #3b7cfb!important; }
 
-.DASH .coin-colorized svg { fill: #1c75bc!important; }
+.DCT > .coin-colorized svg { fill: #008770!important; }
 
-.DCR .coin-colorized svg { fill: #3b7cfb!important; }
+.DGB > .coin-colorized svg { fill: #0066cc!important; }
 
-.DCT .coin-colorized svg { fill: #008770!important; }
+.DGD > .coin-colorized svg, .DGX > .coin-colorized svg { fill: #D8A24A!important; }
 
-.DGB .coin-colorized svg { fill: #0066cc!important; }
+.DMD > .coin-colorized svg { fill: #5497b2!important; }
 
-.DGD .coin-colorized svg, .DGX .coin-colorized svg { fill: #D8A24A!important; }
+.DOGE > .coin-colorized svg { fill: #BA9F33!important; }
 
-.DMD .coin-colorized svg { fill: #5497b2!important; }
+.EMC > .coin-colorized svg { fill: #674c8c!important; }
 
-.DOGE .coin-colorized svg { fill: #BA9F33!important; }
+.EOS > .coin-colorized svg { fill: #19191A!important; }
 
-.EMC .coin-colorized svg { fill: #674c8c!important; }
+.ERC > .coin-colorized svg { fill: #101E84!important; }
 
-.EOS .coin-colorized svg { fill: #19191A!important; }
+.ETC > .coin-colorized svg { fill: #669073!important; }
 
-.ERC .coin-colorized svg { fill: #101E84!important; }
+.ETH > .coin-colorized svg { fill: #282828!important; }
 
-.ETC .coin-colorized svg { fill: #669073!important; }
+.FC2 > .coin-colorized svg { fill: #040405!important; }
 
-.ETH .coin-colorized svg { fill: #282828!important; }
+.FCT > .coin-colorized svg { fill: #2175BB!important; }
 
-.FC2 .coin-colorized svg { fill: #040405!important; }
+.FLO > .coin-colorized svg { fill: #1358C8!important; }
 
-.FCT .coin-colorized svg { fill: #2175BB!important; }
+.FRK > .coin-colorized svg { fill: #0633cd!important; }
 
-.FLO .coin-colorized svg { fill: #1358C8!important; }
+.FTC > .coin-colorized svg { fill: #679EF1!important; }
 
-.FRK .coin-colorized svg { fill: #0633cd!important; }
+.GAME > .coin-colorized svg { fill: #ed1b24!important; }
 
-.FTC .coin-colorized svg { fill: #679EF1!important; }
+.GDC > .coin-colorized svg { fill: #E9A226!important; }
 
-.GAME .coin-colorized svg { fill: #ed1b24!important; }
+.GEMZ > .coin-colorized svg { fill: #e86060!important; }
 
-.GDC .coin-colorized svg { fill: #E9A226!important; }
+.GLD > .coin-colorized svg { fill: #E8BE24!important; }
 
-.GEMZ .coin-colorized svg { fill: #e86060!important; }
+.GNO > .coin-colorized svg { fill: #00A6C4!important; }
 
-.GLD .coin-colorized svg { fill: #E8BE24!important; }
+.GNT > .coin-colorized svg { fill: #00d6e3!important; }
 
-.GNO .coin-colorized svg { fill: #00A6C4!important; }
+.GOLOS > .coin-colorized svg { fill: #2670B7!important; }
 
-.GNT .coin-colorized svg { fill: #00d6e3!important; }
+.GRC > .coin-colorized svg { fill: #88A13C!important; }
 
-.GOLOS .coin-colorized svg { fill: #2670B7!important; }
+.GRS > .coin-colorized svg { fill: #648FA0!important; }
 
-.GRC .coin-colorized svg { fill: #88A13C!important; }
+.HEAT > .coin-colorized svg { fill: #ff5606!important; }
 
-.GRS .coin-colorized svg { fill: #648FA0!important; }
+.ICN > .coin-colorized svg { fill: #4c6f8c!important; }
 
-.HEAT .coin-colorized svg { fill: #ff5606!important; }
+.IFC > .coin-colorized svg { fill: #ed272d!important; }
 
-.ICN .coin-colorized svg { fill: #4c6f8c!important; }
+.INCNT > .coin-colorized svg { fill: #f2932f!important; }
 
-.IFC .coin-colorized svg { fill: #ed272d!important; }
+.IOC > .coin-colorized svg { fill: #2fa3de!important; }
 
-.INCNT .coin-colorized svg { fill: #f2932f!important; }
+.IOTA > .coin-colorized svg { fill: #FFFFFF!important; }
 
-.IOC .coin-colorized svg { fill: #2fa3de!important; }
+.JBS > .coin-colorized svg { fill: #1A8BCD!important; }
 
-.IOTA .coin-colorized svg { fill: #FFFFFF!important; }
+.KMD > .coin-colorized svg { fill: #326464!important; }
 
-.JBS .coin-colorized svg { fill: #1A8BCD!important; }
+.KOBO > .coin-colorized svg { fill: #80C342!important; }
 
-.KMD .coin-colorized svg { fill: #326464!important; }
+.KORE > .coin-colorized svg { fill: #DF4124!important; }
 
-.KOBO .coin-colorized svg { fill: #80C342!important; }
+.LBC > .coin-colorized svg { fill: #015C47!important; }
 
-.KORE .coin-colorized svg { fill: #DF4124!important; }
+.LDOGE > .coin-colorized svg { fill: #ffcc00!important; }
 
-.LBC .coin-colorized svg { fill: #015C47!important; }
+.LISK > .coin-colorized svg { fill: #1A6896!important; }
 
-.LDOGE .coin-colorized svg { fill: #ffcc00!important; }
+.LTC > .coin-colorized svg { fill: #838383!important; }
 
-.LISK .coin-colorized svg { fill: #1A6896!important; }
+.MAID > .coin-colorized svg { fill: #5492D6!important; }
 
-.LTC .coin-colorized svg { fill: #838383!important; }
+.MCO > .coin-colorized svg { fill: #0D3459!important; }
 
-.MAID .coin-colorized svg { fill: #5492D6!important; }
+.MINT > .coin-colorized svg { fill: #006835!important; }
 
-.MCO .coin-colorized svg { fill: #0D3459!important; }
+.MONA > .coin-colorized svg { fill: #a99364!important; }
 
-.MINT .coin-colorized svg { fill: #006835!important; }
+.MRC > .coin-colorized svg { fill: #4279bd!important; }
 
-.MONA .coin-colorized svg { fill: #a99364!important; }
+.MSC > .coin-colorized svg { fill: #1D4983!important; }
 
-.MRC .coin-colorized svg { fill: #4279bd!important; }
+.MTR > .coin-colorized svg { fill: #b92429!important; }
 
-.MSC .coin-colorized svg { fill: #1D4983!important; }
+.MUE > .coin-colorized svg { fill: #f5a10e!important; }
 
-.MTR .coin-colorized svg { fill: #b92429!important; }
+.NBT > .coin-colorized svg { fill: #FFC93D!important; }
 
-.MUE .coin-colorized svg { fill: #f5a10e!important; }
+.NEO > .coin-colorized svg { fill: #58BF00!important; }
 
-.NBT .coin-colorized svg { fill: #FFC93D!important; }
+.NEOS > .coin-colorized svg { fill: #1d1d1b!important; }
 
-.NEO .coin-colorized svg { fill: #58BF00!important; }
+.NEU > .coin-colorized svg { fill: #2983c0!important; }
 
-.NEOS .coin-colorized svg { fill: #1d1d1b!important; }
+.NLG > .coin-colorized svg { fill: #003E7E!important; }
 
-.NEU .coin-colorized svg { fill: #2983c0!important; }
+.NMC > .coin-colorized svg { fill: #6787B7!important; }
 
-.NLG .coin-colorized svg { fill: #003E7E!important; }
+.NOTE > .coin-colorized svg { fill: #42daff!important; }
 
-.NMC .coin-colorized svg { fill: #6787B7!important; }
+.NVC > .coin-colorized svg { fill: #ecab41!important; }
 
-.NOTE .coin-colorized svg { fill: #42daff!important; }
+.NXT > .coin-colorized svg { fill: #008FBB!important; }
 
-.NVC .coin-colorized svg { fill: #ecab41!important; }
+.OK > .coin-colorized svg { fill: #0165A4!important; }
 
-.NXT .coin-colorized svg { fill: #008FBB!important; }
+.OMG > .coin-colorized svg { fill: #1A53F0!important; }
 
-.OK .coin-colorized svg { fill: #0165A4!important; }
+.OMNI > .coin-colorized svg { fill: #18347E!important; }
 
-.OMG .coin-colorized svg { fill: #1A53F0!important; }
+.OPAL > .coin-colorized svg { fill: #7193AA!important; }
 
-.OMNI .coin-colorized svg { fill: #18347E!important; }
+.PART > .coin-colorized svg { fill: #05D5A3!important; }
 
-.OPAL .coin-colorized svg { fill: #7193AA!important; }
+.PIGGY > .coin-colorized svg { fill: #F27A7A!important; }
 
-.PART .coin-colorized svg { fill: #05D5A3!important; }
+.PINK > .coin-colorized svg { fill: #ED31CA!important; }
 
-.PIGGY .coin-colorized svg { fill: #F27A7A!important; }
+.PIVX > .coin-colorized svg { fill: #3b2f4d!important; }
 
-.PINK .coin-colorized svg { fill: #ED31CA!important; }
+.POT > .coin-colorized svg { fill: #105B2F!important; }
 
-.PIVX .coin-colorized svg { fill: #3b2f4d!important; }
+.PPC > .coin-colorized svg { fill: #3FA30C!important; }
 
-.POT .coin-colorized svg { fill: #105B2F!important; }
+.QRK > .coin-colorized svg { fill: #22AABF!important; }
 
-.PPC .coin-colorized svg { fill: #3FA30C!important; }
+.RADS > .coin-colorized svg { fill: #924cea!important; }
 
-.QRK .coin-colorized svg { fill: #22AABF!important; }
+.RBIES > .coin-colorized svg { fill: #C62436!important; }
 
-.RADS .coin-colorized svg { fill: #924cea!important; }
+.RBT > .coin-colorized svg { fill: #0d4982!important; }
 
-.RBIES .coin-colorized svg { fill: #C62436!important; }
+.RBY > .coin-colorized svg { fill: #D31F26!important; }
 
-.RBT .coin-colorized svg { fill: #0d4982!important; }
+.RDD > .coin-colorized svg { fill: #ED1C24!important; }
 
-.RBY .coin-colorized svg { fill: #D31F26!important; }
+.REP > .coin-colorized svg { fill: #40a2cb!important; }
 
-.RDD .coin-colorized svg { fill: #ED1C24!important; }
+.RISE > .coin-colorized svg { fill: #43CEA2!important; }
 
-.REP .coin-colorized svg { fill: #40a2cb!important; }
+.SAR > .coin-colorized svg { fill: #1B72B8!important; }
 
-.RISE .coin-colorized svg { fill: #43CEA2!important; }
+.SCOT > .coin-colorized svg { fill: #3498DB!important; }
 
-.SAR .coin-colorized svg { fill: #1B72B8!important; }
+.SDC > .coin-colorized svg { fill: #981D2D!important; }
 
-.SCOT .coin-colorized svg { fill: #3498DB!important; }
+.SIA > .coin-colorized svg { fill: #00CBA0!important; }
 
-.SDC .coin-colorized svg { fill: #981D2D!important; }
+.SJCX > .coin-colorized svg { fill: #003366!important; }
 
-.SIA .coin-colorized svg { fill: #00CBA0!important; }
+.SLG > .coin-colorized svg { fill: #5A6875!important; }
 
-.SJCX .coin-colorized svg { fill: #003366!important; }
+.SLS > .coin-colorized svg { fill: #1EB549!important; }
 
-.SLG .coin-colorized svg { fill: #5A6875!important; }
+.SNRG > .coin-colorized svg { fill: #160363!important; }
 
-.SLS .coin-colorized svg { fill: #1EB549!important; }
+.START > .coin-colorized svg { fill: #01AEF0!important; }
 
-.SNRG .coin-colorized svg { fill: #160363!important; }
+.STEEM > .coin-colorized svg { fill: #1A5099!important; }
 
-.START .coin-colorized svg { fill: #01AEF0!important; }
+.STR > .coin-colorized svg { fill: #08B5E5!important; }
 
-.STEEM .coin-colorized svg { fill: #1A5099!important; }
+.STRAT > .coin-colorized svg { fill: #2398dd!important; }
 
-.STR .coin-colorized svg { fill: #08B5E5!important; }
+.SWIFT > .coin-colorized svg { fill: #428BCA!important; }
 
-.STRAT .coin-colorized svg { fill: #2398dd!important; }
+.SYNC > .coin-colorized svg { fill: #008DD2!important; }
 
-.SWIFT .coin-colorized svg { fill: #428BCA!important; }
+.SYS > .coin-colorized svg { fill: #0098DA!important; }
 
-.SYNC .coin-colorized svg { fill: #008DD2!important; }
+.TRIG > .coin-colorized svg { fill: #1fbff4!important; }
 
-.SYS .coin-colorized svg { fill: #0098DA!important; }
+.TX > .coin-colorized svg { fill: #1F8BCC!important; }
 
-.TRIG .coin-colorized svg { fill: #1fbff4!important; }
+.UBQ > .coin-colorized svg { fill: #00ec8d!important; }
 
-.TX .coin-colorized svg { fill: #1F8BCC!important; }
+.UNITY > .coin-colorized svg { fill: #ED8527!important; }
 
-.UBQ .coin-colorized svg { fill: #00ec8d!important; }
+.USDT > .coin-colorized svg { fill: #2CA07A!important; }
 
-.UNITY .coin-colorized svg { fill: #ED8527!important; }
+.VIOR > .coin-colorized svg { fill: #1F52A4!important; }
 
-.USDT .coin-colorized svg { fill: #2CA07A!important; }
+.VNL > .coin-colorized svg { fill: #404249!important; }
 
-.VIOR .coin-colorized svg { fill: #1F52A4!important; }
+.VPN > .coin-colorized svg { fill: #589700!important; }
 
-.VNL .coin-colorized svg { fill: #404249!important; }
+.VRC > .coin-colorized svg { fill: #418bca!important; }
 
-.VPN .coin-colorized svg { fill: #589700!important; }
+.VTC > .coin-colorized svg { fill: #1b5c2e!important; }
 
-.VRC .coin-colorized svg { fill: #418bca!important; }
+.WAVES > .coin-colorized svg { fill: #24aad6!important; }
 
-.VTC .coin-colorized svg { fill: #1b5c2e!important; }
+.XAI > .coin-colorized svg { fill: #2ef99f!important; }
 
-.WAVES .coin-colorized svg { fill: #24aad6!important; }
+.XBS > .coin-colorized svg { fill: #d3261d!important; }
 
-.XAI .coin-colorized svg { fill: #2ef99f!important; }
+.XCP > .coin-colorized svg { fill: #EC1550!important; }
 
-.XBS .coin-colorized svg { fill: #d3261d!important; }
+.XEM > .coin-colorized svg { fill: #41bf76!important; }
 
-.XCP .coin-colorized svg { fill: #EC1550!important; }
+.XMR > .coin-colorized svg { fill: #FF6600!important; }
 
-.XEM .coin-colorized svg { fill: #41bf76!important; }
+.XPM > .coin-colorized svg { fill: #e5b625!important; }
 
-.XMR .coin-colorized svg { fill: #FF6600!important; }
+.XRP > .coin-colorized svg { fill: #346AA9!important; }
 
-.XPM .coin-colorized svg { fill: #e5b625!important; }
+.XTZ > .coin-colorized svg { fill: #A6DF00!important; }
 
-.XRP .coin-colorized svg { fill: #346AA9!important; }
+.XVG > .coin-colorized svg { fill: #42AFB2!important; }
 
-.XTZ .coin-colorized svg { fill: #A6DF00!important; }
+.YBC > .coin-colorized svg { fill: #D6C154!important; }
 
-.XVG .coin-colorized svg { fill: #42AFB2!important; }
+.ZEC > .coin-colorized svg { fill: #e5a93d!important; }
 
-.YBC .coin-colorized svg { fill: #D6C154!important; }
-
-.ZEC .coin-colorized svg { fill: #e5a93d!important; }
-
-.ZEIT .coin-colorized svg { fill: #ACACAC!important; }
+.ZEIT > .coin-colorized svg { fill: #ACACAC!important; }
 
 .MNZ .coin-bg { background-color: #242E3A!important }
 
@@ -1747,9 +1754,11 @@ a {
           align-items: center;
 }
 
-.window__controls a svg { -webkit-transition: all .3s ease; transition: all .3s ease }
-
-.window__controls:hover a svg .hidden { display: inherit !important }
+.window__controls a svg {
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+    will-change: transform;
+}
 
 /*
   Window Header Component
@@ -1774,21 +1783,27 @@ a {
     z-index: 10000;
 }
 
-.window-header-logo, .window-header-logo svg {
+.window-header-logo, .window-header-logo i, .window-header-logo svg {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-negative: 0;
         flex-shrink: 0;
     width: 30px;
-    height: 40px;
+    height: 30px;
 }
+
+.window-header-logo { margin-bottom: 6px }
 
 .window-header-logo svg {
     -webkit-transform: scale(5);
             transform: scale(5);
     -webkit-transform-origin: 55% 76%;
             transform-origin: 55% 76%;
+}
+
+.window-header-logo svg g {
+    fill: #FFF !important
 
 }
 
@@ -1806,8 +1821,8 @@ a {
     will-change: transform, opacity;
     border-radius: 5px 5px 0 0;
     opacity: 0;
-    -webkit-transform: translateY(-10px);
-            transform: translateY(-10px);
+    -webkit-transform: translateY(-50px);
+            transform: translateY(-50px);
     padding: 20px 10px 0;
     margin: 0;
 
@@ -1835,6 +1850,8 @@ a {
     opacity: 1;
     -webkit-transform: translateY(0px);
             transform: translateY(0px);
+    will-change: transform;
+
 }
 
 /* TITLE */
@@ -1859,12 +1876,13 @@ a {
         -ms-flex-direction: column;
             flex-direction: column;
     z-index: 0;
-    pointer-events: none
+    pointer-events: none;
+    will-change: transform;
+
 }
 
 .window__title h1 {
     font-size: 1em;
-    margin: -10px 0 0;
     color: #FFF
 }
 
@@ -2006,8 +2024,8 @@ a {
 }
 
 a {
-    color: #4C84FF;
     cursor: pointer;
+    color: #04050A;
 }
 
 .loader {
@@ -2108,7 +2126,7 @@ a {
     left: 0;
     top: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 2000;
 }
 
 .notifier-title {
@@ -2151,17 +2169,17 @@ a {
     pointer-events: all;
 }
 
-.notifier-list {
+.notifier-items {
     -ms-flex-negative: 0;
         flex-shrink: 0;
-    list-style: none;
+    items-style: none;
     padding: 0;
     margin: 0;
     font-size: 1em;
     width: 100%;
 }
 
-.notifier-list li {
+.notifier-items li {
     -ms-flex-negative: 0;
         flex-shrink: 0;
     width: 100%;
@@ -2170,7 +2188,7 @@ a {
     text-overflow: ellipsis;
 }
 
-.notifier-list-close {
+.notifier-close {
     width: 200px;
     background: #04050A;
     margin: 20px;
@@ -2290,6 +2308,7 @@ button {
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
     border-radius: 4px;
+    will-change: transform;
 }
 
 button.transparent {
@@ -2421,6 +2440,23 @@ button.link:hover {
 
 .action.primary:hover > i { background: #04050A }
 
+/* danger */
+
+.action.danger {
+    background: #F33C3C;
+    color: #FFF;
+    -webkit-box-shadow: 0px 10px 20px rgba(0, 0, 0, .1);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, .1)
+}
+
+.action.danger i svg { fill: #FFF }
+
+.action.danger > i { background-color: rgba(0, 0, 0, .2) }
+
+.action.danger > span { font-weight: 600; }
+
+.action.danger:hover > i { background: #04050A }
+
 /* dark */
 
 .action.dark {
@@ -2482,6 +2518,73 @@ button.link:hover {
     opacity: 0
 }
 
+ul[class*=list] {
+    list-style: none;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+    background: #FFF;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05)
+}
+
+ul[class*=list] > li {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
+    background-color: #FFF;
+    -webkit-box-shadow: 0 6px 20px rgba(0, 0, 0, .14);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .14);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    cursor: pointer;
+    will-change: transform;
+    overflow: hidden;
+
+}
+
+ul[class*=list] > li > a {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    height: 80px;
+    text-decoration: none;
+    width: 100%;
+    padding: 0px 20px 0px 20px;
+}
+
+ul[class*=list] > li:hover, ul[class*=list] > li.enabling {
+    z-index: 1;
+    background: #4C84FF;
+}
+
+ul[class*=list] > li:hover .coin-colorized, ul[class*=list] > li:hover svg, ul[class*=list] > li.enabling svg, ul[class*=list] > li.enabling .coin-colorized {
+    color: #FFF !important;
+    fill: #FFF !important;
+}
+
 /*
   Form Styling Component ✏️
   ----
@@ -2501,6 +2604,33 @@ button.link:hover {
     margin: 0;
     padding: 0;
     margin-bottom: 20px;
+}
+
+.label {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 100%;
+    font-weight: 600;
+    padding: 10px 4px 20px 10px;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+}
+
+.label .label-title {
+    margin-right: auto;
+    font-weight: 400;
+    font-size: 1.1em;
+    opacity: .5;
+    color: #04050A
+}
+
+.label .link {
+    margin-left: 10px;
 }
 
 .legend {
@@ -2602,34 +2732,13 @@ button.link:hover {
 */
 
 .modal {
-    position: absolute;
+    position: relative;
     z-index: 1000;
-    top: 0;
-    right: 0;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    background: #F4F5F9;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
-                       0 0 0 1px rgba(0, 0, 0, .1),
-                       0 12px 24px 0 rgba(31, 31, 31, .05);
-            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
-                       0 0 0 1px rgba(0, 0, 0, .1),
-                       0 12px 24px 0 rgba(31, 31, 31, .05);
-    -webkit-transform: scale(.8);
-            transform: scale(.8);
-    -webkit-transform-origin: top right;
-            transform-origin: top right;
-    border-radius: 4px;
-    border-top-right-radius: 0;
-    overflow: auto;
+    text-align: left;
 }
 
 .modal-header {
+    position: fixed;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -2714,16 +2823,58 @@ button.link:hover {
     fill: #FFF;
 }
 
+.modal-content-overlay {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    padding: 110px 10px 10px;
+    -webkit-transform: translateY(-20px) scale(.95);
+            transform: translateY(-20px) scale(.95);
+    will-change: transform;
+    -webkit-transition: all .1s ease;
+    transition: all .1s ease;
+    pointer-events: none
+}
+
+.modal-content-overlay > ul {
+    overflow: auto;
+    max-height: calc(100% - 100px);
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+    border-radius: 6px;
+    will-change: transform;
+}
+
 /* animation state */
 
 .modal {
-    top: -100vh;
     -webkit-transition: all .32s ease-in-out;
     transition: all .32s ease-in-out;
     will-change: all;
 }
 
-.modal  { top: 94% }
+.modal-display-content.modal-content-overlay {
+    opacity: 1;
+    -webkit-transform: translateY(0) scale(1);
+            transform: translateY(0) scale(1);
+}
+
+.modal-display-content.modal-content-overlay > ul { pointer-events: all }
 
 .ReactTable {
     border: 0;
@@ -2833,7 +2984,7 @@ button.link:hover {
             align-items: center;
     margin-right: 20px;
     position: absolute;
-    top: 32px;
+    top: 10px;
     left: 0px;
 }
 
@@ -2842,7 +2993,7 @@ button.link:hover {
     height: 40px;
 }
 
-.wallet-wallets-header-back i {
+.wallet-wallets-header-back i svg {
     -webkit-transform: rotate(-180deg) !important;
             transform: rotate(-180deg) !important;
 }
@@ -2899,7 +3050,7 @@ button.link:hover {
     color: #959CAE;
     padding-top: 4px;
     font-weight: 400;
-    margin-top: -10px;
+    margin-top: -4px;
 }
 
 .dashboard, .dashboard-noChain {
@@ -2918,6 +3069,14 @@ button.link:hover {
 
 .dashboard-wallets, .dashboard-wallets-header, .dashboard-wallets-list { width: 100% }
 
+.dashboard-wallets-header {
+    height: 120px;
+}
+
+.dashboard-wallets-list {
+    max-height: calc(100vh - 120px);
+}
+
 .dashboard-balances-pie {
     width: 60px !important;
     height: 60px !important;
@@ -2935,185 +3094,21 @@ button.link:hover {
     bottom: 0;
 }
 
-.dashboard-wallets-list {
-    list-style: none;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    padding: 0;
-    margin: 0;
-    overflow: auto;
-    background: #FFF;
-    max-height: 60vh;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
-                       0 0 0 1px rgba(0, 0, 0, .1),
-                       0 12px 24px 0 rgba(31, 31, 31, .05);
-            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
-                       0 0 0 1px rgba(0, 0, 0, .1),
-                       0 12px 24px 0 rgba(31, 31, 31, .05)
-}
-
-.dashboard-wallets-list li {
-    width: 100%;
-    -ms-flex-negative: 0;
-        flex-shrink: 0;
-    background-color: #FFF;
-    -webkit-box-shadow: 0 6px 20px rgba(0, 0, 0, .14);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, .14);
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
-    -webkit-transition: all .2s ease;
-    transition: all .2s ease;
-    cursor: pointer;
-    will-change: transform;
-}
-
-.dashboard-wallets-list li > a {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
-    height: 80px;
-    text-decoration: none;
-    width: 100%;
-    padding: 0px 20px 0px 20px;
-}
-
-.dashboard-wallets-list-item_icon {
-    width: 60px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    background: rgba(256, 256, 256, .1);
-    padding: 10px;
-    border-radius: 50%;
-    -webkit-transition: -webkit-transform .4s ease;
-    transition: -webkit-transform .4s ease;
-    transition: transform .4s ease;
-    transition: transform .4s ease, -webkit-transform .4s ease;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
-                       0 0 0 1px rgba(0, 0, 0, .1),
-                       0 12px 24px 0 rgba(31, 31, 31, .05);
-            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
-                       0 0 0 1px rgba(0, 0, 0, .1),
-                       0 12px 24px 0 rgba(31, 31, 31, .05)
-
-}
-
-.dashboard-wallets-list-item_icon > * {
-    width: 40px;
-    height: 40px;
-    font-size: 2.1em;
-    -webkit-transform: rotate(10deg);
-            transform: rotate(10deg);
-}
-
-.dashboard-wallets-list-item_balance {
-    -webkit-box-flex: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
-    position: relative;
-    padding-left: 10px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    -webkit-transition: -webkit-transform .4s ease;
-    transition: -webkit-transform .4s ease;
-    transition: transform .4s ease;
-    transition: transform .4s ease, -webkit-transform .4s ease;
-    color: #04050A
-}
-
-.dashboard-wallets-list-item_balance small { color: #959CAE }
-
-.dashboard-wallets-list-item_action {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    width: 30px;
-    background: transparent
-}
-
-.dashboard-wallets-list-item_action svg {
-    position: relative;
-    width: 20px;
-    height: 20px;
-    left: 0;
-    -webkit-transition: -webkit-transform .6s ease;
-    transition: -webkit-transform .6s ease;
-    transition: transform .6s ease;
-    transition: transform .6s ease, -webkit-transform .6s ease;
-}
-
 /* context */
-
-.dashboard-wallets-list-item:hover, .dashboard-wallets-list-item.enabling {
-    z-index: 1;
-    background: #4C84FF;
-}
-
-.dashboard-wallets-list-item:hover .coin-colorized, .dashboard-wallets-list-item:hover svg, .dashboard-wallets-list-item.enabling svg, .dashboard-wallets-list-item.enabling .coin-colorized {
-    color: #FFF !important;
-    fill: #FFF !important;
-}
-
-.dashboard-wallets-list-item:hover .dashboard-wallets-list-item_icon {
-    -webkit-transform:scale(1.05);
-            transform:scale(1.05)
-}
-
-.dashboard-wallets-list-item:hover .dashboard-wallets-list-item_balance, .dashboard-wallets-list-item.enabling .dashboard-wallets-list-item_balance {
-    color: #FFF;
-    -webkit-transform: translateX(2px);
-            transform: translateX(2px)
-}
-
-.dashboard-wallets-list-item:hover .dashboard-wallets-list-item_balance small, .dashboard-wallets-list-item.enabling .dashboard-wallets-list-item_balance small {
-    color: rgba(256, 256, 256, .4)
-}
-
-.dashboard-wallets-list-item:hover .dashboard-wallets-list-item_action svg {
-    fill: #FFF;
-    -webkit-transform: translateX(10px) scale(1.1);
-            transform: translateX(10px) scale(1.1)
-}
 
 .dashboard-empty {
     padding: 20px;
-    background: #FFF
+    background:  #F33C3C;
+    color: #FFF
+
 }
 
 .dashboard-empty h3 {
     text-align: center;
 }
 
-/* LOADER */
-
-.dashboard-wallets-list-item.enabling .dashboard-wallets-list-item_action svg {
-    -webkit-transform: translateX(100px);
-            transform: translateX(100px)
+.dashboard-empty p {
+    opacity: .8
 }
 
 .trade, .trade-body {
@@ -3124,6 +3119,9 @@ button.link:hover {
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
 }
 
 .trade-processing {
@@ -3158,7 +3156,6 @@ button.link:hover {
 
 .trade-body {
     position: relative;
-    z-index: 10;
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
     will-change: transform;
@@ -3184,6 +3181,7 @@ button.link:hover {
 }
 
 .trade-type-item {
+    height: 70px;
     padding: 10px 8px 2px 8px;
     -webkit-box-flex: 1;
         -ms-flex-positive: 1;
@@ -3230,7 +3228,7 @@ button.link:hover {
     width: 60px;
 }
 
-.trade-type-item i svg {
+.trade-type-item i svg, .trade-type-item canvas {
     width: 60px;
     height: 30px;
     fill: #04050A;
@@ -3242,6 +3240,12 @@ button.link:hover {
 
 .trade-type-item i svg path {
     stroke: #04050A !important;
+}
+
+.wallet:not(.wallet-ready) {
+    opacity: 0;
+    -webkit-transform: translateY(-100px);
+            transform: translateY(-100px);
 }
 
 .trade-base {
@@ -3282,13 +3286,6 @@ button.link:hover {
 }
 
 .trade-base-icon {
-    border-radius: 50%;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
-                       0 0 0 1px rgba(0, 0, 0, .1),
-                       0 12px 24px 0 rgba(31, 31, 31, .05);
-            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
-                       0 0 0 1px rgba(0, 0, 0, .1),
-                       0 12px 24px 0 rgba(31, 31, 31, .05);
     margin-right: 6px;
     width: 30px;
     height: 30px;
@@ -3301,9 +3298,17 @@ button.link:hover {
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    background-color: rgba(256, 256, 256, .1);
-    -webkit-transform: rotate(10deg);
-            transform: rotate(10deg);
+    overflow: hidden;
+}
+
+.trade-base-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.trade-base-icon svg {
+    width: 36px;
+    height: 36px;
 }
 
 .trade-base-icon i {
@@ -3365,9 +3370,9 @@ button.link:hover {
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
             justify-content: space-between;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
@@ -3385,15 +3390,13 @@ button.link:hover {
     width: 100%;
 }
 
-.trade-amount input {
+.trade-amount_input-wrapper input {
     min-width: 100%;
     position: absolute;
     right: 0;
-    padding: 26px 10px 26px 14px;
+    padding: 25px 10px 25px 14px;
     font-weight: 600
 }
-
-.trade-action-wrapper button { -webkit-box-shadow: none !important; box-shadow: none !important }
 
 .trade-action-wrapper button div.validation {
     display: -webkit-box;
@@ -3445,8 +3448,6 @@ button.link:hover {
         -ms-flex-pack: end;
             justify-content: flex-end;
     height: 40px;
-    padding-right: 10px;
-
 }
 
 .trade-amount_input-wrapper .trade-setMax {
@@ -3462,6 +3463,7 @@ button.link:hover {
     border: 1px solid rgba(0, 0, 0, .1);
     padding: 7px 10px;
     border-radius: 4px;
+    margin-right: 10px;
 }
 
 .trade-amount_input-wrapper .trade-setMax:hover {
@@ -3473,30 +3475,6 @@ button.link:hover {
     background: #4C84FF;
     color: #FFF;
     pointer-events: none
-}
-
-.trade-amount .label {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    width: 100%;
-    font-weight: 600;
-    padding: 10px 4px 20px 10px;
-    -webkit-box-pack: end;
-        -ms-flex-pack: end;
-            justify-content: flex-end;
-}
-
-.trade-amount .label .label-title {
-    margin-right: auto;
-    font-weight: 400;
-}
-
-.trade-amount .label .link {
-    margin-left: 10px;
 }
 
 .trade-rel {
@@ -3513,6 +3491,19 @@ button.link:hover {
 }
 
 .action.trade-pair { padding: 0 }
+
+.action.trade-pair > strong {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    z-index: 1
+}
 
 .trade-amount .label.trade-rel {
     padding: 10px 4px 10px 4px
@@ -3589,6 +3580,10 @@ button.link:hover {
 
 .trade-action-amountRel-title { font-size: 1.2em }
 
+.trade-amount_input_address, .trade-amount_input_amount {
+    margin-bottom: 20px;
+}
+
 .trade-amount_input_rate {
     position: relative;
 }
@@ -3598,7 +3593,7 @@ button.link:hover {
 }
 
 .trade-amount_input > * {
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
 .trade-button-wrapper {
@@ -3614,11 +3609,156 @@ button.link:hover {
         -ms-flex-pack: start;
             justify-content: flex-start;
     text-align: left;
+    -webkit-box-shadow: none !important;
+            box-shadow: none !important
 }
 
 .trade-button  i svg {
     width: 40px;
     height: 40px;
+}
+
+/* deposit */
+
+.trade-deposit {
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+    border-radius: 4px;
+    padding: 0 10px 10px
+}
+
+.trade-deposit, .trade-deposit-body {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+}
+
+.trade-deposit, .trade-deposit-body, .trade-deposit-address {
+    width: 100%;
+}
+
+.trade-deposit-address {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 100%
+}
+
+.trade-deposit-address button {
+    text-align: left;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+    color: #04050A;
+    margin-top: 10px;
+    background: #FFF;
+    width: 100%;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+}
+
+.trade-deposit-address button span {
+    display: inline-block;
+    word-wrap: break-word;
+    max-width: calc(100% - 80px);
+    text-align: left;
+    font-size: .8em;
+
+}
+
+.trade-deposit h2 {
+    font-size: 1.2em;
+    margin: 0
+}
+
+.trade-deposit-amount {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+}
+
+.trade-deposit-amount-left {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    padding-right: 10px;
+}
+
+.trade-deposit-amount-left i, .trade-deposit-amount-left i svg {
+    width: 30px;
+    height: 30px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+}
+
+.trade-deposit-amount-left i {
+    margin-left: 4px;
+}
+
+.trade-deposit-amount p {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin: 0;
+    text-align: left;
+ }
+
+.trade-deposit-amount-left-balance {
+    color: #04050A;
+    opacity: .5
 }
 
 /* charts */
@@ -3655,11 +3795,14 @@ button.link:hover {
     color: #04050A
 }
 
+.login {
+    height: 100vh
+}
+
 .login, .login .form {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    height: 100%;
     overflow: auto;
     -webkit-box-align: center;
         -ms-flex-align: center;
@@ -3669,6 +3812,27 @@ button.link:hover {
             justify-content: center;
     background: #F4F5F9;
 }
+
+.login-localStorage .form {
+    display: none
+}
+
+.login-newpassphrase {
+    margin-top: 20px;
+}
+
+.login-passphrase-notice {
+    background: #F33C3C;
+    color: #FFF;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: left;
+    height: 90px;
+    padding: 0 20px;
+
+}
+
+.login-passphrase-notice span { font-weight: 400 }
 
 .login .form {
     -webkit-box-orient: vertical;
@@ -3680,8 +3844,9 @@ button.link:hover {
 
 .login-button {
     width: 100%;
-    padding: 20px;
-    font-size: 1em
+    height: 90px;
+    padding: 0 20px;
+    font-size: 1em;
 }
 
 .login textarea {
@@ -3689,7 +3854,7 @@ button.link:hover {
     padding: 10px 10px;
     margin-bottom: 20px;
     min-width: inherit;
-    width: 320px;
+    width: 360px;
     height: 180px;
     resize: none;
 }
@@ -3758,55 +3923,12 @@ button.link:hover {
 
 }
 
-.coinList {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    padding: 0;
-    margin: 0;
-    font-size: .8em;
-}
-
-.coinList .coinList-coin {
-    position: relative;
-    padding: 0;
-}
-
-.coinList-wrapper {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+.coinList-coin {
     padding: 10px;
-    background: #FFF;
-    border-bottom: 1px solid rgba(0, 0, 0, .1)
 }
 
-.coinList .coinList-coin:hover .coinList-wrapper {
-    background: #4C84FF;
-    color: #FFF;
-    z-index: 2
-}
-
-.coinList .coinList-coin:hover .coinList-wrapper .coin-colorized {
-    color: #FFF !important;
-}
-
-.coinList .coinList-coin:hover .coinList-wrapper .coin-colorized svg {
-    fill: #FFF !important;
-}
-
-.coinList .coinList-coin:hover .coinList-wrapper code.coin-colorized {
-    color: #4C84FF !important
-}
-
-.coinList-coin-logo {
+.coinList-coin_icon {
+    width: 60px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -3816,41 +3938,22 @@ button.link:hover {
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-}
-
-.coinList-coin-logo > * {
-    width: 40px;
-    height: 40px;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
-                       0 0 0 1px rgba(0, 0, 0, .1),
-                       0 12px 24px 0 rgba(31, 31, 31, .05);
-            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
-                       0 0 0 1px rgba(0, 0, 0, .1),
-                       0 12px 24px 0 rgba(31, 31, 31, .05);
     border-radius: 50%;
-    -webkit-transform: rotate(10deg);
-            transform: rotate(10deg);
+    -webkit-transition: -webkit-transform .4s ease;
+    transition: -webkit-transform .4s ease;
+    transition: transform .4s ease;
+    transition: transform .4s ease, -webkit-transform .4s ease;
 }
 
-.coinList .coinList-coin .coinList-coin-name {
-    -webkit-box-flex: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
+.coinList-coin_icon > * {
+    width: 60px;
+    height: 60px;
+    font-size: 2.1em;
+    -webkit-transform: rotate(8deg);
+            transform: rotate(8deg);
 }
 
-.coinList .coinList-coin .coinList-coin-name h2 {
+.coinList-coin_balance {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -3858,16 +3961,75 @@ button.link:hover {
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
-    -webkit-box-align: start;
-        -ms-flex-align: start;
-            align-items: flex-start;
-    font-size: 1.4em;
-    margin: 0 20px 0 0
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    position: relative;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    -webkit-transition: -webkit-transform .4s ease;
+    transition: -webkit-transform .4s ease;
+    transition: transform .4s ease;
+    transition: transform .4s ease, -webkit-transform .4s ease;
+    color: #04050A
 }
 
-.coinList .coinList-coin .coinList-coin-name h2 small {
-    font-size: .6em;
-    font-weight: 200;
+.coinList-coin_balance small { color: #959CAE }
+
+.coinList-coin_action {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 30px;
+    background: transparent
+}
+
+.coinList-coin_action svg {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    left: 0;
+    -webkit-transition: -webkit-transform .6s ease;
+    transition: -webkit-transform .6s ease;
+    transition: transform .6s ease;
+    transition: transform .6s ease, -webkit-transform .6s ease;
+}
+
+/* context */
+
+.coinList-coin:hover .coinList-coin_icon {
+    -webkit-transform:scale(1.05);
+            transform:scale(1.05)
+}
+
+.coinList-coin:hover .coinList-coin_balance, .coinList-coin.enabling .coinList-coin_balance {
+    color: #FFF;
+    -webkit-transform: translateX(2px);
+            transform: translateX(2px)
+}
+
+.coinList-coin:hover .coinList-coin_balance small, .coinList-coin.enabling  .coinList-coin_balance small {
+    color: rgba(256, 256, 256, .4)
+}
+
+.coinList-coin:hover .coinList-coin_action svg {
+    fill: #FFF;
+    -webkit-transform: translateX(10px) scale(1.1);
+            transform: translateX(10px) scale(1.1)
+}
+
+/* LOADER */
+
+.coinList-coin.enabling .coinList-coin_action svg {
+    -webkit-transform: translateX(100px);
+            transform: translateX(100px)
 }
 
 .wallet {
@@ -3906,14 +4068,6 @@ button.link:hover {
         -ms-flex-align: center;
             align-items: center;
     margin-bottom: 10px;
-}
-
-.wallet-icon > * {
-    width: 100px;
-    height: 100px;
-}
-
-.wallet-icon i {
     background: #FFF;
     border-radius: 50%;
     -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
@@ -3922,9 +4076,17 @@ button.link:hover {
             box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
                        0 0 0 1px rgba(0, 0, 0, .1),
                        0 12px 24px 0 rgba(31, 31, 31, .05);
-    font-size: 2.3em;
     -webkit-transform: rotate(10deg);
             transform: rotate(10deg);
+}
+
+.wallet-icon > * {
+    width: 100px;
+    height: 100px;
+}
+
+.wallet-icon i {
+    font-size: 2.3em;
 }
 
 .wallet-wallets-header {
@@ -3994,13 +4156,143 @@ button.link:hover {
 
 /* context */
 
-.wallet:not(.wallet-ready) {
-    opacity: 0;
-    -webkit-transform: translateY(-100px);
-            transform: translateY(-100px);
+.wallet:not(.wallet-ready) .wallet-wallets-header { -webkit-transform: translateY(300px); transform: translateY(300px) }
+
+.balance-action {
+    padding: 20px 10px 10px;
 }
 
-.wallet:not(.wallet-ready) .wallet-wallets-header { -webkit-transform: translateY(300px); transform: translateY(300px) }
+.balance-qr {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.balance-deposit-address {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    overflow: hidden;
+    padding: 10px 10px 30px;
+}
+
+.balance-deposit-body {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+}
+
+.balance-deposit-address button {
+    background: #FFF;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2),
+                       0 0 0 1px rgba(0, 0, 0, .1),
+                       0 12px 24px 0 rgba(31, 31, 31, .05);
+    word-wrap: break-word;
+    width: 100%;
+    padding: 4 10px;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    min-height: 54px;
+}
+
+.balance-deposit-address button span {
+    display: inline-block;
+    word-wrap: break-word;
+    width: calc(100% - 80px);
+    text-align: left;
+    font-size: .8em;
+
+}
+
+.deposit-withdrawConfirm {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+}
+
+.deposit-withdrawConfirm h3 {
+    color: #04050A;
+    margin-bottom: 40px;
+}
+
+.deposit-withdrawConfirm ul {
+    list-style: none;
+    margin: 0;
+    padding: 0
+}
+
+.deposit-withdrawConfirm ul li {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex
+}
+
+.deposit-withdrawConfirm ul li strong {
+    padding-right: 20px;
+    text-align: right;
+    font-weight: 400;
+    color: #04050A;
+}
+
+.deposit-withdrawConfirm ul li strong:after {
+    content: ' :'
+}
+
+.deposit-withdrawConfirm-actions {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-top: 20px;
+}
+
+.deposit-withdrawConfirm-actions button:first-of-type {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.deposit-withdrawConfirm-actions button:last-of-type {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.deposit-withdrawConfirm button {
+    margin-top: 20px;
+}
+
+.deposit-withdrawConfirm button.primary {
+    padding: 20px;
+}
 
 body {
   -webkit-transition: all .2s ease;
@@ -4041,7 +4333,7 @@ body {
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    background: #959CAE;
+    background: #F8FAFF;
 }
 
 .app.content-container .Placeholder { -webkit-box-flex: 1; -ms-flex: 1; flex: 1 }

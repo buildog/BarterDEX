@@ -89,13 +89,20 @@ class CoinPicker extends React.Component {
         const { coinsList, installedCoins, tradeBase, tradeRel } = this.props.app.portfolio;
 
         let coins;
-        const availableElectrum = ['MNZ', 'BTC', 'KMD'];
+        const availableElectrum = ['MNZ', 'BTC', 'KMD', 'REVS', 'MONA', 'CHIPS', 'DOGE', 'JUMBLR', 'LTC', 'ZEC'];
         const onlyElectrum = coinsList.filter((item) => availableElectrum.indexOf(item.coin) !== -1 && !(item.installed && item.height > 0) && !item.electrum);
 
         if (this.props.onlyElectrum) {
             coins = onlyElectrum;
         } else {
-            const currentCoins = [tradeBase.coin, tradeRel.coin];
+            const currentCoins = [];
+            if (tradeBase) {
+                currentCoins.push(tradeBase.coin)
+            }
+
+            if (tradeRel) {
+                currentCoins.push(tradeRel.coin)
+            }
             coins = installedCoins.filter((item) => currentCoins.indexOf(item.coin) === -1);
             coins = coins.concat(onlyElectrum)
         }

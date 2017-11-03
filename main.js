@@ -8883,7 +8883,7 @@ module.exports =
 	
 	var _api = __webpack_require__(329);
 	
-	var _events = __webpack_require__(457);
+	var _events = __webpack_require__(459);
 	
 	var _config = __webpack_require__(349);
 	
@@ -8912,9 +8912,9 @@ module.exports =
 	                            break;
 	                        }
 	
-	                        __webpack_require__(464)();
+	                        __webpack_require__(466)();
 	
-	                        installer = __webpack_require__(471); // eslint-disable-line global-require
+	                        installer = __webpack_require__(473); // eslint-disable-line global-require
 	
 	                        extensions = ['REACT_DEVELOPER_TOOLS', 'REACT_PERF'];
 	                        forceDownload = !!({"NODE_ENV":"production"}).UPGRADE_EXTENSIONS;
@@ -9008,9 +9008,9 @@ module.exports =
 	
 	                    mainWindow = new _electron.BrowserWindow({
 	                        width: 400,
-	                        height: 720,
+	                        height: 758,
 	                        show: false,
-	                        backgroundColor: '#959CAE'
+	                        backgroundColor: '#F8FAFF'
 	                    });
 	
 	                    // Bootstrap listeners
@@ -9162,15 +9162,15 @@ module.exports =
 	
 	var _config = __webpack_require__(349);
 	
-	var _socket = __webpack_require__(351);
+	var _socket = __webpack_require__(353);
 	
 	var _socket2 = _interopRequireDefault(_socket);
 	
-	var _fsExtra = __webpack_require__(410);
+	var _fsExtra = __webpack_require__(412);
 	
 	var _fsExtra2 = _interopRequireDefault(_fsExtra);
 	
-	var _portscanner = __webpack_require__(451);
+	var _portscanner = __webpack_require__(453);
 	
 	var _portscanner2 = _interopRequireDefault(_portscanner);
 	
@@ -9184,14 +9184,23 @@ module.exports =
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var exec = __webpack_require__(369).exec;
-	var EventEmitter = __webpack_require__(388);
+	var exec = __webpack_require__(371).exec;
+	var EventEmitter = __webpack_require__(390);
 	
 	var osPlatform = _config.main.osPlatform;
 	var homeDir = _config.main.homeDir;
 	var defaultCoinsListFile = _config.main.defaultCoinsListFile;
 	var marketmakerBin = _config.main.marketmakerBin;
 	var marketmakerDir = _config.main.marketmakerDir;
+	
+	var isJsonString = function isJsonString(str) {
+	    try {
+	        JSON.parse(str);
+	    } catch (e) {
+	        return false;
+	    }
+	    return true;
+	};
 	
 	var Emitter = function (_EventEmitter) {
 	    _inherits(Emitter, _EventEmitter);
@@ -9363,7 +9372,7 @@ module.exports =
 	                params = params.replace(/"/g, '\\"');
 	            }
 	
-	            exec(marketmakerBin + ' ' + params, {
+	            exec('"' + marketmakerBin + '" ' + params, {
 	                cwd: marketmakerDir
 	                // maxBuffer: 1024 * 10000 // 10 mb
 	            }, function (error, stdout, stderr) {
@@ -9382,7 +9391,7 @@ module.exports =
 	        value: function fetchMarket() {
 	            var self = this;
 	            (0, _request2.default)('http://coincap.io/front', function (error, response, body) {
-	                self.emit('marketUpdate', { data: JSON.parse(body) });
+	                isJsonString(body) && self.emit('marketUpdate', { data: JSON.parse(body) });
 	            });
 	        }
 	    }, {
@@ -9425,58 +9434,69 @@ module.exports =
 	                self.emit('notifier', { error: 2, desc: error });
 	            });
 	        }
-	
-	        /*
-	        installed true/false,
-	        height of -1 means it isnt running, height > 0 means it is running and balance is non-zero if there is a balance for any coin with a running coin
-	        */
-	
 	    }, {
-	        key: 'getCoins',
-	        value: function getCoins() {
+	        key: 'balance',
+	        value: function balance(_ref3) {
 	            var _this2 = this;
 	
+	            var coin = _ref3.coin,
+	                address = _ref3.address;
+	
 	            var self = this;
-	            var data = { userpass: self.userpass, method: 'getcoins' };
+	            var data = { userpass: self.userpass, method: 'balance', coin: coin, address: address };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
 	                return _this2.apiRequest({ data: data, url: url }).then(function (result) {
 	                    resolve(result);
 	                }).catch(function (error) {
-	                    console.log('error getcoin ' + coin);
+	                    console.log('error getbalance ' + coin);
 	                    reject(error);
 	                });
 	            });
 	        }
 	    }, {
-	        key: 'disableCoin',
-	        value: function disableCoin(_ref3) {
+	        key: 'getCoins',
+	        value: function getCoins() {
 	            var _this3 = this;
 	
-	            var _ref3$coin = _ref3.coin,
-	                coin = _ref3$coin === undefined ? '' : _ref3$coin,
-	                type = _ref3.type;
-	
 	            var self = this;
-	
-	            var data = { userpass: self.userpass, method: 'disable', coin: coin };
-	            // electrum
-	            // const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
-	
+	            var data = { userpass: self.userpass, method: 'getcoins' };
 	            var url = 'http://127.0.0.1:7783';
 	
-	            this.apiRequest({ data: data, url: url }).then(function (result) {
-	                self.fetchPortfolio(function () {
-	                    return _this3.emit('updateTrade', { coin: coin, type: type });
+	            var fetch = new Promise(function (resolve, reject) {
+	                return _this3.apiRequest({ data: data, url: url }).then(function (result) {
+	                    /*
+	                    installed true/false,
+	                    height of -1 means it isnt running, height > 0 means it is running and balance is non-zero if there is a balance for any coin with a running coin
+	                    */
+	                    resolve(result);
+	                }).catch(function (error) {
+	                    console.log('error getcoin ' + coin);
+	                    reject(error);
 	                });
-	            }).catch(function (error) {
-	                self.emit('notifier', { error: 3 });
+	            });
+	
+	            var updateBalance = function updateBalance(coinList) {
+	                return coinList.map(function (coin) {
+	                    if (coin.electrum) {
+	                        return self.balance({ coin: coin.coin, address: coin.smartaddress }).then(function (coinBalance) {
+	                            coin.balance = coinBalance.balance;
+	                            return coin;
+	                        });
+	                    }
+	
+	                    return coin;
+	                });
+	            };
+	
+	            return fetch.then(function (coinList) {
+	                return Promise.all(updateBalance(coinList));
 	            });
 	        }
 	    }, {
-	        key: 'enableCoin',
-	        value: function enableCoin(_ref4) {
+	        key: 'disableCoin',
+	        value: function disableCoin(_ref4) {
 	            var _this4 = this;
 	
 	            var _ref4$coin = _ref4.coin,
@@ -9485,17 +9505,51 @@ module.exports =
 	
 	            var self = this;
 	
-	            var data = { userpass: self.userpass, method: 'enable', coin: coin };
-	            // electrum
-	            // const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
+	            var data = { userpass: self.userpass, method: 'disable', coin: coin };
 	
 	            var url = 'http://127.0.0.1:7783';
 	
 	            this.apiRequest({ data: data, url: url }).then(function (result) {
+	                self.fetchPortfolio(function () {
+	                    return _this4.emit('updateTrade', { coin: coin, type: type });
+	                });
+	            }).catch(function (error) {
+	                self.emit('notifier', { error: 3 });
+	            });
+	        }
+	    }, {
+	        key: 'enableCoin',
+	        value: function enableCoin(_ref5) {
+	            var _this5 = this;
+	
+	            var _ref5$coin = _ref5.coin,
+	                coin = _ref5$coin === undefined ? '' : _ref5$coin,
+	                type = _ref5.type,
+	                _ref5$electrum = _ref5.electrum,
+	                electrum = _ref5$electrum === undefined ? false : _ref5$electrum,
+	                ipaddr = _ref5.ipaddr,
+	                port = _ref5.port;
+	
+	            var self = this;
+	            var data = void 0;
+	
+	            if (electrum) {
+	                data = { userpass: self.userpass, method: 'electrum', coin: coin, ipaddr: ipaddr, port: port };
+	            } else {
+	                data = { userpass: self.userpass, method: 'enable', coin: coin };
+	            }
+	            var url = 'http://127.0.0.1:7783';
+	
+	            this.apiRequest({ data: data, url: url }).then(function (result) {
+	                console.log(result);
 	                if (result.error) {
 	                    return self.emit('notifier', { error: 3, desc: result.error });
 	                }
-	                _this4.emit('updateTrade', { coin: coin, type: type });
+	                self.getCoins().then(function (coinsList) {
+	                    self.emit('coinsList', coinsList);
+	                    self.emit('coinEnabled', { coin: coin });
+	                    type && _this5.emit('updateTrade', { coin: coin, type: type });
+	                });
 	            }).catch(function (error) {
 	                self.emit('notifier', { error: 3 });
 	            });
@@ -9516,9 +9570,9 @@ module.exports =
 	        }
 	    }, {
 	        key: 'orderbook',
-	        value: function orderbook(_ref5) {
-	            var base = _ref5.base,
-	                rel = _ref5.rel;
+	        value: function orderbook(_ref6) {
+	            var base = _ref6.base,
+	                rel = _ref6.rel;
 	
 	            var self = this;
 	            var data = { userpass: this.userpass, method: 'orderbook', base: base, rel: rel };
@@ -9527,22 +9581,6 @@ module.exports =
 	                self.emit('orderbook', { base: base, rel: rel, data: result });
 	            }).catch(function (error) {
 	                self.emit('notifier', { error: 5 });
-	            });
-	        }
-	    }, {
-	        key: 'balance',
-	        value: function balance(_ref6) {
-	            var coin = _ref6.coin,
-	                address = _ref6.address;
-	
-	            var self = this;
-	            var data = { userpass: self.userpass, method: 'balance', coin: coin, address: address };
-	            var url = 'http://127.0.0.1:7783';
-	
-	            this.apiRequest({ data: data, url: url }).then(function (result) {
-	                return result;
-	            }).catch(function (error) {
-	                self.emit('notifier', { error: 6 });
 	            });
 	        }
 	    }, {
@@ -9584,7 +9622,7 @@ module.exports =
 	    }, {
 	        key: 'sendrawtransaction',
 	        value: function sendrawtransaction(_ref8) {
-	            var _this5 = this;
+	            var _this6 = this;
 	
 	            var coin = _ref8.coin,
 	                signedtx = _ref8.signedtx;
@@ -9592,12 +9630,13 @@ module.exports =
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'sendrawtransaction', coin: coin, signedtx: signedtx };
 	            var url = 'http://127.0.0.1:7783';
-	
+	            console.log(data);
 	            return new Promise(function (resolve, reject) {
-	                return _this5.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this6.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('sendWithdraw ' + coin);
 	                    console.log(result);
 	                    resolve(result);
+	                    self.emit('sendrawtransaction', result);
 	                }).catch(function (error) {
 	                    console.log('error sendWithdraw ' + coin);
 	                    reject(error);
@@ -9607,21 +9646,29 @@ module.exports =
 	    }, {
 	        key: 'withdraw',
 	        value: function withdraw(_ref9) {
-	            var _this6 = this;
+	            var _this7 = this;
 	
 	            var address = _ref9.address,
-	                coin = _ref9.coin;
+	                coin = _ref9.coin,
+	                amount = _ref9.amount;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass,
 	                method: 'withdraw',
 	                coin: coin,
-	                outputs: [_defineProperty({}, address, 0.001), _defineProperty({}, address, 0.002)] };
+	                outputs: [_defineProperty({}, address, amount)] };
+	
+	            console.log(data);
 	            var url = 'http://127.0.0.1:7783';
 	            return new Promise(function (resolve, reject) {
-	                return _this6.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this7.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('withdraw for ' + coin);
 	                    console.log(result);
+	                    if (result.complete) {
+	                        self.emit('confirmWithdraw', result);
+	                    } else {
+	                        self.emit('notifier', { error: 10 });
+	                    }
 	                    resolve(result);
 	                }).catch(function (error) {
 	                    console.log('error withdraw');
@@ -9631,17 +9678,17 @@ module.exports =
 	        }
 	    }, {
 	        key: 'inventory',
-	        value: function inventory(_ref12) {
-	            var _this7 = this;
+	        value: function inventory(_ref11) {
+	            var _this8 = this;
 	
-	            var coin = _ref12.coin;
+	            var coin = _ref11.coin;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'inventory', coin: coin };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this7.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this8.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('inventory for ' + coin);
 	                    console.log(result);
 	                    // if (result.alice.length < 3) {
@@ -9661,18 +9708,18 @@ module.exports =
 	        }
 	    }, {
 	        key: 'listunspent',
-	        value: function listunspent(_ref13) {
-	            var _this8 = this;
+	        value: function listunspent(_ref12) {
+	            var _this9 = this;
 	
-	            var coin = _ref13.coin,
-	                address = _ref13.address;
+	            var coin = _ref12.coin,
+	                address = _ref12.address;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'listunspent', coin: coin, address: address };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this8.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this9.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('listunspent for ' + coin);
 	                    console.log(result);
 	                    resolve(result);
@@ -10422,12 +10469,14 @@ module.exports =
 	
 	var _path2 = _interopRequireDefault(_path);
 	
+	var _passphrasegenerator = __webpack_require__(350);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var osPlatform = _os2.default.platform(); /*
-	                                              Configuration store for the dependencies and frame config
-	                                          */
-	
+	/*
+	    Configuration store for the dependencies and frame config
+	*/
+	var osPlatform = _os2.default.platform();
 	
 	var homeDir = __webpack_require__(337).homedir();
 	
@@ -10490,7 +10539,7 @@ module.exports =
 	var marketmakerIcon = void 0;
 	
 	/* Handle binaries paths */
-	var marketmaker = __webpack_require__(350).path;
+	var marketmaker = __webpack_require__(352).path;
 	
 	var paths = { marketmaker: marketmaker };
 	var transformBinaryPath = function transformBinaryPath(name) {
@@ -10531,16 +10580,172 @@ module.exports =
 	
 	// DEFAULT COINS LIST FOR MARKETMAKER
 	var defaultCoinsListFile = _path2.default.join(__dirname, './coins.json');
-	// Escape space
-	marketmakerBin = marketmakerBin.replace(/ /g, '\\ ');
 	
 	exports.default = {
-	    main: { homeDir: homeDir, env: env, assetChainPorts: assetChainPorts, osPlatform: osPlatform, defaultCoinsListFile: defaultCoinsListFile, marketmakerBin: marketmakerBin, marketmakerDir: marketmakerDir, marketmakerIcon: marketmakerIcon }
+	    main: { homeDir: homeDir, env: env, assetChainPorts: assetChainPorts, osPlatform: osPlatform, defaultCoinsListFile: defaultCoinsListFile, marketmakerBin: marketmakerBin, marketmakerDir: marketmakerDir, marketmakerIcon: marketmakerIcon },
+	    PassPhraseGenerator: _passphrasegenerator.PassPhraseGenerator
 	};
 	module.exports = exports['default'];
 
 /***/ }),
 /* 350 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.PassPhraseGenerator = undefined;
+	
+	var _wordlist = __webpack_require__(351);
+	
+	var PassPhraseGenerator = exports.PassPhraseGenerator = {
+	    seeds: 0,
+	    seedLimit: 512,
+	
+	    push: function push(seed) {
+	        Math.seedrandom(seed, true);
+	        this.seeds++;
+	    },
+	    isDone: function isDone() {
+	        if (this.seeds == this.seedLimit) {
+	            return true;
+	        }
+	        return false;
+	    },
+	    percentage: function percentage() {
+	        return Math.round(this.seeds / this.seedLimit * 100);
+	    },
+	
+	
+	    passPhrase: '',
+	
+	    wordCount: 2048,
+	
+	    words: _wordlist.ClientWordList,
+	
+	    generatePassPhrase: function generatePassPhrase(bitsval) {
+	        var crypto = window.crypto || window.msCrypto;
+	
+	        var bits = bitsval;
+	
+	        var random = new Uint32Array(bits / 32);
+	
+	        crypto.getRandomValues(random);
+	
+	        var i = 0,
+	            l = random.length,
+	            n = this.wordCount,
+	            words = [],
+	            x = void 0,
+	            w1 = void 0,
+	            w2 = void 0,
+	            w3 = void 0;
+	
+	        for (; i < l; i++) {
+	            x = random[i];
+	            w1 = x % n;
+	            w2 = ((x / n >> 0) + w1) % n;
+	            w3 = (((x / n >> 0) / n >> 0) + w2) % n;
+	
+	            words.push(this.words[w1]);
+	            words.push(this.words[w2]);
+	            words.push(this.words[w3]);
+	        }
+	
+	        this.passPhrase = words.join(' ');
+	
+	        crypto.getRandomValues(random);
+	
+	        return this.passPhrase;
+	    },
+	
+	
+	    // checks if it's possible that the pass phrase words supplied as the first parameter
+	    // were generated with the number of bits supplied as the second parameter
+	    isPassPhraseValid: function isPassPhraseValid(passPhraseWords, bits) {
+	        // the required number of words based on the number of bits
+	        // mirrors the generatePassPhrase function above
+	        var wordsCount = bits / 32 * 3;
+	        return passPhraseWords && passPhraseWords.length === wordsCount;
+	    },
+	
+	
+	    // checks if all pass phrase words are valid
+	    // i.e. checks if all words are contained in ClientWordList
+	    arePassPhraseWordsValid: function arePassPhraseWordsValid(passPhraseWords) {
+	        if (!passPhraseWords) {
+	            return false;
+	        }
+	
+	        var _iteratorNormalCompletion = true;
+	        var _didIteratorError = false;
+	        var _iteratorError = undefined;
+	
+	        try {
+	            for (var _iterator = passPhraseWords[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                var word = _step.value;
+	
+	                if (this.words.indexOf(word) === -1) {
+	                    return false;
+	                }
+	            }
+	        } catch (err) {
+	            _didIteratorError = true;
+	            _iteratorError = err;
+	        } finally {
+	            try {
+	                if (!_iteratorNormalCompletion && _iterator.return) {
+	                    _iterator.return();
+	                }
+	            } finally {
+	                if (_didIteratorError) {
+	                    throw _iteratorError;
+	                }
+	            }
+	        }
+	
+	        return true;
+	    },
+	    reset: function reset() {
+	        this.passPhrase = '';
+	        this.seeds = 0;
+	    }
+	}; /** ****************************************************************************
+	    * Copyright © 2016 The Waves Core Developers.                             	  *
+	    *                                                                            *
+	    * See the LICENSE files at     											  *
+	    * the top-level directory of this distribution for the individual copyright  *
+	    * holder information and the developer policies on copyright and licensing.  *
+	    *                                                                            *
+	    * Unless otherwise agreed in a custom licensing agreement, no part of the    *
+	    * Waves software, including this file, may be copied, modified, propagated,  *
+	    * or distributed except according to the terms contained in the LICENSE.txt  *
+	    * file.                                                                      *
+	    *                                                                            *
+	    * Removal or modification of this copyright notice is prohibited.            *
+	    *                                                                            *
+	    ******************************************************************************/
+	
+	/**
+	 * @depends {../3rdparty/jquery-2.1.0.js}
+	 */
+
+/***/ }),
+/* 351 */
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	// https://github.com/bitcoin/bips/blob/master/bip-0039/bip-0039-wordlists.md
+	var ClientWordList = exports.ClientWordList = ['abandon', 'ability', 'able', 'about', 'above', 'absent', 'absorb', 'abstract', 'absurd', 'abuse', 'access', 'accident', 'account', 'accuse', 'achieve', 'acid', 'acoustic', 'acquire', 'across', 'act', 'action', 'actor', 'actress', 'actual', 'adapt', 'add', 'addict', 'address', 'adjust', 'admit', 'adult', 'advance', 'advice', 'aerobic', 'affair', 'afford', 'afraid', 'again', 'age', 'agent', 'agree', 'ahead', 'aim', 'air', 'airport', 'aisle', 'alarm', 'album', 'alcohol', 'alert', 'alien', 'all', 'alley', 'allow', 'almost', 'alone', 'alpha', 'already', 'also', 'alter', 'always', 'amateur', 'amazing', 'among', 'amount', 'amused', 'analyst', 'anchor', 'ancient', 'anger', 'angle', 'angry', 'animal', 'ankle', 'announce', 'annual', 'another', 'answer', 'antenna', 'antique', 'anxiety', 'any', 'apart', 'apology', 'appear', 'apple', 'approve', 'april', 'arch', 'arctic', 'area', 'arena', 'argue', 'arm', 'armed', 'armor', 'army', 'around', 'arrange', 'arrest', 'arrive', 'arrow', 'art', 'artefact', 'artist', 'artwork', 'ask', 'aspect', 'assault', 'asset', 'assist', 'assume', 'asthma', 'athlete', 'atom', 'attack', 'attend', 'attitude', 'attract', 'auction', 'audit', 'august', 'aunt', 'author', 'auto', 'autumn', 'average', 'avocado', 'avoid', 'awake', 'aware', 'away', 'awesome', 'awful', 'awkward', 'axis', 'baby', 'bachelor', 'bacon', 'badge', 'bag', 'balance', 'balcony', 'ball', 'bamboo', 'banana', 'banner', 'bar', 'barely', 'bargain', 'barrel', 'base', 'basic', 'basket', 'battle', 'beach', 'bean', 'beauty', 'because', 'become', 'beef', 'before', 'begin', 'behave', 'behind', 'believe', 'below', 'belt', 'bench', 'benefit', 'best', 'betray', 'better', 'between', 'beyond', 'bicycle', 'bid', 'bike', 'bind', 'biology', 'bird', 'birth', 'bitter', 'black', 'blade', 'blame', 'blanket', 'blast', 'bleak', 'bless', 'blind', 'blood', 'blossom', 'blouse', 'blue', 'blur', 'blush', 'board', 'boat', 'body', 'boil', 'bomb', 'bone', 'bonus', 'book', 'boost', 'border', 'boring', 'borrow', 'boss', 'bottom', 'bounce', 'box', 'boy', 'bracket', 'brain', 'brand', 'brass', 'brave', 'bread', 'breeze', 'brick', 'bridge', 'brief', 'bright', 'bring', 'brisk', 'broccoli', 'broken', 'bronze', 'broom', 'brother', 'brown', 'brush', 'bubble', 'buddy', 'budget', 'buffalo', 'build', 'bulb', 'bulk', 'bullet', 'bundle', 'bunker', 'burden', 'burger', 'burst', 'bus', 'business', 'busy', 'butter', 'buyer', 'buzz', 'cabbage', 'cabin', 'cable', 'cactus', 'cage', 'cake', 'call', 'calm', 'camera', 'camp', 'can', 'canal', 'cancel', 'candy', 'cannon', 'canoe', 'canvas', 'canyon', 'capable', 'capital', 'captain', 'car', 'carbon', 'card', 'cargo', 'carpet', 'carry', 'cart', 'case', 'cash', 'casino', 'castle', 'casual', 'cat', 'catalog', 'catch', 'category', 'cattle', 'caught', 'cause', 'caution', 'cave', 'ceiling', 'celery', 'cement', 'census', 'century', 'cereal', 'certain', 'chair', 'chalk', 'champion', 'change', 'chaos', 'chapter', 'charge', 'chase', 'chat', 'cheap', 'check', 'cheese', 'chef', 'cherry', 'chest', 'chicken', 'chief', 'child', 'chimney', 'choice', 'choose', 'chronic', 'chuckle', 'chunk', 'churn', 'cigar', 'cinnamon', 'circle', 'citizen', 'city', 'civil', 'claim', 'clap', 'clarify', 'claw', 'clay', 'clean', 'clerk', 'clever', 'click', 'client', 'cliff', 'climb', 'clinic', 'clip', 'clock', 'clog', 'close', 'cloth', 'cloud', 'clown', 'club', 'clump', 'cluster', 'clutch', 'coach', 'coast', 'coconut', 'code', 'coffee', 'coil', 'coin', 'collect', 'color', 'column', 'combine', 'come', 'comfort', 'comic', 'common', 'company', 'concert', 'conduct', 'confirm', 'congress', 'connect', 'consider', 'control', 'convince', 'cook', 'cool', 'copper', 'copy', 'coral', 'core', 'corn', 'correct', 'cost', 'cotton', 'couch', 'country', 'couple', 'course', 'cousin', 'cover', 'coyote', 'crack', 'cradle', 'craft', 'cram', 'crane', 'crash', 'crater', 'crawl', 'crazy', 'cream', 'credit', 'creek', 'crew', 'cricket', 'crime', 'crisp', 'critic', 'crop', 'cross', 'crouch', 'crowd', 'crucial', 'cruel', 'cruise', 'crumble', 'crunch', 'crush', 'cry', 'crystal', 'cube', 'culture', 'cup', 'cupboard', 'curious', 'current', 'curtain', 'curve', 'cushion', 'custom', 'cute', 'cycle', 'dad', 'damage', 'damp', 'dance', 'danger', 'daring', 'dash', 'daughter', 'dawn', 'day', 'deal', 'debate', 'debris', 'decade', 'december', 'decide', 'decline', 'decorate', 'decrease', 'deer', 'defense', 'define', 'defy', 'degree', 'delay', 'deliver', 'demand', 'demise', 'denial', 'dentist', 'deny', 'depart', 'depend', 'deposit', 'depth', 'deputy', 'derive', 'describe', 'desert', 'design', 'desk', 'despair', 'destroy', 'detail', 'detect', 'develop', 'device', 'devote', 'diagram', 'dial', 'diamond', 'diary', 'dice', 'diesel', 'diet', 'differ', 'digital', 'dignity', 'dilemma', 'dinner', 'dinosaur', 'direct', 'dirt', 'disagree', 'discover', 'disease', 'dish', 'dismiss', 'disorder', 'display', 'distance', 'divert', 'divide', 'divorce', 'dizzy', 'doctor', 'document', 'dog', 'doll', 'dolphin', 'domain', 'donate', 'donkey', 'donor', 'door', 'dose', 'double', 'dove', 'draft', 'dragon', 'drama', 'drastic', 'draw', 'dream', 'dress', 'drift', 'drill', 'drink', 'drip', 'drive', 'drop', 'drum', 'dry', 'duck', 'dumb', 'dune', 'during', 'dust', 'dutch', 'duty', 'dwarf', 'dynamic', 'eager', 'eagle', 'early', 'earn', 'earth', 'easily', 'east', 'easy', 'echo', 'ecology', 'economy', 'edge', 'edit', 'educate', 'effort', 'egg', 'eight', 'either', 'elbow', 'elder', 'electric', 'elegant', 'element', 'elephant', 'elevator', 'elite', 'else', 'embark', 'embody', 'embrace', 'emerge', 'emotion', 'employ', 'empower', 'empty', 'enable', 'enact', 'end', 'endless', 'endorse', 'enemy', 'energy', 'enforce', 'engage', 'engine', 'enhance', 'enjoy', 'enlist', 'enough', 'enrich', 'enroll', 'ensure', 'enter', 'entire', 'entry', 'envelope', 'episode', 'equal', 'equip', 'era', 'erase', 'erode', 'erosion', 'error', 'erupt', 'escape', 'essay', 'essence', 'estate', 'eternal', 'ethics', 'evidence', 'evil', 'evoke', 'evolve', 'exact', 'example', 'excess', 'exchange', 'excite', 'exclude', 'excuse', 'execute', 'exercise', 'exhaust', 'exhibit', 'exile', 'exist', 'exit', 'exotic', 'expand', 'expect', 'expire', 'explain', 'expose', 'express', 'extend', 'extra', 'eye', 'eyebrow', 'fabric', 'face', 'faculty', 'fade', 'faint', 'faith', 'fall', 'false', 'fame', 'family', 'famous', 'fan', 'fancy', 'fantasy', 'farm', 'fashion', 'fat', 'fatal', 'father', 'fatigue', 'fault', 'favorite', 'feature', 'february', 'federal', 'fee', 'feed', 'feel', 'female', 'fence', 'festival', 'fetch', 'fever', 'few', 'fiber', 'fiction', 'field', 'figure', 'file', 'film', 'filter', 'final', 'find', 'fine', 'finger', 'finish', 'fire', 'firm', 'first', 'fiscal', 'fish', 'fit', 'fitness', 'fix', 'flag', 'flame', 'flash', 'flat', 'flavor', 'flee', 'flight', 'flip', 'float', 'flock', 'floor', 'flower', 'fluid', 'flush', 'fly', 'foam', 'focus', 'fog', 'foil', 'fold', 'follow', 'food', 'foot', 'force', 'forest', 'forget', 'fork', 'fortune', 'forum', 'forward', 'fossil', 'foster', 'found', 'fox', 'fragile', 'frame', 'frequent', 'fresh', 'friend', 'fringe', 'frog', 'front', 'frost', 'frown', 'frozen', 'fruit', 'fuel', 'fun', 'funny', 'furnace', 'fury', 'future', 'gadget', 'gain', 'galaxy', 'gallery', 'game', 'gap', 'garage', 'garbage', 'garden', 'garlic', 'garment', 'gas', 'gasp', 'gate', 'gather', 'gauge', 'gaze', 'general', 'genius', 'genre', 'gentle', 'genuine', 'gesture', 'ghost', 'giant', 'gift', 'giggle', 'ginger', 'giraffe', 'girl', 'give', 'glad', 'glance', 'glare', 'glass', 'glide', 'glimpse', 'globe', 'gloom', 'glory', 'glove', 'glow', 'glue', 'goat', 'goddess', 'gold', 'good', 'goose', 'gorilla', 'gospel', 'gossip', 'govern', 'gown', 'grab', 'grace', 'grain', 'grant', 'grape', 'grass', 'gravity', 'great', 'green', 'grid', 'grief', 'grit', 'grocery', 'group', 'grow', 'grunt', 'guard', 'guess', 'guide', 'guilt', 'guitar', 'gun', 'gym', 'habit', 'hair', 'half', 'hammer', 'hamster', 'hand', 'happy', 'harbor', 'hard', 'harsh', 'harvest', 'hat', 'have', 'hawk', 'hazard', 'head', 'health', 'heart', 'heavy', 'hedgehog', 'height', 'hello', 'helmet', 'help', 'hen', 'hero', 'hidden', 'high', 'hill', 'hint', 'hip', 'hire', 'history', 'hobby', 'hockey', 'hold', 'hole', 'holiday', 'hollow', 'home', 'honey', 'hood', 'hope', 'horn', 'horror', 'horse', 'hospital', 'host', 'hotel', 'hour', 'hover', 'hub', 'huge', 'human', 'humble', 'humor', 'hundred', 'hungry', 'hunt', 'hurdle', 'hurry', 'hurt', 'husband', 'hybrid', 'ice', 'icon', 'idea', 'identify', 'idle', 'ignore', 'ill', 'illegal', 'illness', 'image', 'imitate', 'immense', 'immune', 'impact', 'impose', 'improve', 'impulse', 'inch', 'include', 'income', 'increase', 'index', 'indicate', 'indoor', 'industry', 'infant', 'inflict', 'inform', 'inhale', 'inherit', 'initial', 'inject', 'injury', 'inmate', 'inner', 'innocent', 'input', 'inquiry', 'insane', 'insect', 'inside', 'inspire', 'install', 'intact', 'interest', 'into', 'invest', 'invite', 'involve', 'iron', 'island', 'isolate', 'issue', 'item', 'ivory', 'jacket', 'jaguar', 'jar', 'jazz', 'jealous', 'jeans', 'jelly', 'jewel', 'job', 'join', 'joke', 'journey', 'joy', 'judge', 'juice', 'jump', 'jungle', 'junior', 'junk', 'just', 'kangaroo', 'keen', 'keep', 'ketchup', 'key', 'kick', 'kid', 'kidney', 'kind', 'kingdom', 'kiss', 'kit', 'kitchen', 'kite', 'kitten', 'kiwi', 'knee', 'knife', 'knock', 'know', 'lab', 'label', 'labor', 'ladder', 'lady', 'lake', 'lamp', 'language', 'laptop', 'large', 'later', 'latin', 'laugh', 'laundry', 'lava', 'law', 'lawn', 'lawsuit', 'layer', 'lazy', 'leader', 'leaf', 'learn', 'leave', 'lecture', 'left', 'leg', 'legal', 'legend', 'leisure', 'lemon', 'lend', 'length', 'lens', 'leopard', 'lesson', 'letter', 'level', 'liar', 'liberty', 'library', 'license', 'life', 'lift', 'light', 'like', 'limb', 'limit', 'link', 'lion', 'liquid', 'list', 'little', 'live', 'lizard', 'load', 'loan', 'lobster', 'local', 'lock', 'logic', 'lonely', 'long', 'loop', 'lottery', 'loud', 'lounge', 'love', 'loyal', 'lucky', 'luggage', 'lumber', 'lunar', 'lunch', 'luxury', 'lyrics', 'machine', 'mad', 'magic', 'magnet', 'maid', 'mail', 'main', 'major', 'make', 'mammal', 'man', 'manage', 'mandate', 'mango', 'mansion', 'manual', 'maple', 'marble', 'march', 'margin', 'marine', 'market', 'marriage', 'mask', 'mass', 'master', 'match', 'material', 'math', 'matrix', 'matter', 'maximum', 'maze', 'meadow', 'mean', 'measure', 'meat', 'mechanic', 'medal', 'media', 'melody', 'melt', 'member', 'memory', 'mention', 'menu', 'mercy', 'merge', 'merit', 'merry', 'mesh', 'message', 'metal', 'method', 'middle', 'midnight', 'milk', 'million', 'mimic', 'mind', 'minimum', 'minor', 'minute', 'miracle', 'mirror', 'misery', 'miss', 'mistake', 'mix', 'mixed', 'mixture', 'mobile', 'model', 'modify', 'mom', 'moment', 'monitor', 'monkey', 'monster', 'month', 'moon', 'moral', 'more', 'morning', 'mosquito', 'mother', 'motion', 'motor', 'mountain', 'mouse', 'move', 'movie', 'much', 'muffin', 'mule', 'multiply', 'muscle', 'museum', 'mushroom', 'music', 'must', 'mutual', 'myself', 'mystery', 'myth', 'naive', 'name', 'napkin', 'narrow', 'nasty', 'nation', 'nature', 'near', 'neck', 'need', 'negative', 'neglect', 'neither', 'nephew', 'nerve', 'nest', 'net', 'network', 'neutral', 'never', 'news', 'next', 'nice', 'night', 'noble', 'noise', 'nominee', 'noodle', 'normal', 'north', 'nose', 'notable', 'note', 'nothing', 'notice', 'novel', 'now', 'nuclear', 'number', 'nurse', 'nut', 'oak', 'obey', 'object', 'oblige', 'obscure', 'observe', 'obtain', 'obvious', 'occur', 'ocean', 'october', 'odor', 'off', 'offer', 'office', 'often', 'oil', 'okay', 'old', 'olive', 'olympic', 'omit', 'once', 'one', 'onion', 'online', 'only', 'open', 'opera', 'opinion', 'oppose', 'option', 'orange', 'orbit', 'orchard', 'order', 'ordinary', 'organ', 'orient', 'original', 'orphan', 'ostrich', 'other', 'outdoor', 'outer', 'output', 'outside', 'oval', 'oven', 'over', 'own', 'owner', 'oxygen', 'oyster', 'ozone', 'pact', 'paddle', 'page', 'pair', 'palace', 'palm', 'panda', 'panel', 'panic', 'panther', 'paper', 'parade', 'parent', 'park', 'parrot', 'party', 'pass', 'patch', 'path', 'patient', 'patrol', 'pattern', 'pause', 'pave', 'payment', 'peace', 'peanut', 'pear', 'peasant', 'pelican', 'pen', 'penalty', 'pencil', 'people', 'pepper', 'perfect', 'permit', 'person', 'pet', 'phone', 'photo', 'phrase', 'physical', 'piano', 'picnic', 'picture', 'piece', 'pig', 'pigeon', 'pill', 'pilot', 'pink', 'pioneer', 'pipe', 'pistol', 'pitch', 'pizza', 'place', 'planet', 'plastic', 'plate', 'play', 'please', 'pledge', 'pluck', 'plug', 'plunge', 'poem', 'poet', 'point', 'polar', 'pole', 'police', 'pond', 'pony', 'pool', 'popular', 'portion', 'position', 'possible', 'post', 'potato', 'pottery', 'poverty', 'powder', 'power', 'practice', 'praise', 'predict', 'prefer', 'prepare', 'present', 'pretty', 'prevent', 'price', 'pride', 'primary', 'print', 'priority', 'prison', 'private', 'prize', 'problem', 'process', 'produce', 'profit', 'program', 'project', 'promote', 'proof', 'property', 'prosper', 'protect', 'proud', 'provide', 'public', 'pudding', 'pull', 'pulp', 'pulse', 'pumpkin', 'punch', 'pupil', 'puppy', 'purchase', 'purity', 'purpose', 'purse', 'push', 'put', 'puzzle', 'pyramid', 'quality', 'quantum', 'quarter', 'question', 'quick', 'quit', 'quiz', 'quote', 'rabbit', 'raccoon', 'race', 'rack', 'radar', 'radio', 'rail', 'rain', 'raise', 'rally', 'ramp', 'ranch', 'random', 'range', 'rapid', 'rare', 'rate', 'rather', 'raven', 'raw', 'razor', 'ready', 'real', 'reason', 'rebel', 'rebuild', 'recall', 'receive', 'recipe', 'record', 'recycle', 'reduce', 'reflect', 'reform', 'refuse', 'region', 'regret', 'regular', 'reject', 'relax', 'release', 'relief', 'rely', 'remain', 'remember', 'remind', 'remove', 'render', 'renew', 'rent', 'reopen', 'repair', 'repeat', 'replace', 'report', 'require', 'rescue', 'resemble', 'resist', 'resource', 'response', 'result', 'retire', 'retreat', 'return', 'reunion', 'reveal', 'review', 'reward', 'rhythm', 'rib', 'ribbon', 'rice', 'rich', 'ride', 'ridge', 'rifle', 'right', 'rigid', 'ring', 'riot', 'ripple', 'risk', 'ritual', 'rival', 'river', 'road', 'roast', 'robot', 'robust', 'rocket', 'romance', 'roof', 'rookie', 'room', 'rose', 'rotate', 'rough', 'round', 'route', 'royal', 'rubber', 'rude', 'rug', 'rule', 'run', 'runway', 'rural', 'sad', 'saddle', 'sadness', 'safe', 'sail', 'salad', 'salmon', 'salon', 'salt', 'salute', 'same', 'sample', 'sand', 'satisfy', 'satoshi', 'sauce', 'sausage', 'save', 'say', 'scale', 'scan', 'scare', 'scatter', 'scene', 'scheme', 'school', 'science', 'scissors', 'scorpion', 'scout', 'scrap', 'screen', 'script', 'scrub', 'sea', 'search', 'season', 'seat', 'second', 'secret', 'section', 'security', 'seed', 'seek', 'segment', 'select', 'sell', 'seminar', 'senior', 'sense', 'sentence', 'series', 'service', 'session', 'settle', 'setup', 'seven', 'shadow', 'shaft', 'shallow', 'share', 'shed', 'shell', 'sheriff', 'shield', 'shift', 'shine', 'ship', 'shiver', 'shock', 'shoe', 'shoot', 'shop', 'short', 'shoulder', 'shove', 'shrimp', 'shrug', 'shuffle', 'shy', 'sibling', 'sick', 'side', 'siege', 'sight', 'sign', 'silent', 'silk', 'silly', 'silver', 'similar', 'simple', 'since', 'sing', 'siren', 'sister', 'situate', 'six', 'size', 'skate', 'sketch', 'ski', 'skill', 'skin', 'skirt', 'skull', 'slab', 'slam', 'sleep', 'slender', 'slice', 'slide', 'slight', 'slim', 'slogan', 'slot', 'slow', 'slush', 'small', 'smart', 'smile', 'smoke', 'smooth', 'snack', 'snake', 'snap', 'sniff', 'snow', 'soap', 'soccer', 'social', 'sock', 'soda', 'soft', 'solar', 'soldier', 'solid', 'solution', 'solve', 'someone', 'song', 'soon', 'sorry', 'sort', 'soul', 'sound', 'soup', 'source', 'south', 'space', 'spare', 'spatial', 'spawn', 'speak', 'special', 'speed', 'spell', 'spend', 'sphere', 'spice', 'spider', 'spike', 'spin', 'spirit', 'split', 'spoil', 'sponsor', 'spoon', 'sport', 'spot', 'spray', 'spread', 'spring', 'spy', 'square', 'squeeze', 'squirrel', 'stable', 'stadium', 'staff', 'stage', 'stairs', 'stamp', 'stand', 'start', 'state', 'stay', 'steak', 'steel', 'stem', 'step', 'stereo', 'stick', 'still', 'sting', 'stock', 'stomach', 'stone', 'stool', 'story', 'stove', 'strategy', 'street', 'strike', 'strong', 'struggle', 'student', 'stuff', 'stumble', 'style', 'subject', 'submit', 'subway', 'success', 'such', 'sudden', 'suffer', 'sugar', 'suggest', 'suit', 'summer', 'sun', 'sunny', 'sunset', 'super', 'supply', 'supreme', 'sure', 'surface', 'surge', 'surprise', 'surround', 'survey', 'suspect', 'sustain', 'swallow', 'swamp', 'swap', 'swarm', 'swear', 'sweet', 'swift', 'swim', 'swing', 'switch', 'sword', 'symbol', 'symptom', 'syrup', 'system', 'table', 'tackle', 'tag', 'tail', 'talent', 'talk', 'tank', 'tape', 'target', 'task', 'taste', 'tattoo', 'taxi', 'teach', 'team', 'tell', 'ten', 'tenant', 'tennis', 'tent', 'term', 'test', 'text', 'thank', 'that', 'theme', 'then', 'theory', 'there', 'they', 'thing', 'this', 'thought', 'three', 'thrive', 'throw', 'thumb', 'thunder', 'ticket', 'tide', 'tiger', 'tilt', 'timber', 'time', 'tiny', 'tip', 'tired', 'tissue', 'title', 'toast', 'tobacco', 'today', 'toddler', 'toe', 'together', 'toilet', 'token', 'tomato', 'tomorrow', 'tone', 'tongue', 'tonight', 'tool', 'tooth', 'top', 'topic', 'topple', 'torch', 'tornado', 'tortoise', 'toss', 'total', 'tourist', 'toward', 'tower', 'town', 'toy', 'track', 'trade', 'traffic', 'tragic', 'train', 'transfer', 'trap', 'trash', 'travel', 'tray', 'treat', 'tree', 'trend', 'trial', 'tribe', 'trick', 'trigger', 'trim', 'trip', 'trophy', 'trouble', 'truck', 'true', 'truly', 'trumpet', 'trust', 'truth', 'try', 'tube', 'tuition', 'tumble', 'tuna', 'tunnel', 'turkey', 'turn', 'turtle', 'twelve', 'twenty', 'twice', 'twin', 'twist', 'two', 'type', 'typical', 'ugly', 'umbrella', 'unable', 'unaware', 'uncle', 'uncover', 'under', 'undo', 'unfair', 'unfold', 'unhappy', 'uniform', 'unique', 'unit', 'universe', 'unknown', 'unlock', 'until', 'unusual', 'unveil', 'update', 'upgrade', 'uphold', 'upon', 'upper', 'upset', 'urban', 'urge', 'usage', 'use', 'used', 'useful', 'useless', 'usual', 'utility', 'vacant', 'vacuum', 'vague', 'valid', 'valley', 'valve', 'van', 'vanish', 'vapor', 'various', 'vast', 'vault', 'vehicle', 'velvet', 'vendor', 'venture', 'venue', 'verb', 'verify', 'version', 'very', 'vessel', 'veteran', 'viable', 'vibrant', 'vicious', 'victory', 'video', 'view', 'village', 'vintage', 'violin', 'virtual', 'virus', 'visa', 'visit', 'visual', 'vital', 'vivid', 'vocal', 'voice', 'void', 'volcano', 'volume', 'vote', 'voyage', 'wage', 'wagon', 'wait', 'walk', 'wall', 'walnut', 'want', 'warfare', 'warm', 'warrior', 'wash', 'wasp', 'waste', 'water', 'wave', 'way', 'wealth', 'weapon', 'wear', 'weasel', 'weather', 'web', 'wedding', 'weekend', 'weird', 'welcome', 'west', 'wet', 'whale', 'what', 'wheat', 'wheel', 'when', 'where', 'whip', 'whisper', 'wide', 'width', 'wife', 'wild', 'will', 'win', 'window', 'wine', 'wing', 'wink', 'winner', 'winter', 'wire', 'wisdom', 'wise', 'wish', 'witness', 'wolf', 'woman', 'wonder', 'wood', 'wool', 'word', 'work', 'world', 'worry', 'worth', 'wrap', 'wreck', 'wrestle', 'wrist', 'write', 'wrong', 'yard', 'year', 'yellow', 'you', 'young', 'youth', 'zebra', 'zero', 'zone', 'zoo'];
+
+/***/ }),
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var os = __webpack_require__(337)
@@ -10570,7 +10775,7 @@ module.exports =
 
 
 /***/ }),
-/* 351 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -10578,10 +10783,10 @@ module.exports =
 	 * Module dependencies.
 	 */
 	
-	var url = __webpack_require__(352);
-	var parser = __webpack_require__(357);
-	var Manager = __webpack_require__(363);
-	var debug = __webpack_require__(354)('socket.io-client');
+	var url = __webpack_require__(354);
+	var parser = __webpack_require__(359);
+	var Manager = __webpack_require__(365);
+	var debug = __webpack_require__(356)('socket.io-client');
 	
 	/**
 	 * Module exports.
@@ -10665,12 +10870,12 @@ module.exports =
 	 * @api public
 	 */
 	
-	exports.Manager = __webpack_require__(363);
-	exports.Socket = __webpack_require__(405);
+	exports.Manager = __webpack_require__(365);
+	exports.Socket = __webpack_require__(407);
 
 
 /***/ }),
-/* 352 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -10678,8 +10883,8 @@ module.exports =
 	 * Module dependencies.
 	 */
 	
-	var parseuri = __webpack_require__(353);
-	var debug = __webpack_require__(354)('socket.io-client:url');
+	var parseuri = __webpack_require__(355);
+	var debug = __webpack_require__(356)('socket.io-client:url');
 	
 	/**
 	 * Module exports.
@@ -10751,7 +10956,7 @@ module.exports =
 
 
 /***/ }),
-/* 353 */
+/* 355 */
 /***/ (function(module, exports) {
 
 	/**
@@ -10796,7 +11001,7 @@ module.exports =
 
 
 /***/ }),
-/* 354 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -10805,7 +11010,7 @@ module.exports =
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(355);
+	exports = module.exports = __webpack_require__(357);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -10987,7 +11192,7 @@ module.exports =
 
 
 /***/ }),
-/* 355 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -11003,7 +11208,7 @@ module.exports =
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(356);
+	exports.humanize = __webpack_require__(358);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -11195,7 +11400,7 @@ module.exports =
 
 
 /***/ }),
-/* 356 */
+/* 358 */
 /***/ (function(module, exports) {
 
 	/**
@@ -11353,7 +11558,7 @@ module.exports =
 
 
 /***/ }),
-/* 357 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -11361,11 +11566,11 @@ module.exports =
 	 * Module dependencies.
 	 */
 	
-	var debug = __webpack_require__(354)('socket.io-parser');
-	var Emitter = __webpack_require__(358);
-	var hasBin = __webpack_require__(359);
-	var binary = __webpack_require__(361);
-	var isBuf = __webpack_require__(362);
+	var debug = __webpack_require__(356)('socket.io-parser');
+	var Emitter = __webpack_require__(360);
+	var hasBin = __webpack_require__(361);
+	var binary = __webpack_require__(363);
+	var isBuf = __webpack_require__(364);
 	
 	/**
 	 * Protocol version.
@@ -11759,7 +11964,7 @@ module.exports =
 
 
 /***/ }),
-/* 358 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -11928,7 +12133,7 @@ module.exports =
 
 
 /***/ }),
-/* 359 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global Blob File */
@@ -11937,7 +12142,7 @@ module.exports =
 	 * Module requirements.
 	 */
 	
-	var isArray = __webpack_require__(360);
+	var isArray = __webpack_require__(362);
 	
 	var toString = Object.prototype.toString;
 	var withNativeBlob = typeof global.Blob === 'function' || toString.call(global.Blob) === '[object BlobConstructor]';
@@ -11996,7 +12201,7 @@ module.exports =
 
 
 /***/ }),
-/* 360 */
+/* 362 */
 /***/ (function(module, exports) {
 
 	var toString = {}.toString;
@@ -12007,7 +12212,7 @@ module.exports =
 
 
 /***/ }),
-/* 361 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*global Blob,File*/
@@ -12016,8 +12221,8 @@ module.exports =
 	 * Module requirements
 	 */
 	
-	var isArray = __webpack_require__(360);
-	var isBuf = __webpack_require__(362);
+	var isArray = __webpack_require__(362);
+	var isBuf = __webpack_require__(364);
 	var toString = Object.prototype.toString;
 	var withNativeBlob = typeof global.Blob === 'function' || toString.call(global.Blob) === '[object BlobConstructor]';
 	var withNativeFile = typeof global.File === 'function' || toString.call(global.File) === '[object FileConstructor]';
@@ -12154,7 +12359,7 @@ module.exports =
 
 
 /***/ }),
-/* 362 */
+/* 364 */
 /***/ (function(module, exports) {
 
 	
@@ -12173,7 +12378,7 @@ module.exports =
 
 
 /***/ }),
-/* 363 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -12181,15 +12386,15 @@ module.exports =
 	 * Module dependencies.
 	 */
 	
-	var eio = __webpack_require__(364);
-	var Socket = __webpack_require__(405);
-	var Emitter = __webpack_require__(358);
-	var parser = __webpack_require__(357);
-	var on = __webpack_require__(407);
-	var bind = __webpack_require__(408);
-	var debug = __webpack_require__(354)('socket.io-client:manager');
-	var indexOf = __webpack_require__(404);
-	var Backoff = __webpack_require__(409);
+	var eio = __webpack_require__(366);
+	var Socket = __webpack_require__(407);
+	var Emitter = __webpack_require__(360);
+	var parser = __webpack_require__(359);
+	var on = __webpack_require__(409);
+	var bind = __webpack_require__(410);
+	var debug = __webpack_require__(356)('socket.io-client:manager');
+	var indexOf = __webpack_require__(406);
+	var Backoff = __webpack_require__(411);
 	
 	/**
 	 * IE6+ hasOwnProperty
@@ -12752,19 +12957,19 @@ module.exports =
 
 
 /***/ }),
-/* 364 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
-	module.exports = __webpack_require__(365);
+	module.exports = __webpack_require__(367);
 
 
 /***/ }),
-/* 365 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
-	module.exports = __webpack_require__(366);
+	module.exports = __webpack_require__(368);
 	
 	/**
 	 * Exports parser
@@ -12772,24 +12977,24 @@ module.exports =
 	 * @api public
 	 *
 	 */
-	module.exports.parser = __webpack_require__(373);
+	module.exports.parser = __webpack_require__(375);
 
 
 /***/ }),
-/* 366 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 	
-	var transports = __webpack_require__(367);
-	var Emitter = __webpack_require__(358);
-	var debug = __webpack_require__(354)('engine.io-client:socket');
-	var index = __webpack_require__(404);
-	var parser = __webpack_require__(373);
-	var parseuri = __webpack_require__(353);
-	var parseqs = __webpack_require__(381);
+	var transports = __webpack_require__(369);
+	var Emitter = __webpack_require__(360);
+	var debug = __webpack_require__(356)('engine.io-client:socket');
+	var index = __webpack_require__(406);
+	var parser = __webpack_require__(375);
+	var parseuri = __webpack_require__(355);
+	var parseqs = __webpack_require__(383);
 	
 	/**
 	 * Module exports.
@@ -12922,9 +13127,9 @@ module.exports =
 	 */
 	
 	Socket.Socket = Socket;
-	Socket.Transport = __webpack_require__(372);
-	Socket.transports = __webpack_require__(367);
-	Socket.parser = __webpack_require__(373);
+	Socket.Transport = __webpack_require__(374);
+	Socket.transports = __webpack_require__(369);
+	Socket.parser = __webpack_require__(375);
 	
 	/**
 	 * Creates transport of the given type.
@@ -13525,17 +13730,17 @@ module.exports =
 
 
 /***/ }),
-/* 367 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies
 	 */
 	
-	var XMLHttpRequest = __webpack_require__(368);
-	var XHR = __webpack_require__(370);
-	var JSONP = __webpack_require__(384);
-	var websocket = __webpack_require__(385);
+	var XMLHttpRequest = __webpack_require__(370);
+	var XHR = __webpack_require__(372);
+	var JSONP = __webpack_require__(386);
+	var websocket = __webpack_require__(387);
 	
 	/**
 	 * Export transports.
@@ -13584,7 +13789,7 @@ module.exports =
 
 
 /***/ }),
-/* 368 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -13602,7 +13807,7 @@ module.exports =
 	
 	var fs = __webpack_require__(339);
 	var Url = __webpack_require__(346);
-	var spawn = __webpack_require__(369).spawn;
+	var spawn = __webpack_require__(371).spawn;
 	
 	/**
 	 * Module exports.
@@ -14240,24 +14445,24 @@ module.exports =
 
 
 /***/ }),
-/* 369 */
+/* 371 */
 /***/ (function(module, exports) {
 
 	module.exports = require("child_process");
 
 /***/ }),
-/* 370 */
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module requirements.
 	 */
 	
-	var XMLHttpRequest = __webpack_require__(368);
-	var Polling = __webpack_require__(371);
-	var Emitter = __webpack_require__(358);
-	var inherit = __webpack_require__(382);
-	var debug = __webpack_require__(354)('engine.io-client:polling-xhr');
+	var XMLHttpRequest = __webpack_require__(370);
+	var Polling = __webpack_require__(373);
+	var Emitter = __webpack_require__(360);
+	var inherit = __webpack_require__(384);
+	var debug = __webpack_require__(356)('engine.io-client:polling-xhr');
 	
 	/**
 	 * Module exports.
@@ -14665,19 +14870,19 @@ module.exports =
 
 
 /***/ }),
-/* 371 */
+/* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 	
-	var Transport = __webpack_require__(372);
-	var parseqs = __webpack_require__(381);
-	var parser = __webpack_require__(373);
-	var inherit = __webpack_require__(382);
-	var yeast = __webpack_require__(383);
-	var debug = __webpack_require__(354)('engine.io-client:polling');
+	var Transport = __webpack_require__(374);
+	var parseqs = __webpack_require__(383);
+	var parser = __webpack_require__(375);
+	var inherit = __webpack_require__(384);
+	var yeast = __webpack_require__(385);
+	var debug = __webpack_require__(356)('engine.io-client:polling');
 	
 	/**
 	 * Module exports.
@@ -14690,7 +14895,7 @@ module.exports =
 	 */
 	
 	var hasXHR2 = (function () {
-	  var XMLHttpRequest = __webpack_require__(368);
+	  var XMLHttpRequest = __webpack_require__(370);
 	  var xhr = new XMLHttpRequest({ xdomain: false });
 	  return null != xhr.responseType;
 	})();
@@ -14916,15 +15121,15 @@ module.exports =
 
 
 /***/ }),
-/* 372 */
+/* 374 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 	
-	var parser = __webpack_require__(373);
-	var Emitter = __webpack_require__(358);
+	var parser = __webpack_require__(375);
+	var Emitter = __webpack_require__(360);
 	
 	/**
 	 * Module exports.
@@ -15079,22 +15284,22 @@ module.exports =
 
 
 /***/ }),
-/* 373 */
+/* 375 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 	
-	var keys = __webpack_require__(374);
-	var hasBinary = __webpack_require__(359);
-	var sliceBuffer = __webpack_require__(375);
-	var after = __webpack_require__(376);
-	var utf8 = __webpack_require__(377);
+	var keys = __webpack_require__(376);
+	var hasBinary = __webpack_require__(361);
+	var sliceBuffer = __webpack_require__(377);
+	var after = __webpack_require__(378);
+	var utf8 = __webpack_require__(379);
 	
 	var base64encoder;
 	if (global && global.ArrayBuffer) {
-	  base64encoder = __webpack_require__(379);
+	  base64encoder = __webpack_require__(381);
 	}
 	
 	/**
@@ -15152,7 +15357,7 @@ module.exports =
 	 * Create a blob api even for blob builder when vendor prefixes exist
 	 */
 	
-	var Blob = __webpack_require__(380);
+	var Blob = __webpack_require__(382);
 	
 	/**
 	 * Encodes a packet.
@@ -15691,7 +15896,7 @@ module.exports =
 
 
 /***/ }),
-/* 374 */
+/* 376 */
 /***/ (function(module, exports) {
 
 	
@@ -15716,7 +15921,7 @@ module.exports =
 
 
 /***/ }),
-/* 375 */
+/* 377 */
 /***/ (function(module, exports) {
 
 	/**
@@ -15751,7 +15956,7 @@ module.exports =
 
 
 /***/ }),
-/* 376 */
+/* 378 */
 /***/ (function(module, exports) {
 
 	module.exports = after
@@ -15785,7 +15990,7 @@ module.exports =
 
 
 /***/ }),
-/* 377 */
+/* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {/*! https://mths.be/utf8js v2.1.2 by @mathias */
@@ -16042,10 +16247,10 @@ module.exports =
 	
 	}(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(378)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(380)(module)))
 
 /***/ }),
-/* 378 */
+/* 380 */
 /***/ (function(module, exports) {
 
 	module.exports = function(module) {
@@ -16061,7 +16266,7 @@ module.exports =
 
 
 /***/ }),
-/* 379 */
+/* 381 */
 /***/ (function(module, exports) {
 
 	/*
@@ -16134,7 +16339,7 @@ module.exports =
 
 
 /***/ }),
-/* 380 */
+/* 382 */
 /***/ (function(module, exports) {
 
 	/**
@@ -16236,7 +16441,7 @@ module.exports =
 
 
 /***/ }),
-/* 381 */
+/* 383 */
 /***/ (function(module, exports) {
 
 	/**
@@ -16279,7 +16484,7 @@ module.exports =
 
 
 /***/ }),
-/* 382 */
+/* 384 */
 /***/ (function(module, exports) {
 
 	
@@ -16291,7 +16496,7 @@ module.exports =
 	};
 
 /***/ }),
-/* 383 */
+/* 385 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -16365,7 +16570,7 @@ module.exports =
 
 
 /***/ }),
-/* 384 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -16373,8 +16578,8 @@ module.exports =
 	 * Module requirements.
 	 */
 	
-	var Polling = __webpack_require__(371);
-	var inherit = __webpack_require__(382);
+	var Polling = __webpack_require__(373);
+	var inherit = __webpack_require__(384);
 	
 	/**
 	 * Module exports.
@@ -16602,24 +16807,24 @@ module.exports =
 
 
 /***/ }),
-/* 385 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 	
-	var Transport = __webpack_require__(372);
-	var parser = __webpack_require__(373);
-	var parseqs = __webpack_require__(381);
-	var inherit = __webpack_require__(382);
-	var yeast = __webpack_require__(383);
-	var debug = __webpack_require__(354)('engine.io-client:websocket');
+	var Transport = __webpack_require__(374);
+	var parser = __webpack_require__(375);
+	var parseqs = __webpack_require__(383);
+	var inherit = __webpack_require__(384);
+	var yeast = __webpack_require__(385);
+	var debug = __webpack_require__(356)('engine.io-client:websocket');
 	var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
 	var NodeWebSocket;
 	if (typeof window === 'undefined') {
 	  try {
-	    NodeWebSocket = __webpack_require__(386);
+	    NodeWebSocket = __webpack_require__(388);
 	  } catch (e) { }
 	}
 	
@@ -16894,7 +17099,7 @@ module.exports =
 
 
 /***/ }),
-/* 386 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*!
@@ -16905,17 +17110,17 @@ module.exports =
 	
 	'use strict';
 	
-	const WebSocket = __webpack_require__(387);
+	const WebSocket = __webpack_require__(389);
 	
-	WebSocket.Server = __webpack_require__(403);
-	WebSocket.Receiver = __webpack_require__(399);
-	WebSocket.Sender = __webpack_require__(402);
+	WebSocket.Server = __webpack_require__(405);
+	WebSocket.Receiver = __webpack_require__(401);
+	WebSocket.Sender = __webpack_require__(404);
 	
 	module.exports = WebSocket;
 
 
 /***/ }),
-/* 387 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*!
@@ -16926,19 +17131,19 @@ module.exports =
 	
 	'use strict';
 	
-	const EventEmitter = __webpack_require__(388);
-	const crypto = __webpack_require__(389);
-	const Ultron = __webpack_require__(390);
+	const EventEmitter = __webpack_require__(390);
+	const crypto = __webpack_require__(391);
+	const Ultron = __webpack_require__(392);
 	const https = __webpack_require__(345);
 	const http = __webpack_require__(344);
 	const url = __webpack_require__(346);
 	
-	const PerMessageDeflate = __webpack_require__(391);
-	const EventTarget = __webpack_require__(396);
-	const Extensions = __webpack_require__(397);
-	const constants = __webpack_require__(398);
-	const Receiver = __webpack_require__(399);
-	const Sender = __webpack_require__(402);
+	const PerMessageDeflate = __webpack_require__(393);
+	const EventTarget = __webpack_require__(398);
+	const Extensions = __webpack_require__(399);
+	const constants = __webpack_require__(400);
+	const Receiver = __webpack_require__(401);
+	const Sender = __webpack_require__(404);
 	
 	const protocolVersions = [8, 13];
 	const closeTimeout = 30 * 1000; // Allow 30 seconds to terminate the connection cleanly.
@@ -17633,19 +17838,19 @@ module.exports =
 
 
 /***/ }),
-/* 388 */
+/* 390 */
 /***/ (function(module, exports) {
 
 	module.exports = require("events");
 
 /***/ }),
-/* 389 */
+/* 391 */
 /***/ (function(module, exports) {
 
 	module.exports = require("crypto");
 
 /***/ }),
-/* 390 */
+/* 392 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -17789,15 +17994,15 @@ module.exports =
 
 
 /***/ }),
-/* 391 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	const safeBuffer = __webpack_require__(392);
-	const zlib = __webpack_require__(394);
+	const safeBuffer = __webpack_require__(394);
+	const zlib = __webpack_require__(396);
 	
-	const bufferUtil = __webpack_require__(395);
+	const bufferUtil = __webpack_require__(397);
 	
 	const Buffer = safeBuffer.Buffer;
 	
@@ -18179,26 +18384,26 @@ module.exports =
 
 
 /***/ }),
-/* 392 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(393)
+	module.exports = __webpack_require__(395)
 
 
 /***/ }),
-/* 393 */
+/* 395 */
 /***/ (function(module, exports) {
 
 	module.exports = require("buffer");
 
 /***/ }),
-/* 394 */
+/* 396 */
 /***/ (function(module, exports) {
 
 	module.exports = require("zlib");
 
 /***/ }),
-/* 395 */
+/* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*!
@@ -18209,7 +18414,7 @@ module.exports =
 	
 	'use strict';
 	
-	const safeBuffer = __webpack_require__(392);
+	const safeBuffer = __webpack_require__(394);
 	
 	const Buffer = safeBuffer.Buffer;
 	
@@ -18275,7 +18480,7 @@ module.exports =
 
 
 /***/ }),
-/* 396 */
+/* 398 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -18436,7 +18641,7 @@ module.exports =
 
 
 /***/ }),
-/* 397 */
+/* 399 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -18509,12 +18714,12 @@ module.exports =
 
 
 /***/ }),
-/* 398 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	const safeBuffer = __webpack_require__(392);
+	const safeBuffer = __webpack_require__(394);
 	
 	const Buffer = safeBuffer.Buffer;
 	
@@ -18525,7 +18730,7 @@ module.exports =
 
 
 /***/ }),
-/* 399 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*!
@@ -18536,13 +18741,13 @@ module.exports =
 	
 	'use strict';
 	
-	const safeBuffer = __webpack_require__(392);
+	const safeBuffer = __webpack_require__(394);
 	
-	const PerMessageDeflate = __webpack_require__(391);
-	const isValidUTF8 = __webpack_require__(400);
-	const bufferUtil = __webpack_require__(395);
-	const ErrorCodes = __webpack_require__(401);
-	const constants = __webpack_require__(398);
+	const PerMessageDeflate = __webpack_require__(393);
+	const isValidUTF8 = __webpack_require__(402);
+	const bufferUtil = __webpack_require__(397);
+	const ErrorCodes = __webpack_require__(403);
+	const constants = __webpack_require__(400);
 	
 	const Buffer = safeBuffer.Buffer;
 	
@@ -19086,7 +19291,7 @@ module.exports =
 
 
 /***/ }),
-/* 400 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*!
@@ -19109,7 +19314,7 @@ module.exports =
 
 
 /***/ }),
-/* 401 */
+/* 403 */
 /***/ (function(module, exports) {
 
 	/*!
@@ -19143,7 +19348,7 @@ module.exports =
 
 
 /***/ }),
-/* 402 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*!
@@ -19154,12 +19359,12 @@ module.exports =
 	
 	'use strict';
 	
-	const safeBuffer = __webpack_require__(392);
-	const crypto = __webpack_require__(389);
+	const safeBuffer = __webpack_require__(394);
+	const crypto = __webpack_require__(391);
 	
-	const PerMessageDeflate = __webpack_require__(391);
-	const bufferUtil = __webpack_require__(395);
-	const ErrorCodes = __webpack_require__(401);
+	const PerMessageDeflate = __webpack_require__(393);
+	const bufferUtil = __webpack_require__(397);
+	const ErrorCodes = __webpack_require__(403);
 	
 	const Buffer = safeBuffer.Buffer;
 	
@@ -19552,7 +19757,7 @@ module.exports =
 
 
 /***/ }),
-/* 403 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*!
@@ -19563,17 +19768,17 @@ module.exports =
 	
 	'use strict';
 	
-	const safeBuffer = __webpack_require__(392);
-	const EventEmitter = __webpack_require__(388);
-	const crypto = __webpack_require__(389);
-	const Ultron = __webpack_require__(390);
+	const safeBuffer = __webpack_require__(394);
+	const EventEmitter = __webpack_require__(390);
+	const crypto = __webpack_require__(391);
+	const Ultron = __webpack_require__(392);
 	const http = __webpack_require__(344);
 	const url = __webpack_require__(346);
 	
-	const PerMessageDeflate = __webpack_require__(391);
-	const Extensions = __webpack_require__(397);
-	const constants = __webpack_require__(398);
-	const WebSocket = __webpack_require__(387);
+	const PerMessageDeflate = __webpack_require__(393);
+	const Extensions = __webpack_require__(399);
+	const constants = __webpack_require__(400);
+	const WebSocket = __webpack_require__(389);
 	
 	const Buffer = safeBuffer.Buffer;
 	
@@ -19894,7 +20099,7 @@ module.exports =
 
 
 /***/ }),
-/* 404 */
+/* 406 */
 /***/ (function(module, exports) {
 
 	
@@ -19909,7 +20114,7 @@ module.exports =
 	};
 
 /***/ }),
-/* 405 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -19917,13 +20122,13 @@ module.exports =
 	 * Module dependencies.
 	 */
 	
-	var parser = __webpack_require__(357);
-	var Emitter = __webpack_require__(358);
-	var toArray = __webpack_require__(406);
-	var on = __webpack_require__(407);
-	var bind = __webpack_require__(408);
-	var debug = __webpack_require__(354)('socket.io-client:socket');
-	var parseqs = __webpack_require__(381);
+	var parser = __webpack_require__(359);
+	var Emitter = __webpack_require__(360);
+	var toArray = __webpack_require__(408);
+	var on = __webpack_require__(409);
+	var bind = __webpack_require__(410);
+	var debug = __webpack_require__(356)('socket.io-client:socket');
+	var parseqs = __webpack_require__(383);
 	
 	/**
 	 * Module exports.
@@ -20333,7 +20538,7 @@ module.exports =
 
 
 /***/ }),
-/* 406 */
+/* 408 */
 /***/ (function(module, exports) {
 
 	module.exports = toArray
@@ -20352,7 +20557,7 @@ module.exports =
 
 
 /***/ }),
-/* 407 */
+/* 409 */
 /***/ (function(module, exports) {
 
 	
@@ -20382,7 +20587,7 @@ module.exports =
 
 
 /***/ }),
-/* 408 */
+/* 410 */
 /***/ (function(module, exports) {
 
 	/**
@@ -20411,7 +20616,7 @@ module.exports =
 
 
 /***/ }),
-/* 409 */
+/* 411 */
 /***/ (function(module, exports) {
 
 	
@@ -20502,35 +20707,35 @@ module.exports =
 
 
 /***/ }),
-/* 410 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const assign = __webpack_require__(411)
+	const assign = __webpack_require__(413)
 	
 	const fs = {}
 	
 	// Export graceful-fs:
-	assign(fs, __webpack_require__(412))
+	assign(fs, __webpack_require__(414))
 	// Export extra methods:
-	assign(fs, __webpack_require__(421))
-	assign(fs, __webpack_require__(430))
-	assign(fs, __webpack_require__(425))
-	assign(fs, __webpack_require__(434))
+	assign(fs, __webpack_require__(423))
+	assign(fs, __webpack_require__(432))
+	assign(fs, __webpack_require__(427))
 	assign(fs, __webpack_require__(436))
-	assign(fs, __webpack_require__(441))
-	assign(fs, __webpack_require__(442))
+	assign(fs, __webpack_require__(438))
 	assign(fs, __webpack_require__(443))
 	assign(fs, __webpack_require__(444))
-	assign(fs, __webpack_require__(450))
-	assign(fs, __webpack_require__(429))
+	assign(fs, __webpack_require__(445))
+	assign(fs, __webpack_require__(446))
+	assign(fs, __webpack_require__(452))
+	assign(fs, __webpack_require__(431))
 	
 	module.exports = fs
 
 
 /***/ }),
-/* 411 */
+/* 413 */
 /***/ (function(module, exports) {
 
 	'use strict'
@@ -20552,13 +20757,13 @@ module.exports =
 
 
 /***/ }),
-/* 412 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// This is adapted from https://github.com/normalize/mz
 	// Copyright (c) 2014-2016 Jonathan Ong me@jongleberry.com and Contributors
-	const u = __webpack_require__(413).fromCallback
-	const fs = __webpack_require__(414)
+	const u = __webpack_require__(415).fromCallback
+	const fs = __webpack_require__(416)
 	
 	const api = [
 	  'access',
@@ -20662,7 +20867,7 @@ module.exports =
 
 
 /***/ }),
-/* 413 */
+/* 415 */
 /***/ (function(module, exports) {
 
 	'use strict'
@@ -20693,12 +20898,12 @@ module.exports =
 
 
 /***/ }),
-/* 414 */
+/* 416 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var fs = __webpack_require__(339)
-	var polyfills = __webpack_require__(415)
-	var legacy = __webpack_require__(418)
+	var polyfills = __webpack_require__(417)
+	var legacy = __webpack_require__(420)
 	var queue = []
 	
 	var util = __webpack_require__(336)
@@ -20718,11 +20923,11 @@ module.exports =
 	if (/\bgfs4\b/i.test(({"NODE_ENV":"production"}).NODE_DEBUG || '')) {
 	  process.on('exit', function() {
 	    debug(queue)
-	    __webpack_require__(420).equal(queue.length, 0)
+	    __webpack_require__(422).equal(queue.length, 0)
 	  })
 	}
 	
-	module.exports = patch(__webpack_require__(416))
+	module.exports = patch(__webpack_require__(418))
 	if (({"NODE_ENV":"production"}).TEST_GRACEFUL_FS_GLOBAL_PATCH) {
 	  module.exports = patch(fs)
 	}
@@ -20961,11 +21166,11 @@ module.exports =
 
 
 /***/ }),
-/* 415 */
+/* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var fs = __webpack_require__(416)
-	var constants = __webpack_require__(417)
+	var fs = __webpack_require__(418)
+	var constants = __webpack_require__(419)
 	
 	var origCwd = process.cwd
 	var cwd = null
@@ -21297,7 +21502,7 @@ module.exports =
 
 
 /***/ }),
-/* 416 */
+/* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
@@ -21324,16 +21529,16 @@ module.exports =
 
 
 /***/ }),
-/* 417 */
+/* 419 */
 /***/ (function(module, exports) {
 
 	module.exports = require("constants");
 
 /***/ }),
-/* 418 */
+/* 420 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Stream = __webpack_require__(419).Stream
+	var Stream = __webpack_require__(421).Stream
 	
 	module.exports = legacy
 	
@@ -21454,38 +21659,38 @@ module.exports =
 
 
 /***/ }),
-/* 419 */
+/* 421 */
 /***/ (function(module, exports) {
 
 	module.exports = require("stream");
 
 /***/ }),
-/* 420 */
+/* 422 */
 /***/ (function(module, exports) {
 
 	module.exports = require("assert");
 
 /***/ }),
-/* 421 */
+/* 423 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	const u = __webpack_require__(413).fromCallback
+	const u = __webpack_require__(415).fromCallback
 	module.exports = {
-	  copy: u(__webpack_require__(422))
+	  copy: u(__webpack_require__(424))
 	}
 
 
 /***/ }),
-/* 422 */
+/* 424 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const fs = __webpack_require__(414)
+	const fs = __webpack_require__(416)
 	const path = __webpack_require__(341)
-	const ncp = __webpack_require__(423)
-	const mkdir = __webpack_require__(425)
-	const pathExists = __webpack_require__(429).pathExists
+	const ncp = __webpack_require__(425)
+	const mkdir = __webpack_require__(427)
+	const pathExists = __webpack_require__(431).pathExists
 	
 	function copy (src, dest, options, callback) {
 	  if (typeof options === 'function' && !callback) {
@@ -21536,14 +21741,14 @@ module.exports =
 
 
 /***/ }),
-/* 423 */
+/* 425 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// imported from ncp (this is temporary, will rewrite)
 	
-	var fs = __webpack_require__(414)
+	var fs = __webpack_require__(416)
 	var path = __webpack_require__(341)
-	var utimes = __webpack_require__(424)
+	var utimes = __webpack_require__(426)
 	
 	function ncp (source, dest, options, callback) {
 	  if (!callback) {
@@ -21776,12 +21981,12 @@ module.exports =
 
 
 /***/ }),
-/* 424 */
+/* 426 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const fs = __webpack_require__(414)
+	const fs = __webpack_require__(416)
 	const os = __webpack_require__(337)
 	const path = __webpack_require__(341)
 	
@@ -21854,13 +22059,13 @@ module.exports =
 
 
 /***/ }),
-/* 425 */
+/* 427 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
-	const u = __webpack_require__(413).fromCallback
-	const mkdirs = u(__webpack_require__(426))
-	const mkdirsSync = __webpack_require__(428)
+	const u = __webpack_require__(415).fromCallback
+	const mkdirs = u(__webpack_require__(428))
+	const mkdirsSync = __webpack_require__(430)
 	
 	module.exports = {
 	  mkdirs: mkdirs,
@@ -21874,14 +22079,14 @@ module.exports =
 
 
 /***/ }),
-/* 426 */
+/* 428 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const fs = __webpack_require__(414)
+	const fs = __webpack_require__(416)
 	const path = __webpack_require__(341)
-	const invalidWin32Path = __webpack_require__(427).invalidWin32Path
+	const invalidWin32Path = __webpack_require__(429).invalidWin32Path
 	
 	const o777 = parseInt('0777', 8)
 	
@@ -21943,7 +22148,7 @@ module.exports =
 
 
 /***/ }),
-/* 427 */
+/* 429 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
@@ -21974,14 +22179,14 @@ module.exports =
 
 
 /***/ }),
-/* 428 */
+/* 430 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const fs = __webpack_require__(414)
+	const fs = __webpack_require__(416)
 	const path = __webpack_require__(341)
-	const invalidWin32Path = __webpack_require__(427).invalidWin32Path
+	const invalidWin32Path = __webpack_require__(429).invalidWin32Path
 	
 	const o777 = parseInt('0777', 8)
 	
@@ -22039,12 +22244,12 @@ module.exports =
 
 
 /***/ }),
-/* 429 */
+/* 431 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
-	const u = __webpack_require__(413).fromPromise
-	const fs = __webpack_require__(412)
+	const u = __webpack_require__(415).fromPromise
+	const fs = __webpack_require__(414)
 	
 	function pathExists (path) {
 	  return fs.access(path).then(() => true).catch(() => false)
@@ -22057,24 +22262,24 @@ module.exports =
 
 
 /***/ }),
-/* 430 */
+/* 432 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  copySync: __webpack_require__(431)
+	  copySync: __webpack_require__(433)
 	}
 
 
 /***/ }),
-/* 431 */
+/* 433 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const fs = __webpack_require__(414)
+	const fs = __webpack_require__(416)
 	const path = __webpack_require__(341)
-	const copyFileSync = __webpack_require__(432)
-	const mkdir = __webpack_require__(425)
+	const copyFileSync = __webpack_require__(434)
+	const mkdir = __webpack_require__(427)
 	
 	function copySync (src, dest, options) {
 	  if (typeof options === 'function' || options instanceof RegExp) {
@@ -22134,15 +22339,15 @@ module.exports =
 
 
 /***/ }),
-/* 432 */
+/* 434 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const fs = __webpack_require__(414)
+	const fs = __webpack_require__(416)
 	
 	const BUF_LENGTH = 64 * 1024
-	const _buff = __webpack_require__(433)(BUF_LENGTH)
+	const _buff = __webpack_require__(435)(BUF_LENGTH)
 	
 	function copyFileSync (srcFile, destFile, options) {
 	  const overwrite = options.overwrite
@@ -22181,7 +22386,7 @@ module.exports =
 
 
 /***/ }),
-/* 433 */
+/* 435 */
 /***/ (function(module, exports) {
 
 	/* eslint-disable node/no-deprecated-api */
@@ -22198,13 +22403,13 @@ module.exports =
 
 
 /***/ }),
-/* 434 */
+/* 436 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const u = __webpack_require__(413).fromCallback
-	const rimraf = __webpack_require__(435)
+	const u = __webpack_require__(415).fromCallback
+	const rimraf = __webpack_require__(437)
 	
 	module.exports = {
 	  remove: u(rimraf),
@@ -22213,14 +22418,14 @@ module.exports =
 
 
 /***/ }),
-/* 435 */
+/* 437 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const fs = __webpack_require__(414)
+	const fs = __webpack_require__(416)
 	const path = __webpack_require__(341)
-	const assert = __webpack_require__(420)
+	const assert = __webpack_require__(422)
 	
 	const isWindows = (process.platform === 'win32')
 	
@@ -22533,16 +22738,16 @@ module.exports =
 
 
 /***/ }),
-/* 436 */
+/* 438 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const u = __webpack_require__(413).fromCallback
-	const jsonFile = __webpack_require__(437)
+	const u = __webpack_require__(415).fromCallback
+	const jsonFile = __webpack_require__(439)
 	
-	jsonFile.outputJson = u(__webpack_require__(439))
-	jsonFile.outputJsonSync = __webpack_require__(440)
+	jsonFile.outputJson = u(__webpack_require__(441))
+	jsonFile.outputJsonSync = __webpack_require__(442)
 	// aliases
 	jsonFile.outputJSON = jsonFile.outputJson
 	jsonFile.outputJSONSync = jsonFile.outputJsonSync
@@ -22555,13 +22760,13 @@ module.exports =
 
 
 /***/ }),
-/* 437 */
+/* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const u = __webpack_require__(413).fromCallback
-	const jsonFile = __webpack_require__(438)
+	const u = __webpack_require__(415).fromCallback
+	const jsonFile = __webpack_require__(440)
 	
 	module.exports = {
 	  // jsonfile exports
@@ -22573,12 +22778,12 @@ module.exports =
 
 
 /***/ }),
-/* 438 */
+/* 440 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var _fs
 	try {
-	  _fs = __webpack_require__(414)
+	  _fs = __webpack_require__(416)
 	} catch (_) {
 	  _fs = __webpack_require__(339)
 	}
@@ -22713,15 +22918,15 @@ module.exports =
 
 
 /***/ }),
-/* 439 */
+/* 441 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
 	const path = __webpack_require__(341)
-	const mkdir = __webpack_require__(425)
-	const pathExists = __webpack_require__(429).pathExists
-	const jsonFile = __webpack_require__(437)
+	const mkdir = __webpack_require__(427)
+	const pathExists = __webpack_require__(431).pathExists
+	const jsonFile = __webpack_require__(439)
 	
 	function outputJson (file, data, options, callback) {
 	  if (typeof options === 'function') {
@@ -22746,15 +22951,15 @@ module.exports =
 
 
 /***/ }),
-/* 440 */
+/* 442 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const fs = __webpack_require__(414)
+	const fs = __webpack_require__(416)
 	const path = __webpack_require__(341)
-	const mkdir = __webpack_require__(425)
-	const jsonFile = __webpack_require__(437)
+	const mkdir = __webpack_require__(427)
+	const jsonFile = __webpack_require__(439)
 	
 	function outputJsonSync (file, data, options) {
 	  const dir = path.dirname(file)
@@ -22770,7 +22975,7 @@ module.exports =
 
 
 /***/ }),
-/* 441 */
+/* 443 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
@@ -22781,12 +22986,12 @@ module.exports =
 	
 	// this needs a cleanup
 	
-	const u = __webpack_require__(413).fromCallback
-	const fs = __webpack_require__(414)
-	const ncp = __webpack_require__(423)
+	const u = __webpack_require__(415).fromCallback
+	const fs = __webpack_require__(416)
+	const ncp = __webpack_require__(425)
 	const path = __webpack_require__(341)
-	const remove = __webpack_require__(434).remove
-	const mkdirp = __webpack_require__(425).mkdirs
+	const remove = __webpack_require__(436).remove
+	const mkdirp = __webpack_require__(427).mkdirs
 	
 	function move (src, dest, options, callback) {
 	  if (typeof options === 'function') {
@@ -22946,17 +23151,17 @@ module.exports =
 
 
 /***/ }),
-/* 442 */
+/* 444 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const fs = __webpack_require__(414)
+	const fs = __webpack_require__(416)
 	const path = __webpack_require__(341)
-	const copySync = __webpack_require__(430).copySync
-	const removeSync = __webpack_require__(434).removeSync
-	const mkdirpSync = __webpack_require__(425).mkdirsSync
-	const buffer = __webpack_require__(433)
+	const copySync = __webpack_require__(432).copySync
+	const removeSync = __webpack_require__(436).removeSync
+	const mkdirpSync = __webpack_require__(427).mkdirsSync
+	const buffer = __webpack_require__(435)
 	
 	function moveSync (src, dest, options) {
 	  options = options || {}
@@ -23070,16 +23275,16 @@ module.exports =
 
 
 /***/ }),
-/* 443 */
+/* 445 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const u = __webpack_require__(413).fromCallback
+	const u = __webpack_require__(415).fromCallback
 	const fs = __webpack_require__(339)
 	const path = __webpack_require__(341)
-	const mkdir = __webpack_require__(425)
-	const remove = __webpack_require__(434)
+	const mkdir = __webpack_require__(427)
+	const remove = __webpack_require__(436)
 	
 	const emptyDir = u(function emptyDir (dir, callback) {
 	  callback = callback || function () {}
@@ -23124,14 +23329,14 @@ module.exports =
 
 
 /***/ }),
-/* 444 */
+/* 446 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const file = __webpack_require__(445)
-	const link = __webpack_require__(446)
-	const symlink = __webpack_require__(447)
+	const file = __webpack_require__(447)
+	const link = __webpack_require__(448)
+	const symlink = __webpack_require__(449)
 	
 	module.exports = {
 	  // file
@@ -23153,16 +23358,16 @@ module.exports =
 
 
 /***/ }),
-/* 445 */
+/* 447 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const u = __webpack_require__(413).fromCallback
+	const u = __webpack_require__(415).fromCallback
 	const path = __webpack_require__(341)
-	const fs = __webpack_require__(414)
-	const mkdir = __webpack_require__(425)
-	const pathExists = __webpack_require__(429).pathExists
+	const fs = __webpack_require__(416)
+	const mkdir = __webpack_require__(427)
+	const pathExists = __webpack_require__(431).pathExists
 	
 	function createFile (file, callback) {
 	  function makeFile () {
@@ -23208,16 +23413,16 @@ module.exports =
 
 
 /***/ }),
-/* 446 */
+/* 448 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const u = __webpack_require__(413).fromCallback
+	const u = __webpack_require__(415).fromCallback
 	const path = __webpack_require__(341)
-	const fs = __webpack_require__(414)
-	const mkdir = __webpack_require__(425)
-	const pathExists = __webpack_require__(429).pathExists
+	const fs = __webpack_require__(416)
+	const mkdir = __webpack_require__(427)
+	const pathExists = __webpack_require__(431).pathExists
 	
 	function createLink (srcpath, dstpath, callback) {
 	  function makeLink (srcpath, dstpath) {
@@ -23275,27 +23480,27 @@ module.exports =
 
 
 /***/ }),
-/* 447 */
+/* 449 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const u = __webpack_require__(413).fromCallback
+	const u = __webpack_require__(415).fromCallback
 	const path = __webpack_require__(341)
-	const fs = __webpack_require__(414)
-	const _mkdirs = __webpack_require__(425)
+	const fs = __webpack_require__(416)
+	const _mkdirs = __webpack_require__(427)
 	const mkdirs = _mkdirs.mkdirs
 	const mkdirsSync = _mkdirs.mkdirsSync
 	
-	const _symlinkPaths = __webpack_require__(448)
+	const _symlinkPaths = __webpack_require__(450)
 	const symlinkPaths = _symlinkPaths.symlinkPaths
 	const symlinkPathsSync = _symlinkPaths.symlinkPathsSync
 	
-	const _symlinkType = __webpack_require__(449)
+	const _symlinkType = __webpack_require__(451)
 	const symlinkType = _symlinkType.symlinkType
 	const symlinkTypeSync = _symlinkType.symlinkTypeSync
 	
-	const pathExists = __webpack_require__(429).pathExists
+	const pathExists = __webpack_require__(431).pathExists
 	
 	function createSymlink (srcpath, dstpath, type, callback) {
 	  callback = (typeof type === 'function') ? type : callback
@@ -23347,14 +23552,14 @@ module.exports =
 
 
 /***/ }),
-/* 448 */
+/* 450 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
 	const path = __webpack_require__(341)
-	const fs = __webpack_require__(414)
-	const pathExists = __webpack_require__(429).pathExists
+	const fs = __webpack_require__(416)
+	const pathExists = __webpack_require__(431).pathExists
 	
 	/**
 	 * Function that returns two types of paths, one relative to symlink, and one
@@ -23452,12 +23657,12 @@ module.exports =
 
 
 /***/ }),
-/* 449 */
+/* 451 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const fs = __webpack_require__(414)
+	const fs = __webpack_require__(416)
 	
 	function symlinkType (srcpath, type, callback) {
 	  callback = (typeof type === 'function') ? type : callback
@@ -23489,16 +23694,16 @@ module.exports =
 
 
 /***/ }),
-/* 450 */
+/* 452 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
-	const u = __webpack_require__(413).fromCallback
-	const fs = __webpack_require__(414)
+	const u = __webpack_require__(415).fromCallback
+	const fs = __webpack_require__(416)
 	const path = __webpack_require__(341)
-	const mkdir = __webpack_require__(425)
-	const pathExists = __webpack_require__(429).pathExists
+	const mkdir = __webpack_require__(427)
+	const pathExists = __webpack_require__(431).pathExists
 	
 	function outputFile (file, data, encoding, callback) {
 	  if (typeof encoding === 'function') {
@@ -23535,14 +23740,14 @@ module.exports =
 
 
 /***/ }),
-/* 451 */
+/* 453 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var net = __webpack_require__(452)
+	var net = __webpack_require__(454)
 	var Socket = net.Socket
-	var async = __webpack_require__(453)
-	var isNumberLike = __webpack_require__(454)
-	var promisify = __webpack_require__(456)
+	var async = __webpack_require__(455)
+	var isNumberLike = __webpack_require__(456)
+	var promisify = __webpack_require__(458)
 	
 	/**
 	 * Finds the first port with a status of 'open', implying the port is in use and
@@ -23784,13 +23989,13 @@ module.exports =
 
 
 /***/ }),
-/* 452 */
+/* 454 */
 /***/ (function(module, exports) {
 
 	module.exports = require("net");
 
 /***/ }),
-/* 453 */
+/* 455 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -25061,11 +25266,11 @@ module.exports =
 
 
 /***/ }),
-/* 454 */
+/* 456 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
-	var isNumber = __webpack_require__(455)
+	var isNumber = __webpack_require__(457)
 	
 	/**
 	 * @id isNumberLike
@@ -25121,7 +25326,7 @@ module.exports =
 
 
 /***/ }),
-/* 455 */
+/* 457 */
 /***/ (function(module, exports) {
 
 	/**
@@ -25180,7 +25385,7 @@ module.exports =
 
 
 /***/ }),
-/* 456 */
+/* 458 */
 /***/ (function(module, exports) {
 
 	module.exports = promisify
@@ -25205,7 +25410,7 @@ module.exports =
 
 
 /***/ }),
-/* 457 */
+/* 459 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25214,7 +25419,7 @@ module.exports =
 	  value: true
 	});
 	
-	var _events = __webpack_require__(458);
+	var _events = __webpack_require__(460);
 	
 	Object.keys(_events).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -25226,7 +25431,7 @@ module.exports =
 	  });
 	});
 	
-	var _events2 = __webpack_require__(460);
+	var _events2 = __webpack_require__(462);
 	
 	Object.keys(_events2).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -25238,7 +25443,7 @@ module.exports =
 	  });
 	});
 	
-	var _events3 = __webpack_require__(461);
+	var _events3 = __webpack_require__(463);
 	
 	Object.keys(_events3).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -25250,7 +25455,7 @@ module.exports =
 	  });
 	});
 	
-	var _events4 = __webpack_require__(462);
+	var _events4 = __webpack_require__(464);
 	
 	Object.keys(_events4).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -25262,7 +25467,7 @@ module.exports =
 	  });
 	});
 	
-	var _events5 = __webpack_require__(463);
+	var _events5 = __webpack_require__(465);
 	
 	Object.keys(_events5).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -25275,7 +25480,7 @@ module.exports =
 	});
 
 /***/ }),
-/* 458 */
+/* 460 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25289,7 +25494,7 @@ module.exports =
 	
 	var _electronLog2 = _interopRequireDefault(_electronLog);
 	
-	var _logging = __webpack_require__(459);
+	var _logging = __webpack_require__(461);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -25404,7 +25609,7 @@ module.exports =
 	};
 
 /***/ }),
-/* 459 */
+/* 461 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -25425,7 +25630,7 @@ module.exports =
 	module.exports = exports["default"];
 
 /***/ }),
-/* 460 */
+/* 462 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -25517,7 +25722,7 @@ module.exports =
 	};
 
 /***/ }),
-/* 461 */
+/* 463 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -25548,9 +25753,22 @@ module.exports =
 	        api.fetchCoins();
 	    });
 	
+	    listener.on('withdraw', function (e, params) {
+	        emitter.send('loading', { type: 'add', key: 6 });
+	        api.withdraw(params);
+	    });
+	
+	    listener.on('confirmWithdraw', function (e, params) {
+	        api.sendrawtransaction(params);
+	    });
+	
 	    api.on('setPortfolio', function (data) {
 	        /* intercept callback from API and update the store */
 	        emitter.send('setPortfolio', data);
+	    });
+	
+	    api.on('coinEnabled', function () {
+	        emitter.send('loading', { type: 'delete', key: 4 });
 	    });
 	
 	    api.on('marketUpdate', function (data) {
@@ -25560,10 +25778,21 @@ module.exports =
 	    api.on('coinsList', function (coins) {
 	        emitter.send('coinsList', coins);
 	    });
+	
+	    api.on('confirmWithdraw', function (data) {
+	        emitter.send('loading', { type: 'delete', key: 6 });
+	        /* intercept callback from API and update the store */
+	        emitter.send('confirmWithdraw', data);
+	    });
+	
+	    api.on('sendrawtransaction', function (data) {
+	        /* intercept callback from API and update the store */
+	        emitter.send('sendrawtransaction', data);
+	    });
 	};
 
 /***/ }),
-/* 462 */
+/* 464 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -25599,7 +25828,7 @@ module.exports =
 	};
 
 /***/ }),
-/* 463 */
+/* 465 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -25626,13 +25855,13 @@ module.exports =
 	};
 
 /***/ }),
-/* 464 */
+/* 466 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	const electron = __webpack_require__(327);
-	const localShortcut = __webpack_require__(465);
-	const isDev = __webpack_require__(469);
+	const localShortcut = __webpack_require__(467);
+	const isDev = __webpack_require__(471);
 	
 	const app = electron.app;
 	const BrowserWindow = electron.BrowserWindow;
@@ -25702,7 +25931,7 @@ module.exports =
 					{}.hasOwnProperty.call(BrowserWindow.getDevToolsExtensions(), 'devtron');
 	
 				if (!devtronAlreadyAdded) {
-					BrowserWindow.addDevToolsExtension(__webpack_require__(470).path);
+					BrowserWindow.addDevToolsExtension(__webpack_require__(472).path);
 				}
 			} catch (err) {}
 	
@@ -25721,15 +25950,15 @@ module.exports =
 
 
 /***/ }),
-/* 465 */
+/* 467 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	const {app, BrowserWindow} = __webpack_require__(327);
-	const isAccelerator = __webpack_require__(466);
-	const equals = __webpack_require__(467);
-	const {toKeyEvent} = __webpack_require__(468);
-	const _debug = __webpack_require__(354);
+	const isAccelerator = __webpack_require__(468);
+	const equals = __webpack_require__(469);
+	const {toKeyEvent} = __webpack_require__(470);
+	const _debug = __webpack_require__(356);
 	
 	const debug = _debug('electron-localshortcut');
 	
@@ -26035,7 +26264,7 @@ module.exports =
 
 
 /***/ }),
-/* 466 */
+/* 468 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -26062,7 +26291,7 @@ module.exports =
 
 
 /***/ }),
-/* 467 */
+/* 469 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -26107,7 +26336,7 @@ module.exports =
 
 
 /***/ }),
-/* 468 */
+/* 470 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -26308,7 +26537,7 @@ module.exports =
 
 
 /***/ }),
-/* 469 */
+/* 471 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26319,7 +26548,7 @@ module.exports =
 
 
 /***/ }),
-/* 470 */
+/* 472 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	const electron = __webpack_require__(327)
@@ -26356,7 +26585,7 @@ module.exports =
 
 
 /***/ }),
-/* 471 */
+/* 473 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26380,15 +26609,15 @@ module.exports =
 	
 	var _path2 = _interopRequireDefault(_path);
 	
-	var _semver = __webpack_require__(472);
+	var _semver = __webpack_require__(474);
 	
 	var _semver2 = _interopRequireDefault(_semver);
 	
-	var _downloadChromeExtension = __webpack_require__(473);
+	var _downloadChromeExtension = __webpack_require__(475);
 	
 	var _downloadChromeExtension2 = _interopRequireDefault(_downloadChromeExtension);
 	
-	var _utils = __webpack_require__(492);
+	var _utils = __webpack_require__(494);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -26477,7 +26706,7 @@ module.exports =
 	};
 
 /***/ }),
-/* 472 */
+/* 474 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports = module.exports = SemVer;
@@ -27779,7 +28008,7 @@ module.exports =
 
 
 /***/ }),
-/* 473 */
+/* 475 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27796,15 +28025,15 @@ module.exports =
 	
 	var _path2 = _interopRequireDefault(_path);
 	
-	var _rimraf = __webpack_require__(474);
+	var _rimraf = __webpack_require__(476);
 	
 	var _rimraf2 = _interopRequireDefault(_rimraf);
 	
-	var _crossUnzip = __webpack_require__(489);
+	var _crossUnzip = __webpack_require__(491);
 	
 	var _crossUnzip2 = _interopRequireDefault(_crossUnzip);
 	
-	var _utils = __webpack_require__(492);
+	var _utils = __webpack_require__(494);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -27850,16 +28079,16 @@ module.exports =
 	exports.default = downloadChromeExtension;
 
 /***/ }),
-/* 474 */
+/* 476 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = rimraf
 	rimraf.sync = rimrafSync
 	
-	var assert = __webpack_require__(420)
+	var assert = __webpack_require__(422)
 	var path = __webpack_require__(341)
 	var fs = __webpack_require__(339)
-	var glob = __webpack_require__(475)
+	var glob = __webpack_require__(477)
 	var _0666 = parseInt('666', 8)
 	
 	var defaultGlobOpts = {
@@ -28220,7 +28449,7 @@ module.exports =
 
 
 /***/ }),
-/* 475 */
+/* 477 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// Approach:
@@ -28266,26 +28495,26 @@ module.exports =
 	module.exports = glob
 	
 	var fs = __webpack_require__(339)
-	var rp = __webpack_require__(476)
-	var minimatch = __webpack_require__(478)
+	var rp = __webpack_require__(478)
+	var minimatch = __webpack_require__(480)
 	var Minimatch = minimatch.Minimatch
-	var inherits = __webpack_require__(482)
-	var EE = __webpack_require__(388).EventEmitter
+	var inherits = __webpack_require__(484)
+	var EE = __webpack_require__(390).EventEmitter
 	var path = __webpack_require__(341)
-	var assert = __webpack_require__(420)
-	var isAbsolute = __webpack_require__(483)
-	var globSync = __webpack_require__(484)
-	var common = __webpack_require__(485)
+	var assert = __webpack_require__(422)
+	var isAbsolute = __webpack_require__(485)
+	var globSync = __webpack_require__(486)
+	var common = __webpack_require__(487)
 	var alphasort = common.alphasort
 	var alphasorti = common.alphasorti
 	var setopts = common.setopts
 	var ownProp = common.ownProp
-	var inflight = __webpack_require__(486)
+	var inflight = __webpack_require__(488)
 	var util = __webpack_require__(336)
 	var childrenIgnored = common.childrenIgnored
 	var isIgnored = common.isIgnored
 	
-	var once = __webpack_require__(488)
+	var once = __webpack_require__(490)
 	
 	function glob (pattern, options, cb) {
 	  if (typeof options === 'function') cb = options, options = {}
@@ -29016,7 +29245,7 @@ module.exports =
 
 
 /***/ }),
-/* 476 */
+/* 478 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = realpath
@@ -29032,7 +29261,7 @@ module.exports =
 	
 	var version = process.version
 	var ok = /^v[0-5]\./.test(version)
-	var old = __webpack_require__(477)
+	var old = __webpack_require__(479)
 	
 	function newError (er) {
 	  return er && er.syscall === 'realpath' && (
@@ -29088,7 +29317,7 @@ module.exports =
 
 
 /***/ }),
-/* 477 */
+/* 479 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -29397,7 +29626,7 @@ module.exports =
 
 
 /***/ }),
-/* 478 */
+/* 480 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = minimatch
@@ -29409,7 +29638,7 @@ module.exports =
 	} catch (er) {}
 	
 	var GLOBSTAR = minimatch.GLOBSTAR = Minimatch.GLOBSTAR = {}
-	var expand = __webpack_require__(479)
+	var expand = __webpack_require__(481)
 	
 	var plTypes = {
 	  '!': { open: '(?:(?!(?:', close: '))[^/]*?)'},
@@ -30326,11 +30555,11 @@ module.exports =
 
 
 /***/ }),
-/* 479 */
+/* 481 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var concatMap = __webpack_require__(480);
-	var balanced = __webpack_require__(481);
+	var concatMap = __webpack_require__(482);
+	var balanced = __webpack_require__(483);
 	
 	module.exports = expandTop;
 	
@@ -30533,7 +30762,7 @@ module.exports =
 
 
 /***/ }),
-/* 480 */
+/* 482 */
 /***/ (function(module, exports) {
 
 	module.exports = function (xs, fn) {
@@ -30552,7 +30781,7 @@ module.exports =
 
 
 /***/ }),
-/* 481 */
+/* 483 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -30617,7 +30846,7 @@ module.exports =
 
 
 /***/ }),
-/* 482 */
+/* 484 */
 /***/ (function(module, exports) {
 
 	if (typeof Object.create === 'function') {
@@ -30646,7 +30875,7 @@ module.exports =
 
 
 /***/ }),
-/* 483 */
+/* 485 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -30672,22 +30901,22 @@ module.exports =
 
 
 /***/ }),
-/* 484 */
+/* 486 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = globSync
 	globSync.GlobSync = GlobSync
 	
 	var fs = __webpack_require__(339)
-	var rp = __webpack_require__(476)
-	var minimatch = __webpack_require__(478)
+	var rp = __webpack_require__(478)
+	var minimatch = __webpack_require__(480)
 	var Minimatch = minimatch.Minimatch
-	var Glob = __webpack_require__(475).Glob
+	var Glob = __webpack_require__(477).Glob
 	var util = __webpack_require__(336)
 	var path = __webpack_require__(341)
-	var assert = __webpack_require__(420)
-	var isAbsolute = __webpack_require__(483)
-	var common = __webpack_require__(485)
+	var assert = __webpack_require__(422)
+	var isAbsolute = __webpack_require__(485)
+	var common = __webpack_require__(487)
 	var alphasort = common.alphasort
 	var alphasorti = common.alphasorti
 	var setopts = common.setopts
@@ -31164,7 +31393,7 @@ module.exports =
 
 
 /***/ }),
-/* 485 */
+/* 487 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports.alphasort = alphasort
@@ -31182,8 +31411,8 @@ module.exports =
 	}
 	
 	var path = __webpack_require__(341)
-	var minimatch = __webpack_require__(478)
-	var isAbsolute = __webpack_require__(483)
+	var minimatch = __webpack_require__(480)
+	var isAbsolute = __webpack_require__(485)
 	var Minimatch = minimatch.Minimatch
 	
 	function alphasorti (a, b) {
@@ -31410,12 +31639,12 @@ module.exports =
 
 
 /***/ }),
-/* 486 */
+/* 488 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var wrappy = __webpack_require__(487)
+	var wrappy = __webpack_require__(489)
 	var reqs = Object.create(null)
-	var once = __webpack_require__(488)
+	var once = __webpack_require__(490)
 	
 	module.exports = wrappy(inflight)
 	
@@ -31470,7 +31699,7 @@ module.exports =
 
 
 /***/ }),
-/* 487 */
+/* 489 */
 /***/ (function(module, exports) {
 
 	// Returns a wrapper function that returns a wrapped callback
@@ -31509,10 +31738,10 @@ module.exports =
 
 
 /***/ }),
-/* 488 */
+/* 490 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var wrappy = __webpack_require__(487)
+	var wrappy = __webpack_require__(489)
 	module.exports = wrappy(once)
 	module.exports.strict = wrappy(onceStrict)
 	
@@ -31557,11 +31786,11 @@ module.exports =
 
 
 /***/ }),
-/* 489 */
+/* 491 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict'
-	var spawn = __webpack_require__(369).spawn
+	var spawn = __webpack_require__(371).spawn
 	var slice = Array.prototype.slice
 	
 	var unzip = process.platform === 'win32' ? forWin32 : forUnix
@@ -31572,7 +31801,7 @@ module.exports =
 	
 	// https://github.com/fritx/win-7zip
 	function forWin32 (inPath, outPath, callback) {
-	  var _7z = __webpack_require__(490)['7z']
+	  var _7z = __webpack_require__(492)['7z']
 	
 	  // very 奇葩
 	  // eg. 7z x archive.zip -oc:\Doc
@@ -31615,11 +31844,11 @@ module.exports =
 
 
 /***/ }),
-/* 490 */
+/* 492 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var resolve = __webpack_require__(341).resolve
-	var bin = __webpack_require__(491).bin
+	var bin = __webpack_require__(493).bin
 	
 	module.exports = map_obj(bin, function(v){
 	  return resolve(__dirname, v)
@@ -31634,13 +31863,13 @@ module.exports =
 
 
 /***/ }),
-/* 491 */
+/* 493 */
 /***/ (function(module, exports) {
 
 	module.exports = {"_args":[[{"raw":"7zip@0.0.6","scope":null,"escapedName":"7zip","name":"7zip","rawSpec":"0.0.6","spec":"0.0.6","type":"version"},"/Users/builldog/Documents/supernet/BarterDEX/node_modules/electron-devtools-installer"]],"_from":"7zip@0.0.6","_id":"7zip@0.0.6","_inCache":true,"_location":"/7zip","_nodeVersion":"5.11.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/7zip-0.0.6.tgz_1463274735811_0.1922009070403874"},"_npmUser":{"name":"fritx","email":"uxfritz@163.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"7zip@0.0.6","scope":null,"escapedName":"7zip","name":"7zip","rawSpec":"0.0.6","spec":"0.0.6","type":"version"},"_requiredBy":["/electron-devtools-installer"],"_resolved":"https://registry.npmjs.org/7zip/-/7zip-0.0.6.tgz","_shasum":"9cafb171af82329490353b4816f03347aa150a30","_shrinkwrap":null,"_spec":"7zip@0.0.6","_where":"/Users/builldog/Documents/supernet/BarterDEX/node_modules/electron-devtools-installer","bin":{"7z":"7zip-lite/7z.exe"},"bugs":{"url":"https://github.com/fritx/win-7zip/issues"},"dependencies":{},"description":"7zip Windows Package via Node.js","devDependencies":{},"directories":{},"dist":{"shasum":"9cafb171af82329490353b4816f03347aa150a30","tarball":"https://registry.npmjs.org/7zip/-/7zip-0.0.6.tgz"},"gitHead":"ece5481873f357545c99a9e2f9e1cdb3fe76de2d","homepage":"https://github.com/fritx/win-7zip#readme","keywords":["7z","7zip","7-zip","windows","install"],"license":"GNU LGPL","main":"index.js","maintainers":[{"name":"fritx","email":"uxfritz@163.com"}],"name":"7zip","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git+ssh://git@github.com/fritx/win-7zip.git"},"scripts":{"test":"mocha"},"version":"0.0.6"}
 
 /***/ }),
-/* 492 */
+/* 494 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
