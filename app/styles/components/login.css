@@ -15,6 +15,23 @@
     display: none
 }
 
+.login-newpassphrase {
+    margin-top: 20px;
+}
+
+.login-passphrase-notice {
+    background: $danger;
+    color: #FFF;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: left;
+    height: 90px;
+    padding: 0 20px;
+
+}
+
+.login-passphrase-notice span { font-weight: 400 }
+
 .login .form {
     flex-direction: column;
     padding: 0px 20px 100px;
@@ -22,8 +39,9 @@
 
 .login-button {
     width: 100%;
-    padding: 20px;
-    font-size: 1em
+    height: 90px;
+    padding: 0 20px;
+    font-size: 1em;
 }
 
 .login textarea {
@@ -31,7 +49,7 @@
     padding: 10px 10px;
     margin-bottom: 20px;
     min-width: inherit;
-    width: 320px;
+    width: 360px;
     height: 180px;
     resize: none;
 }

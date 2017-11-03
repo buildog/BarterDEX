@@ -1,11 +1,13 @@
 import React from 'react'
 import classNames from 'classnames';
+import { Clipboard } from '../';
 
 import { observer, inject } from 'mobx-react';
 import logo from '../../static/favicon.svg';
 import arrow from '../../static/arrow.svg';
 import circles from '../../static/circles.svg';
-
+import check from '../../static/check.svg';
+import { PassPhraseGenerator } from '../../../config/config';
 
 @inject('app')
 @observer
@@ -73,6 +75,10 @@ class Login extends React.Component {
               <h1 className="Placeholder-text">Barter<strong>DEX</strong></h1>
               { this.state.localStorage && this.renderLoader() }
               <section className="form">
+                <div onClick={() => this.setState({ passphraseNotice: true })} className="login-newpassphrase">
+                  <Clipboard copyLabel="Generate a new passphrase" value={PassPhraseGenerator.generatePassPhrase(256)} />
+                </div>
+
                 <textarea
                   autoFocus
                   name="form-field-name"
@@ -81,6 +87,11 @@ class Login extends React.Component {
                   style={{ fontSize: 18, minWidth: '260px' }}
                   onChange={(e) => this.updatePassphase(e.target.value)}
                 />
+                { this.state.passphraseNotice ? <button onClick={() => this.setState({ passphraseNotice: false })} className="action align-left danger login-passphrase-notice">
+                  <span><strong>I've keept a secure backup of the passpharase, <u>it can't be retreiveid!</u></strong></span>
+                  <i dangerouslySetInnerHTML={{ __html: check }} />
+
+                </button> :
                 <button
                   disabled={this.state.passphrase.length === 0 || loginLoader}
                   className={this.getClassState()}
@@ -89,6 +100,10 @@ class Login extends React.Component {
                   <span>{ loginLoader || 'Login' }</span>
                   <i dangerouslySetInnerHTML={{ __html: arrow }} />
                 </button>
+
+            }
+
+
               </section>
             </section>
           </div>

@@ -76,17 +76,22 @@ class Dashboard extends React.Component {
 
 
             <ul className="dashboard-wallets-list">
-              { installedCoins.map((installed) => (
-                <li key={installed.coin} className={this.getClassState(installed.coin)}>
-                  <Link onClick={() => this.setCoinToEnable(installed.coin)} className={installed.coin} to={`/wallet/${installed.coin}/${installed.installed}`} activeClassName="active">
-                    <div className="coinList-coin_icon coin-colorized"> { installed.icon }</div>
-                    <div className="coinList-coin_balance">
-                      <strong>{ installed.name }</strong>
-                      <small>{ installed.balance } { installed.coin }</small>
-                    </div>
-                    <button className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
-                  </Link>
-                </li>))}
+              { installedCoins.map((installed) => {
+                  const isNative = !installed.electrum;
+                  return (
+                    <li key={installed.coin} className={this.getClassState(installed.coin)}>
+                      <Link onClick={() => this.setCoinToEnable(installed.coin)} className={installed.coin} to={`/wallet/${installed.coin}/${isNative}`} activeClassName="active">
+                        <div className="coinList-coin_icon coin-colorized"> { installed.icon }</div>
+                        <div className="coinList-coin_balance">
+                          <strong>{ installed.name }</strong>
+                          <small>{ installed.balance } { installed.coin }</small>
+                        </div>
+                        <button className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
+                      </Link>
+                    </li>
+                  )
+              }
+            )}
             </ul>
           </section>
 

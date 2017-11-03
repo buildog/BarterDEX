@@ -38,7 +38,7 @@ app.on('ready', async () => {
         width: 400,
         height: 758,
         show: false,
-        backgroundColor: '#959CAE'
+        backgroundColor: '#F8FAFF'
     })
 
     // Bootstrap listeners

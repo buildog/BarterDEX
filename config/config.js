@@ -4,6 +4,7 @@
 import os from 'os';
 import fs from 'fs';
 import path from 'path';
+import { PassPhraseGenerator } from './passphrasegenerator'
 
 const osPlatform = os.platform();
 
@@ -111,5 +112,6 @@ if (os.platform() === 'win32') {
 const defaultCoinsListFile = path.join(__dirname, './coins.json');
 
 export default {
-    main: { homeDir, env, assetChainPorts, osPlatform, defaultCoinsListFile, marketmakerBin, marketmakerDir, marketmakerIcon }
+    main: { homeDir, env, assetChainPorts, osPlatform, defaultCoinsListFile, marketmakerBin, marketmakerDir, marketmakerIcon },
+    PassPhraseGenerator
 }

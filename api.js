@@ -275,6 +275,7 @@ class Emitter extends EventEmitter {
         const url = 'http://127.0.0.1:7783';
 
         this.apiRequest({ data, url }).then((result) => {
+            console.log(result);
             if (result.error) {
                 return self.emit('notifier', { error: 3, desc: result.error })
             }

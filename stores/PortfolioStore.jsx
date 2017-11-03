@@ -113,8 +113,8 @@ export default class PortfolioStore {
         const byIcon = withIcons.slice(0);
         byIcon.sort((a, b) => a.hasSVGIcon ? 0 : 1);
         this.coinsList = byIcon;
-
         this.installedCoins = addIcons(this.coinsList.filter((coin) => coin.status === 'active').sort((a, b) => a.balance > 0 ? 0 : 1));
+        console.log(byIcon)
 
         if (self.tradeRel) {
             self.tradeRel.balance = self.getCoin(self.tradeRel.coin).balance
