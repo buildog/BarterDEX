@@ -157,7 +157,7 @@ class Balance extends React.Component {
           <input
             name="form-amount"
             type="text"
-            placeholder="addresse"
+            placeholder="address"
             style={{ fontSize: 18 }}
             value={this.state.address}
             onChange={(e) => this.updateAddress(e.target.value)}
