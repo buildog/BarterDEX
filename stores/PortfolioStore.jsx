@@ -4,7 +4,7 @@ import React from 'react'
 
 
 import formatCurrency from 'format-currency';
-import { colors } from '../constants'
+import { colors, electrumConfig } from '../constants'
 import { coinName } from '../app/helpers'
 import * as Icon from 'react-cryptocoins';
 import MNZ from '../app/static/coins/mnz.svg';
@@ -45,6 +45,10 @@ export default class PortfolioStore {
      @observable tradeBase = false;
      @observable tradeRel = false;
      @observable withdrawConfirm = false;
+     @observable total = {
+         fiat: '',
+         rel: ''
+     };
 
      @observable fiatRates = {
          eur: 3000,
@@ -87,15 +91,21 @@ export default class PortfolioStore {
         }
     }
 
-    confirmWithdraw = () => {
-        ipcRenderer.send('withdrawConfirm', this.withdrawConfirm)
-    }
 
     /* @params { method, base, rel, price, relvolume }
     */
 
     @action withdraw = (params) => {
         ipcRenderer.send('withdraw', params)
+    }
+
+    @action confirmWithdraw = () => {
+        const self = this;
+        ipcRenderer.send('confirmWithdraw', { coin: self.tradeBase.coin, signedtx: self.withdrawConfirm.hex })
+    }
+
+    @action cancelWithdraw = () => {
+        this.withdrawConfirm = false
     }
 
     @action trade = (params) => {
@@ -113,8 +123,22 @@ export default class PortfolioStore {
         const byIcon = withIcons.slice(0);
         byIcon.sort((a, b) => a.hasSVGIcon ? 0 : 1);
         this.coinsList = byIcon;
-        this.installedCoins = addIcons(this.coinsList.filter((coin) => coin.status === 'active').sort((a, b) => a.balance > 0 ? 0 : 1));
-        console.log(byIcon)
+
+        const relMarket = self.getMarket(self.defaultCrypto);
+
+        // prepend rel
+        if (relMarket) {
+            this.coinsList.map((coin) => {
+                const market = self.getMarket(coin.coin);
+                if (market && coin.coin !== self.defaultCrypto) {
+                    coin.rel = market.price / relMarket.price;
+                }
+
+                return coin;
+            })
+        }
+
+        this.installedCoins = addIcons(this.coinsList.filter((coin) => (coin.installed && coin.height > 0) || coin.electrum).sort((a, b) => a.balance > 0 ? 0 : 1));
 
         if (self.tradeRel) {
             self.tradeRel.balance = self.getCoin(self.tradeRel.coin).balance
@@ -123,21 +147,33 @@ export default class PortfolioStore {
         if (self.tradeBase) {
             self.tradeBase.balance = self.getCoin(self.tradeBase.coin).balance
         }
+
+        self.portfolioTotal();
     }
 
     @action enableElectrum = (coin) => {
-        ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true })
+        const electrumConf = electrumConfig.filter((svr) => svr.coin === coin.coin)[0];
+        ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true, ipaddr: electrumConf.ipaddr, port: electrumConf.port })
     }
 
     @action setTrade = (coin, type) => {
-        ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum: !coin.installed })
+        let ipaddr;
+        let port;
+
+        const electrum = !coin.installed;
+        if (electrum) {
+            const electrumConf = electrumConfig.filter((svr) => svr.coin === coin.coin)[0];
+            ipaddr = electrumConf.ipaddr;
+            port = electrumConf.port;
+        }
+        ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum, ipaddr, port })
     }
 
     @action autoSetTrade = (coin) => {
         // activate the coin and set as rradeBase
         this.setTrade(coin, 'Base');
         // search for the highest balance and activate as tradeRel
-        const firstNotSelf = this.coinsList.filter((installed) => installed.coin !== coin.coin)[1];
+        const firstNotSelf = this.installedCoins.filter((installed) => installed.coin !== coin.coin)[0];
 
         this.setTrade(firstNotSelf, 'Rel');
     }
@@ -145,68 +181,28 @@ export default class PortfolioStore {
 
     @action refresh = () => { ipcRenderer.send('refreshPortfolio') }
 
-    @action renderBalance = (short) => {
-        const opts = { format: '%v %c', code: short, maxFraction: 8 };
-        const coin = this.getCoin(short);
-        if (coin) {
-            return formatCurrency(coin.balance, opts)
-        }
 
-        return 0;
-    }
-
-
-    portfolioRenderFIAT = (coin, wrap) => {
+    portfolioTotal = () => {
         const self = this;
-        const amount = coin.KMDvalue;
-        let result = '';
-
-        const KMD = this.getMarket('KMD');
-
-        if (KMD) {
-            const price = KMD.price;
-            return formatCurrency(amount * price, self.formatFIAT)
-        }
-
-        if (result && wrap) {
-            result = `(${result})`;
-        }
-
-        return result;
-    }
-
-    get24hEvolution = (short) => {
-        const coin = this.getCoin(short);
-        return coin.perc;
-    }
-
-    @action kmdTotal = (format = true) => {
-        const self = this;
-        /* call reduce() on the array, passing a callback
-        that adds all the values together */
         const amount = self.installedCoins.reduce((accumulator, coin) => {
-            if (coin.KMDvalue) {
-                return accumulator + coin.KMDvalue
+            const market = self.getMarket(coin.coin);
+            if (market) {
+                return accumulator + (market.price * coin.balance)
             }
+
             return accumulator
         }, 0);
-        if (format) {
-            return formatCurrency(amount, self.formatCrypto)
+
+        if (amount > 0) {
+            self.total.fiat = formatCurrency(amount, self.formatFIAT);
+            const relMarket = self.getMarket(self.defaultCrypto);
+            if (relMarket) {
+                self.total.rel = formatCurrency(amount / relMarket.price, self.formatCrypto);
+            }
+        } else {
+            self.total.fiat = '';
+            self.total.rel = '';
         }
-
-        return amount;
-    }
-
-    portfolioTotal = (format = true) => {
-        const self = this;
-        /* call reduce() on the array, passing a callback
-        that adds all the values together */
-        const amount = self.portfolio.reduce((accumulator, coin) => accumulator + coin[self.defaultCurrency.type], 0);
-        if (format) {
-            return formatCurrency(amount, self.formatFIAT)
-        }
-
-        return amount;
     }
 
     portfolioEvolution = () => {

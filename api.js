@@ -14,6 +14,15 @@ const defaultCoinsListFile = main.defaultCoinsListFile;
 const marketmakerBin = main.marketmakerBin;
 const marketmakerDir = main.marketmakerDir;
 
+const isJsonString = (str) => {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 
 class Emitter extends EventEmitter {
     constructor({ config }) {
@@ -190,7 +199,7 @@ class Emitter extends EventEmitter {
     fetchMarket() {
         const self = this;
         request('http://coincap.io/front', (error, response, body) => {
-            body && self.emit('marketUpdate', { data: JSON.parse(body) });
+            isJsonString(body) && self.emit('marketUpdate', { data: JSON.parse(body) });
         });
     }
 
@@ -229,29 +238,56 @@ class Emitter extends EventEmitter {
         });
     }
 
-    /*
-    installed true/false,
-    height of -1 means it isnt running, height > 0 means it is running and balance is non-zero if there is a balance for any coin with a running coin
-    */
-    getCoins() {
+
+    balance({ coin, address }) {
         const self = this;
-        const data = { userpass: self.userpass, method: 'getcoins' };
+        const data = { userpass: self.userpass, method: 'balance', coin, address };
         const url = 'http://127.0.0.1:7783';
 
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             resolve(result);
         }).catch((error) => {
+            console.log(`error getbalance ${coin}`)
+            reject(error);
+        }));
+    }
+
+
+    getCoins() {
+        const self = this;
+        const data = { userpass: self.userpass, method: 'getcoins' };
+        const url = 'http://127.0.0.1:7783';
+
+        const fetch = new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
+            /*
+            installed true/false,
+            height of -1 means it isnt running, height > 0 means it is running and balance is non-zero if there is a balance for any coin with a running coin
+            */
+            resolve(result);
+        }).catch((error) => {
             console.log(`error getcoin ${coin}`)
             reject(error);
         }));
+
+
+        const updateBalance = (coinList) => coinList.map((coin) => {
+            if (coin.electrum) {
+                return self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
+                    coin.balance = coinBalance.balance;
+                    return coin;
+                })
+            }
+
+            return coin;
+        })
+
+        return fetch.then((coinList) => Promise.all(updateBalance(coinList)))
     }
 
     disableCoin({ coin = '', type }) {
         const self = this;
 
         const data = { userpass: self.userpass, method: 'disable', coin };
-        // electrum
-        // const data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
 
         const url = 'http://127.0.0.1:7783';
 
@@ -263,12 +299,12 @@ class Emitter extends EventEmitter {
     }
 
 
-    enableCoin({ coin = '', type, electrum = false }) {
+    enableCoin({ coin = '', type, electrum = false, ipaddr, port }) {
         const self = this;
         let data;
 
         if (electrum) {
-            data = { userpass: self.userpass, method: 'electrum', coin, ipaddr: '173.212.225.176', port: 50001 };
+            data = { userpass: self.userpass, method: 'electrum', coin, ipaddr, port };
         } else {
             data = { userpass: self.userpass, method: 'enable', coin };
         }
@@ -313,16 +349,6 @@ class Emitter extends EventEmitter {
         });
     }
 
-    balance({ coin, address }) {
-        const self = this;
-        const data = { userpass: self.userpass, method: 'balance', coin, address };
-        const url = 'http://127.0.0.1:7783';
-
-        this.apiRequest({ data, url }).then((result) => result).catch((error) => {
-            self.emit('notifier', { error: 6 })
-        });
-    }
-
     trade({ method = 'buy', base, rel, price, relvolume, basevolume }) {
         const self = this;
 
@@ -357,7 +383,7 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: self.userpass, method: 'sendrawtransaction', coin, signedtx };
         const url = 'http://127.0.0.1:7783';
-
+        console.log(data);
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             console.log(`sendWithdraw ${coin}`);
             console.log(result);
@@ -381,7 +407,7 @@ class Emitter extends EventEmitter {
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             console.log(`withdraw for ${coin}`);
             console.log(result);
-            if (result.complete === 'success') {
+            if (result.complete) {
                 self.emit('confirmWithdraw', result);
             } else {
                 self.emit('notifier', { error: 10 })

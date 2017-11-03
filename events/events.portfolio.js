@@ -24,8 +24,7 @@ export const portfolioEvents = ({ api, emitter, listener }) => {
         api.withdraw(params)
     });
 
-    listener.on('withdrawConfirm', (e, params) => {
-        emitter.send('loading', { type: 'add', key: 6 });
+    listener.on('confirmWithdraw', (e, params) => {
         api.sendrawtransaction(params)
     });
 
@@ -44,6 +43,7 @@ export const portfolioEvents = ({ api, emitter, listener }) => {
 
 
     api.on('confirmWithdraw', (data) => {
+        emitter.send('loading', { type: 'delete', key: 6 });
         /* intercept callback from API and update the store */
         emitter.send('confirmWithdraw', data);
     })

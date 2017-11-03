@@ -6,6 +6,8 @@ import QRCode from 'qrcode.react';
 import { Clipboard } from '../';
 import send from '../../static/send.svg';
 import circles from '../../static/circles.svg';
+import check from '../../static/check.svg';
+import close from '../../static/close.svg';
 
 const formatNumber = (str) => str;
 
@@ -98,6 +100,16 @@ class Balance extends React.Component {
         withdraw(params);
     }
 
+    comfirmWithdraw = () => {
+        const { confirmWithdraw } = this.props.app.portfolio;
+        confirmWithdraw();
+    }
+
+    cancelWithdraw = () => {
+        const { cancelWithdraw } = this.props.app.portfolio;
+        cancelWithdraw();
+    }
+
     renderDeposit = () => {
         const { tradeBase } = this.props.app.portfolio;
         return (
@@ -178,16 +190,39 @@ class Balance extends React.Component {
           </section>)
     }
 
-    renderConfirm = (withdrawConfirm) => (
-      <div className="deposit-withdrawConfirm">
-        <h3>Confirm withdraw</h3>
-        <ul>
-          { withdrawConfirm.tx.vout.map((key, i) => (
-            <li key={i}>{ key.satoshis }</li>
-                ))}
-        </ul>
-      </div>
+    renderConfirm = (withdrawConfirm) => {
+        const self = this;
+        return (
+          <div className="deposit-withdrawConfirm">
+            <h3>Confirm withdraw</h3>
+            <ul>
+              { withdrawConfirm.tx.vout.map((key, i) => (
+                <li key={i}>
+                  { i === 1 ? <strong>Fees</strong> : <strong>Total</strong> }
+                  { key.satoshis }
+                </li>
+                      ))}
+              <li>
+                <strong>To</strong> { self.state.address }
+              </li>
+            </ul>
+
+            <div className="deposit-withdrawConfirm-actions">
+              <button className="action primary" onClick={() => self.comfirmWithdraw()}>
+                <span>confirm withdraw</span>
+                <i dangerouslySetInnerHTML={{ __html: check }} />
+              </button>
+
+
+              <button className="action danger" onClick={() => self.cancelWithdraw()}>
+                <span>cancel</span>
+                <i dangerouslySetInnerHTML={{ __html: close }} />
+              </button>
+            </div>
+
+          </div>
         )
+    }
 
     renderWithdraw = () => (<div className="deposit-withdraw">
       { this.renderAddress() }

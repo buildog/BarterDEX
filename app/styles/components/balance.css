@@ -42,3 +42,59 @@
     font-size: .8em;
 
 }
+
+.deposit-withdrawConfirm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.deposit-withdrawConfirm h3 {
+    color: $color-dark;
+    margin-bottom: 40px;
+}
+
+.deposit-withdrawConfirm ul {
+    list-style: none;
+    margin: 0;
+    padding: 0
+}
+
+.deposit-withdrawConfirm ul li {
+    display: flex
+}
+
+.deposit-withdrawConfirm ul li strong {
+    padding-right: 20px;
+    text-align: right;
+    font-weight: 400;
+    color: $color-dark;
+}
+
+.deposit-withdrawConfirm ul li strong:after {
+    content: ' :'
+}
+
+.deposit-withdrawConfirm-actions {
+    display: flex;
+    margin-top: 20px;
+}
+
+.deposit-withdrawConfirm-actions button:first-of-type {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.deposit-withdrawConfirm-actions button:last-of-type {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.deposit-withdrawConfirm button {
+    margin-top: 20px;
+}
+
+.deposit-withdrawConfirm button.primary {
+    padding: 20px;
+}

@@ -39,22 +39,26 @@ class Dashboard extends React.Component {
         enableElectrum(coin);
     }
 
+    noticeNoCoin = () =>
+         (<div className="dashboard-empty">
+           <h3>No active coin detected</h3>
+           <p>We didn't detected any coin wallet running on your machine. Run a coin wallet or add electrum coin via the top right button.</p>
+         </div>)
 
     renderDashboard = () => {
         // const { tradeBase, tradeRel, coinsList } = this.props.app.portfolio;
-        const { installedCoins, colors, kmdTotal, portfolioRenderFIAT } = this.props.app.portfolio;
-        const nullValue = installedCoins.filter((coin) => coin.balance > 0 && coin.KMDvalue === 0);
-        const hasBalances = installedCoins.filter((coin) => coin.balance > 0).length > 0;
+        const { installedCoins, colors, total } = this.props.app.portfolio;
+        const hasRel = installedCoins.filter((coin) => coin.rel > 0);
 
         return (
           <section className="dashboard-wallets">
             <header className="dashboard-wallets-header component-header">
               <h2>
-                { !nullValue.length && hasBalances && <ResponsiveContainer className="dashboard-balances-pie">
+                { hasRel.length > 0 && <ResponsiveContainer className="dashboard-balances-pie">
                   <PieChart>
                     <Pie
-                      data={installedCoins.filter((coin) => coin.KMDvalue > 0)}
-                      dataKey="KMDvalue"
+                      data={hasRel}
+                      dataKey="rel"
                       startAngle={180}
                       endAngle={0}
                       isAnimationActive={false}
@@ -65,10 +69,10 @@ class Dashboard extends React.Component {
                 </ResponsiveContainer> }
 
                 <div>Portfolio</div>
-                <small><span>{ !nullValue.length && hasBalances && kmdTotal()}</span></small>
+                <small><span>{ total.rel }</span></small>
 
               </h2>
-              <CoinPicker onSelected={(e, coin) => this.enableCoin(e, coin)} />
+              <CoinPicker onlyElectrum onSelected={(e, coin) => this.enableCoin(e, coin)} />
             </header>
 
 
@@ -85,6 +89,7 @@ class Dashboard extends React.Component {
                         <div className="coinList-coin_balance">
                           <strong>{ installed.name }</strong>
                           <small>{ installed.balance } { installed.coin }</small>
+                          <small>{ isNative ? '' : 'electrum mode' }</small>
                         </div>
                         <button className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
                       </Link>
@@ -98,11 +103,6 @@ class Dashboard extends React.Component {
         )
     }
 
-    noticeNoCoin = () =>
-         (<div className="dashboard-empty">
-           <h3>No active coin detected</h3>
-           <p>We didn't detected any coin wallet running on your machine. Run a coin wallet or add electrum coin via the top right button.</p>
-         </div>)
 
     render() {
         return (

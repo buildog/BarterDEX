@@ -13,8 +13,7 @@ class Wallet extends React.Component {
     static preload({ params, stores }, callback) {
         const { coin, installed } = params;
         const { autoSetTrade } = stores.app.portfolio;
-
-        autoSetTrade({ coin, installed: Boolean.valueOf(installed)() });
+        autoSetTrade({ coin, installed: installed === 'true' });
         /* wait for callaback?*/
         const loop = setTimeout(() => {
             const { tradeBase, tradeRel } = stores.app.portfolio;
@@ -52,7 +51,7 @@ class Wallet extends React.Component {
 
 
     render() {
-        const { tradeBase, renderBalance, portfolioRenderFIAT } = this.props.app.portfolio;
+        const { tradeBase, renderBalance } = this.props.app.portfolio;
         /* activate the coins */
 
         return (
@@ -65,7 +64,6 @@ class Wallet extends React.Component {
                 <div className="wallet-icon coin-colorized">{ tradeBase.icon }</div>
                 <div className="wallet-coinName coin-colorized">{tradeBase.name}</div>
                 <div className="wallet-balance">{ tradeBase.balance } { tradeBase.coin }</div>
-                <small className="wallet-balance">{ portfolioRenderFIAT(tradeBase, true) }</small>
               </h2>
 
             </header>

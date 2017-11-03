@@ -43,17 +43,17 @@ class CoinPicker extends React.Component {
         this.setState({ isPickerOpen: !this.state.isPickerOpen })
     }
 
-    renderBtn = () => {
+    renderBtn = (clickable) => {
         if (!this.state.isPickerOpen) {
             const { tradeRel } = this.props.app.portfolio;
 
             if (this.props.trade && tradeRel) {
-                return (<button className="action arrow-down " onClick={(e) => this.toggle(e)}>
+                return (<button className="action arrow-down " onClick={(e) => clickable && this.toggle(e)}>
                   <span className={tradeRel.coin}>
                     <span className="trade-base-icon coin-colorized">{tradeRel.icon}</span>
                     <strong>{ tradeRel.name }</strong>
                   </span>
-                  <i dangerouslySetInnerHTML={{ __html: arrow }} />
+                  { clickable > 0 && <i dangerouslySetInnerHTML={{ __html: arrow }} /> }
                 </button>)
             }
 
@@ -68,16 +68,9 @@ class CoinPicker extends React.Component {
         </button>)
     }
 
-    renderList = () => {
-        const { coinsList, tradeBase, tradeRel } = this.props.app.portfolio;
-        const currentTrade = { tradeBase, tradeRel };
-        // const notSelf = this.props.type === 'Rel' ? 'tradeBase' : 'tradeRel';
-        const coins = coinsList.filter((item) => item.coin !== currentTrade.tradeBase.coin && item.coin !== currentTrade.tradeRel.coin);
-
-
-        return (<div className={this.getListState()}>
-          <ul className="coinList-list coin-colorized-reset">
-            {
+    renderList = (coins) => (<div className={this.getListState()}>
+      <ul className="coinList-list coin-colorized-reset">
+        {
               coins.map((coin) => (
                 <li className={this.getCoinState(coin.coin)} onClick={(e) => this.props.onSelected(e, coin)} key={coin.coin}>
                   <div className="coinList-coin_icon coin-colorized"> { coin.icon }</div>
@@ -88,17 +81,30 @@ class CoinPicker extends React.Component {
                   <span className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
                 </li>))
                   }
-          </ul>
-        </div>
+      </ul>
+    </div>
         )
-    }
 
     render() {
+        const { coinsList, installedCoins, tradeBase, tradeRel } = this.props.app.portfolio;
+
+        let coins;
+        const availableElectrum = ['MNZ', 'BTC', 'KMD'];
+        const onlyElectrum = coinsList.filter((item) => availableElectrum.indexOf(item.coin) !== -1 && !(item.installed && item.height > 0) && !item.electrum);
+
+        if (this.props.onlyElectrum) {
+            coins = onlyElectrum;
+        } else {
+            const currentCoins = [tradeBase.coin, tradeRel.coin];
+            coins = installedCoins.filter((item) => currentCoins.indexOf(item.coin) === -1);
+            coins = coins.concat(onlyElectrum)
+        }
+
         return (
           <Modal show title={this.props.title} onClose={() => this.toggle()}>
-            { this.renderBtn() }
+            { this.renderBtn(coins.length) }
             { this.state.picker && this.toggleOpen(this.state.picker) }
-            { this.renderList() }
+            { this.renderList(coins) }
           </Modal>
         )
     }

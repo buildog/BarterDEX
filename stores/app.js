@@ -23,7 +23,7 @@ export default class AppStore {
 
         this.portfolio = new PortfolioStore({
             defaultFiat: { type: 'usd', symbol: '$' },
-            defaultCrypto: 'KMD',
+            defaultCrypto: 'BTC',
             orderbookStore: this.orderbook,
             marketStore: this.market
         });
