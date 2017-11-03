@@ -46,17 +46,26 @@ export default class AppStore {
             this.logout();
             ipcRenderer.send('readyToQuit');
         })
-
-        //  this.logout();
     }
 
   @action login = (passphrase) => {
       // send login passphrase
+
+      if (typeof (Storage) !== 'undefined') {
+          // Code for localStorage/sessionStorage.
+          localStorage.setItem('passphrase', passphrase);
+      }
+
       shepherdIPC({ command: 'login', passphrase });
   }
 
   @action logout = () => {
       const self = this;
+      if (typeof (Storage) !== 'undefined') {
+          // Code for localStorage/sessionStorage.
+          localStorage.removeItem('passphrase');
+      }
+
       // send login passphrase
       clearInterval(self.portfolio.autorefresh);
       self.orderbook.killListener();

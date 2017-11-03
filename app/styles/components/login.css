@@ -11,6 +11,10 @@
     background: $background-jaguar;
 }
 
+.login-localStorage .form {
+    display: none
+}
+
 .login .form {
     flex-direction: column;
     padding: 0px 20px 100px;

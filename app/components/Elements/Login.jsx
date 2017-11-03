@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { observer, inject } from 'mobx-react';
 import logo from '../../static/favicon.svg';
 import arrow from '../../static/arrow.svg';
+import circles from '../../static/circles.svg';
 
 
 @inject('app')
@@ -13,7 +14,8 @@ class Login extends React.Component {
         super(props);
         this.state = {
             passphrase: '',
-            clicked: false
+            clicked: false,
+            localStorage: false
         }
     }
 
@@ -23,8 +25,26 @@ class Login extends React.Component {
         // const activationLoader = loader.getLoader(4);
         return classNames({
             'login-button withBorder action centered primary': true,
-            loading: this.state.clicked
+            loading: this.state.clicked,
+            withLocalStorage: this.state.localStorage
         })
+    }
+
+    getContainerState = () =>
+         classNames({
+             login: true,
+             'login-localStorage': this.state.localStorage
+         })
+
+    componentDidMount = () => {
+        if (typeof (Storage) !== 'undefined') {
+            // Code for localStorage/sessionStorage.
+            const passphrase = localStorage.getItem('passphrase');
+            if (passphrase) {
+                this.setState({ passphrase, localStorage: true });
+                setTimeout(() => this.login(), 400);
+            }
+        }
     }
 
     updatePassphase = (passphrase) => {
@@ -36,16 +56,22 @@ class Login extends React.Component {
         this.props.app.login(this.state.passphrase)
     }
 
+    renderLoader = () => (<div className="login-processing">
+      <i className="loader-svg" dangerouslySetInnerHTML={{ __html: circles }} />
+      <div>Logging in</div>
+    </div>)
+
     render() {
         const { loader } = this.props.app;
         const loginLoader = loader.getLoader(1);
 
         return (
-          <div className="login">
+          <div className={this.getContainerState()}>
             <div className="Placeholder-bg"> <span /> </div>
             <section className="Placeholder-tagline">
               <i className="Placeholder-logo" dangerouslySetInnerHTML={{ __html: logo }} />
               <h1 className="Placeholder-text">Barter<strong>DEX</strong></h1>
+              { this.state.localStorage && this.renderLoader() }
               <section className="form">
                 <textarea
                   autoFocus
