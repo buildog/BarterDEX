@@ -44675,7 +44675,7 @@ module.exports =
 	            if (relMarket) {
 	                _this5.coinsList.map(function (coin) {
 	                    var market = self.getMarket(coin.coin);
-	                    if (market && coin.coin !== self.defaultCrypto) {
+	                    if (market && coin.coin !== self.defaultCrypto && market.price) {
 	                        coin.rel = market.price / relMarket.price;
 	                    }
 
@@ -44688,6 +44688,7 @@ module.exports =
 	            }).sort(function (a, b) {
 	                return a.balance > 0 ? 0 : 1;
 	            }));
+	            console.log(_this5.installedCoins);
 
 	            if (self.tradeRel) {
 	                self.tradeRel.balance = self.getCoin(self.tradeRel.coin).balance;

@@ -130,15 +130,17 @@ export default class PortfolioStore {
         if (relMarket) {
             this.coinsList.map((coin) => {
                 const market = self.getMarket(coin.coin);
-                if (market && coin.coin !== self.defaultCrypto) {
-                    coin.rel = market.price / relMarket.price;
+                if (market && coin.coin !== self.defaultCrypto && market.price) {
+                    coin.rel = (market.price / relMarket.price) * coin.balance;
                 }
 
                 return coin;
             })
         }
 
+
         this.installedCoins = addIcons(this.coinsList.filter((coin) => (coin.installed && coin.height > 0) || coin.electrum).sort((a, b) => a.balance > 0 ? 0 : 1));
+        console.log(this.installedCoins)
 
         if (self.tradeRel) {
             self.tradeRel.balance = self.getCoin(self.tradeRel.coin).balance
