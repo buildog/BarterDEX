@@ -63,6 +63,13 @@ class Login extends React.Component {
       <div>Logging in</div>
     </div>)
 
+    handleKeyPress = (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        this.login();
+      }
+    }
+
     render() {
         const { loader } = this.props.app;
         const loginLoader = loader.getLoader(1);
@@ -85,6 +92,7 @@ class Login extends React.Component {
                   placeholder="Enter here your passphrase"
                   value={this.state.passphrase}
                   style={{ fontSize: 18, minWidth: '260px' }}
+                  onKeyPress={this.handleKeyPress}
                   onChange={(e) => this.updatePassphase(e.target.value)}
                 />
                 { this.state.passphraseNotice ? <button onClick={() => this.setState({ passphraseNotice: false })} className="action align-left danger login-passphrase-notice">
