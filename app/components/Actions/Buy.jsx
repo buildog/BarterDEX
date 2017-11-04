@@ -1,12 +1,11 @@
 import React from 'react'
 
 import { observer, inject } from 'mobx-react';
-import ReactTable from 'react-table'
 import classNames from 'classnames';
 import QRCode from 'qrcode.react';
 
 
-import { CoinPicker, Clipboard } from '../';
+import { CoinPicker, Clipboard, Orderbook } from '../';
 
 import * as Icon from 'react-cryptocoins';
 import zoro from '../../static/zoro.svg';
@@ -19,20 +18,6 @@ import circles from '../../static/circles.svg';
 
 const formatNumber = (str) => str;
 
-const orderbookColumns = [
-    {
-        Header: 'Bid Price',
-        accessor: 'price' // String-based value accessors!
-    },
-    {
-        Header: 'Max Volume',
-        accessor: 'maxvolume' // String-based value accessors!
-    },
-    {
-        Header: 'UTXOs',
-        accessor: 'numutxos' // String-based value accessors!
-    }
-];
 
 @inject('app')
 @observer
@@ -74,7 +59,14 @@ class Trade extends React.Component {
             showOrderbook: false
         })
 
-        this.updateRate(info.original.price, info.index)
+        const params = {
+            target: {
+                validity: { valid: true },
+                value: info.original.price
+            }
+        }
+
+        this.updateRate(params, info.index)
     }
 
     togglePrivate = () => {
@@ -105,9 +97,9 @@ class Trade extends React.Component {
 
 
     componentWillReact = () => {
-        const { tradeRel, tradeBase } = this.props.app.portfolio;
-        this.setState({ orderBookMessage: `Fetching ${tradeBase.coin}/${tradeRel.coin} orderbook` });
-        this.validation({ amountRel: this.state.amountRel, rate: this.state.rate });
+        // const { tradeRel, tradeBase } = this.props.app.portfolio;
+        // this.setState({ orderBookMessage: `Fetching ${tradeBase.coin}/${tradeRel.coin} orderbook` });
+        // this.validation({ amountRel: this.state.amountRel, rate: this.state.rate });
     }
 
     trade = () => {
@@ -196,24 +188,8 @@ class Trade extends React.Component {
 
     closeSelects = () => { this.setState({ picker: false, showOrderbook: false }) }
 
-    renderOrderbook = (orderbook) => (
-      <section className="trade-orderbook">
-        <ReactTable
-          className="-striped -highlight"
-          data={orderbook}
-          columns={orderbookColumns}
-          defaultSorted={[{ id: 'price' }]}
-          noDataText={this.state.orderBookMessage}
-          showPaginationBottom={false}
-          style={{ height: '280px' }}
-          getTrProps={(state, rowInfo) => ({
-              onClick: e => { this.pickRate(rowInfo) },
-              className: rowInfo && rowInfo.index === this.state.selected ? 'selected coin-colorized' : ''
-          })}
-        /> </section>
-        )
 
-    renderPrice = (bids) => (
+    renderPrice = () => (
 
       <section className="trade-amount_input_price">
         <span className="label">
@@ -236,7 +212,7 @@ class Trade extends React.Component {
           <CoinPicker onSelected={(e, coin) => this.tradeWith(e, coin)} trade />
         </div>
 
-        { this.state.showOrderbook && this.renderOrderbook(bids) }
+        { this.state.showOrderbook && <Orderbook placeholder={this.state.orderBookMessage} onSelected={(params) => this.pickRate(params)} /> }
 
       </section>
 
@@ -323,7 +299,6 @@ class Trade extends React.Component {
         const { loader } = this.props.app;
         const orderLoader = loader.getLoader(5);
         const { tradeRel } = this.props.app.portfolio;
-        const { bids } = this.props.app.orderbook;
 
         return (
           <section className={this.getClassState()}>
@@ -331,7 +306,7 @@ class Trade extends React.Component {
             <section className="trade-action-wrapper">
               <div className="trade-amount">
                 <section className="trade-amount_input">
-                  { this.renderPrice(bids) }
+                  { this.renderPrice() }
                   { this.renderAmount() }
                 </section>
               </div>
