@@ -25,7 +25,7 @@ const orderbookColumns = [
         accessor: 'price' // String-based value accessors!
     },
     {
-        Header: 'Volume',
+        Header: 'Max Volume',
         accessor: 'maxvolume' // String-based value accessors!
     },
     {
@@ -114,11 +114,11 @@ class Trade extends React.Component {
         const { trade, tradeRel, tradeBase } = this.props.app.portfolio;
 
         const params = {
-            method: 'buy',
+            method: 'bot_buy',
             base: tradeBase.coin,
             rel: tradeRel.coin,
             price: this.state.rate,
-            relvolume: this.state.amountRel * this.state.rate
+            volume: this.state.amountRel * this.state.rate
         };
 
         trade(params);
@@ -148,7 +148,13 @@ class Trade extends React.Component {
 
     setMax = () => {
         const { tradeRel } = this.props.app.portfolio;
-        this.updateAmountRel(tradeRel.balance / this.state.rate);
+        const params = {
+            target: {
+                validity: { valid: true },
+                value: tradeRel.balance / this.state.rate
+            }
+        }
+        this.updateAmountRel(params);
     }
 
     updateRate = (e, selected = false) => {
@@ -190,29 +196,25 @@ class Trade extends React.Component {
 
     closeSelects = () => { this.setState({ picker: false, showOrderbook: false }) }
 
-    renderOrderbook = () => {
-        const { asks } = this.props.app.orderbook;
-        const orderbook = asks;
-
-        return (
-          <section className="trade-orderbook">
-            <ReactTable
-              className="-striped -highlight"
-              data={orderbook}
-              columns={orderbookColumns}
-              defaultSorted={[{ id: 'price' }]}
-              noDataText={this.state.orderBookMessage}
-              showPaginationBottom={false}
-              style={{ height: '280px' }}
-              getTrProps={(state, rowInfo) => ({
-                  onClick: e => { self.pickRate(rowInfo) },
-                  className: rowInfo && rowInfo.index === self.state.selected ? 'selected coin-colorized' : ''
-              })}
-            /> </section>
+    renderOrderbook = (orderbook) => (
+      <section className="trade-orderbook">
+        <ReactTable
+          className="-striped -highlight"
+          data={orderbook}
+          columns={orderbookColumns}
+          defaultSorted={[{ id: 'price' }]}
+          noDataText={this.state.orderBookMessage}
+          showPaginationBottom={false}
+          style={{ height: '280px' }}
+          getTrProps={(state, rowInfo) => ({
+              onClick: e => { this.pickRate(rowInfo) },
+              className: rowInfo && rowInfo.index === this.state.selected ? 'selected coin-colorized' : ''
+          })}
+        /> </section>
         )
-    }
 
-    renderPrice = () => (
+    renderPrice = (bids) => (
+
       <section className="trade-amount_input_price">
         <span className="label">
           <strong className="label-title">Price</strong>
@@ -234,10 +236,12 @@ class Trade extends React.Component {
           <CoinPicker onSelected={(e, coin) => this.tradeWith(e, coin)} trade />
         </div>
 
-        { this.state.showOrderbook && this.renderOrderbook() }
+        { this.state.showOrderbook && this.renderOrderbook(bids) }
 
       </section>
+
         )
+
 
     renderAmount = () => {
         const { tradeRel } = this.props.app.portfolio;
@@ -319,6 +323,7 @@ class Trade extends React.Component {
         const { loader } = this.props.app;
         const orderLoader = loader.getLoader(5);
         const { tradeRel } = this.props.app.portfolio;
+        const { asks } = this.props.app.orderbook;
 
         return (
           <section className={this.getClassState()}>
@@ -326,7 +331,7 @@ class Trade extends React.Component {
             <section className="trade-action-wrapper">
               <div className="trade-amount">
                 <section className="trade-amount_input">
-                  { this.renderPrice() }
+                  { this.renderPrice(asks) }
                   { this.renderAmount() }
                 </section>
               </div>
