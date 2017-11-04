@@ -246,7 +246,29 @@ const CONSTANTS = {
         { coin: 'WLC', ipaddr: '136.243.45.140', port: '50052' },
         { coin: 'ZEC', ipaddr: '173.212.225.176', port: '50032' },
         { coin: 'ZEC', ipaddr: '136.243.45.140', port: '50032' }
+    ],
+    availableElectrum: [
+        'MNZ',
+        'BTC',
+        'KMD',
+        'REVS',
+        'MONA',
+        'CHIPS',
+        'DOGE',
+        'JUMBLR',
+        'LTC',
+        'ZEC',
+        'VIA',
+        'VTC',
+        'WLC',
+        'NMC',
+        'DASH',
+        'FAIR',
+        'EMC2',
+        'CRW',
+        'ARG'
     ]
+
 };
 
 export default CONSTANTS;

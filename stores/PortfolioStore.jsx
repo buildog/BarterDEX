@@ -8,6 +8,7 @@ import { colors, electrumConfig } from '../constants'
 import { coinName } from '../app/helpers'
 import * as Icon from 'react-cryptocoins';
 import MNZ from '../app/static/coins/mnz.svg';
+import CONSTANTS from '../constants';
 
 
 const capitalize = (string) => string.toLowerCase().charAt(0).toUpperCase() + string.slice(1).toLowerCase()
@@ -168,14 +169,11 @@ export default class PortfolioStore {
     @action setTrade = (coin, type) => {
         let ipaddr;
         let port;
-        console.log(coin);
         const electrum = !coin.installed || coin.height === 0;
-        console.log(electrum);
         if (electrum) {
             const electrumConf = electrumConfig.filter((svr) => svr.coin === coin.coin)[0];
             ipaddr = electrumConf.ipaddr;
             port = electrumConf.port;
-            console.log(ipaddr);
         }
         ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum, ipaddr, port })
     }
@@ -186,8 +184,7 @@ export default class PortfolioStore {
         // search for the highest balance and activate as tradeRel
         let firstNotSelf = this.installedCoins.filter((installed) => installed.coin !== coin.coin)[0];
         if (!firstNotSelf) {
-            const availableElectrum = ['MNZ', 'BTC', 'KMD', 'REVS', 'MONA', 'CHIPS', 'DOGE', 'JUMBLR', 'LTC', 'ZEC'];
-            firstNotSelf = this.coinsList.filter((item) => availableElectrum.indexOf(item.coin) !== -1 && item.coin !== coin.coin)[0];
+            firstNotSelf = this.coinsList.filter((item) => CONSTANTS.availableElectrum.indexOf(item.coin) !== -1 && item.coin !== coin.coin)[0];
         }
         this.setTrade(firstNotSelf, 'Rel');
     }
