@@ -66,6 +66,7 @@ class Login extends React.Component {
     render() {
         const { loader } = this.props.app;
         const loginLoader = loader.getLoader(1);
+        const PassPhraseGenerated = PassPhraseGenerator.generatePassPhrase(256)
 
         return (
           <div className={this.getContainerState()}>
@@ -75,8 +76,8 @@ class Login extends React.Component {
               <h1 className="Placeholder-text">Barter<strong>DEX</strong></h1>
               { this.state.localStorage && this.renderLoader() }
               <section className="form">
-                <div onClick={() => this.setState({ passphraseNotice: true })} className="login-newpassphrase">
-                  <Clipboard copyLabel="Generate a new passphrase" value={PassPhraseGenerator.generatePassPhrase(256)} />
+                <div onClick={() => this.setState({ passphraseNotice: true, passphrase: PassPhraseGenerated })} className="login-newpassphrase">
+                  <Clipboard copyLabel="Generate a new passphrase" value={PassPhraseGenerated} />
                 </div>
 
                 <textarea
