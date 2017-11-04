@@ -45,6 +45,7 @@ export default class PortfolioStore {
      @observable tradeBase = false;
      @observable tradeRel = false;
      @observable withdrawConfirm = false;
+     @observable tx = false;
      @observable total = {
          fiat: '',
          rel: ''
@@ -75,7 +76,10 @@ export default class PortfolioStore {
         ipcRenderer.on('updateTrade', (e, { coin, type }) => { self.updateTrade(coin, type) });
         ipcRenderer.on('trade', (e, result) => { self.tradeCb(result) });
         ipcRenderer.on('confirmWithdraw', (e, result) => { self.withdrawConfirm = result });
-        ipcRenderer.on('sendrawtransaction', (e, result) => { self.withdrawConfirm = false });
+        ipcRenderer.on('sendrawtransaction', (e, result) => {
+            self.withdrawConfirm = false;
+            self.tx = result;
+        });
     }
 
     getMarket = (short) => this.market.getMarket().filter((asset) => asset.short === short)[0];
@@ -94,6 +98,10 @@ export default class PortfolioStore {
 
     /* @params { method, base, rel, price, relvolume }
     */
+
+    @action resetTX = () => {
+        this.tx = false;
+    }
 
     @action withdraw = (params) => {
         ipcRenderer.send('withdraw', params)

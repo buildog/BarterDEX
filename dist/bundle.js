@@ -44676,7 +44676,7 @@ module.exports =
 	                _this5.coinsList.map(function (coin) {
 	                    var market = self.getMarket(coin.coin);
 	                    if (market && coin.coin !== self.defaultCrypto && market.price) {
-	                        coin.rel = market.price / relMarket.price;
+	                        coin.rel = market.price / relMarket.price * coin.balance;
 	                    }
 
 	                    return coin;

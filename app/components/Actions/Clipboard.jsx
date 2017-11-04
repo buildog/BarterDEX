@@ -18,7 +18,7 @@ class Clipboard extends React.Component {
 
     render() {
         return (
-          <button onClick={(e) => this.copyToClipboard(e)} className="Clipboard action">
+          <button onClick={(e) => this.copyToClipboard(e)} className="Clipboard action lefttext">
             <span>{this.state.copySuccess}</span>
             <i className="Clipboard-icon" dangerouslySetInnerHTML={{ __html: copy }} />
 

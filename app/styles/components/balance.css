@@ -43,14 +43,16 @@
 
 }
 
-.deposit-withdrawConfirm {
+.deposit-withdrawConfirm,
+.deposit-tx {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
 
-.deposit-withdrawConfirm h3 {
+.deposit-withdrawConfirm h3,
+.deposit-tx h3 {
     color: $color-dark;
     margin-bottom: 40px;
 }
@@ -76,7 +78,8 @@
     content: ' :'
 }
 
-.deposit-withdrawConfirm-actions {
+.deposit-withdrawConfirm-actions,
+.deposit-tx-actions {
     display: flex;
     margin-top: 20px;
 }
@@ -97,4 +100,14 @@
 
 .deposit-withdrawConfirm button.primary {
     padding: 20px;
+}
+
+
+
+
+.balance-showtx .balance-deposit,
+.balance-showtx .trade-button-wrapper,
+.balance-showtx .trade-amount_input_address,
+.balance-showtx .trade-amount_input_amount {
+    display: none;
 }
