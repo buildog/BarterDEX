@@ -21,7 +21,7 @@ const formatNumber = (str) => str;
 
 const orderbookColumns = [
     {
-        Header: 'Ask Price',
+        Header: 'Bid Price',
         accessor: 'price' // String-based value accessors!
     },
     {
@@ -323,7 +323,7 @@ class Trade extends React.Component {
         const { loader } = this.props.app;
         const orderLoader = loader.getLoader(5);
         const { tradeRel } = this.props.app.portfolio;
-        const { asks } = this.props.app.orderbook;
+        const { bids } = this.props.app.orderbook;
 
         return (
           <section className={this.getClassState()}>
@@ -331,7 +331,7 @@ class Trade extends React.Component {
             <section className="trade-action-wrapper">
               <div className="trade-amount">
                 <section className="trade-amount_input">
-                  { this.renderPrice(asks) }
+                  { this.renderPrice(bids) }
                   { this.renderAmount() }
                 </section>
               </div>

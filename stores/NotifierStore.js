@@ -25,6 +25,7 @@ export default class NotifierStore {
         const hasError = ghost.filter((error) => error.code === code)
         hasError.length === 0 && ghost.push({ code, desc });
         this.errors = ghost;
+        console.log(ghost);
     }
 
     clearAllErrors = () => {

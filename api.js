@@ -234,7 +234,7 @@ class Emitter extends EventEmitter {
                 self.emit('updateUserInfo', { userpass, mypubkey });
             })
         }).catch((error) => {
-            self.emit('notifier', { error: 2, desc: error })
+            self.emit('notifier', { error: 2, desc: error.code })
         });
     }
 
@@ -349,23 +349,25 @@ class Emitter extends EventEmitter {
         });
     }
 
-    trade({ method = 'buy', base, rel, price, relvolume, basevolume }) {
+    trade({ method = 'bot_sell', base, rel, price, volume }) {
         const self = this;
 
 
-        const data = { userpass: self.userpass, method, base, rel, relvolume, price };
+        const data = { userpass: self.userpass, method, base, rel };
 
-        if (method === 'buy') {
-            data.relvolume = relvolume;
+        if (method === 'bot_sell') {
+            data.basevolume = volume;
+            data.minprice = price;
         } else {
-            data.basevolume = basevolume;
+            data.relvolume = volume;
+            data.maxprice = price;
         }
 
 
         const url = 'http://127.0.0.1:7783';
         self.inventory({ coin: rel }).then(() => {
             self.apiRequest({ data, url }).then((result) => {
-                console.log(`${method} order submitted`);
+                console.log(`${method} submitted`);
                 console.log(result);
                 if (!result.error) {
                     self.emit('trade', result);
