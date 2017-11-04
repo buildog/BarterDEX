@@ -5,7 +5,7 @@ import ReactTable from 'react-table'
 
 const orderbookColumns = [
     {
-        Header: 'Bid Price',
+        Header: 'Ask Price',
         accessor: 'price' // String-based value accessors!
     },
     {
@@ -30,7 +30,7 @@ class Orderbook extends React.Component {
     componentDidMount = () => {
         const self = this;
         self.refresh = setInterval(() => {
-            self.setState({ orderbook: JSON.parse(JSON.stringify(this.props.app.orderbook.bids)) });
+            self.setState({ orderbook: JSON.parse(JSON.stringify(this.props.app.orderbook.asks)) });
         }, 600)
     }
 
