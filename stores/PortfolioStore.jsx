@@ -148,7 +148,6 @@ export default class PortfolioStore {
 
 
         this.installedCoins = addIcons(this.coinsList.filter((coin) => (coin.installed && coin.height > 0) || coin.electrum).sort((a, b) => a.balance > 0 ? 0 : 1));
-        console.log(this.installedCoins)
 
         if (self.tradeRel) {
             self.tradeRel.balance = self.getCoin(self.tradeRel.coin).balance
@@ -170,7 +169,7 @@ export default class PortfolioStore {
         let ipaddr;
         let port;
         console.log(coin);
-        const electrum = !coin.installed;
+        const electrum = !coin.installed || coin.height === 0;
         console.log(electrum);
         if (electrum) {
             const electrumConf = electrumConfig.filter((svr) => svr.coin === coin.coin)[0];
