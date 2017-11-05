@@ -39,7 +39,13 @@ class Balance extends React.Component {
 
     setMax = () => {
         const { tradeBase } = this.props.app.portfolio;
-        this.updateAmount(tradeBase.balance);
+        const params = {
+            target: {
+                validity: { valid: true },
+                value: tradeBase.balance
+            }
+        }
+        this.updateAmount(params);
     }
 
 
