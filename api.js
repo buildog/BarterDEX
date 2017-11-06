@@ -479,7 +479,8 @@ class Emitter extends EventEmitter {
         console.log(data);
         const url = 'http://127.0.0.1:7783';
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
-            console.log(`withdraw for ${coin}`);
+            confirmation && console.log(`withdraw for ${coin}`);
+            !confirmation && console.log(`split balance into UTXOS for ${coin}`);
             console.log(result);
             if (result.complete) {
                 confirmation && self.emit('confirmWithdraw', result);
