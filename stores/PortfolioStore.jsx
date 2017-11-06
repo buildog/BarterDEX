@@ -159,7 +159,12 @@ export default class PortfolioStore {
             ipaddr = electrumConf.ipaddr;
             port = electrumConf.port;
         }
-        ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum, ipaddr, port })
+
+        if (!this.getCoin(coin.coin)) {
+            ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum, ipaddr, port })
+        } else {
+            this.updateTrade(coin.coin, type)
+        }
     }
 
     @action autoSetTrade = (coin) => {
