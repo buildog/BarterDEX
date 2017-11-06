@@ -51,7 +51,16 @@ ul[class*=list] [class*="_action"] svg {
 }
 
 ul[class*=list] [class*="_action_loader"] {
-    display: none
+    transform: translateX(10px);
+    opacity: 0;
+    transition: all .2s ease;
+    width: 0px
+
+}
+
+ul[class*=list] [class*="_action_loader"] svg {
+    width: 40px;
+    height: 40px;
 }
 
 ul[class*=list] > li:hover,
@@ -78,4 +87,7 @@ ul[class*=list] > li:hover code {
 
 ul[class*=list] > li.enabling [class*="_action_loader"] {
     display: flex;
+    transform: translateY(0px);
+    opacity: 1;
+    width: auto;
 }

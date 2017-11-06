@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 import { CoinPicker } from '../';
-import circles from '../../static/circles.svg';
+import circles from '../../static/circlesWhite.svg';
 import arrow from '../../static/arrow.svg';
 
 @inject('app')

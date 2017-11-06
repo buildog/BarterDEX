@@ -7,7 +7,7 @@ import CONSTANTS from '../../../constants';
 import plus from '../../static/plus.svg';
 import arrow from '../../static/arrow.svg';
 import close from '../../static/close.svg';
-import circles from '../../static/circles.svg';
+import circles from '../../static/circlesWhite.svg';
 
 @inject('app')
 @observer
