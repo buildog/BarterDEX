@@ -79,7 +79,7 @@ class Orders extends React.Component {
     );
 
         const hasBots = bots.length > 0;
-        console.log(bots)
+
         return (
           <section className={this.getClassState()}>
             { hasBots ? (

@@ -50,10 +50,18 @@ ul[class*=list] [class*="_action"] svg {
     transition: transform .6s ease;
 }
 
+ul[class*=list] [class*="_action_loader"] {
+    display: none
+}
+
 ul[class*=list] > li:hover,
 ul[class*=list] > li.enabling {
     z-index: 1;
     background: $blue;
+}
+
+ul[class*=list] > li.enabling {
+    pointer-events: none
 }
 
 ul[class*=list] > li:hover .coin-colorized,
@@ -66,4 +74,8 @@ ul[class*=list] > li.enabling .coin-colorized {
 
 ul[class*=list] > li:hover code {
     background: rgba(0,0,0,0.1)
+}
+
+ul[class*=list] > li.enabling [class*="_action_loader"] {
+    display: flex;
 }

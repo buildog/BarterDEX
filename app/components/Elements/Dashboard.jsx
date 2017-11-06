@@ -2,10 +2,11 @@ import React from 'react'
 import { inject, observer } from 'mobx-react'
 import { Link } from 'react-router';
 import classNames from 'classnames';
+import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 import { CoinPicker } from '../';
+import circles from '../../static/circles.svg';
 import arrow from '../../static/arrow.svg';
-import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 @inject('app')
 @observer
@@ -91,7 +92,9 @@ class Dashboard extends React.Component {
                           <small>{ installed.balance } { installed.coin }</small>
                           <small>{ isNative ? 'Native mode' : 'Electrum mode' } </small>
                         </div>
-                        <button className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
+                        <span className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
+                        <span className="coinList-coin_action_loader" dangerouslySetInnerHTML={{ __html: circles }} />
+
                       </Link>
                     </li>
                   )

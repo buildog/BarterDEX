@@ -273,7 +273,7 @@ class Emitter extends EventEmitter {
     }
 
 
-    getCoins() {
+    getCoins({ withoutBalance }) {
         const self = this;
         const data = { userpass: self.userpass, method: 'getcoins' };
         const url = 'http://127.0.0.1:7783';
@@ -291,7 +291,7 @@ class Emitter extends EventEmitter {
 
 
         const updateBalance = (coinList) => coinList.map((coin) => {
-            if (coin.electrum) {
+            if (coin.electrum && !withoutBalance) {
                 return self.listunspent({ coin: coin.coin, address: coin.smartaddress }).then(() => self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
                     coin.balance = coinBalance.balance;
                     return coin;
@@ -335,7 +335,7 @@ class Emitter extends EventEmitter {
             if (result.error) {
                 return self.emit('notifier', { error: 3, desc: result.error })
             }
-            self.getCoins().then((coinsList) => {
+            self.getCoins({ withoutBalance: true }).then((coinsList) => {
                 self.emit('coinsList', coinsList);
                 self.emit('coinEnabled', { coin });
                 type && this.emit('updateTrade', { coin, type });
@@ -399,20 +399,17 @@ class Emitter extends EventEmitter {
         });
 
         return self.inventory({ coin: rel }).then((inventor) => {
-            if (inventor.alice.length < 2) {
-                return self.withdraw({
-                    address: inventor.alice[0].address,
-                    coin: inventor.alice[0].coin,
-                    amounts: [
-                        { [inventor.alice[0].address]: (volume - (volume / 777)) },
-                        { [inventor.alice[0].address]: volume / 777 }
-                    ]
-                }).then((withdrawResult) => {
-                    self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(() => tradeRequest())
-                })
-            }
-
-            return tradeRequest();
+            const txfee = (volume / 777 + (2 * (volume / 100)));
+            return self.withdraw({
+                address: inventor.alice[0].address,
+                coin: inventor.alice[0].coin,
+                amounts: [
+                        { [inventor.alice[0].address]: volume + (5 * txfee) },
+                        { [inventor.alice[0].address]: txfee }
+                ]
+            }).then((withdrawResult) => {
+                self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(() => tradeRequest())
+            })
         })
     }
 
