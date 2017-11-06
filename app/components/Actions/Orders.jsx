@@ -42,7 +42,13 @@ class Orders extends React.Component {
         bots = bots.filter((bot) => bot.base === tradeBase.coin);
 
         const listBots = bots.map((bot, i) => {
-            const amountProcessed = bot.trades.reduce((accumulator, trade) => accumulator + trade.volume, 0);
+            const amountProcessed = bot.trades.reduce((accumulator, trade) => {
+                if (trade.volume) {
+                    return accumulator + trade.volume;
+                }
+
+                return accumulator
+            }, 0);
             const percent = (amountProcessed / bot.totalbasevolume) * 100;
             return (
               <li className={this.getBotClassState(bot.stopped)} key={i}>
