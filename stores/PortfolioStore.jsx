@@ -75,7 +75,6 @@ export default class PortfolioStore {
 
         ipcRenderer.on('coinsList', (e, coinsList) => { self.prepareCoinsList(coinsList) });
         ipcRenderer.on('updateTrade', (e, { coin, type }) => { self.updateTrade(coin, type) });
-        ipcRenderer.on('trade', (e, result) => { self.tradeCb(result) });
         ipcRenderer.on('confirmWithdraw', (e, result) => { self.withdrawConfirm = result });
         ipcRenderer.on('sendrawtransaction', (e, result) => {
             self.withdrawConfirm = false;
@@ -115,15 +114,6 @@ export default class PortfolioStore {
 
     @action cancelWithdraw = () => {
         this.withdrawConfirm = false
-    }
-
-    @action trade = (params) => {
-        ipcRenderer.send('trade', params)
-    }
-
-
-    @action tradeCb = (result) => {
-        console.log(result);
     }
 
     @action prepareCoinsList = (coins) => {

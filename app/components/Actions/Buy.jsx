@@ -103,7 +103,7 @@ class Trade extends React.Component {
     }
 
     trade = () => {
-        const { trade, tradeRel, tradeBase } = this.props.app.portfolio;
+        const { trade, tradeRel, tradeBase } = this.props.app.trade;
 
         const params = {
             method: 'bot_buy',
