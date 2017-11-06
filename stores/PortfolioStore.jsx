@@ -103,7 +103,7 @@ export default class PortfolioStore {
 
     @action confirmWithdraw = () => {
         const self = this;
-        ipcRenderer.send('confirmWithdraw', { coin: self.tradeBase.coin, signedtx: self.withdrawConfirm.hex })
+        ipcRenderer.send('confirmWithdraw', { coin: self.tradeBase.coin, signedtx: self.withdrawConfirm.hex, confirmation: true })
     }
 
     @action cancelWithdraw = () => {

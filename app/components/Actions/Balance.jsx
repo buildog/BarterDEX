@@ -101,7 +101,8 @@ class Balance extends React.Component {
         const params = {
             address: this.state.address,
             coin: tradeBase.coin,
-            amount: this.state.amount
+            amount: this.state.amount,
+            confirmation: true
         };
 
         withdraw(params);

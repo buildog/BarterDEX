@@ -452,7 +452,7 @@ class Emitter extends EventEmitter {
         }));
     }
 
-    sendrawtransaction({ coin, signedtx }) {
+    sendrawtransaction({ coin, signedtx, confirmation }) {
         const self = this;
         const data = { userpass: self.userpass, method: 'sendrawtransaction', coin, signedtx };
         const url = 'http://127.0.0.1:7783';
@@ -461,14 +461,14 @@ class Emitter extends EventEmitter {
             console.log(`sendWithdraw ${coin}`);
             console.log(result);
             resolve(result);
-            self.emit('sendrawtransaction', result);
+            confirmation && self.emit('sendrawtransaction', result);
         }).catch((error) => {
             console.log(`error sendWithdraw ${coin}`)
             reject(error);
         }));
     }
 
-    withdraw({ address, coin, amount, amounts }) {
+    withdraw({ address, coin, amount, amounts, confirmation }) {
         const outputs = amounts || [{ [address]: amount }];
         const self = this;
         const data = { userpass: self.userpass,
@@ -482,7 +482,7 @@ class Emitter extends EventEmitter {
             console.log(`withdraw for ${coin}`);
             console.log(result);
             if (result.complete) {
-                self.emit('confirmWithdraw', result);
+                confirmation && self.emit('confirmWithdraw', result);
             } else {
                 self.emit('notifier', { error: 10 })
             }
