@@ -35,20 +35,6 @@
 
 .coinList-coin_balance small { color: $color-secondary }
 
-.coinList-coin_action {
-    display: flex;
-    align-items: center;
-    width: 30px;
-    background: transparent
-}
-
-.coinList-coin_action svg {
-    position: relative;
-    width: 20px;
-    height: 20px;
-    left: 0;
-    transition: transform .6s ease;
-}
 
 
 /* context */

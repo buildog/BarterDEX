@@ -20,4 +20,6 @@ export const tradeEvents = ({ api, emitter, listener }) => {
         emitter.send('loading', { type: 'delete', key: 5 });
         emitter.send('trade', params);
     })
+
+    api.on('botstatus', (result) => emitter.send('botstatus', result))
 }

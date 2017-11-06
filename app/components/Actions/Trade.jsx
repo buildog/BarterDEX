@@ -2,7 +2,7 @@ import React from 'react'
 import { observer, inject } from 'mobx-react';
 import classNames from 'classnames';
 
-import { Buy, Balance } from '../';
+import { Buy, Balance, Orders } from '../';
 
 import sell from '../../static/sell.svg';
 import receive from '../../static/receive.svg';
@@ -34,8 +34,6 @@ class Trade extends React.Component {
 
     render() {
         // portfolio
-        const { tradeBase } = this.props.app.portfolio;
-
         return (
           <div className={this.getClassState()}>
 
@@ -78,8 +76,9 @@ class Trade extends React.Component {
 
               { this.state.flow === 'trade-buy' && <Buy /> }
               { this.state.flow === 'trade-wallet' && <Balance /> }
+              { this.state.flow === 'trade-orders' && <Orders /> }
 
-              { (this.state.flow === 'trade-charts' || this.state.flow === 'trade-orders') && <div className="trade-view-charts">
+              { (this.state.flow === 'trade-charts') && <div className="trade-view-charts">
                 <h3>{ '😰' }</h3>
                 <h4>sorry!</h4>
                 <p>this feature is not yet available</p>

@@ -27,14 +27,28 @@ class Orderbook extends React.Component {
             selected: ''
         }
     }
+
+    componentDidMount = () => {
+        const { listenOrderbook } = this.props.app.orderbook;
+        listenOrderbook({ base: this.props.base, rel: this.props.rel });
+    }
+
+    componentWillUnmount = () => {
+        const { killListener } = this.props.app.orderbook;
+        killListener();
+    }
+
     render() {
         const self = this;
-        const { asks } = this.props.app.orderbook;
+        const { asks, bids } = this.props.app.orderbook;
+        const orderbook = { asks, bids };
+        const orderbookData = orderbook[this.props.type];
+
         return (
           <section className="trade-orderbook">
             <ReactTable
               className="-striped -highlight"
-              data={asks}
+              data={orderbookData}
               columns={orderbookColumns}
               defaultSorted={[{ id: 'price' }]}
               noDataText={this.props.placeholder}
