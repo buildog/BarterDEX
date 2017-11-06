@@ -25,9 +25,14 @@ class Orders extends React.Component {
         'balance-action': true
     })
 
-    stopBot = (botid) => {
-        const { stopBot } = this.props.app.trade;
-        stopBot(botid);
+    getBotClassState = (stopped) => classNames({
+        'orders-item': true,
+        'order-item-stopped': stopped
+    })
+
+    toggleBot = ({ botid, method }) => {
+        const { toggleBot } = this.props.app.trade;
+        toggleBot({ botid, method });
     }
 
 
@@ -35,7 +40,7 @@ class Orders extends React.Component {
         const { bots } = this.props.app.trade;
 
         const listBots = bots.map((bot, i) =>
-          <li className="orders-item" key={i}>
+          <li className={this.getBotClassState(bot.stopped)} key={i}>
             <div className={`orders-item-details`}>
               <div className={`orders-item-details-action ${bot.base}`}>
                 <span className="orders-item-details-action-type">BOT {bot.action}</span>
@@ -50,10 +55,12 @@ class Orders extends React.Component {
                   <small className="coin-colorized"><strong>Total</strong> { bot.totalrelvolume } { bot.rel }</small>
                 </div>
 
-                <button onClick={() => this.stopBot(bot.botid)}className="order-stop action align-left danger">
+                { bot.stopped ? <strong>STOPPED</strong> : <button onClick={() => this.toggleBot({ botid: bot.botid, method: 'bot_stop' })}className="order-stop action align-left danger">
                   <span>stop</span>
                   <i dangerouslySetInnerHTML={{ __html: stop }} />
-                </button>
+                </button> }
+
+
               </div>
             </div>
           </li>
@@ -61,7 +68,6 @@ class Orders extends React.Component {
     );
 
         const hasBots = bots.length > 0;
-        console.log(hasBots);
         console.log(bots)
         return (
           <section className={this.getClassState()}>

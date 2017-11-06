@@ -12,12 +12,14 @@ export default class TradeStore {
     }
 
     botstatus = (botstatus) => {
-        this.bots = JSON.parse(JSON.stringify(botstatus));
+        const bots = botstatus.sort((a, b) => b.started - a.started);
+        this.bots = JSON.parse(JSON.stringify(bots));
     }
 
-    @action stopBot = (botid) => {
-        ipcRenderer.send('stopBot', botid)
+    @action toggleBot = ({ botid, method }) => {
+        ipcRenderer.send('toggleBot', { botid, method })
     }
+
 
     @action trade = (params) => {
         ipcRenderer.send('trade', params)

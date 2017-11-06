@@ -6,6 +6,13 @@
     display: flex;
 }
 
+.order-item-stopped {
+    opacity: .5;
+    pointer-events: none
+}
+
+
+
 .orders-item-details {
     flex-grow: 1;
     display: flex;

@@ -9,8 +9,8 @@ export const tradeEvents = ({ api, emitter, listener }) => {
         api.trade(params)
     });
 
-    listener.on('stopBot', (e, botid) => {
-        api.stopBot(botid)
+    listener.on('toggleBot', (e, params) => {
+        api.toggleBot(params)
     });
 
     // update trademethod when coins are activated
@@ -30,6 +30,9 @@ export const tradeEvents = ({ api, emitter, listener }) => {
         emitter.send('growler', { key: 1 });
     })
 
+    api.on('botResumed', () => {
+        emitter.send('growler', { key: 2 });
+    })
 
     api.on('botstatus', (result) => emitter.send('botstatus', result))
 }

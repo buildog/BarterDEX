@@ -17,6 +17,10 @@ const CONSTANTS = {
         1: {
             message: 'Bot stopped',
             type: 1
+        },
+        2: {
+            message: 'Bot resumed',
+            type: 1
         }
     },
     error: {
