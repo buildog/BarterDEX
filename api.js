@@ -380,7 +380,14 @@ class Emitter extends EventEmitter {
 
         return self.inventory({ coin: rel }).then((inventor) => {
             if (inventor.alice.length < 2) {
-                return self.withdraw({ address: inventor.alice[0].address, coin: inventor.alice[0].coin }).then((withdrawResult) => {
+                return self.withdraw({
+                    address: inventor.alice[0].address,
+                    coin: inventor.alice[0].coin,
+                    amounts: [
+                        { [inventor.alice[0].address]: (volume - (volume / 777)) },
+                        { [inventor.alice[0].address]: volume / 777 }
+                    ]
+                }).then((withdrawResult) => {
                     self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(() => tradeRequest())
                 })
             }
@@ -406,12 +413,13 @@ class Emitter extends EventEmitter {
         }));
     }
 
-    withdraw({ address, coin, amount }) {
+    withdraw({ address, coin, amount, amounts }) {
+        const outputs = amounts || [{ [address]: amount }];
         const self = this;
         const data = { userpass: self.userpass,
             method: 'withdraw',
             coin,
-            outputs: [{ [address]: amount }] };
+            outputs };
 
         console.log(data);
         const url = 'http://127.0.0.1:7783';
@@ -438,15 +446,7 @@ class Emitter extends EventEmitter {
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             console.log(`inventory for ${coin}`);
             console.log(result);
-            // if (result.alice.length < 3) {
-            //     self.withdraw({ address: result.alice[0].address, coin: result.alice[0].coin }).then((withdrawResult) => {
-            //         self.sendrawtransaction({ coin, signedtx: withdrawResult.hex }).then(() => {
-            //             resolve(result);
-            //         })
-            //     })
-            // } else {
             resolve(result);
-            // }
         }).catch((error) => {
             console.log(`error inventory ${coin}`)
             reject(error);
