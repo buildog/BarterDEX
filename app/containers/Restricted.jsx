@@ -6,7 +6,8 @@ import {
         Footer,
         MainLoader,
         Notifier,
-        Login } from '../components';
+        Login,
+        Growler } from '../components';
 
 import classNames from 'classnames';
 
@@ -38,6 +39,7 @@ class Restricted extends React.Component {
     render() {
         return (
           <content className={this.getClassState()}>
+            <Growler />
             <Header />
             <section className="app-view">
               { this.privateRoute() }

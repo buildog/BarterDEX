@@ -9,6 +9,7 @@ export { default as Footer } from './Elements/Footer';
 export { default as Modal } from './Elements/Modal';
 export { default as Notifier } from './Elements/Notifier';
 export { default as MainLoader } from './Elements/MainLoader';
+export { default as Growler } from './Elements/Growler';
 export { default as Dashboard } from './Elements/Dashboard';
 export { default as Wallet } from './Elements/Wallet';
 export { default as Login } from './Elements/Login';

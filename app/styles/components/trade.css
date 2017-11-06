@@ -104,9 +104,6 @@
     transform-origin: top center
 }
 
-.trade-type-item i svg path {
-    stroke: $color-dark !important;
-}
 
 
 .wallet:not(.wallet-ready) {

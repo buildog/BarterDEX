@@ -97,7 +97,7 @@ class Trade extends React.Component {
 
 
     componentWillReact = () => {
-        // this.validation({ amountRel: this.state.amountRel, rate: this.state.rate });
+        this.validation({ amountRel: this.state.amountRel, rate: this.state.rate });
     }
 
     trade = () => {

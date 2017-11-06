@@ -6,6 +6,7 @@ import PortfolioStore from './PortfolioStore'
 import OrderbookStore from './OrderbookStore'
 import MarketStore from './MarketStore'
 import TradeStore from './TradeStore'
+import GrowlerStore from './GrowlerStore'
 
 const shepherdIPC = (data) => { ipcRenderer.send('shepherd-command', data) }
 
@@ -22,6 +23,7 @@ export default class AppStore {
         this.orderbook = new OrderbookStore();
         this.market = new MarketStore();
         this.trade = new TradeStore();
+        this.growler = new GrowlerStore();
 
         this.portfolio = new PortfolioStore({
             defaultFiat: { type: 'usd', symbol: '$' },

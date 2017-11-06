@@ -18,6 +18,7 @@ export const tradeEvents = ({ api, emitter, listener }) => {
     // cb trade
     api.on('trade', (params) => {
         emitter.send('loading', { type: 'delete', key: 5 });
+        emitter.send('growler', { key: 0 });
         emitter.send('trade', params);
     })
 

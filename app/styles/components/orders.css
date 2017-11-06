@@ -1,4 +1,73 @@
+.orders-list {
+    border-radius: 4px;
+}
+
+.orders-item {
+    display: flex;
+}
+
 .orders-item-details {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.orders-item-details-action {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+    width: 100%;
+    text-align: left;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.orders-item-details_action {
+    margin-left: 6px;
+}
+
+.orders-item-details-action-type {
+    flex-grow: 1;
+    text-transform: uppercase;
+    color: $color-dark;
+}
+
+.orders-item-details-meta {
+    width: 100%;
+    display: flex;
+}
+
+.orders-item-details-meta div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.orders-item-details-meta div:first-child {
+    flex-grow: 1
+}
+
+.order-stop {
+    padding: 5px 5px 5px 10px;
+}
+
+.order-stop i svg {
+    width: 10px;
+    height: 10px;
+    fill: #000
+}
+
+.orders-item:hover {
+    background: #FFF !important;
+}
+
+
+.orders-list .orders-item:hover,
+.orders-list .orders-item:hover svg,
+.orders-list .orders-item:hover .coin-colorized {
+    color: #000 !important;
+    fill: #000 !important;
 }

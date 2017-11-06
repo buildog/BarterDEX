@@ -2,10 +2,10 @@ import React from 'react'
 
 import { observer, inject } from 'mobx-react';
 import classNames from 'classnames';
-import { Clipboard } from '../';
-import gear from '../../static/gear.svg';
+import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import buy from '../../static/buy.svg';
 import sell from '../../static/sell.svg';
+import stop from '../../static/stop.svg';
 
 const formatNumber = (str) => str;
 
@@ -31,12 +31,26 @@ class Orders extends React.Component {
 
         const listBots = bots.map((bot, i) =>
           <li className="orders-item" key={i}>
-            <div className={`orders-item-details ${bot.rel}`}>
-              <strong className="">{ bot.totalbasevolume } { bot.base }</strong>
-              <small className="coin-colorized">Price: { bot.maxprice } { bot.rel }</small>
-              <small className="coin-colorized">Total: { bot.totalrelvolume } { bot.rel }</small>
+            <div className={`orders-item-details`}>
+              <div className={`orders-item-details-action ${bot.base}`}>
+                <span className="orders-item-details-action-type">BOT {bot.action}</span>
+                <span className="coin-colorized orders-item-details_action" dangerouslySetInnerHTML={{ __html: bot.action === 'buy' ? buy : sell }} />
+
+                <span>{ bot.totalbasevolume } { bot.base }</span>
+
+              </div>
+              <div className={`orders-item-details-meta ${bot.base}`}>
+                <div>
+                  <small className="coin-colorized"><strong>Max Price</strong> { bot.maxprice } { bot.rel }</small>
+                  <small className="coin-colorized"><strong>Total</strong> { bot.totalrelvolume } { bot.rel }</small>
+                </div>
+
+                <button className="order-stop action align-left danger">
+                  <span>stop</span>
+                  <i dangerouslySetInnerHTML={{ __html: stop }} />
+                </button>
+              </div>
             </div>
-            <span className="orders-item-details_action" dangerouslySetInnerHTML={{ __html: gear }} />
           </li>
 
     );

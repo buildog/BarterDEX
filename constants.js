@@ -9,6 +9,12 @@ const CONSTANTS = {
         6: 'Processing withdraw'
 
     },
+    growler: {
+        0: {
+            message: 'Trade bot launched',
+            type: 1
+        }
+    },
     error: {
         1: {
             message: 'port 7783 marketmaker is already in use',

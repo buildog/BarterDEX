@@ -25,6 +25,7 @@
 @import 'elements/_modal';
 @import 'elements/_tables';
 @import 'elements/_header';
+@import 'elements/_growler';
 
 
 @import 'components/dashboard';
