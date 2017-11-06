@@ -15,6 +15,10 @@ export default class TradeStore {
         this.bots = JSON.parse(JSON.stringify(botstatus));
     }
 
+    @action stopBot = (botid) => {
+        ipcRenderer.send('stopBot', botid)
+    }
+
     @action trade = (params) => {
         ipcRenderer.send('trade', params)
     }

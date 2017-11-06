@@ -25,6 +25,11 @@ class Orders extends React.Component {
         'balance-action': true
     })
 
+    stopBot = (botid) => {
+        const { stopBot } = this.props.app.trade;
+        stopBot(botid);
+    }
+
 
     render() {
         const { bots } = this.props.app.trade;
@@ -45,7 +50,7 @@ class Orders extends React.Component {
                   <small className="coin-colorized"><strong>Total</strong> { bot.totalrelvolume } { bot.rel }</small>
                 </div>
 
-                <button className="order-stop action align-left danger">
+                <button onClick={() => this.stopBot(bot.botid)}className="order-stop action align-left danger">
                   <span>stop</span>
                   <i dangerouslySetInnerHTML={{ __html: stop }} />
                 </button>

@@ -8,6 +8,7 @@ export default class GrowlerStore {
     constructor() {
           // listener for loading state change
         ipcRenderer.on('growler', (e, arg) => {
+            console.log('growler!')
             this.updateGrowler(arg);
         });
     }
@@ -15,6 +16,7 @@ export default class GrowlerStore {
     removeKey = (key) => {
         const ghost = JSON.parse(JSON.stringify(this.store));
         ghost.splice(ghost.indexOf(key), 1);
+        this.store = ghost;
     }
 
 
@@ -27,9 +29,11 @@ export default class GrowlerStore {
 
         this.store = ghost;
 
+        console.log(this.store);
+
         setTimeout(() => {
             self.removeKey(key)
-        }, 400)
+        }, 1500)
     }
 
     getLoader = (key) => {

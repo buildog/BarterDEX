@@ -1,12 +1,12 @@
 .growler {
     position: fixed;
-    top: 20px;
+    top: 0px;
     width: 100%;
     display: flex;
     flex-direction: column;
     list-style: none;
     margin: 0;
-    padding: 20px;
+    padding: 10px;
     z-index: 2000;
     text-align: center;
     pointer-events: none;
@@ -42,4 +42,4 @@
 .growler:empty {
     opacity: 0;
     transform: translateX(-20px);
-} 
+}

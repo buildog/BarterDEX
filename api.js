@@ -432,6 +432,22 @@ class Emitter extends EventEmitter {
         }));
     }
 
+    stopBot(botid) {
+        const self = this;
+        const data = { userpass: self.userpass, method: 'bot_stop', botid };
+        const url = 'http://127.0.0.1:7783';
+
+        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
+            console.log(`${botid} stopped`);
+            self.emit('botStopped', result);
+
+            resolve(result);
+        }).catch((error) => {
+            console.log(`error botstop ${botid}`)
+            reject(error);
+        }));
+    }
+
     sendrawtransaction({ coin, signedtx }) {
         const self = this;
         const data = { userpass: self.userpass, method: 'sendrawtransaction', coin, signedtx };

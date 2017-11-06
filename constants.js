@@ -13,6 +13,10 @@ const CONSTANTS = {
         0: {
             message: 'Trade bot launched',
             type: 1
+        },
+        1: {
+            message: 'Bot stopped',
+            type: 1
         }
     },
     error: {

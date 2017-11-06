@@ -5,6 +5,15 @@
     justify-content: flex-start;
 }
 
+
+.trade-body {
+    flex-grow: 1
+}
+.trade-body > [class*="action"] {
+    flex-grow: 1;
+    overflow: auto;
+}
+
 .trade-processing {
     flex-grow: 1;
     display: flex;
