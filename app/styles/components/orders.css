@@ -1,0 +1,4 @@
+.orders-item-details {
+    display: flex;
+    flex-direction: column;
+}

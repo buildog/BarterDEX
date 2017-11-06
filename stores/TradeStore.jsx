@@ -8,6 +8,11 @@ export default class TradeStore {
     constructor() {
         const self = this;
         ipcRenderer.on('trade', (e, result) => { self.tradeCb(result) });
+        ipcRenderer.on('botstatus', (e, result) => { self.botstatus(result) });
+    }
+
+    botstatus = (botstatus) => {
+        this.bots = JSON.parse(JSON.stringify(botstatus));
     }
 
     @action trade = (params) => {

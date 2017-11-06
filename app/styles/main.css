@@ -33,6 +33,7 @@
 @import 'components/coinList';
 @import 'components/wallet';
 @import 'components/balance';
+@import 'components/orders';
 
 
 body {

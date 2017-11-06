@@ -35,6 +35,21 @@ ul[class*=list] > li > a {
     padding: 0px 20px 0px 20px;
 }
 
+ul[class*=list] [class*="_action"] {
+    display: flex;
+    align-items: center;
+    width: 30px;
+    background: transparent
+}
+
+ul[class*=list] [class*="_action"] svg {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    left: 0;
+    transition: transform .6s ease;
+}
+
 ul[class*=list] > li:hover,
 ul[class*=list] > li.enabling {
     z-index: 1;

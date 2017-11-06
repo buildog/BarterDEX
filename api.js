@@ -211,6 +211,26 @@ class Emitter extends EventEmitter {
         })
     }
 
+    fetchBots() {
+        const self = this;
+        const data = { userpass: self.userpass, method: 'bot_list' };
+        const url = 'http://127.0.0.1:7783';
+
+        const fetch = new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
+            console.log('botIDs');
+            console.log(result);
+            resolve(result);
+        }).catch((error) => {
+            console.log(`error getcoin ${coin}`)
+            reject(error);
+        }));
+
+
+        const getstatus = (botList) => botList.map((botID) => self.botstatus(botID).then((botStatus) => botStatus))
+
+        return fetch.then((botList) => Promise.all(getstatus(botList))).then((botlist) => self.emit('botstatus', botlist))
+    }
+
     checkMMStatus() {
         const self = this;
         portscanner.checkPortStatus(7783, '127.0.0.1', (error, status) => {
@@ -396,6 +416,21 @@ class Emitter extends EventEmitter {
         })
     }
 
+
+    botstatus(botid) {
+        const self = this;
+        const data = { userpass: self.userpass, method: 'bot_status', botid };
+        const url = 'http://127.0.0.1:7783';
+
+        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
+            console.log(`${botid} status`);
+            console.log(result);
+            resolve(result);
+        }).catch((error) => {
+            console.log(`error botstatus ${botid}`)
+            reject(error);
+        }));
+    }
 
     sendrawtransaction({ coin, signedtx }) {
         const self = this;

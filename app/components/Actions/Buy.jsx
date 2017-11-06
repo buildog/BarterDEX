@@ -97,13 +97,12 @@ class Trade extends React.Component {
 
 
     componentWillReact = () => {
-        // const { tradeRel, tradeBase } = this.props.app.portfolio;
-        // this.setState({ orderBookMessage: `Fetching ${tradeBase.coin}/${tradeRel.coin} orderbook` });
         // this.validation({ amountRel: this.state.amountRel, rate: this.state.rate });
     }
 
     trade = () => {
-        const { trade, tradeRel, tradeBase } = this.props.app.trade;
+        const { tradeRel, tradeBase } = this.props.app.portfolio;
+        const { trade } = this.props.app.trade;
 
         const params = {
             method: 'bot_buy',
@@ -189,7 +188,7 @@ class Trade extends React.Component {
     closeSelects = () => { this.setState({ picker: false, showOrderbook: false }) }
 
 
-    renderPrice = () => (
+    renderPrice = (tradeBase, tradeRel) => (
 
       <section className="trade-amount_input_price">
         <span className="label">
@@ -212,7 +211,7 @@ class Trade extends React.Component {
           <CoinPicker onSelected={(e, coin) => this.tradeWith(e, coin)} trade />
         </div>
 
-        { this.state.showOrderbook && <Orderbook placeholder={this.state.orderBookMessage} onSelected={(params) => this.pickRate(params)} /> }
+        { this.state.showOrderbook && <Orderbook base={tradeBase.coin} rel={tradeRel.coin} type="asks" placeholder={this.state.orderBookMessage} onSelected={(params) => this.pickRate(params)} /> }
 
       </section>
 
@@ -298,7 +297,7 @@ class Trade extends React.Component {
         // portfolio
         const { loader } = this.props.app;
         const orderLoader = loader.getLoader(5);
-        const { tradeRel } = this.props.app.portfolio;
+        const { tradeBase, tradeRel } = this.props.app.portfolio;
 
         return (
           <section className={this.getClassState()}>
@@ -306,7 +305,7 @@ class Trade extends React.Component {
             <section className="trade-action-wrapper">
               <div className="trade-amount">
                 <section className="trade-amount_input">
-                  { this.renderPrice() }
+                  { this.renderPrice(tradeBase, tradeRel) }
                   { this.renderAmount() }
                 </section>
               </div>

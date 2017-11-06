@@ -13,6 +13,7 @@ export default class OrderbookStore {
     }
 
     updateOrderbook = ({ data }) => {
+        console.log('orderbook update');
         const asks = data.asks.filter((ask) => ask.numutxos > 0);
         const bids = data.bids.filter((bid) => bid.numutxos > 0);
         this.asks = JSON.parse(JSON.stringify(asks));

@@ -87,14 +87,8 @@ export default class PortfolioStore {
     @action getCoin = (short) => this.installedCoins.filter((asset) => asset.coin === short)[0];
 
     updateTrade = (coin, type) => {
-        this.orderbook.killListener();
         this[`trade${type}`] = this.getCoin(coin);
-
-        if (this.tradeBase && this.tradeRel) {
-            this.orderbook.listenOrderbook({ base: this.tradeBase.coin, rel: this.tradeRel.coin });
-        }
     }
-
 
     /* @params { method, base, rel, price, relvolume }
     */
