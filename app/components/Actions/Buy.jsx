@@ -311,7 +311,7 @@ class Trade extends React.Component {
               </div>
             </section> }
 
-            { tradeRel.balance >= (this.state.amountRel * this.state.rate) ? this.renderButton() : this.renderDeposit() }
+            { tradeRel.balance >= (this.state.amountRel * this.state.rate) && !orderLoader ? this.renderButton() : this.renderDeposit() }
 
           </section>
         );
