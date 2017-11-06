@@ -365,18 +365,27 @@ class Emitter extends EventEmitter {
 
 
         const url = 'http://127.0.0.1:7783';
-        self.inventory({ coin: rel }).then(() => {
-            self.apiRequest({ data, url }).then((result) => {
-                console.log(`${method} submitted`);
-                console.log(result);
-                if (!result.error) {
-                    self.emit('trade', result);
-                } else {
-                    self.emit('notifier', { error: 7, desc: result.error })
-                }
-            }).catch((error) => {
-                self.emit('notifier', { error: 7 })
-            });
+
+        const tradeRequest = self.apiRequest({ data, url }).then((result) => {
+            console.log(`${method} submitted`);
+            console.log(result);
+            if (!result.error) {
+                self.emit('trade', result);
+            } else {
+                self.emit('notifier', { error: 7, desc: result.error })
+            }
+        }).catch((error) => {
+            self.emit('notifier', { error: 7 })
+        });
+
+        return self.inventory({ coin: rel }).then((inventor) => {
+            if (inventor.alice.length < 2) {
+                return self.withdraw({ address: inventor.alice[0].address, coin: inventor.alice[0].coin }).then((withdrawResult) => {
+                    self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(() => tradeRequest())
+                })
+            }
+
+            return tradeRequest();
         })
     }
 

@@ -27,23 +27,14 @@ class Orderbook extends React.Component {
             selected: ''
         }
     }
-    componentDidMount = () => {
-        const self = this;
-        self.refresh = setInterval(() => {
-            self.setState({ orderbook: JSON.parse(JSON.stringify(this.props.app.orderbook.asks)) });
-        }, 600)
-    }
-
-    componentWillUnmount = () => {
-        clearInterval(this.refresh);
-    }
     render() {
         const self = this;
+        const { asks } = this.props.app.orderbook;
         return (
           <section className="trade-orderbook">
             <ReactTable
               className="-striped -highlight"
-              data={self.state.orderbook}
+              data={asks}
               columns={orderbookColumns}
               defaultSorted={[{ id: 'price' }]}
               noDataText={this.props.placeholder}

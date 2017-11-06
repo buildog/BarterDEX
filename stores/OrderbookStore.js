@@ -15,8 +15,8 @@ export default class OrderbookStore {
     updateOrderbook = ({ data }) => {
         const asks = data.asks.filter((ask) => ask.numutxos > 0);
         const bids = data.bids.filter((bid) => bid.numutxos > 0);
-        this.asks.replace(asks);
-        this.bids.replace(bids);
+        this.asks = JSON.parse(JSON.stringify(asks));
+        this.bids = JSON.parse(JSON.stringify(bids));
     }
 
     listenOrderbook = ({ base, rel }) => {
