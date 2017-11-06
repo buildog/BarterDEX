@@ -9,6 +9,9 @@
     padding: 20px;
     z-index: 2000;
     text-align: center;
+    pointer-events: none;
+    transition: all .2s ease;
+
 }
 
 .growler .growler-success {
@@ -33,3 +36,10 @@
 .growler .growler-success i svg {
     fill: #FFF;
 }
+
+/* state */
+
+.growler:empty {
+    opacity: 0;
+    transform: translateX(-20px);
+} 
