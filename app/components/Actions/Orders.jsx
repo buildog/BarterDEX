@@ -37,7 +37,9 @@ class Orders extends React.Component {
 
 
     render() {
-        const { bots } = this.props.app.trade;
+        const { tradeBase } = this.props.app.portfolio;
+        let { bots } = this.props.app.trade;
+        bots = bots.filter((bot) => bot.base === tradeBase.coin);
 
         const listBots = bots.map((bot, i) => {
             const amountProcessed = bot.trades.reduce((accumulator, trade) => accumulator + trade.volume, 0);
