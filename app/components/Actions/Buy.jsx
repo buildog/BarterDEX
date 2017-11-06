@@ -299,6 +299,13 @@ class Trade extends React.Component {
         const orderLoader = loader.getLoader(5);
         const { tradeBase, tradeRel } = this.props.app.portfolio;
 
+        let action = null;
+
+        if (!orderLoader) {
+            action = tradeRel.balance >= (this.state.amountRel * this.state.rate) ? this.renderButton() : this.renderDeposit()
+        }
+
+
         return (
           <section className={this.getClassState()}>
             { orderLoader ? this.renderLoader() :
@@ -311,7 +318,7 @@ class Trade extends React.Component {
               </div>
             </section> }
 
-            { tradeRel.balance >= (this.state.amountRel * this.state.rate) && !orderLoader ? this.renderButton() : this.renderDeposit() }
+            { action }
 
           </section>
         );
