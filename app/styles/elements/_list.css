@@ -63,3 +63,7 @@ ul[class*=list] > li.enabling .coin-colorized {
     color: #FFF !important;
     fill: #FFF !important;
 }
+
+ul[class*=list] > li:hover code {
+    background: rgba(0,0,0,0.1)
+}

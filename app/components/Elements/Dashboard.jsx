@@ -89,10 +89,7 @@ class Dashboard extends React.Component {
                         <div className="coinList-coin_balance">
                           <strong>{ installed.name }</strong>
                           <small>{ installed.balance } { installed.coin }</small>
-                          <small>{ isNative ? (<div>
-                              Native mode <code>Height {installed.height}</code> </div>)
-                          : 'Electrum mode' }
-                          </small>
+                          <small>{ isNative ? 'Native mode' : 'Electrum mode' } </small>
                         </div>
                         <button className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
                       </Link>
