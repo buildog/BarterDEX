@@ -8885,7 +8885,7 @@ module.exports =
 	
 	var _events = __webpack_require__(459);
 	
-	var _config = __webpack_require__(350);
+	var _config = __webpack_require__(349);
 	
 	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; } /*
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Bootstrap of Electron 🚀
@@ -9008,7 +9008,9 @@ module.exports =
 	
 	                    mainWindow = new _electron.BrowserWindow({
 	                        width: 400,
-	                        height: 758,
+	                        height: 786,
+	                        minHeight: 786,
+	                        minWidth: 400,
 	                        show: false,
 	                        backgroundColor: '#F8FAFF'
 	                    });
@@ -9156,13 +9158,13 @@ module.exports =
 	
 	var _electronLog2 = _interopRequireDefault(_electronLog);
 	
-	var _request = __webpack_require__(349);
+	var _request = __webpack_require__(348);
 	
 	var _request2 = _interopRequireDefault(_request);
 	
-	var _config = __webpack_require__(350);
+	var _config = __webpack_require__(349);
 	
-	var _socket = __webpack_require__(354);
+	var _socket = __webpack_require__(353);
 	
 	var _socket2 = _interopRequireDefault(_socket);
 	
@@ -9399,8 +9401,42 @@ module.exports =
 	        value: function fetchCoins() {
 	            var self = this;
 	
-	            self.getCoins().then(function (coinsList) {
+	            self.getCoins({}).then(function (coinsList) {
 	                self.emit('coinsList', coinsList);
+	            });
+	        }
+	    }, {
+	        key: 'fetchBots',
+	        value: function fetchBots() {
+	            var _this2 = this;
+	
+	            var self = this;
+	            var data = { userpass: self.userpass, method: 'bot_list' };
+	            var url = 'http://127.0.0.1:7783';
+	
+	            var fetch = new Promise(function (resolve, reject) {
+	                return _this2.apiRequest({ data: data, url: url }).then(function (result) {
+	                    console.log('botIDs');
+	                    console.log(result);
+	                    resolve(result);
+	                }).catch(function (error) {
+	                    console.log('error getcoin ' + coin);
+	                    reject(error);
+	                });
+	            });
+	
+	            var getstatus = function getstatus(botList) {
+	                return botList.map(function (botID) {
+	                    return self.botstatus(botID).then(function (botStatus) {
+	                        return botStatus;
+	                    });
+	                });
+	            };
+	
+	            return fetch.then(function (botList) {
+	                return Promise.all(getstatus(botList));
+	            }).then(function (botlist) {
+	                return self.emit('botstatus', botlist);
 	            });
 	        }
 	    }, {
@@ -9425,19 +9461,20 @@ module.exports =
 	
 	                self.userpass = userpass;
 	                self.mypubkey = mypubkey;
-	                self.getCoins().then(function (coinsList) {
+	                self.getCoins({}).then(function (coinsList) {
 	                    // coinsList may return an object instead of an array if it's the first call which return the userpass.
 	                    self.emit('coinsList', coinsList.coins || coinsList);
 	                    self.emit('updateUserInfo', { userpass: userpass, mypubkey: mypubkey });
 	                });
 	            }).catch(function (error) {
-	                self.emit('notifier', { error: 2, desc: error });
+	                console.log(error);
+	                self.emit('notifier', { error: 2, desc: error.code });
 	            });
 	        }
 	    }, {
 	        key: 'balance',
 	        value: function balance(_ref3) {
-	            var _this2 = this;
+	            var _this3 = this;
 	
 	            var coin = _ref3.coin,
 	                address = _ref3.address;
@@ -9447,7 +9484,7 @@ module.exports =
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this2.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this3.apiRequest({ data: data, url: url }).then(function (result) {
 	                    resolve(result);
 	                }).catch(function (error) {
 	                    console.log('error getbalance ' + coin);
@@ -9457,19 +9494,17 @@ module.exports =
 	        }
 	    }, {
 	        key: 'getCoins',
-	        value: function getCoins() {
-	            var _this3 = this;
+	        value: function getCoins(_ref4) {
+	            var _this4 = this;
+	
+	            var withoutBalance = _ref4.withoutBalance;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'getcoins' };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            var fetch = new Promise(function (resolve, reject) {
-	                return _this3.apiRequest({ data: data, url: url }).then(function (result) {
-	                    /*
-	                    installed true/false,
-	                    height of -1 means it isnt running, height > 0 means it is running and balance is non-zero if there is a balance for any coin with a running coin
-	                    */
+	                return _this4.apiRequest({ data: data, url: url }).then(function (result) {
 	                    resolve(result);
 	                }).catch(function (error) {
 	                    console.log('error getcoin ' + coin);
@@ -9479,10 +9514,12 @@ module.exports =
 	
 	            var updateBalance = function updateBalance(coinList) {
 	                return coinList.map(function (coin) {
-	                    if (coin.electrum) {
-	                        return self.balance({ coin: coin.coin, address: coin.smartaddress }).then(function (coinBalance) {
-	                            coin.balance = coinBalance.balance;
-	                            return coin;
+	                    if (coin.electrum && !withoutBalance) {
+	                        return self.listunspent({ coin: coin.coin, address: coin.smartaddress }).then(function () {
+	                            return self.balance({ coin: coin.coin, address: coin.smartaddress }).then(function (coinBalance) {
+	                                coin.balance = coinBalance.balance;
+	                                return coin;
+	                            });
 	                        });
 	                    }
 	
@@ -9496,12 +9533,12 @@ module.exports =
 	        }
 	    }, {
 	        key: 'disableCoin',
-	        value: function disableCoin(_ref4) {
-	            var _this4 = this;
+	        value: function disableCoin(_ref5) {
+	            var _this5 = this;
 	
-	            var _ref4$coin = _ref4.coin,
-	                coin = _ref4$coin === undefined ? '' : _ref4$coin,
-	                type = _ref4.type;
+	            var _ref5$coin = _ref5.coin,
+	                coin = _ref5$coin === undefined ? '' : _ref5$coin,
+	                type = _ref5.type;
 	
 	            var self = this;
 	
@@ -9511,7 +9548,7 @@ module.exports =
 	
 	            this.apiRequest({ data: data, url: url }).then(function (result) {
 	                self.fetchPortfolio(function () {
-	                    return _this4.emit('updateTrade', { coin: coin, type: type });
+	                    return _this5.emit('updateTrade', { coin: coin, type: type });
 	                });
 	            }).catch(function (error) {
 	                self.emit('notifier', { error: 3 });
@@ -9519,16 +9556,16 @@ module.exports =
 	        }
 	    }, {
 	        key: 'enableCoin',
-	        value: function enableCoin(_ref5) {
-	            var _this5 = this;
+	        value: function enableCoin(_ref6) {
+	            var _this6 = this;
 	
-	            var _ref5$coin = _ref5.coin,
-	                coin = _ref5$coin === undefined ? '' : _ref5$coin,
-	                type = _ref5.type,
-	                _ref5$electrum = _ref5.electrum,
-	                electrum = _ref5$electrum === undefined ? false : _ref5$electrum,
-	                ipaddr = _ref5.ipaddr,
-	                port = _ref5.port;
+	            var _ref6$coin = _ref6.coin,
+	                coin = _ref6$coin === undefined ? '' : _ref6$coin,
+	                type = _ref6.type,
+	                _ref6$electrum = _ref6.electrum,
+	                electrum = _ref6$electrum === undefined ? false : _ref6$electrum,
+	                ipaddr = _ref6.ipaddr,
+	                port = _ref6.port;
 	
 	            var self = this;
 	            var data = void 0;
@@ -9545,10 +9582,10 @@ module.exports =
 	                if (result.error) {
 	                    return self.emit('notifier', { error: 3, desc: result.error });
 	                }
-	                self.getCoins().then(function (coinsList) {
+	                self.getCoins({ withoutBalance: true }).then(function (coinsList) {
 	                    self.emit('coinsList', coinsList);
 	                    self.emit('coinEnabled', { coin: coin });
-	                    type && _this5.emit('updateTrade', { coin: coin, type: type });
+	                    type && _this6.emit('updateTrade', { coin: coin, type: type });
 	                });
 	            }).catch(function (error) {
 	                self.emit('notifier', { error: 3 });
@@ -9570,9 +9607,9 @@ module.exports =
 	        }
 	    }, {
 	        key: 'orderbook',
-	        value: function orderbook(_ref6) {
-	            var base = _ref6.base,
-	                rel = _ref6.rel;
+	        value: function orderbook(_ref7) {
+	            var base = _ref7.base,
+	                rel = _ref7.rel;
 	
 	            var self = this;
 	            var data = { userpass: this.userpass, method: 'orderbook', base: base, rel: rel };
@@ -9585,58 +9622,120 @@ module.exports =
 	        }
 	    }, {
 	        key: 'trade',
-	        value: function trade(_ref7) {
-	            var _ref7$method = _ref7.method,
-	                method = _ref7$method === undefined ? 'buy' : _ref7$method,
-	                base = _ref7.base,
-	                rel = _ref7.rel,
-	                price = _ref7.price,
-	                relvolume = _ref7.relvolume,
-	                basevolume = _ref7.basevolume;
+	        value: function trade(_ref8) {
+	            var _ref8$method = _ref8.method,
+	                method = _ref8$method === undefined ? 'bot_sell' : _ref8$method,
+	                base = _ref8.base,
+	                rel = _ref8.rel,
+	                price = _ref8.price,
+	                volume = _ref8.volume;
 	
 	            var self = this;
 	
-	            var data = { userpass: self.userpass, method: method, base: base, rel: rel, relvolume: relvolume, price: price };
+	            var data = { userpass: self.userpass, method: method, base: base, rel: rel };
 	
-	            if (method === 'buy') {
-	                data.relvolume = relvolume;
+	            if (method === 'bot_sell') {
+	                data.basevolume = volume;
+	                data.minprice = price;
 	            } else {
-	                data.basevolume = basevolume;
+	                data.relvolume = volume;
+	                data.maxprice = price;
 	            }
 	
 	            var url = 'http://127.0.0.1:7783';
-	            self.inventory({ coin: rel }).then(function () {
-	                self.apiRequest({ data: data, url: url }).then(function (result) {
-	                    console.log(method + ' order submitted');
+	
+	            var tradeRequest = self.apiRequest({ data: data, url: url }).then(function (result) {
+	                console.log(method + ' submitted');
+	                console.log(result);
+	                if (!result.error) {
+	                    self.emit('trade', result);
+	                } else {
+	                    self.emit('notifier', { error: 7, desc: result.error });
+	                }
+	            }).catch(function (error) {
+	                self.emit('notifier', { error: 7 });
+	            });
+	
+	            return self.inventory({ coin: rel }).then(function (inventor) {
+	                var txfee = volume / 777 + 2 * (volume / 100);
+	                return self.withdraw({
+	                    address: inventor.alice[0].address,
+	                    coin: inventor.alice[0].coin,
+	                    amounts: [_defineProperty({}, inventor.alice[0].address, volume + 5 * txfee), _defineProperty({}, inventor.alice[0].address, txfee)]
+	                }).then(function (withdrawResult) {
+	                    self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(function () {
+	                        return tradeRequest();
+	                    });
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'botstatus',
+	        value: function botstatus(botid) {
+	            var _this7 = this;
+	
+	            var self = this;
+	            var data = { userpass: self.userpass, method: 'bot_status', botid: botid };
+	            var url = 'http://127.0.0.1:7783';
+	
+	            return new Promise(function (resolve, reject) {
+	                return _this7.apiRequest({ data: data, url: url }).then(function (result) {
+	                    console.log(botid + ' status');
 	                    console.log(result);
-	                    if (!result.error) {
-	                        self.emit('trade', result);
-	                    } else {
-	                        self.emit('notifier', { error: 7, desc: result.error });
-	                    }
+	                    resolve(result);
 	                }).catch(function (error) {
-	                    self.emit('notifier', { error: 7 });
+	                    console.log('error botstatus ' + botid);
+	                    reject(error);
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'toggleBot',
+	        value: function toggleBot(_ref11) {
+	            var _this8 = this;
+	
+	            var botid = _ref11.botid,
+	                method = _ref11.method;
+	
+	            var self = this;
+	            var data = { userpass: self.userpass, method: method, botid: botid };
+	            var url = 'http://127.0.0.1:7783';
+	
+	            return new Promise(function (resolve, reject) {
+	                return _this8.apiRequest({ data: data, url: url }).then(function (result) {
+	                    console.log(botid + ' ' + method);
+	                    if (method === 'bot_stop') {
+	                        self.emit('botStopped', result);
+	                    } else {
+	                        self.emit('botResumed', result);
+	                    }
+	
+	                    resolve(result);
+	                }).catch(function (error) {
+	                    console.log('error botstop ' + botid);
+	                    reject(error);
 	                });
 	            });
 	        }
 	    }, {
 	        key: 'sendrawtransaction',
-	        value: function sendrawtransaction(_ref8) {
-	            var _this6 = this;
+	        value: function sendrawtransaction(_ref12) {
+	            var _this9 = this;
 	
-	            var coin = _ref8.coin,
-	                signedtx = _ref8.signedtx;
+	            var coin = _ref12.coin,
+	                signedtx = _ref12.signedtx,
+	                confirmation = _ref12.confirmation;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'sendrawtransaction', coin: coin, signedtx: signedtx };
 	            var url = 'http://127.0.0.1:7783';
 	            console.log(data);
 	            return new Promise(function (resolve, reject) {
-	                return _this6.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this9.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('sendWithdraw ' + coin);
 	                    console.log(result);
 	                    resolve(result);
-	                    self.emit('sendrawtransaction', result);
+	                    confirmation && self.emit('sendrawtransaction', result);
 	                }).catch(function (error) {
 	                    console.log('error sendWithdraw ' + coin);
 	                    reject(error);
@@ -9645,27 +9744,31 @@ module.exports =
 	        }
 	    }, {
 	        key: 'withdraw',
-	        value: function withdraw(_ref9) {
-	            var _this7 = this;
+	        value: function withdraw(_ref13) {
+	            var _this10 = this;
 	
-	            var address = _ref9.address,
-	                coin = _ref9.coin,
-	                amount = _ref9.amount;
+	            var address = _ref13.address,
+	                coin = _ref13.coin,
+	                amount = _ref13.amount,
+	                amounts = _ref13.amounts,
+	                confirmation = _ref13.confirmation;
 	
+	            var outputs = amounts || [_defineProperty({}, address, amount)];
 	            var self = this;
 	            var data = { userpass: self.userpass,
 	                method: 'withdraw',
 	                coin: coin,
-	                outputs: [_defineProperty({}, address, amount)] };
+	                outputs: outputs };
 	
 	            console.log(data);
 	            var url = 'http://127.0.0.1:7783';
 	            return new Promise(function (resolve, reject) {
-	                return _this7.apiRequest({ data: data, url: url }).then(function (result) {
-	                    console.log('withdraw for ' + coin);
+	                return _this10.apiRequest({ data: data, url: url }).then(function (result) {
+	                    confirmation && console.log('withdraw for ' + coin);
+	                    !confirmation && console.log('split balance into UTXOS for ' + coin);
 	                    console.log(result);
 	                    if (result.complete) {
-	                        self.emit('confirmWithdraw', result);
+	                        confirmation && self.emit('confirmWithdraw', result);
 	                    } else {
 	                        self.emit('notifier', { error: 10 });
 	                    }
@@ -9678,28 +9781,20 @@ module.exports =
 	        }
 	    }, {
 	        key: 'inventory',
-	        value: function inventory(_ref11) {
-	            var _this8 = this;
+	        value: function inventory(_ref15) {
+	            var _this11 = this;
 	
-	            var coin = _ref11.coin;
+	            var coin = _ref15.coin;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'inventory', coin: coin };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this8.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this11.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('inventory for ' + coin);
 	                    console.log(result);
-	                    // if (result.alice.length < 3) {
-	                    //     self.withdraw({ address: result.alice[0].address, coin: result.alice[0].coin }).then((withdrawResult) => {
-	                    //         self.sendrawtransaction({ coin, signedtx: withdrawResult.hex }).then(() => {
-	                    //             resolve(result);
-	                    //         })
-	                    //     })
-	                    // } else {
 	                    resolve(result);
-	                    // }
 	                }).catch(function (error) {
 	                    console.log('error inventory ' + coin);
 	                    reject(error);
@@ -9708,18 +9803,18 @@ module.exports =
 	        }
 	    }, {
 	        key: 'listunspent',
-	        value: function listunspent(_ref12) {
-	            var _this9 = this;
+	        value: function listunspent(_ref16) {
+	            var _this12 = this;
 	
-	            var coin = _ref12.coin,
-	                address = _ref12.address;
+	            var coin = _ref16.coin,
+	                address = _ref16.address;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'listunspent', coin: coin, address: address };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this9.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this12.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('listunspent for ' + coin);
 	                    console.log(result);
 	                    resolve(result);
@@ -9747,7 +9842,7 @@ module.exports =
 	if (process.type === 'renderer') {
 	  module.exports = __webpack_require__(331);
 	} else {
-	  module.exports = __webpack_require__(333);
+	  module.exports = __webpack_require__(332);
 	}
 
 /***/ }),
@@ -9764,8 +9859,6 @@ module.exports =
 	} catch (e) {
 	  ipcRenderer = null;
 	}
-	
-	var originalConsole = __webpack_require__(332);
 	
 	if (ipcRenderer) {
 	  module.exports = {
@@ -9787,7 +9880,7 @@ module.exports =
 	      level = 'debug';
 	    }
 	
-	    originalConsole[level](text);
+	    console[level](text);
 	  });
 	}
 	
@@ -9808,26 +9901,6 @@ module.exports =
 
 /***/ }),
 /* 332 */
-/***/ (function(module, exports) {
-
-	'use strict';
-	
-	/**
-	 * Save console methods for using when originals are overridden
-	 */
-	module.exports = {
-	  error:   console.error,
-	  warn:    console.warn,
-	  info:    console.info,
-	  verbose: console.verbose,
-	  debug:   console.debug,
-	  silly:   console.silly,
-	  log:     console.log
-	};
-
-
-/***/ }),
-/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9839,11 +9912,11 @@ module.exports =
 	  electron = null;
 	}
 	
-	var log                      = __webpack_require__(334);
-	var transportConsole         = __webpack_require__(335);
-	var transportFile            = __webpack_require__(339);
-	var transportLogS            = __webpack_require__(344);
-	var transportRendererConsole = __webpack_require__(348);
+	var log                      = __webpack_require__(333);
+	var transportConsole         = __webpack_require__(334);
+	var transportFile            = __webpack_require__(338);
+	var transportLogS            = __webpack_require__(343);
+	var transportRendererConsole = __webpack_require__(347);
 	
 	var transports = {
 	  console: transportConsole,
@@ -9883,7 +9956,7 @@ module.exports =
 
 
 /***/ }),
-/* 334 */
+/* 333 */
 /***/ (function(module, exports) {
 
 	// jshint -W040
@@ -9930,13 +10003,12 @@ module.exports =
 	}
 
 /***/ }),
-/* 335 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var format          = __webpack_require__(336);
-	var originalConsole = __webpack_require__(332);
+	var format = __webpack_require__(335);
 	
 	transport.level  = 'silly';
 	transport.format = '[{h}:{i}:{s}.{ms}] [{level}] {text}';
@@ -9945,23 +10017,23 @@ module.exports =
 	
 	function transport(msg) {
 	  var text = format.format(msg, transport.format);
-	  if (originalConsole[msg.level]) {
-	    originalConsole[msg.level](text);
+	  if (console[msg.level]) {
+	    console[msg.level](text);
 	  } else {
-	    originalConsole.log(text);
+	    console.log(text);
 	  }
 	}
 	
 
 
 /***/ }),
-/* 336 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var util = __webpack_require__(337);
-	var EOL  = __webpack_require__(338).EOL;
+	var util = __webpack_require__(336);
+	var EOL  = __webpack_require__(337).EOL;
 	
 	module.exports = {
 	  format: format,
@@ -10002,28 +10074,28 @@ module.exports =
 
 
 /***/ }),
-/* 337 */
+/* 336 */
 /***/ (function(module, exports) {
 
 	module.exports = require("util");
 
 /***/ }),
-/* 338 */
+/* 337 */
 /***/ (function(module, exports) {
 
 	module.exports = require("os");
 
 /***/ }),
-/* 339 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var fs               = __webpack_require__(340);
-	var EOL              = __webpack_require__(338).EOL;
-	var format           = __webpack_require__(336);
-	var consoleTransport = __webpack_require__(335);
-	var findLogPath      = __webpack_require__(341);
+	var fs               = __webpack_require__(339);
+	var EOL              = __webpack_require__(337).EOL;
+	var format           = __webpack_require__(335);
+	var consoleTransport = __webpack_require__(334);
+	var findLogPath      = __webpack_require__(340);
 	
 	transport.findLogPath  = findLogPath;
 	transport.format       = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
@@ -10116,21 +10188,21 @@ module.exports =
 
 
 /***/ }),
-/* 340 */
+/* 339 */
 /***/ (function(module, exports) {
 
 	module.exports = require("fs");
 
 /***/ }),
-/* 341 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var fs   = __webpack_require__(340);
-	var path = __webpack_require__(342);
-	var os   = __webpack_require__(338);
-	var getAppName = __webpack_require__(343);
+	var fs   = __webpack_require__(339);
+	var path = __webpack_require__(341);
+	var os   = __webpack_require__(337);
+	var getAppName = __webpack_require__(342);
 	
 	module.exports = findLogPath;
 	
@@ -10224,13 +10296,13 @@ module.exports =
 
 
 /***/ }),
-/* 342 */
+/* 341 */
 /***/ (function(module, exports) {
 
 	module.exports = require("path");
 
 /***/ }),
-/* 343 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// jshint -W074
@@ -10238,9 +10310,9 @@ module.exports =
 	
 	/** @name process.resourcesPath */
 	
-	var fs   = __webpack_require__(340);
-	var path = __webpack_require__(342);
-	var consoleTransport = __webpack_require__(335);
+	var fs   = __webpack_require__(339);
+	var path = __webpack_require__(341);
+	var consoleTransport = __webpack_require__(334);
 	
 	module.exports = getAppName;
 	
@@ -10326,15 +10398,15 @@ module.exports =
 	}
 
 /***/ }),
-/* 344 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// jshint -W074, -W089
 	'use strict';
 	
-	var http  = __webpack_require__(345);
-	var https = __webpack_require__(346);
-	var url   = __webpack_require__(347);
+	var http  = __webpack_require__(344);
+	var https = __webpack_require__(345);
+	var url   = __webpack_require__(346);
 	
 	transport.client = { name: 'electron-application' };
 	transport.depth  = 6;
@@ -10417,25 +10489,25 @@ module.exports =
 	}
 
 /***/ }),
-/* 345 */
+/* 344 */
 /***/ (function(module, exports) {
 
 	module.exports = require("http");
 
 /***/ }),
-/* 346 */
+/* 345 */
 /***/ (function(module, exports) {
 
 	module.exports = require("https");
 
 /***/ }),
-/* 347 */
+/* 346 */
 /***/ (function(module, exports) {
 
 	module.exports = require("url");
 
 /***/ }),
-/* 348 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10447,7 +10519,7 @@ module.exports =
 	  BrowserWindow = null;
 	}
 	
-	var format = __webpack_require__(336);
+	var format = __webpack_require__(335);
 	
 	transport.level  = BrowserWindow ? 'silly' : false;
 	transport.format = '[{h}:{i}:{s}.{ms}] {text}';
@@ -10465,13 +10537,13 @@ module.exports =
 
 
 /***/ }),
-/* 349 */
+/* 348 */
 /***/ (function(module, exports) {
 
 	module.exports = require("request");
 
 /***/ }),
-/* 350 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10480,19 +10552,19 @@ module.exports =
 	    value: true
 	});
 	
-	var _os = __webpack_require__(338);
+	var _os = __webpack_require__(337);
 	
 	var _os2 = _interopRequireDefault(_os);
 	
-	var _fs = __webpack_require__(340);
+	var _fs = __webpack_require__(339);
 	
 	var _fs2 = _interopRequireDefault(_fs);
 	
-	var _path = __webpack_require__(342);
+	var _path = __webpack_require__(341);
 	
 	var _path2 = _interopRequireDefault(_path);
 	
-	var _passphrasegenerator = __webpack_require__(351);
+	var _passphrasegenerator = __webpack_require__(350);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -10501,7 +10573,7 @@ module.exports =
 	*/
 	var osPlatform = _os2.default.platform();
 	
-	var homeDir = __webpack_require__(338).homedir();
+	var homeDir = __webpack_require__(337).homedir();
 	
 	var env = ("production");
 	var assetChainPorts = {
@@ -10562,7 +10634,7 @@ module.exports =
 	var marketmakerIcon = void 0;
 	
 	/* Handle binaries paths */
-	var marketmaker = __webpack_require__(353).path;
+	var marketmaker = __webpack_require__(352).path;
 	
 	var paths = { marketmaker: marketmaker };
 	var transformBinaryPath = function transformBinaryPath(name) {
@@ -10611,7 +10683,7 @@ module.exports =
 	module.exports = exports['default'];
 
 /***/ }),
-/* 351 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10621,7 +10693,7 @@ module.exports =
 	});
 	exports.PassPhraseGenerator = undefined;
 	
-	var _wordlist = __webpack_require__(352);
+	var _wordlist = __webpack_require__(351);
 	
 	var PassPhraseGenerator = exports.PassPhraseGenerator = {
 	    seeds: 0,
@@ -10756,7 +10828,7 @@ module.exports =
 	 */
 
 /***/ }),
-/* 352 */
+/* 351 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -10768,11 +10840,11 @@ module.exports =
 	var ClientWordList = exports.ClientWordList = ['abandon', 'ability', 'able', 'about', 'above', 'absent', 'absorb', 'abstract', 'absurd', 'abuse', 'access', 'accident', 'account', 'accuse', 'achieve', 'acid', 'acoustic', 'acquire', 'across', 'act', 'action', 'actor', 'actress', 'actual', 'adapt', 'add', 'addict', 'address', 'adjust', 'admit', 'adult', 'advance', 'advice', 'aerobic', 'affair', 'afford', 'afraid', 'again', 'age', 'agent', 'agree', 'ahead', 'aim', 'air', 'airport', 'aisle', 'alarm', 'album', 'alcohol', 'alert', 'alien', 'all', 'alley', 'allow', 'almost', 'alone', 'alpha', 'already', 'also', 'alter', 'always', 'amateur', 'amazing', 'among', 'amount', 'amused', 'analyst', 'anchor', 'ancient', 'anger', 'angle', 'angry', 'animal', 'ankle', 'announce', 'annual', 'another', 'answer', 'antenna', 'antique', 'anxiety', 'any', 'apart', 'apology', 'appear', 'apple', 'approve', 'april', 'arch', 'arctic', 'area', 'arena', 'argue', 'arm', 'armed', 'armor', 'army', 'around', 'arrange', 'arrest', 'arrive', 'arrow', 'art', 'artefact', 'artist', 'artwork', 'ask', 'aspect', 'assault', 'asset', 'assist', 'assume', 'asthma', 'athlete', 'atom', 'attack', 'attend', 'attitude', 'attract', 'auction', 'audit', 'august', 'aunt', 'author', 'auto', 'autumn', 'average', 'avocado', 'avoid', 'awake', 'aware', 'away', 'awesome', 'awful', 'awkward', 'axis', 'baby', 'bachelor', 'bacon', 'badge', 'bag', 'balance', 'balcony', 'ball', 'bamboo', 'banana', 'banner', 'bar', 'barely', 'bargain', 'barrel', 'base', 'basic', 'basket', 'battle', 'beach', 'bean', 'beauty', 'because', 'become', 'beef', 'before', 'begin', 'behave', 'behind', 'believe', 'below', 'belt', 'bench', 'benefit', 'best', 'betray', 'better', 'between', 'beyond', 'bicycle', 'bid', 'bike', 'bind', 'biology', 'bird', 'birth', 'bitter', 'black', 'blade', 'blame', 'blanket', 'blast', 'bleak', 'bless', 'blind', 'blood', 'blossom', 'blouse', 'blue', 'blur', 'blush', 'board', 'boat', 'body', 'boil', 'bomb', 'bone', 'bonus', 'book', 'boost', 'border', 'boring', 'borrow', 'boss', 'bottom', 'bounce', 'box', 'boy', 'bracket', 'brain', 'brand', 'brass', 'brave', 'bread', 'breeze', 'brick', 'bridge', 'brief', 'bright', 'bring', 'brisk', 'broccoli', 'broken', 'bronze', 'broom', 'brother', 'brown', 'brush', 'bubble', 'buddy', 'budget', 'buffalo', 'build', 'bulb', 'bulk', 'bullet', 'bundle', 'bunker', 'burden', 'burger', 'burst', 'bus', 'business', 'busy', 'butter', 'buyer', 'buzz', 'cabbage', 'cabin', 'cable', 'cactus', 'cage', 'cake', 'call', 'calm', 'camera', 'camp', 'can', 'canal', 'cancel', 'candy', 'cannon', 'canoe', 'canvas', 'canyon', 'capable', 'capital', 'captain', 'car', 'carbon', 'card', 'cargo', 'carpet', 'carry', 'cart', 'case', 'cash', 'casino', 'castle', 'casual', 'cat', 'catalog', 'catch', 'category', 'cattle', 'caught', 'cause', 'caution', 'cave', 'ceiling', 'celery', 'cement', 'census', 'century', 'cereal', 'certain', 'chair', 'chalk', 'champion', 'change', 'chaos', 'chapter', 'charge', 'chase', 'chat', 'cheap', 'check', 'cheese', 'chef', 'cherry', 'chest', 'chicken', 'chief', 'child', 'chimney', 'choice', 'choose', 'chronic', 'chuckle', 'chunk', 'churn', 'cigar', 'cinnamon', 'circle', 'citizen', 'city', 'civil', 'claim', 'clap', 'clarify', 'claw', 'clay', 'clean', 'clerk', 'clever', 'click', 'client', 'cliff', 'climb', 'clinic', 'clip', 'clock', 'clog', 'close', 'cloth', 'cloud', 'clown', 'club', 'clump', 'cluster', 'clutch', 'coach', 'coast', 'coconut', 'code', 'coffee', 'coil', 'coin', 'collect', 'color', 'column', 'combine', 'come', 'comfort', 'comic', 'common', 'company', 'concert', 'conduct', 'confirm', 'congress', 'connect', 'consider', 'control', 'convince', 'cook', 'cool', 'copper', 'copy', 'coral', 'core', 'corn', 'correct', 'cost', 'cotton', 'couch', 'country', 'couple', 'course', 'cousin', 'cover', 'coyote', 'crack', 'cradle', 'craft', 'cram', 'crane', 'crash', 'crater', 'crawl', 'crazy', 'cream', 'credit', 'creek', 'crew', 'cricket', 'crime', 'crisp', 'critic', 'crop', 'cross', 'crouch', 'crowd', 'crucial', 'cruel', 'cruise', 'crumble', 'crunch', 'crush', 'cry', 'crystal', 'cube', 'culture', 'cup', 'cupboard', 'curious', 'current', 'curtain', 'curve', 'cushion', 'custom', 'cute', 'cycle', 'dad', 'damage', 'damp', 'dance', 'danger', 'daring', 'dash', 'daughter', 'dawn', 'day', 'deal', 'debate', 'debris', 'decade', 'december', 'decide', 'decline', 'decorate', 'decrease', 'deer', 'defense', 'define', 'defy', 'degree', 'delay', 'deliver', 'demand', 'demise', 'denial', 'dentist', 'deny', 'depart', 'depend', 'deposit', 'depth', 'deputy', 'derive', 'describe', 'desert', 'design', 'desk', 'despair', 'destroy', 'detail', 'detect', 'develop', 'device', 'devote', 'diagram', 'dial', 'diamond', 'diary', 'dice', 'diesel', 'diet', 'differ', 'digital', 'dignity', 'dilemma', 'dinner', 'dinosaur', 'direct', 'dirt', 'disagree', 'discover', 'disease', 'dish', 'dismiss', 'disorder', 'display', 'distance', 'divert', 'divide', 'divorce', 'dizzy', 'doctor', 'document', 'dog', 'doll', 'dolphin', 'domain', 'donate', 'donkey', 'donor', 'door', 'dose', 'double', 'dove', 'draft', 'dragon', 'drama', 'drastic', 'draw', 'dream', 'dress', 'drift', 'drill', 'drink', 'drip', 'drive', 'drop', 'drum', 'dry', 'duck', 'dumb', 'dune', 'during', 'dust', 'dutch', 'duty', 'dwarf', 'dynamic', 'eager', 'eagle', 'early', 'earn', 'earth', 'easily', 'east', 'easy', 'echo', 'ecology', 'economy', 'edge', 'edit', 'educate', 'effort', 'egg', 'eight', 'either', 'elbow', 'elder', 'electric', 'elegant', 'element', 'elephant', 'elevator', 'elite', 'else', 'embark', 'embody', 'embrace', 'emerge', 'emotion', 'employ', 'empower', 'empty', 'enable', 'enact', 'end', 'endless', 'endorse', 'enemy', 'energy', 'enforce', 'engage', 'engine', 'enhance', 'enjoy', 'enlist', 'enough', 'enrich', 'enroll', 'ensure', 'enter', 'entire', 'entry', 'envelope', 'episode', 'equal', 'equip', 'era', 'erase', 'erode', 'erosion', 'error', 'erupt', 'escape', 'essay', 'essence', 'estate', 'eternal', 'ethics', 'evidence', 'evil', 'evoke', 'evolve', 'exact', 'example', 'excess', 'exchange', 'excite', 'exclude', 'excuse', 'execute', 'exercise', 'exhaust', 'exhibit', 'exile', 'exist', 'exit', 'exotic', 'expand', 'expect', 'expire', 'explain', 'expose', 'express', 'extend', 'extra', 'eye', 'eyebrow', 'fabric', 'face', 'faculty', 'fade', 'faint', 'faith', 'fall', 'false', 'fame', 'family', 'famous', 'fan', 'fancy', 'fantasy', 'farm', 'fashion', 'fat', 'fatal', 'father', 'fatigue', 'fault', 'favorite', 'feature', 'february', 'federal', 'fee', 'feed', 'feel', 'female', 'fence', 'festival', 'fetch', 'fever', 'few', 'fiber', 'fiction', 'field', 'figure', 'file', 'film', 'filter', 'final', 'find', 'fine', 'finger', 'finish', 'fire', 'firm', 'first', 'fiscal', 'fish', 'fit', 'fitness', 'fix', 'flag', 'flame', 'flash', 'flat', 'flavor', 'flee', 'flight', 'flip', 'float', 'flock', 'floor', 'flower', 'fluid', 'flush', 'fly', 'foam', 'focus', 'fog', 'foil', 'fold', 'follow', 'food', 'foot', 'force', 'forest', 'forget', 'fork', 'fortune', 'forum', 'forward', 'fossil', 'foster', 'found', 'fox', 'fragile', 'frame', 'frequent', 'fresh', 'friend', 'fringe', 'frog', 'front', 'frost', 'frown', 'frozen', 'fruit', 'fuel', 'fun', 'funny', 'furnace', 'fury', 'future', 'gadget', 'gain', 'galaxy', 'gallery', 'game', 'gap', 'garage', 'garbage', 'garden', 'garlic', 'garment', 'gas', 'gasp', 'gate', 'gather', 'gauge', 'gaze', 'general', 'genius', 'genre', 'gentle', 'genuine', 'gesture', 'ghost', 'giant', 'gift', 'giggle', 'ginger', 'giraffe', 'girl', 'give', 'glad', 'glance', 'glare', 'glass', 'glide', 'glimpse', 'globe', 'gloom', 'glory', 'glove', 'glow', 'glue', 'goat', 'goddess', 'gold', 'good', 'goose', 'gorilla', 'gospel', 'gossip', 'govern', 'gown', 'grab', 'grace', 'grain', 'grant', 'grape', 'grass', 'gravity', 'great', 'green', 'grid', 'grief', 'grit', 'grocery', 'group', 'grow', 'grunt', 'guard', 'guess', 'guide', 'guilt', 'guitar', 'gun', 'gym', 'habit', 'hair', 'half', 'hammer', 'hamster', 'hand', 'happy', 'harbor', 'hard', 'harsh', 'harvest', 'hat', 'have', 'hawk', 'hazard', 'head', 'health', 'heart', 'heavy', 'hedgehog', 'height', 'hello', 'helmet', 'help', 'hen', 'hero', 'hidden', 'high', 'hill', 'hint', 'hip', 'hire', 'history', 'hobby', 'hockey', 'hold', 'hole', 'holiday', 'hollow', 'home', 'honey', 'hood', 'hope', 'horn', 'horror', 'horse', 'hospital', 'host', 'hotel', 'hour', 'hover', 'hub', 'huge', 'human', 'humble', 'humor', 'hundred', 'hungry', 'hunt', 'hurdle', 'hurry', 'hurt', 'husband', 'hybrid', 'ice', 'icon', 'idea', 'identify', 'idle', 'ignore', 'ill', 'illegal', 'illness', 'image', 'imitate', 'immense', 'immune', 'impact', 'impose', 'improve', 'impulse', 'inch', 'include', 'income', 'increase', 'index', 'indicate', 'indoor', 'industry', 'infant', 'inflict', 'inform', 'inhale', 'inherit', 'initial', 'inject', 'injury', 'inmate', 'inner', 'innocent', 'input', 'inquiry', 'insane', 'insect', 'inside', 'inspire', 'install', 'intact', 'interest', 'into', 'invest', 'invite', 'involve', 'iron', 'island', 'isolate', 'issue', 'item', 'ivory', 'jacket', 'jaguar', 'jar', 'jazz', 'jealous', 'jeans', 'jelly', 'jewel', 'job', 'join', 'joke', 'journey', 'joy', 'judge', 'juice', 'jump', 'jungle', 'junior', 'junk', 'just', 'kangaroo', 'keen', 'keep', 'ketchup', 'key', 'kick', 'kid', 'kidney', 'kind', 'kingdom', 'kiss', 'kit', 'kitchen', 'kite', 'kitten', 'kiwi', 'knee', 'knife', 'knock', 'know', 'lab', 'label', 'labor', 'ladder', 'lady', 'lake', 'lamp', 'language', 'laptop', 'large', 'later', 'latin', 'laugh', 'laundry', 'lava', 'law', 'lawn', 'lawsuit', 'layer', 'lazy', 'leader', 'leaf', 'learn', 'leave', 'lecture', 'left', 'leg', 'legal', 'legend', 'leisure', 'lemon', 'lend', 'length', 'lens', 'leopard', 'lesson', 'letter', 'level', 'liar', 'liberty', 'library', 'license', 'life', 'lift', 'light', 'like', 'limb', 'limit', 'link', 'lion', 'liquid', 'list', 'little', 'live', 'lizard', 'load', 'loan', 'lobster', 'local', 'lock', 'logic', 'lonely', 'long', 'loop', 'lottery', 'loud', 'lounge', 'love', 'loyal', 'lucky', 'luggage', 'lumber', 'lunar', 'lunch', 'luxury', 'lyrics', 'machine', 'mad', 'magic', 'magnet', 'maid', 'mail', 'main', 'major', 'make', 'mammal', 'man', 'manage', 'mandate', 'mango', 'mansion', 'manual', 'maple', 'marble', 'march', 'margin', 'marine', 'market', 'marriage', 'mask', 'mass', 'master', 'match', 'material', 'math', 'matrix', 'matter', 'maximum', 'maze', 'meadow', 'mean', 'measure', 'meat', 'mechanic', 'medal', 'media', 'melody', 'melt', 'member', 'memory', 'mention', 'menu', 'mercy', 'merge', 'merit', 'merry', 'mesh', 'message', 'metal', 'method', 'middle', 'midnight', 'milk', 'million', 'mimic', 'mind', 'minimum', 'minor', 'minute', 'miracle', 'mirror', 'misery', 'miss', 'mistake', 'mix', 'mixed', 'mixture', 'mobile', 'model', 'modify', 'mom', 'moment', 'monitor', 'monkey', 'monster', 'month', 'moon', 'moral', 'more', 'morning', 'mosquito', 'mother', 'motion', 'motor', 'mountain', 'mouse', 'move', 'movie', 'much', 'muffin', 'mule', 'multiply', 'muscle', 'museum', 'mushroom', 'music', 'must', 'mutual', 'myself', 'mystery', 'myth', 'naive', 'name', 'napkin', 'narrow', 'nasty', 'nation', 'nature', 'near', 'neck', 'need', 'negative', 'neglect', 'neither', 'nephew', 'nerve', 'nest', 'net', 'network', 'neutral', 'never', 'news', 'next', 'nice', 'night', 'noble', 'noise', 'nominee', 'noodle', 'normal', 'north', 'nose', 'notable', 'note', 'nothing', 'notice', 'novel', 'now', 'nuclear', 'number', 'nurse', 'nut', 'oak', 'obey', 'object', 'oblige', 'obscure', 'observe', 'obtain', 'obvious', 'occur', 'ocean', 'october', 'odor', 'off', 'offer', 'office', 'often', 'oil', 'okay', 'old', 'olive', 'olympic', 'omit', 'once', 'one', 'onion', 'online', 'only', 'open', 'opera', 'opinion', 'oppose', 'option', 'orange', 'orbit', 'orchard', 'order', 'ordinary', 'organ', 'orient', 'original', 'orphan', 'ostrich', 'other', 'outdoor', 'outer', 'output', 'outside', 'oval', 'oven', 'over', 'own', 'owner', 'oxygen', 'oyster', 'ozone', 'pact', 'paddle', 'page', 'pair', 'palace', 'palm', 'panda', 'panel', 'panic', 'panther', 'paper', 'parade', 'parent', 'park', 'parrot', 'party', 'pass', 'patch', 'path', 'patient', 'patrol', 'pattern', 'pause', 'pave', 'payment', 'peace', 'peanut', 'pear', 'peasant', 'pelican', 'pen', 'penalty', 'pencil', 'people', 'pepper', 'perfect', 'permit', 'person', 'pet', 'phone', 'photo', 'phrase', 'physical', 'piano', 'picnic', 'picture', 'piece', 'pig', 'pigeon', 'pill', 'pilot', 'pink', 'pioneer', 'pipe', 'pistol', 'pitch', 'pizza', 'place', 'planet', 'plastic', 'plate', 'play', 'please', 'pledge', 'pluck', 'plug', 'plunge', 'poem', 'poet', 'point', 'polar', 'pole', 'police', 'pond', 'pony', 'pool', 'popular', 'portion', 'position', 'possible', 'post', 'potato', 'pottery', 'poverty', 'powder', 'power', 'practice', 'praise', 'predict', 'prefer', 'prepare', 'present', 'pretty', 'prevent', 'price', 'pride', 'primary', 'print', 'priority', 'prison', 'private', 'prize', 'problem', 'process', 'produce', 'profit', 'program', 'project', 'promote', 'proof', 'property', 'prosper', 'protect', 'proud', 'provide', 'public', 'pudding', 'pull', 'pulp', 'pulse', 'pumpkin', 'punch', 'pupil', 'puppy', 'purchase', 'purity', 'purpose', 'purse', 'push', 'put', 'puzzle', 'pyramid', 'quality', 'quantum', 'quarter', 'question', 'quick', 'quit', 'quiz', 'quote', 'rabbit', 'raccoon', 'race', 'rack', 'radar', 'radio', 'rail', 'rain', 'raise', 'rally', 'ramp', 'ranch', 'random', 'range', 'rapid', 'rare', 'rate', 'rather', 'raven', 'raw', 'razor', 'ready', 'real', 'reason', 'rebel', 'rebuild', 'recall', 'receive', 'recipe', 'record', 'recycle', 'reduce', 'reflect', 'reform', 'refuse', 'region', 'regret', 'regular', 'reject', 'relax', 'release', 'relief', 'rely', 'remain', 'remember', 'remind', 'remove', 'render', 'renew', 'rent', 'reopen', 'repair', 'repeat', 'replace', 'report', 'require', 'rescue', 'resemble', 'resist', 'resource', 'response', 'result', 'retire', 'retreat', 'return', 'reunion', 'reveal', 'review', 'reward', 'rhythm', 'rib', 'ribbon', 'rice', 'rich', 'ride', 'ridge', 'rifle', 'right', 'rigid', 'ring', 'riot', 'ripple', 'risk', 'ritual', 'rival', 'river', 'road', 'roast', 'robot', 'robust', 'rocket', 'romance', 'roof', 'rookie', 'room', 'rose', 'rotate', 'rough', 'round', 'route', 'royal', 'rubber', 'rude', 'rug', 'rule', 'run', 'runway', 'rural', 'sad', 'saddle', 'sadness', 'safe', 'sail', 'salad', 'salmon', 'salon', 'salt', 'salute', 'same', 'sample', 'sand', 'satisfy', 'satoshi', 'sauce', 'sausage', 'save', 'say', 'scale', 'scan', 'scare', 'scatter', 'scene', 'scheme', 'school', 'science', 'scissors', 'scorpion', 'scout', 'scrap', 'screen', 'script', 'scrub', 'sea', 'search', 'season', 'seat', 'second', 'secret', 'section', 'security', 'seed', 'seek', 'segment', 'select', 'sell', 'seminar', 'senior', 'sense', 'sentence', 'series', 'service', 'session', 'settle', 'setup', 'seven', 'shadow', 'shaft', 'shallow', 'share', 'shed', 'shell', 'sheriff', 'shield', 'shift', 'shine', 'ship', 'shiver', 'shock', 'shoe', 'shoot', 'shop', 'short', 'shoulder', 'shove', 'shrimp', 'shrug', 'shuffle', 'shy', 'sibling', 'sick', 'side', 'siege', 'sight', 'sign', 'silent', 'silk', 'silly', 'silver', 'similar', 'simple', 'since', 'sing', 'siren', 'sister', 'situate', 'six', 'size', 'skate', 'sketch', 'ski', 'skill', 'skin', 'skirt', 'skull', 'slab', 'slam', 'sleep', 'slender', 'slice', 'slide', 'slight', 'slim', 'slogan', 'slot', 'slow', 'slush', 'small', 'smart', 'smile', 'smoke', 'smooth', 'snack', 'snake', 'snap', 'sniff', 'snow', 'soap', 'soccer', 'social', 'sock', 'soda', 'soft', 'solar', 'soldier', 'solid', 'solution', 'solve', 'someone', 'song', 'soon', 'sorry', 'sort', 'soul', 'sound', 'soup', 'source', 'south', 'space', 'spare', 'spatial', 'spawn', 'speak', 'special', 'speed', 'spell', 'spend', 'sphere', 'spice', 'spider', 'spike', 'spin', 'spirit', 'split', 'spoil', 'sponsor', 'spoon', 'sport', 'spot', 'spray', 'spread', 'spring', 'spy', 'square', 'squeeze', 'squirrel', 'stable', 'stadium', 'staff', 'stage', 'stairs', 'stamp', 'stand', 'start', 'state', 'stay', 'steak', 'steel', 'stem', 'step', 'stereo', 'stick', 'still', 'sting', 'stock', 'stomach', 'stone', 'stool', 'story', 'stove', 'strategy', 'street', 'strike', 'strong', 'struggle', 'student', 'stuff', 'stumble', 'style', 'subject', 'submit', 'subway', 'success', 'such', 'sudden', 'suffer', 'sugar', 'suggest', 'suit', 'summer', 'sun', 'sunny', 'sunset', 'super', 'supply', 'supreme', 'sure', 'surface', 'surge', 'surprise', 'surround', 'survey', 'suspect', 'sustain', 'swallow', 'swamp', 'swap', 'swarm', 'swear', 'sweet', 'swift', 'swim', 'swing', 'switch', 'sword', 'symbol', 'symptom', 'syrup', 'system', 'table', 'tackle', 'tag', 'tail', 'talent', 'talk', 'tank', 'tape', 'target', 'task', 'taste', 'tattoo', 'taxi', 'teach', 'team', 'tell', 'ten', 'tenant', 'tennis', 'tent', 'term', 'test', 'text', 'thank', 'that', 'theme', 'then', 'theory', 'there', 'they', 'thing', 'this', 'thought', 'three', 'thrive', 'throw', 'thumb', 'thunder', 'ticket', 'tide', 'tiger', 'tilt', 'timber', 'time', 'tiny', 'tip', 'tired', 'tissue', 'title', 'toast', 'tobacco', 'today', 'toddler', 'toe', 'together', 'toilet', 'token', 'tomato', 'tomorrow', 'tone', 'tongue', 'tonight', 'tool', 'tooth', 'top', 'topic', 'topple', 'torch', 'tornado', 'tortoise', 'toss', 'total', 'tourist', 'toward', 'tower', 'town', 'toy', 'track', 'trade', 'traffic', 'tragic', 'train', 'transfer', 'trap', 'trash', 'travel', 'tray', 'treat', 'tree', 'trend', 'trial', 'tribe', 'trick', 'trigger', 'trim', 'trip', 'trophy', 'trouble', 'truck', 'true', 'truly', 'trumpet', 'trust', 'truth', 'try', 'tube', 'tuition', 'tumble', 'tuna', 'tunnel', 'turkey', 'turn', 'turtle', 'twelve', 'twenty', 'twice', 'twin', 'twist', 'two', 'type', 'typical', 'ugly', 'umbrella', 'unable', 'unaware', 'uncle', 'uncover', 'under', 'undo', 'unfair', 'unfold', 'unhappy', 'uniform', 'unique', 'unit', 'universe', 'unknown', 'unlock', 'until', 'unusual', 'unveil', 'update', 'upgrade', 'uphold', 'upon', 'upper', 'upset', 'urban', 'urge', 'usage', 'use', 'used', 'useful', 'useless', 'usual', 'utility', 'vacant', 'vacuum', 'vague', 'valid', 'valley', 'valve', 'van', 'vanish', 'vapor', 'various', 'vast', 'vault', 'vehicle', 'velvet', 'vendor', 'venture', 'venue', 'verb', 'verify', 'version', 'very', 'vessel', 'veteran', 'viable', 'vibrant', 'vicious', 'victory', 'video', 'view', 'village', 'vintage', 'violin', 'virtual', 'virus', 'visa', 'visit', 'visual', 'vital', 'vivid', 'vocal', 'voice', 'void', 'volcano', 'volume', 'vote', 'voyage', 'wage', 'wagon', 'wait', 'walk', 'wall', 'walnut', 'want', 'warfare', 'warm', 'warrior', 'wash', 'wasp', 'waste', 'water', 'wave', 'way', 'wealth', 'weapon', 'wear', 'weasel', 'weather', 'web', 'wedding', 'weekend', 'weird', 'welcome', 'west', 'wet', 'whale', 'what', 'wheat', 'wheel', 'when', 'where', 'whip', 'whisper', 'wide', 'width', 'wife', 'wild', 'will', 'win', 'window', 'wine', 'wing', 'wink', 'winner', 'winter', 'wire', 'wisdom', 'wise', 'wish', 'witness', 'wolf', 'woman', 'wonder', 'wood', 'wool', 'word', 'work', 'world', 'worry', 'worth', 'wrap', 'wreck', 'wrestle', 'wrist', 'write', 'wrong', 'yard', 'year', 'yellow', 'you', 'young', 'youth', 'zebra', 'zero', 'zone', 'zoo'];
 
 /***/ }),
-/* 353 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var os = __webpack_require__(338)
-	var path = __webpack_require__(342)
+	var os = __webpack_require__(337)
+	var path = __webpack_require__(341)
 	
 	var platform = os.platform()
 	if (platform !== 'linux' && platform !== 'darwin' && platform !== 'win32') {
@@ -10798,7 +10870,7 @@ module.exports =
 
 
 /***/ }),
-/* 354 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -10806,10 +10878,10 @@ module.exports =
 	 * Module dependencies.
 	 */
 	
-	var url = __webpack_require__(355);
-	var parser = __webpack_require__(360);
-	var Manager = __webpack_require__(366);
-	var debug = __webpack_require__(357)('socket.io-client');
+	var url = __webpack_require__(354);
+	var parser = __webpack_require__(359);
+	var Manager = __webpack_require__(365);
+	var debug = __webpack_require__(356)('socket.io-client');
 	
 	/**
 	 * Module exports.
@@ -10893,12 +10965,12 @@ module.exports =
 	 * @api public
 	 */
 	
-	exports.Manager = __webpack_require__(366);
+	exports.Manager = __webpack_require__(365);
 	exports.Socket = __webpack_require__(407);
 
 
 /***/ }),
-/* 355 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -10906,8 +10978,8 @@ module.exports =
 	 * Module dependencies.
 	 */
 	
-	var parseuri = __webpack_require__(356);
-	var debug = __webpack_require__(357)('socket.io-client:url');
+	var parseuri = __webpack_require__(355);
+	var debug = __webpack_require__(356)('socket.io-client:url');
 	
 	/**
 	 * Module exports.
@@ -10979,7 +11051,7 @@ module.exports =
 
 
 /***/ }),
-/* 356 */
+/* 355 */
 /***/ (function(module, exports) {
 
 	/**
@@ -11024,7 +11096,7 @@ module.exports =
 
 
 /***/ }),
-/* 357 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -11033,7 +11105,7 @@ module.exports =
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(358);
+	exports = module.exports = __webpack_require__(357);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -11215,7 +11287,7 @@ module.exports =
 
 
 /***/ }),
-/* 358 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -11231,7 +11303,7 @@ module.exports =
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(359);
+	exports.humanize = __webpack_require__(358);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -11423,7 +11495,7 @@ module.exports =
 
 
 /***/ }),
-/* 359 */
+/* 358 */
 /***/ (function(module, exports) {
 
 	/**
@@ -11581,7 +11653,7 @@ module.exports =
 
 
 /***/ }),
-/* 360 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -11589,11 +11661,11 @@ module.exports =
 	 * Module dependencies.
 	 */
 	
-	var debug = __webpack_require__(357)('socket.io-parser');
-	var Emitter = __webpack_require__(361);
-	var hasBin = __webpack_require__(362);
-	var binary = __webpack_require__(364);
-	var isBuf = __webpack_require__(365);
+	var debug = __webpack_require__(356)('socket.io-parser');
+	var Emitter = __webpack_require__(360);
+	var hasBin = __webpack_require__(361);
+	var binary = __webpack_require__(363);
+	var isBuf = __webpack_require__(364);
 	
 	/**
 	 * Protocol version.
@@ -11987,7 +12059,7 @@ module.exports =
 
 
 /***/ }),
-/* 361 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -12156,7 +12228,7 @@ module.exports =
 
 
 /***/ }),
-/* 362 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global Blob File */
@@ -12165,7 +12237,7 @@ module.exports =
 	 * Module requirements.
 	 */
 	
-	var isArray = __webpack_require__(363);
+	var isArray = __webpack_require__(362);
 	
 	var toString = Object.prototype.toString;
 	var withNativeBlob = typeof global.Blob === 'function' || toString.call(global.Blob) === '[object BlobConstructor]';
@@ -12224,7 +12296,7 @@ module.exports =
 
 
 /***/ }),
-/* 363 */
+/* 362 */
 /***/ (function(module, exports) {
 
 	var toString = {}.toString;
@@ -12235,7 +12307,7 @@ module.exports =
 
 
 /***/ }),
-/* 364 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*global Blob,File*/
@@ -12244,8 +12316,8 @@ module.exports =
 	 * Module requirements
 	 */
 	
-	var isArray = __webpack_require__(363);
-	var isBuf = __webpack_require__(365);
+	var isArray = __webpack_require__(362);
+	var isBuf = __webpack_require__(364);
 	var toString = Object.prototype.toString;
 	var withNativeBlob = typeof global.Blob === 'function' || toString.call(global.Blob) === '[object BlobConstructor]';
 	var withNativeFile = typeof global.File === 'function' || toString.call(global.File) === '[object FileConstructor]';
@@ -12382,7 +12454,7 @@ module.exports =
 
 
 /***/ }),
-/* 365 */
+/* 364 */
 /***/ (function(module, exports) {
 
 	
@@ -12401,7 +12473,7 @@ module.exports =
 
 
 /***/ }),
-/* 366 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -12409,13 +12481,13 @@ module.exports =
 	 * Module dependencies.
 	 */
 	
-	var eio = __webpack_require__(367);
+	var eio = __webpack_require__(366);
 	var Socket = __webpack_require__(407);
-	var Emitter = __webpack_require__(361);
-	var parser = __webpack_require__(360);
+	var Emitter = __webpack_require__(360);
+	var parser = __webpack_require__(359);
 	var on = __webpack_require__(409);
 	var bind = __webpack_require__(410);
-	var debug = __webpack_require__(357)('socket.io-client:manager');
+	var debug = __webpack_require__(356)('socket.io-client:manager');
 	var indexOf = __webpack_require__(406);
 	var Backoff = __webpack_require__(411);
 	
@@ -12980,6 +13052,14 @@ module.exports =
 
 
 /***/ }),
+/* 366 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	
+	module.exports = __webpack_require__(367);
+
+
+/***/ }),
 /* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13004,11 +13084,11 @@ module.exports =
 	 */
 	
 	var transports = __webpack_require__(369);
-	var Emitter = __webpack_require__(361);
-	var debug = __webpack_require__(357)('engine.io-client:socket');
+	var Emitter = __webpack_require__(360);
+	var debug = __webpack_require__(356)('engine.io-client:socket');
 	var index = __webpack_require__(406);
 	var parser = __webpack_require__(375);
-	var parseuri = __webpack_require__(356);
+	var parseuri = __webpack_require__(355);
 	var parseqs = __webpack_require__(383);
 	
 	/**
@@ -13820,8 +13900,8 @@ module.exports =
 	 * @license MIT
 	 */
 	
-	var fs = __webpack_require__(340);
-	var Url = __webpack_require__(347);
+	var fs = __webpack_require__(339);
+	var Url = __webpack_require__(346);
 	var spawn = __webpack_require__(371).spawn;
 	
 	/**
@@ -13850,8 +13930,8 @@ module.exports =
 	   * Private variables
 	   */
 	  var self = this;
-	  var http = __webpack_require__(345);
-	  var https = __webpack_require__(346);
+	  var http = __webpack_require__(344);
+	  var https = __webpack_require__(345);
 	
 	  // Holds http.js objects
 	  var request;
@@ -13870,7 +13950,7 @@ module.exports =
 	    "Accept": "*/*"
 	  };
 	
-	  var headers = Object.assign({}, defaultHeaders);
+	  var headers = defaultHeaders;
 	
 	  // These headers are not user setable.
 	  // The following are allowed but banned in the spec:
@@ -14283,11 +14363,9 @@ module.exports =
 	
 	        response.on('end', function() {
 	          if (sendFlag) {
-	            // The sendFlag needs to be set before setState is called.  Otherwise if we are chaining callbacks
-	            // there can be a timing issue (the callback is called and a new call is made before the flag is reset).
-	            sendFlag = false;
 	            // Discard the 'end' event if the connection has been aborted
 	            setState(self.DONE);
+	            sendFlag = false;
 	          }
 	        });
 	
@@ -14385,7 +14463,7 @@ module.exports =
 	      request = null;
 	    }
 	
-	    headers = Object.assign({}, defaultHeaders);
+	    headers = defaultHeaders;
 	    this.responseText = "";
 	    this.responseXML = "";
 	
@@ -14477,9 +14555,9 @@ module.exports =
 	
 	var XMLHttpRequest = __webpack_require__(370);
 	var Polling = __webpack_require__(373);
-	var Emitter = __webpack_require__(361);
+	var Emitter = __webpack_require__(360);
 	var inherit = __webpack_require__(384);
-	var debug = __webpack_require__(357)('engine.io-client:polling-xhr');
+	var debug = __webpack_require__(356)('engine.io-client:polling-xhr');
 	
 	/**
 	 * Module exports.
@@ -14899,7 +14977,7 @@ module.exports =
 	var parser = __webpack_require__(375);
 	var inherit = __webpack_require__(384);
 	var yeast = __webpack_require__(385);
-	var debug = __webpack_require__(357)('engine.io-client:polling');
+	var debug = __webpack_require__(356)('engine.io-client:polling');
 	
 	/**
 	 * Module exports.
@@ -15146,7 +15224,7 @@ module.exports =
 	 */
 	
 	var parser = __webpack_require__(375);
-	var Emitter = __webpack_require__(361);
+	var Emitter = __webpack_require__(360);
 	
 	/**
 	 * Module exports.
@@ -15309,7 +15387,7 @@ module.exports =
 	 */
 	
 	var keys = __webpack_require__(376);
-	var hasBinary = __webpack_require__(362);
+	var hasBinary = __webpack_require__(361);
 	var sliceBuffer = __webpack_require__(377);
 	var after = __webpack_require__(378);
 	var utf8 = __webpack_require__(379);
@@ -16836,7 +16914,7 @@ module.exports =
 	var parseqs = __webpack_require__(383);
 	var inherit = __webpack_require__(384);
 	var yeast = __webpack_require__(385);
-	var debug = __webpack_require__(357)('engine.io-client:websocket');
+	var debug = __webpack_require__(356)('engine.io-client:websocket');
 	var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
 	var NodeWebSocket;
 	if (typeof window === 'undefined') {
@@ -17151,9 +17229,9 @@ module.exports =
 	const EventEmitter = __webpack_require__(390);
 	const crypto = __webpack_require__(391);
 	const Ultron = __webpack_require__(392);
-	const https = __webpack_require__(346);
-	const http = __webpack_require__(345);
-	const url = __webpack_require__(347);
+	const https = __webpack_require__(345);
+	const http = __webpack_require__(344);
+	const url = __webpack_require__(346);
 	
 	const PerMessageDeflate = __webpack_require__(393);
 	const EventTarget = __webpack_require__(398);
@@ -19789,8 +19867,8 @@ module.exports =
 	const EventEmitter = __webpack_require__(390);
 	const crypto = __webpack_require__(391);
 	const Ultron = __webpack_require__(392);
-	const http = __webpack_require__(345);
-	const url = __webpack_require__(347);
+	const http = __webpack_require__(344);
+	const url = __webpack_require__(346);
 	
 	const PerMessageDeflate = __webpack_require__(393);
 	const Extensions = __webpack_require__(399);
@@ -20139,12 +20217,12 @@ module.exports =
 	 * Module dependencies.
 	 */
 	
-	var parser = __webpack_require__(360);
-	var Emitter = __webpack_require__(361);
+	var parser = __webpack_require__(359);
+	var Emitter = __webpack_require__(360);
 	var toArray = __webpack_require__(408);
 	var on = __webpack_require__(409);
 	var bind = __webpack_require__(410);
-	var debug = __webpack_require__(357)('socket.io-client:socket');
+	var debug = __webpack_require__(356)('socket.io-client:socket');
 	var parseqs = __webpack_require__(383);
 	
 	/**
@@ -20918,12 +20996,12 @@ module.exports =
 /* 416 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var fs = __webpack_require__(340)
+	var fs = __webpack_require__(339)
 	var polyfills = __webpack_require__(417)
 	var legacy = __webpack_require__(420)
 	var queue = []
 	
-	var util = __webpack_require__(337)
+	var util = __webpack_require__(336)
 	
 	function noop () {}
 	
@@ -21524,7 +21602,7 @@ module.exports =
 
 	'use strict'
 	
-	var fs = __webpack_require__(340)
+	var fs = __webpack_require__(339)
 	
 	module.exports = clone(fs)
 	
@@ -21704,7 +21782,7 @@ module.exports =
 	'use strict'
 	
 	const fs = __webpack_require__(416)
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const ncp = __webpack_require__(425)
 	const mkdir = __webpack_require__(427)
 	const pathExists = __webpack_require__(431).pathExists
@@ -21764,7 +21842,7 @@ module.exports =
 	// imported from ncp (this is temporary, will rewrite)
 	
 	var fs = __webpack_require__(416)
-	var path = __webpack_require__(342)
+	var path = __webpack_require__(341)
 	var utimes = __webpack_require__(426)
 	
 	function ncp (source, dest, options, callback) {
@@ -22004,8 +22082,8 @@ module.exports =
 	'use strict'
 	
 	const fs = __webpack_require__(416)
-	const os = __webpack_require__(338)
-	const path = __webpack_require__(342)
+	const os = __webpack_require__(337)
+	const path = __webpack_require__(341)
 	
 	// HFS, ext{2,3}, FAT do not, Node.js v0.10 does not
 	function hasMillisResSync () {
@@ -22102,7 +22180,7 @@ module.exports =
 	'use strict'
 	
 	const fs = __webpack_require__(416)
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const invalidWin32Path = __webpack_require__(429).invalidWin32Path
 	
 	const o777 = parseInt('0777', 8)
@@ -22170,7 +22248,7 @@ module.exports =
 
 	'use strict'
 	
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	
 	// get drive on windows
 	function getRootPath (p) {
@@ -22202,7 +22280,7 @@ module.exports =
 	'use strict'
 	
 	const fs = __webpack_require__(416)
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const invalidWin32Path = __webpack_require__(429).invalidWin32Path
 	
 	const o777 = parseInt('0777', 8)
@@ -22294,7 +22372,7 @@ module.exports =
 	'use strict'
 	
 	const fs = __webpack_require__(416)
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const copyFileSync = __webpack_require__(434)
 	const mkdir = __webpack_require__(427)
 	
@@ -22441,7 +22519,7 @@ module.exports =
 	'use strict'
 	
 	const fs = __webpack_require__(416)
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const assert = __webpack_require__(422)
 	
 	const isWindows = (process.platform === 'win32')
@@ -22802,7 +22880,7 @@ module.exports =
 	try {
 	  _fs = __webpack_require__(416)
 	} catch (_) {
-	  _fs = __webpack_require__(340)
+	  _fs = __webpack_require__(339)
 	}
 	
 	function readFile (file, options, callback) {
@@ -22940,7 +23018,7 @@ module.exports =
 
 	'use strict'
 	
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const mkdir = __webpack_require__(427)
 	const pathExists = __webpack_require__(431).pathExists
 	const jsonFile = __webpack_require__(439)
@@ -22974,7 +23052,7 @@ module.exports =
 	'use strict'
 	
 	const fs = __webpack_require__(416)
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const mkdir = __webpack_require__(427)
 	const jsonFile = __webpack_require__(439)
 	
@@ -23006,7 +23084,7 @@ module.exports =
 	const u = __webpack_require__(415).fromCallback
 	const fs = __webpack_require__(416)
 	const ncp = __webpack_require__(425)
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const remove = __webpack_require__(436).remove
 	const mkdirp = __webpack_require__(427).mkdirs
 	
@@ -23174,7 +23252,7 @@ module.exports =
 	'use strict'
 	
 	const fs = __webpack_require__(416)
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const copySync = __webpack_require__(432).copySync
 	const removeSync = __webpack_require__(436).removeSync
 	const mkdirpSync = __webpack_require__(427).mkdirsSync
@@ -23298,8 +23376,8 @@ module.exports =
 	'use strict'
 	
 	const u = __webpack_require__(415).fromCallback
-	const fs = __webpack_require__(340)
-	const path = __webpack_require__(342)
+	const fs = __webpack_require__(339)
+	const path = __webpack_require__(341)
 	const mkdir = __webpack_require__(427)
 	const remove = __webpack_require__(436)
 	
@@ -23381,7 +23459,7 @@ module.exports =
 	'use strict'
 	
 	const u = __webpack_require__(415).fromCallback
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const fs = __webpack_require__(416)
 	const mkdir = __webpack_require__(427)
 	const pathExists = __webpack_require__(431).pathExists
@@ -23436,7 +23514,7 @@ module.exports =
 	'use strict'
 	
 	const u = __webpack_require__(415).fromCallback
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const fs = __webpack_require__(416)
 	const mkdir = __webpack_require__(427)
 	const pathExists = __webpack_require__(431).pathExists
@@ -23503,7 +23581,7 @@ module.exports =
 	'use strict'
 	
 	const u = __webpack_require__(415).fromCallback
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const fs = __webpack_require__(416)
 	const _mkdirs = __webpack_require__(427)
 	const mkdirs = _mkdirs.mkdirs
@@ -23574,7 +23652,7 @@ module.exports =
 
 	'use strict'
 	
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const fs = __webpack_require__(416)
 	const pathExists = __webpack_require__(431).pathExists
 	
@@ -23718,7 +23796,7 @@ module.exports =
 	
 	const u = __webpack_require__(415).fromCallback
 	const fs = __webpack_require__(416)
-	const path = __webpack_require__(342)
+	const path = __webpack_require__(341)
 	const mkdir = __webpack_require__(427)
 	const pathExists = __webpack_require__(431).pathExists
 	
@@ -25768,6 +25846,7 @@ module.exports =
 	    listener.on('refreshPortfolio', function () {
 	        api.fetchMarket();
 	        api.fetchCoins();
+	        api.fetchBots();
 	    });
 	
 	    listener.on('withdraw', function (e, params) {
@@ -25831,6 +25910,10 @@ module.exports =
 	        api.trade(params);
 	    });
 	
+	    listener.on('toggleBot', function (e, params) {
+	        api.toggleBot(params);
+	    });
+	
 	    // update trademethod when coins are activated
 	    api.on('updateTrade', function (params) {
 	        emitter.send('loading', { type: 'delete', key: 4 });
@@ -25840,7 +25923,20 @@ module.exports =
 	    // cb trade
 	    api.on('trade', function (params) {
 	        emitter.send('loading', { type: 'delete', key: 5 });
+	        emitter.send('growler', { key: 0 });
 	        emitter.send('trade', params);
+	    });
+	
+	    api.on('botStopped', function () {
+	        emitter.send('growler', { key: 1 });
+	    });
+	
+	    api.on('botResumed', function () {
+	        emitter.send('growler', { key: 2 });
+	    });
+	
+	    api.on('botstatus', function (result) {
+	        return emitter.send('botstatus', result);
 	    });
 	};
 
@@ -25975,7 +26071,7 @@ module.exports =
 	const isAccelerator = __webpack_require__(468);
 	const equals = __webpack_require__(469);
 	const {toKeyEvent} = __webpack_require__(470);
-	const _debug = __webpack_require__(357);
+	const _debug = __webpack_require__(356);
 	
 	const debug = _debug('electron-localshortcut');
 	
@@ -26610,7 +26706,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.APOLLO_DEVELOPER_TOOLS = exports.CYCLEJS_DEVTOOL = exports.REACT_PERF = exports.REDUX_DEVTOOLS = exports.VUEJS_DEVTOOLS = exports.ANGULARJS_BATARANG = exports.JQUERY_DEBUGGER = exports.BACKBONE_DEBUGGER = exports.REACT_DEVELOPER_TOOLS = exports.EMBER_INSPECTOR = undefined;
+	exports.CYCLEJS_DEVTOOL = exports.REACT_PERF = exports.REDUX_DEVTOOLS = exports.VUEJS_DEVTOOLS = exports.ANGULARJS_BATARANG = exports.JQUERY_DEBUGGER = exports.BACKBONE_DEBUGGER = exports.REACT_DEVELOPER_TOOLS = exports.EMBER_INSPECTOR = undefined;
 	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
@@ -26618,11 +26714,11 @@ module.exports =
 	
 	var _electron2 = _interopRequireDefault(_electron);
 	
-	var _fs = __webpack_require__(340);
+	var _fs = __webpack_require__(339);
 	
 	var _fs2 = _interopRequireDefault(_fs);
 	
-	var _path = __webpack_require__(342);
+	var _path = __webpack_require__(341);
 	
 	var _path2 = _interopRequireDefault(_path);
 	
@@ -26661,8 +26757,7 @@ module.exports =
 	  if ((typeof extensionReference === 'undefined' ? 'undefined' : _typeof(extensionReference)) === 'object' && extensionReference.id) {
 	    chromeStoreID = extensionReference.id;
 	    if (!_semver2.default.satisfies(process.versions.electron, extensionReference.electron)) {
-	      return Promise.reject(new Error('Version of Electron: ' + process.versions.electron + ' does not match required range ' + extensionReference.electron + ' for extension ' + chromeStoreID) // eslint-disable-line
-	      );
+	      return Promise.reject(new Error('Version of Electron: ' + process.versions.electron + ' does not match required range ' + extensionReference.electron + ' for extension ' + chromeStoreID));
 	    }
 	  } else if (typeof extensionReference === 'string') {
 	    chromeStoreID = extensionReference;
@@ -26720,10 +26815,6 @@ module.exports =
 	};
 	var CYCLEJS_DEVTOOL = exports.CYCLEJS_DEVTOOL = {
 	  id: 'dfgplfmhhmdekalbpejekgfegkonjpfp',
-	  electron: '^1.2.1'
-	};
-	var APOLLO_DEVELOPER_TOOLS = exports.APOLLO_DEVELOPER_TOOLS = {
-	  id: 'jdkknkkbebbapilgoeccciglkfbmbnfm',
 	  electron: '^1.2.1'
 	};
 
@@ -28039,11 +28130,11 @@ module.exports =
 	  value: true
 	});
 	
-	var _fs = __webpack_require__(340);
+	var _fs = __webpack_require__(339);
 	
 	var _fs2 = _interopRequireDefault(_fs);
 	
-	var _path = __webpack_require__(342);
+	var _path = __webpack_require__(341);
 	
 	var _path2 = _interopRequireDefault(_path);
 	
@@ -28069,28 +28160,29 @@ module.exports =
 	  var extensionFolder = _path2.default.resolve(extensionsStore + '/' + chromeStoreID);
 	  return new Promise(function (resolve, reject) {
 	    if (!_fs2.default.existsSync(extensionFolder) || forceDownload) {
-	      if (_fs2.default.existsSync(extensionFolder)) {
-	        _rimraf2.default.sync(extensionFolder);
-	      }
-	      var fileURL = 'https://clients2.google.com/service/update2/crx?response=redirect&x=id%3D' + chromeStoreID + '%26uc&prodversion=32'; // eslint-disable-line
-	      var filePath = _path2.default.resolve(extensionFolder + '.crx');
-	      (0, _utils.downloadFile)(fileURL, filePath).then(function () {
-	        (0, _crossUnzip2.default)(filePath, extensionFolder, function (err) {
-	          if (err && !_fs2.default.existsSync(_path2.default.resolve(extensionFolder, 'manifest.json'))) {
+	      (function () {
+	        if (_fs2.default.existsSync(extensionFolder)) {
+	          _rimraf2.default.sync(extensionFolder);
+	        }
+	        var fileURL = 'https://clients2.google.com/service/update2/crx?response=redirect&x=id%3D' + chromeStoreID + '%26uc&prodversion=32'; // eslint-disable-line
+	        var filePath = _path2.default.resolve(extensionFolder + '.crx');
+	        (0, _utils.downloadFile)(fileURL, filePath).then(function () {
+	          (0, _crossUnzip2.default)(filePath, extensionFolder, function (err) {
+	            if (err && !_fs2.default.existsSync(_path2.default.resolve(extensionFolder, 'manifest.json'))) {
+	              return reject(err);
+	            }
+	            resolve(extensionFolder);
+	          });
+	        }).catch(function (err) {
+	          console.log('Failed to fetch extension, trying ' + (attempts - 1) + ' more times'); // eslint-disable-line
+	          if (attempts <= 1) {
 	            return reject(err);
 	          }
-	          (0, _utils.changePermissions)(extensionFolder, 755);
-	          resolve(extensionFolder);
+	          setTimeout(function () {
+	            downloadChromeExtension(chromeStoreID, forceDownload, attempts - 1).then(resolve).catch(reject);
+	          }, 200);
 	        });
-	      }).catch(function (err) {
-	        console.log('Failed to fetch extension, trying ' + (attempts - 1) + ' more times'); // eslint-disable-line
-	        if (attempts <= 1) {
-	          return reject(err);
-	        }
-	        setTimeout(function () {
-	          downloadChromeExtension(chromeStoreID, forceDownload, attempts - 1).then(resolve).catch(reject);
-	        }, 200);
-	      });
+	      })();
 	    } else {
 	      resolve(extensionFolder);
 	    }
@@ -28107,8 +28199,8 @@ module.exports =
 	rimraf.sync = rimrafSync
 	
 	var assert = __webpack_require__(422)
-	var path = __webpack_require__(342)
-	var fs = __webpack_require__(340)
+	var path = __webpack_require__(341)
+	var fs = __webpack_require__(339)
 	var glob = __webpack_require__(477)
 	var _0666 = parseInt('666', 8)
 	
@@ -28515,13 +28607,13 @@ module.exports =
 	
 	module.exports = glob
 	
-	var fs = __webpack_require__(340)
+	var fs = __webpack_require__(339)
 	var rp = __webpack_require__(478)
 	var minimatch = __webpack_require__(480)
 	var Minimatch = minimatch.Minimatch
 	var inherits = __webpack_require__(484)
 	var EE = __webpack_require__(390).EventEmitter
-	var path = __webpack_require__(342)
+	var path = __webpack_require__(341)
 	var assert = __webpack_require__(422)
 	var isAbsolute = __webpack_require__(485)
 	var globSync = __webpack_require__(486)
@@ -28531,7 +28623,7 @@ module.exports =
 	var setopts = common.setopts
 	var ownProp = common.ownProp
 	var inflight = __webpack_require__(488)
-	var util = __webpack_require__(337)
+	var util = __webpack_require__(336)
 	var childrenIgnored = common.childrenIgnored
 	var isIgnored = common.isIgnored
 	
@@ -29276,7 +29368,7 @@ module.exports =
 	realpath.monkeypatch = monkeypatch
 	realpath.unmonkeypatch = unmonkeypatch
 	
-	var fs = __webpack_require__(340)
+	var fs = __webpack_require__(339)
 	var origRealpath = fs.realpath
 	var origRealpathSync = fs.realpathSync
 	
@@ -29362,9 +29454,9 @@ module.exports =
 	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 	// USE OR OTHER DEALINGS IN THE SOFTWARE.
 	
-	var pathModule = __webpack_require__(342);
+	var pathModule = __webpack_require__(341);
 	var isWindows = process.platform === 'win32';
-	var fs = __webpack_require__(340);
+	var fs = __webpack_require__(339);
 	
 	// JavaScript implementation of realpath, ported from node pre-v6
 	
@@ -29655,7 +29747,7 @@ module.exports =
 	
 	var path = { sep: '/' }
 	try {
-	  path = __webpack_require__(342)
+	  path = __webpack_require__(341)
 	} catch (er) {}
 	
 	var GLOBSTAR = minimatch.GLOBSTAR = Minimatch.GLOBSTAR = {}
@@ -30928,13 +31020,13 @@ module.exports =
 	module.exports = globSync
 	globSync.GlobSync = GlobSync
 	
-	var fs = __webpack_require__(340)
+	var fs = __webpack_require__(339)
 	var rp = __webpack_require__(478)
 	var minimatch = __webpack_require__(480)
 	var Minimatch = minimatch.Minimatch
 	var Glob = __webpack_require__(477).Glob
-	var util = __webpack_require__(337)
-	var path = __webpack_require__(342)
+	var util = __webpack_require__(336)
+	var path = __webpack_require__(341)
 	var assert = __webpack_require__(422)
 	var isAbsolute = __webpack_require__(485)
 	var common = __webpack_require__(487)
@@ -31431,7 +31523,7 @@ module.exports =
 	  return Object.prototype.hasOwnProperty.call(obj, field)
 	}
 	
-	var path = __webpack_require__(342)
+	var path = __webpack_require__(341)
 	var minimatch = __webpack_require__(480)
 	var isAbsolute = __webpack_require__(485)
 	var Minimatch = minimatch.Minimatch
@@ -31868,7 +31960,7 @@ module.exports =
 /* 492 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var resolve = __webpack_require__(342).resolve
+	var resolve = __webpack_require__(341).resolve
 	var bin = __webpack_require__(493).bin
 	
 	module.exports = map_obj(bin, function(v){
@@ -31887,7 +31979,7 @@ module.exports =
 /* 493 */
 /***/ (function(module, exports) {
 
-	module.exports = {"_args":[[{"raw":"7zip@0.0.6","scope":null,"escapedName":"7zip","name":"7zip","rawSpec":"0.0.6","spec":"0.0.6","type":"version"},"/Users/Etienne/crypto/bartexDEXFork/node_modules/electron-devtools-installer"]],"_from":"7zip@0.0.6","_id":"7zip@0.0.6","_inCache":true,"_location":"/7zip","_nodeVersion":"5.11.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/7zip-0.0.6.tgz_1463274735811_0.1922009070403874"},"_npmUser":{"name":"fritx","email":"uxfritz@163.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"7zip@0.0.6","scope":null,"escapedName":"7zip","name":"7zip","rawSpec":"0.0.6","spec":"0.0.6","type":"version"},"_requiredBy":["/electron-devtools-installer"],"_resolved":"http://registry.npmjs.org/7zip/-/7zip-0.0.6.tgz","_shasum":"9cafb171af82329490353b4816f03347aa150a30","_shrinkwrap":null,"_spec":"7zip@0.0.6","_where":"/Users/Etienne/crypto/bartexDEXFork/node_modules/electron-devtools-installer","bin":{"7z":"7zip-lite/7z.exe"},"bugs":{"url":"https://github.com/fritx/win-7zip/issues"},"dependencies":{},"description":"7zip Windows Package via Node.js","devDependencies":{},"directories":{},"dist":{"shasum":"9cafb171af82329490353b4816f03347aa150a30","tarball":"https://registry.npmjs.org/7zip/-/7zip-0.0.6.tgz"},"gitHead":"ece5481873f357545c99a9e2f9e1cdb3fe76de2d","homepage":"https://github.com/fritx/win-7zip#readme","keywords":["7z","7zip","7-zip","windows","install"],"license":"GNU LGPL","main":"index.js","maintainers":[{"name":"fritx","email":"uxfritz@163.com"}],"name":"7zip","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git+ssh://git@github.com/fritx/win-7zip.git"},"scripts":{"test":"mocha"},"version":"0.0.6"}
+	module.exports = {"_args":[[{"raw":"7zip@0.0.6","scope":null,"escapedName":"7zip","name":"7zip","rawSpec":"0.0.6","spec":"0.0.6","type":"version"},"/Users/builldog/Documents/supernet/BarterDEX/node_modules/electron-devtools-installer"]],"_from":"7zip@0.0.6","_id":"7zip@0.0.6","_inCache":true,"_location":"/7zip","_nodeVersion":"5.11.0","_npmOperationalInternal":{"host":"packages-12-west.internal.npmjs.com","tmp":"tmp/7zip-0.0.6.tgz_1463274735811_0.1922009070403874"},"_npmUser":{"name":"fritx","email":"uxfritz@163.com"},"_npmVersion":"3.8.6","_phantomChildren":{},"_requested":{"raw":"7zip@0.0.6","scope":null,"escapedName":"7zip","name":"7zip","rawSpec":"0.0.6","spec":"0.0.6","type":"version"},"_requiredBy":["/electron-devtools-installer"],"_resolved":"https://registry.npmjs.org/7zip/-/7zip-0.0.6.tgz","_shasum":"9cafb171af82329490353b4816f03347aa150a30","_shrinkwrap":null,"_spec":"7zip@0.0.6","_where":"/Users/builldog/Documents/supernet/BarterDEX/node_modules/electron-devtools-installer","bin":{"7z":"7zip-lite/7z.exe"},"bugs":{"url":"https://github.com/fritx/win-7zip/issues"},"dependencies":{},"description":"7zip Windows Package via Node.js","devDependencies":{},"directories":{},"dist":{"shasum":"9cafb171af82329490353b4816f03347aa150a30","tarball":"https://registry.npmjs.org/7zip/-/7zip-0.0.6.tgz"},"gitHead":"ece5481873f357545c99a9e2f9e1cdb3fe76de2d","homepage":"https://github.com/fritx/win-7zip#readme","keywords":["7z","7zip","7-zip","windows","install"],"license":"GNU LGPL","main":"index.js","maintainers":[{"name":"fritx","email":"uxfritz@163.com"}],"name":"7zip","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git+ssh://git@github.com/fritx/win-7zip.git"},"scripts":{"test":"mocha"},"version":"0.0.6"}
 
 /***/ }),
 /* 494 */
@@ -31898,21 +31990,21 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.changePermissions = exports.downloadFile = exports.getPath = undefined;
+	exports.downloadFile = exports.getPath = undefined;
 	
 	var _electron = __webpack_require__(327);
 	
 	var _electron2 = _interopRequireDefault(_electron);
 	
-	var _fs = __webpack_require__(340);
+	var _fs = __webpack_require__(339);
 	
 	var _fs2 = _interopRequireDefault(_fs);
 	
-	var _path = __webpack_require__(342);
+	var _path = __webpack_require__(341);
 	
 	var _path2 = _interopRequireDefault(_path);
 	
-	var _https = __webpack_require__(346);
+	var _https = __webpack_require__(345);
 	
 	var _https2 = _interopRequireDefault(_https);
 	
@@ -31942,17 +32034,6 @@ module.exports =
 	    });
 	    req.on('error', reject);
 	    req.end();
-	  });
-	};
-	
-	var changePermissions = exports.changePermissions = function changePermissions(dir, mode) {
-	  var files = _fs2.default.readdirSync(dir);
-	  files.forEach(function (file) {
-	    var filePath = _path2.default.join(dir, file);
-	    _fs2.default.chmodSync(filePath, parseInt(mode, 8));
-	    if (_fs2.default.statSync(filePath).isDirectory()) {
-	      changePermissions(filePath, mode);
-	    }
 	  });
 	};
 
