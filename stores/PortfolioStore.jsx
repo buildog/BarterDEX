@@ -8,6 +8,7 @@ import { colors, electrumConfig } from '../constants'
 import { coinName } from '../app/helpers'
 import * as Icon from 'react-cryptocoins';
 import MNZ from '../app/static/coins/mnz.svg';
+import CONSTANTS from '../constants';
 
 
 const capitalize = (string) => string.toLowerCase().charAt(0).toUpperCase() + string.slice(1).toLowerCase()
@@ -45,6 +46,7 @@ export default class PortfolioStore {
      @observable tradeBase = false;
      @observable tradeRel = false;
      @observable withdrawConfirm = false;
+     @observable tx = false;
      @observable total = {
          fiat: '',
          rel: ''
@@ -73,9 +75,11 @@ export default class PortfolioStore {
 
         ipcRenderer.on('coinsList', (e, coinsList) => { self.prepareCoinsList(coinsList) });
         ipcRenderer.on('updateTrade', (e, { coin, type }) => { self.updateTrade(coin, type) });
-        ipcRenderer.on('trade', (e, result) => { self.tradeCb(result) });
         ipcRenderer.on('confirmWithdraw', (e, result) => { self.withdrawConfirm = result });
-        ipcRenderer.on('sendrawtransaction', (e, result) => { self.withdrawConfirm = false });
+        ipcRenderer.on('sendrawtransaction', (e, result) => {
+            self.withdrawConfirm = false;
+            self.tx = result;
+        });
     }
 
     getMarket = (short) => this.market.getMarket().filter((asset) => asset.short === short)[0];
@@ -95,6 +99,10 @@ export default class PortfolioStore {
     /* @params { method, base, rel, price, relvolume }
     */
 
+    @action resetTX = () => {
+        this.tx = false;
+    }
+
     @action withdraw = (params) => {
         ipcRenderer.send('withdraw', params)
     }
@@ -106,15 +114,6 @@ export default class PortfolioStore {
 
     @action cancelWithdraw = () => {
         this.withdrawConfirm = false
-    }
-
-    @action trade = (params) => {
-        ipcRenderer.send('trade', params)
-    }
-
-
-    @action tradeCb = (result) => {
-        console.log(result);
     }
 
     @action prepareCoinsList = (coins) => {
@@ -140,7 +139,6 @@ export default class PortfolioStore {
 
 
         this.installedCoins = addIcons(this.coinsList.filter((coin) => (coin.installed && coin.height > 0) || coin.electrum).sort((a, b) => a.balance > 0 ? 0 : 1));
-        console.log(this.installedCoins)
 
         if (self.tradeRel) {
             self.tradeRel.balance = self.getCoin(self.tradeRel.coin).balance
@@ -161,14 +159,11 @@ export default class PortfolioStore {
     @action setTrade = (coin, type) => {
         let ipaddr;
         let port;
-        console.log(coin);
-        const electrum = !coin.installed;
-        console.log(electrum);
+        const electrum = !coin.installed || coin.height === 0;
         if (electrum) {
             const electrumConf = electrumConfig.filter((svr) => svr.coin === coin.coin)[0];
             ipaddr = electrumConf.ipaddr;
             port = electrumConf.port;
-            console.log(ipaddr);
         }
         ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum, ipaddr, port })
     }
@@ -179,8 +174,7 @@ export default class PortfolioStore {
         // search for the highest balance and activate as tradeRel
         let firstNotSelf = this.installedCoins.filter((installed) => installed.coin !== coin.coin)[0];
         if (!firstNotSelf) {
-            const availableElectrum = ['MNZ', 'BTC', 'KMD', 'REVS', 'MONA', 'CHIPS', 'DOGE', 'JUMBLR', 'LTC', 'ZEC'];
-            firstNotSelf = this.coinsList.filter((item) => availableElectrum.indexOf(item.coin) !== -1 && item.coin !== coin.coin)[0];
+            firstNotSelf = this.coinsList.filter((item) => CONSTANTS.availableElectrum.indexOf(item.coin) !== -1 && item.coin !== coin.coin)[0];
         }
         this.setTrade(firstNotSelf, 'Rel');
     }

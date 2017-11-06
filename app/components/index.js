@@ -13,6 +13,7 @@ export { default as Dashboard } from './Elements/Dashboard';
 export { default as Wallet } from './Elements/Wallet';
 export { default as Login } from './Elements/Login';
 export { default as CoinPicker } from './Elements/CoinPicker';
+export { default as Orderbook } from './Elements/Orderbook';
 
 
 /*

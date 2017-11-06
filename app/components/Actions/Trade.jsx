@@ -2,7 +2,7 @@ import React from 'react'
 import { observer, inject } from 'mobx-react';
 import classNames from 'classnames';
 
-import { Buy, Sell, Balance } from '../';
+import { Buy, Balance } from '../';
 
 import sell from '../../static/sell.svg';
 import receive from '../../static/receive.svg';
@@ -78,7 +78,6 @@ class Trade extends React.Component {
 
               { this.state.flow === 'trade-buy' && <Buy /> }
               { this.state.flow === 'trade-wallet' && <Balance /> }
-              { this.state.flow === 'trade-sell' && <Sell /> }
 
               { (this.state.flow === 'trade-charts' || this.state.flow === 'trade-orders') && <div className="trade-view-charts">
                 <h3>{ '😰' }</h3>

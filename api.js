@@ -234,7 +234,7 @@ class Emitter extends EventEmitter {
                 self.emit('updateUserInfo', { userpass, mypubkey });
             })
         }).catch((error) => {
-            self.emit('notifier', { error: 2, desc: error })
+            self.emit('notifier', { error: 2, desc: error.code })
         });
     }
 
@@ -349,32 +349,50 @@ class Emitter extends EventEmitter {
         });
     }
 
-    trade({ method = 'buy', base, rel, price, relvolume, basevolume }) {
+    trade({ method = 'bot_sell', base, rel, price, volume }) {
         const self = this;
 
 
-        const data = { userpass: self.userpass, method, base, rel, relvolume, price };
+        const data = { userpass: self.userpass, method, base, rel };
 
-        if (method === 'buy') {
-            data.relvolume = relvolume;
+        if (method === 'bot_sell') {
+            data.basevolume = volume;
+            data.minprice = price;
         } else {
-            data.basevolume = basevolume;
+            data.relvolume = volume;
+            data.maxprice = price;
         }
 
 
         const url = 'http://127.0.0.1:7783';
-        self.inventory({ coin: rel }).then(() => {
-            self.apiRequest({ data, url }).then((result) => {
-                console.log(`${method} order submitted`);
-                console.log(result);
-                if (!result.error) {
-                    self.emit('trade', result);
-                } else {
-                    self.emit('notifier', { error: 7, desc: result.error })
-                }
-            }).catch((error) => {
-                self.emit('notifier', { error: 7 })
-            });
+
+        const tradeRequest = self.apiRequest({ data, url }).then((result) => {
+            console.log(`${method} submitted`);
+            console.log(result);
+            if (!result.error) {
+                self.emit('trade', result);
+            } else {
+                self.emit('notifier', { error: 7, desc: result.error })
+            }
+        }).catch((error) => {
+            self.emit('notifier', { error: 7 })
+        });
+
+        return self.inventory({ coin: rel }).then((inventor) => {
+            if (inventor.alice.length < 2) {
+                return self.withdraw({
+                    address: inventor.alice[0].address,
+                    coin: inventor.alice[0].coin,
+                    amounts: [
+                        { [inventor.alice[0].address]: (volume - (volume / 777)) },
+                        { [inventor.alice[0].address]: volume / 777 }
+                    ]
+                }).then((withdrawResult) => {
+                    self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(() => tradeRequest())
+                })
+            }
+
+            return tradeRequest();
         })
     }
 
@@ -395,12 +413,13 @@ class Emitter extends EventEmitter {
         }));
     }
 
-    withdraw({ address, coin, amount }) {
+    withdraw({ address, coin, amount, amounts }) {
+        const outputs = amounts || [{ [address]: amount }];
         const self = this;
         const data = { userpass: self.userpass,
             method: 'withdraw',
             coin,
-            outputs: [{ [address]: amount }] };
+            outputs };
 
         console.log(data);
         const url = 'http://127.0.0.1:7783';
@@ -427,15 +446,7 @@ class Emitter extends EventEmitter {
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             console.log(`inventory for ${coin}`);
             console.log(result);
-            // if (result.alice.length < 3) {
-            //     self.withdraw({ address: result.alice[0].address, coin: result.alice[0].coin }).then((withdrawResult) => {
-            //         self.sendrawtransaction({ coin, signedtx: withdrawResult.hex }).then(() => {
-            //             resolve(result);
-            //         })
-            //     })
-            // } else {
             resolve(result);
-            // }
         }).catch((error) => {
             console.log(`error inventory ${coin}`)
             reject(error);

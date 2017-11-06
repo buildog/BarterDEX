@@ -2,6 +2,7 @@ import React from 'react'
 import { inject, observer } from 'mobx-react'
 import { Modal } from '../';
 import classNames from 'classnames';
+import CONSTANTS from '../../../constants';
 
 import plus from '../../static/plus.svg';
 import arrow from '../../static/arrow.svg';
@@ -89,8 +90,7 @@ class CoinPicker extends React.Component {
         const { coinsList, installedCoins, tradeBase, tradeRel } = this.props.app.portfolio;
 
         let coins;
-        const availableElectrum = ['MNZ', 'BTC', 'KMD', 'REVS', 'MONA', 'CHIPS', 'DOGE', 'JUMBLR', 'LTC', 'ZEC'];
-        const onlyElectrum = coinsList.filter((item) => availableElectrum.indexOf(item.coin) !== -1 && !(item.installed && item.height > 0) && !item.electrum);
+        const onlyElectrum = coinsList.filter((item) => CONSTANTS.availableElectrum.indexOf(item.coin) !== -1 && !(item.installed && item.height > 0) && !item.electrum);
 
         if (this.props.onlyElectrum) {
             coins = onlyElectrum;

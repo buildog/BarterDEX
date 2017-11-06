@@ -104,35 +104,8 @@ class Login extends React.Component {
     render() {
         const { loader } = this.props.app;
         const loginLoader = loader.getLoader(1);
-        const electron = require('electron');
-        const remote = electron.remote;
-        const Menu = remote.Menu;
+        const PassPhraseGenerated = PassPhraseGenerator.generatePassPhrase(256)
 
-        const InputMenu = Menu.buildFromTemplate([{
-                label: 'Cut',
-                role: 'cut',
-            }, {
-                label: 'Copy',
-                role: 'copy',
-            }, {
-                label: 'Paste',
-                role: 'paste',
-            },
-        ]);
-
-        document.body.addEventListener('contextmenu', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-
-          let node = e.target;
-          while (node) {
-            if (node.nodeName.match(/^(input|textarea)$/i) || node.isContentEditable) {
-              InputMenu.popup(remote.getCurrentWindow());
-              break;
-            }
-            node = node.parentNode;
-          }
-        });
         return (
           <div className={this.getContainerState()}>
             <div className="Placeholder-bg"> <span /> </div>
@@ -141,8 +114,8 @@ class Login extends React.Component {
               <h1 className="Placeholder-text">Barter<strong>DEX</strong></h1>
               { this.state.localStorage && this.renderLoader() }
               <section className="form">
-                <div onClick={() => this.setState({ passphraseNotice: true })} className="login-newpassphrase">
-                  <Clipboard copyLabel="Generate a new passphrase" value={PassPhraseGenerator.generatePassPhrase(256)} />
+                <div onClick={() => this.setState({ passphraseNotice: true, passphrase: PassPhraseGenerated })} className="login-newpassphrase">
+                  <Clipboard copyLabel="Generate a new passphrase" value={PassPhraseGenerated} />
                 </div>
 
                 <textarea

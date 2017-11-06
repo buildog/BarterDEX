@@ -18,8 +18,12 @@ button {
     transition: all .2s ease;
     border-radius: 4px;
     will-change: transform;
+    word-break: break-word;
 }
 
+button.lefttext {
+    text-align: left;
+}
 
 button.transparent {
     background: transparent
@@ -74,8 +78,11 @@ button.link:hover {
 .action {
     padding: 10px 10px 10px 20px;
     border-radius: 4px;
-    text-transform: uppercase;
     font-size: 14px;
+}
+
+.action:not(.normaltext) {
+    text-transform: uppercase;
 }
 
 .action > span {

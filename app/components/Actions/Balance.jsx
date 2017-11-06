@@ -27,18 +27,25 @@ class Balance extends React.Component {
     }
 
     getClassState = () => {
-        const { tradeBase } = this.props.app.portfolio;
+        const { tradeBase, tx } = this.props.app.portfolio;
         const self = this;
         return classNames({
             'balance-action': true,
-            'trade-action-max': this.state.amount === tradeBase.balance
+            'trade-action-max': this.state.amount === tradeBase.balance,
+            'balance-showtx': tx
         })
     }
 
 
     setMax = () => {
         const { tradeBase } = this.props.app.portfolio;
-        this.updateAmount(tradeBase.balance);
+        const params = {
+            target: {
+                validity: { valid: true },
+                value: tradeBase.balance
+            }
+        }
+        this.updateAmount(params);
     }
 
 
@@ -224,6 +231,26 @@ class Balance extends React.Component {
         )
     }
 
+    renderTX = () => {
+        const { resetTX, tx } = this.props.app.portfolio;
+
+        return (
+          <div className="deposit-tx">
+            <h3>Withdraw sent</h3>
+            <Clipboard copyLabel={tx} value={tx} />
+
+            <div className="deposit-tx-actions">
+              <button className="action primary" onClick={() => resetTX()}>
+                <span>OK</span>
+                <i dangerouslySetInnerHTML={{ __html: check }} />
+              </button>
+
+            </div>
+
+          </div>
+        )
+    }
+
     renderWithdraw = () => (<div className="deposit-withdraw">
       { this.renderAddress() }
       { this.renderAmount() }
@@ -236,13 +263,14 @@ class Balance extends React.Component {
     </div>)
 
     render() {
-        const { tradeBase, withdrawConfirm } = this.props.app.portfolio;
+        const { tradeBase, withdrawConfirm, tx } = this.props.app.portfolio;
         const { loader } = this.props.app;
         const withdrawLoader = loader.getLoader(6);
 
         return (
           withdrawLoader ? this.renderLoader() : <section className={this.getClassState()}>
             { withdrawConfirm ? this.renderConfirm(withdrawConfirm) : this.renderDeposit() }
+            { tx ? this.renderTX() : '' }
             { tradeBase.balance > 0 && !withdrawConfirm ? this.renderWithdraw() : '' }
           </section>
         );
