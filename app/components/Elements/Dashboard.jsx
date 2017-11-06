@@ -50,7 +50,7 @@ class Dashboard extends React.Component {
         // const { tradeBase, tradeRel, coinsList } = this.props.app.portfolio;
         const { installedCoins, colors, total } = this.props.app.portfolio;
         const hasRel = installedCoins.filter((coin) => coin.rel > 0);
-
+        console.log(hasRel);
         return (
           <section className="dashboard-wallets">
             <header className="dashboard-wallets-header component-header">
@@ -64,7 +64,7 @@ class Dashboard extends React.Component {
                       endAngle={0}
                       isAnimationActive={false}
                     >
-                      {installedCoins.map((coin) => <Cell key={coin.coin} stroke="transparent" fill={colors[coin.coin]} />)}
+                      {hasRel.map((coin) => <Cell key={coin.coin} stroke="transparent" fill={colors[coin.coin]} />)}
                     </Pie>
                   </PieChart>
                 </ResponsiveContainer> }
