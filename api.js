@@ -206,7 +206,7 @@ class Emitter extends EventEmitter {
     fetchCoins() {
         const self = this;
 
-        self.getCoins().then((coinsList) => {
+        self.getCoins({ }).then((coinsList) => {
             self.emit('coinsList', coinsList);
         })
     }
@@ -248,12 +248,13 @@ class Emitter extends EventEmitter {
 
             self.userpass = userpass;
             self.mypubkey = mypubkey;
-            self.getCoins().then((coinsList) => {
+            self.getCoins({ }).then((coinsList) => {
                 // coinsList may return an object instead of an array if it's the first call which return the userpass.
                 self.emit('coinsList', coinsList.coins || coinsList);
                 self.emit('updateUserInfo', { userpass, mypubkey });
             })
         }).catch((error) => {
+            console.log(error);
             self.emit('notifier', { error: 2, desc: error.code })
         });
     }
@@ -279,10 +280,6 @@ class Emitter extends EventEmitter {
         const url = 'http://127.0.0.1:7783';
 
         const fetch = new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
-            /*
-            installed true/false,
-            height of -1 means it isnt running, height > 0 means it is running and balance is non-zero if there is a balance for any coin with a running coin
-            */
             resolve(result);
         }).catch((error) => {
             console.log(`error getcoin ${coin}`)
