@@ -39,31 +39,40 @@ class Orders extends React.Component {
     render() {
         const { bots } = this.props.app.trade;
 
-        const listBots = bots.map((bot, i) =>
-          <li className={this.getBotClassState(bot.stopped)} key={i}>
-            <div className={`orders-item-details`}>
-              <div className={`orders-item-details-action ${bot.base}`}>
-                <span className="orders-item-details-action-type">BOT {bot.action}</span>
-                <span className="coin-colorized orders-item-details_action" dangerouslySetInnerHTML={{ __html: bot.action === 'buy' ? buy : sell }} />
+        const listBots = bots.map((bot, i) => {
+            const amountProcessed = bot.trades.reduce((accumulator, trade) => accumulator + trade.volume, 0);
+            const percent = (amountProcessed / bot.totalbasevolume) * 100;
+            return (
+              <li className={this.getBotClassState(bot.stopped)} key={i}>
+                <div className={`orders-item-details`}>
 
-                <span>{ bot.totalbasevolume } { bot.base }</span>
+                  <div className={`orders-item-details-action progress-container ${bot.base}`}>
+                    <span className="orders-item-details-action-type">BOT {bot.action}</span>
+                    <span className="coin-colorized orders-item-details_action" dangerouslySetInnerHTML={{ __html: bot.action === 'buy' ? buy : sell }} />
+                    <span>{ bot.totalbasevolume } { bot.base }</span>
+                  </div>
 
-              </div>
-              <div className={`orders-item-details-meta ${bot.base}`}>
-                <div>
-                  <small className="coin-colorized"><strong>Max Price</strong> { bot.maxprice } { bot.rel }</small>
-                  <small className="coin-colorized"><strong>Total</strong> { bot.totalrelvolume } { bot.rel }</small>
+                  <progress className="progress_bar" value={percent} data-amount={`${amountProcessed} ${bot.base}`} max="100" />
+
+                  <hr />
+                  <div className={`orders-item-details-meta ${bot.base}`}>
+                    <div>
+                      <small className="coin-colorized"><strong>Max Price</strong> { bot.maxprice } { bot.rel }</small>
+                      <small className="coin-colorized"><strong>Total</strong> { bot.totalrelvolume } { bot.rel }</small>
+                    </div>
+
+                    { bot.stopped ? <strong>STOPPED</strong> : <button onClick={() => this.toggleBot({ botid: bot.botid, method: 'bot_stop' })}className="order-stop action align-left danger">
+                      <span>stop</span>
+                      <i dangerouslySetInnerHTML={{ __html: stop }} />
+                    </button> }
+
+
+                  </div>
                 </div>
+              </li>
+            )
+        }
 
-                { bot.stopped ? <strong>STOPPED</strong> : <button onClick={() => this.toggleBot({ botid: bot.botid, method: 'bot_stop' })}className="order-stop action align-left danger">
-                  <span>stop</span>
-                  <i dangerouslySetInnerHTML={{ __html: stop }} />
-                </button> }
-
-
-              </div>
-            </div>
-          </li>
 
     );
 

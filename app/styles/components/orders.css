@@ -24,13 +24,12 @@
 .orders-item-details-action {
     display: flex;
     align-items: center;
-    border-bottom: 1px dashed rgba(0,0,0,0.1);
     width: 100%;
     text-align: left;
     padding: 10px 0;
-    margin-bottom: 10px;
     font-weight: 600;
 }
+
 
 .orders-item-details_action {
     margin-left: 6px;
@@ -69,12 +68,13 @@
 
 .orders-item:hover {
     background: #FFF !important;
+    cursor: default;
 }
 
 
 .orders-list .orders-item:hover,
 .orders-list .orders-item:hover svg,
 .orders-list .orders-item:hover .coin-colorized {
-    color: #000 !important;
-    fill: #000 !important;
+    color: inherit !important;
+    fill: inherit !important;
 }

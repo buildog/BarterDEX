@@ -54,6 +54,12 @@
     border-bottom: 2px solid $blue;
 }
 
+hr {
+    width: 100%;
+    border: none;
+    background: transparent
+}
+
 .react-toggle:hover {
     opacity: 1
 }
