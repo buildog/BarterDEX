@@ -49,7 +49,7 @@ class Orders extends React.Component {
 
                 return accumulator
             }, 0);
-            const percent = (amountProcessed / bot.totalbasevolume) * 100;
+            const percent = ((amountProcessed / bot.totalbasevolume) * 100).toFixed(2);
             return (
               <li className={this.getBotClassState(bot.stopped)} key={i}>
                 <div className={`orders-item-details`}>
