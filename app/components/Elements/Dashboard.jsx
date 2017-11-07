@@ -39,6 +39,11 @@ class Dashboard extends React.Component {
         const { enableElectrum } = this.props.app.portfolio;
         enableElectrum(coin);
     }
+    noticeBalance = () =>
+         (<div className="dashboard-empty dashboard-empty-balance">
+           <h3>No funds</h3>
+           <p>Your coins balances are empty, wait a minute to syncronize or deposit funds.</p>
+         </div>)
 
     noticeNoCoin = () =>
          (<div className="dashboard-empty">
@@ -49,6 +54,7 @@ class Dashboard extends React.Component {
     renderDashboard = () => {
         const { installedCoins, colors, total, renderBalance } = this.props.app.portfolio;
         const hasRel = installedCoins.filter((coin) => coin.rel > 0);
+        const hasBalance = installedCoins.filter((coin) => coin.balance > 0);
         return (
           <section className="dashboard-wallets">
             <header className="dashboard-wallets-header component-header">
@@ -76,7 +82,7 @@ class Dashboard extends React.Component {
 
 
             { installedCoins.length === 0 && this.noticeNoCoin() }
-
+            { (hasBalance.length === 0 && installedCoins.length > 0) && this.noticeBalance() }
 
             <ul className="dashboard-wallets-list">
               { installedCoins.map((installed) => {

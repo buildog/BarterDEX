@@ -388,7 +388,7 @@ class Emitter extends EventEmitter {
 
 
         const url = 'http://127.0.0.1:7783';
-
+        console.log(data);
         const tradeRequest = () => self.apiRequest({ data, url }).then((result) => {
             console.log(`${method} submitted`);
             console.log(result);
@@ -402,24 +402,28 @@ class Emitter extends EventEmitter {
         });
 
 
-        return self.inventory({ coin: rel }).then(() => {
+        return self.inventory({ coin: rel }).then(({ alice }) => {
             // volume/3 + 5*txfee <- 3 times and txfee 3 times
-            const txfee = (volume / 3 + (2 * (volume / 100)));
-            const mainSplit = volume + (5 * txfee);
-            return self.withdraw({
-                address: smartaddress,
-                coin: rel,
-                amounts: [
-                    { [smartaddress]: mainSplit },
-                    { [smartaddress]: mainSplit },
-                    { [smartaddress]: mainSplit },
-                    { [smartaddress]: txfee },
-                    { [smartaddress]: txfee },
-                    { [smartaddress]: txfee }
-                ]
-            }).then((withdrawResult) => {
-                self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(() => tradeRequest())
-            })
+            if (alice.lenght < 6) {
+                const txfee = (volume / 3 + (2 * (volume / 100)));
+                const mainSplit = volume + (5 * txfee);
+                return self.withdraw({
+                    address: smartaddress,
+                    coin: rel,
+                    amounts: [
+                        { [smartaddress]: mainSplit },
+                        { [smartaddress]: mainSplit },
+                        { [smartaddress]: mainSplit },
+                        { [smartaddress]: txfee },
+                        { [smartaddress]: txfee },
+                        { [smartaddress]: txfee }
+                    ]
+                }).then((withdrawResult) => {
+                    self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(() => tradeRequest())
+                })
+            }
+
+            return tradeRequest();
         })
     }
 

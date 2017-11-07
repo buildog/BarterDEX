@@ -41,7 +41,10 @@
     padding: 20px;
     background:  $danger;
     color: #FFF
+}
 
+.dashboard-empty.dashboard-empty-balance {
+    background: $orange
 }
 
 .dashboard-empty h3 {
