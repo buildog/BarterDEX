@@ -180,6 +180,7 @@ class Emitter extends EventEmitter {
             params = `'${params}'`;
         } else {
             params = JSON.stringify(params);
+            params = params.replace(/"/g, '\\"');
             bin = bin.replace(/"/g, '\\"')
         }
         console.log(`"${marketmakerBin}" ${params}`);
