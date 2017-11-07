@@ -125,18 +125,15 @@ class Emitter extends EventEmitter {
         self.userLogout = false;
         const passphrase = data.passphrase.trim();
 
-          // console.log(data.passphrase);
-        try {
-          // check if marketmaker instance is already running
-            portscanner.checkPortStatus(7783, '127.0.0.1', (error, status) => {
+        portscanner.checkPortStatus(7783, '127.0.0.1', (error, status) => {
             // Status is 'open' if currently in use or 'closed' if available
-                if (status === 'closed') {
-                    const coinsListFile = `${marketmakerDir}/coins.json`;
-                    const coinslist = fs.readJsonSync(defaultCoinsListFile, { throws: false });
-                    fs.pathExists(coinsListFile, (err, exists) => {
-                        if (exists === true) {
-                            fs.unlinkSync(coinsListFile);
-                            fs.copy(defaultCoinsListFile, coinsListFile)
+            if (status === 'closed') {
+                const coinsListFile = `${marketmakerDir}/coins.json`;
+                const coinslist = fs.readJsonSync(defaultCoinsListFile, { throws: false });
+                fs.pathExists(coinsListFile, (err, exists) => {
+                    if (exists === true) {
+                        fs.unlinkSync(coinsListFile);
+                        fs.copy(defaultCoinsListFile, coinsListFile)
                             .then(() => {
                                 console.log('file copied!');
                                 return self.execMarketMaker({ coinslist, passphrase });
@@ -145,10 +142,10 @@ class Emitter extends EventEmitter {
                                 console.error(err)
                             })
 
-                            self.execMarketMaker({ coinslist, passphrase });
-                        } else if (exists === false) {
-                            console.log('coinslist file doesn\'t exist');
-                            fs.copy(defaultCoinsListFile, coinsListFile)
+                        self.execMarketMaker({ coinslist, passphrase });
+                    } else if (exists === false) {
+                        console.log('coinslist file doesn\'t exist');
+                        fs.copy(defaultCoinsListFile, coinsListFile)
                             .then(() => {
                                 console.log('file copied!');
                                 return self.execMarketMaker({ coinslist, passphrase });
@@ -156,19 +153,16 @@ class Emitter extends EventEmitter {
                             .catch(err => {
                                 console.error(err)
                             })
-                        }
-                        if (err) {
-                            console.log(err) // => null
-                        }
-                    })
-                } else {
-                    console.log(`port 7783 marketmaker is already in use`);
-                    self.emit('loginCallback', { type: 'success', passphrase });
-                }
-            });
-        } catch (e) {
-            console.log(`failed to start marketmaker err: ${e}`);
-        }
+                    }
+                    if (err) {
+                        console.log(err) // => null
+                    }
+                })
+            } else {
+                console.log(`port 7783 marketmaker is already in use`);
+                self.emit('loginCallback', { type: 'success', passphrase });
+            }
+        });
     }
 
 
