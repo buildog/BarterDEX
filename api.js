@@ -217,7 +217,7 @@ class Emitter extends EventEmitter {
     fetchCoins() {
         const self = this;
 
-        self.getCoins({ }).then((coinsList) => {
+        self.getCoins().then((coinsList) => {
             self.emit('coinsList', coinsList);
         })
     }
@@ -259,7 +259,7 @@ class Emitter extends EventEmitter {
 
             self.userpass = userpass;
             self.mypubkey = mypubkey;
-            self.getCoins({ withoutBalance: true }).then((coinsList) => {
+            self.getCoins().then((coinsList) => {
                 // coinsList may return an object instead of an array if it's the first call which return the userpass.
                 self.emit('coinsList', coinsList.coins || coinsList);
                 self.emit('updateUserInfo', { userpass, mypubkey });
@@ -285,7 +285,7 @@ class Emitter extends EventEmitter {
     }
 
 
-    getCoins({ withoutBalance }) {
+    getCoins() {
         const self = this;
         const data = { userpass: self.userpass, method: 'getcoins' };
         const url = 'http://127.0.0.1:7783';
@@ -299,7 +299,7 @@ class Emitter extends EventEmitter {
 
 
         const updateBalance = (coinList) => coinList.map((coin) => {
-            if (coin.electrum && !withoutBalance) {
+            if (coin.electrum) {
                 return self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
                     coin.balance = coinBalance.balance;
                     return coin;
@@ -343,7 +343,7 @@ class Emitter extends EventEmitter {
             if (result.error) {
                 return self.emit('notifier', { error: 3, desc: result.error })
             }
-            self.getCoins({ withoutBalance: true }).then((coinsList) => {
+            self.getCoins().then((coinsList) => {
                 self.emit('coinsList', coinsList);
                 self.emit('coinEnabled', { coin });
                 if (type) {
