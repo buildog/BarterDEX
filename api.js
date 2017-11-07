@@ -172,16 +172,18 @@ class Emitter extends EventEmitter {
             passphrase: data.passphrase.trim()
         };
 
+        let bin = marketmakerBin;
+
         if (osPlatform !== 'win32') {
             params.coins = data.coinslist;
             params = JSON.stringify(params);
             params = `'${params}'`;
         } else {
             params = JSON.stringify(params);
-            params = params.replace(/"/g, '\\"')
+            bin = bin.replace(/"/g, '\\"')
         }
 
-        exec(`"${marketmakerBin}" ${params}`, {
+        exec(`"${bin}" ${params}`, {
             cwd: marketmakerDir
             // maxBuffer: 1024 * 10000 // 10 mb
         }, (error, stdout, stderr) => {
