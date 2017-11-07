@@ -47,10 +47,9 @@ class Dashboard extends React.Component {
          </div>)
 
     renderDashboard = () => {
-        // const { tradeBase, tradeRel, coinsList } = this.props.app.portfolio;
-        const { installedCoins, colors, total } = this.props.app.portfolio;
+        const { installedCoins, colors, total, renderBalance } = this.props.app.portfolio;
         const hasRel = installedCoins.filter((coin) => coin.rel > 0);
-        console.log(hasRel);
+
         return (
           <section className="dashboard-wallets">
             <header className="dashboard-wallets-header component-header">
@@ -89,7 +88,7 @@ class Dashboard extends React.Component {
                         <div className="coinList-coin_icon coin-colorized"> { installed.icon }</div>
                         <div className="coinList-coin_balance">
                           <strong>{ installed.name }</strong>
-                          <small>{ installed.balance } { installed.coin }</small>
+                          <small>{ renderBalance(installed.balance, installed.coin) } </small>
                           <small>{ isNative ? 'Native mode' : 'Electrum mode' } </small>
                         </div>
                         <span className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />

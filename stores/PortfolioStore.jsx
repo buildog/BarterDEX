@@ -153,7 +153,7 @@ export default class PortfolioStore {
     @action setTrade = (coin, type) => {
         let ipaddr;
         let port;
-        const electrum = !coin.installed || coin.height === 0;
+        const electrum = !coin.installed;
         if (electrum) {
             const electrumConf = electrumConfig.filter((svr) => svr.coin === coin.coin)[0];
             ipaddr = electrumConf.ipaddr;
@@ -161,6 +161,7 @@ export default class PortfolioStore {
         }
 
         if (!this.getCoin(coin.coin)) {
+            console.log('enable!')
             ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum, ipaddr, port })
         } else {
             this.updateTrade(coin.coin, type)
@@ -209,6 +210,13 @@ export default class PortfolioStore {
         const self = this;
         const total = self.portfolio.reduce((accumulator, coin) => accumulator + ((coin[self.defaultCurrency.type] * coin.perc) / 100), 0);
         return ((total / this.portfolioTotal(false)) * 100).toFixed(2);
+    }
+
+    renderBalance = (amount, code) => {
+        if (amount > 0) {
+            return formatCurrency(amount, { format: '%v %c', code, maxFraction: 8 });
+        }
+        return '';
     }
 
 

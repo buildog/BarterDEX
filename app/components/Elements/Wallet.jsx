@@ -63,7 +63,7 @@ class Wallet extends React.Component {
               <h2 className={tradeBase.coin}>
                 <div className="wallet-icon coin-colorized">{ tradeBase.icon }</div>
                 <div className="wallet-coinName coin-colorized">{tradeBase.name}</div>
-                <div className="wallet-balance">{ tradeBase.balance } { tradeBase.coin }</div>
+                <div className="wallet-balance">{ renderBalance(tradeBase.balance, tradeBase.coin) }</div>
               </h2>
 
             </header>
