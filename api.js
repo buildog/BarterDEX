@@ -180,7 +180,7 @@ class Emitter extends EventEmitter {
             params = `'${params}'`;
         } else {
             params = JSON.stringify(params);
-            params = bin.replace(/"/g, '\\"')
+            params = params.replace(/"/g, '\\"')
         }
         exec(`"${marketmakerDir}" ${params}`, {
             cwd: marketmakerDir
