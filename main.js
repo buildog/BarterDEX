@@ -9371,9 +9371,9 @@ module.exports =
 	            } else {
 	                params = JSON.stringify(params);
 	                params = params.replace(/"/g, '\\"');
+	                params = '"' + params + '"';
 	            }
-	
-	            exec('"' + marketmakerBin + '" ' + params, {
+	            exec('"' + marketmakerDir + '" ' + params, {
 	                cwd: marketmakerDir
 	                // maxBuffer: 1024 * 10000 // 10 mb
 	            }, function (error, stdout, stderr) {
@@ -9527,7 +9527,7 @@ module.exports =
 	            };
 	
 	            return fetch.then(function (coinList) {
-	                return Promise.all(updateBalance(coinList));
+	                return Promise.all(updateBalance(coinList || []));
 	            });
 	        }
 	    }, {
@@ -9772,8 +9772,10 @@ module.exports =
 	                    console.log(result);
 	                    if (result.complete) {
 	                        confirmation && self.emit('confirmWithdraw', result);
-	                    } else {
+	                    } else if (confirmation) {
 	                        self.emit('notifier', { error: 10 });
+	                    } else {
+	                        self.emit('notifier', { error: 11 });
 	                    }
 	                    resolve(result);
 	                }).catch(function (error) {
