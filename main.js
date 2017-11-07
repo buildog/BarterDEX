@@ -9513,10 +9513,14 @@ module.exports =
 	
 	            var updateBalance = function updateBalance(coinList) {
 	                return coinList.map(function (coin) {
+	                    console.log('balance check ' + coin.coin);
+	
 	                    if (coin.electrum && !withoutBalance) {
 	                        return self.listunspent({ coin: coin.coin, address: coin.smartaddress }).then(function () {
 	                            return self.balance({ coin: coin.coin, address: coin.smartaddress }).then(function (coinBalance) {
 	                                coin.balance = coinBalance.balance;
+	                                console.log('electurm balance updated ' + coin.coin);
+	
 	                                return coin;
 	                            });
 	                        });
@@ -9575,16 +9579,18 @@ module.exports =
 	                data = { userpass: self.userpass, method: 'enable', coin: coin };
 	            }
 	            var url = 'http://127.0.0.1:7783';
+	            console.log('enabling ' + coin);
 	
 	            this.apiRequest({ data: data, url: url }).then(function (result) {
-	                console.log(result);
 	                if (result.error) {
 	                    return self.emit('notifier', { error: 3, desc: result.error });
 	                }
 	                self.getCoins({ withoutBalance: true }).then(function (coinsList) {
 	                    self.emit('coinsList', coinsList);
 	                    self.emit('coinEnabled', { coin: coin });
-	                    type && _this6.emit('updateTrade', { coin: coin, type: type });
+	                    if (type) {
+	                        _this6.emit('updateTrade', { coin: coin, type: type });
+	                    }
 	                });
 	            }).catch(function (error) {
 	                self.emit('notifier', { error: 3 });
@@ -9794,10 +9800,10 @@ module.exports =
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'inventory', coin: coin };
 	            var url = 'http://127.0.0.1:7783';
+	            console.log('inventory for ' + coin);
 	
 	            return new Promise(function (resolve, reject) {
 	                return _this11.apiRequest({ data: data, url: url }).then(function (result) {
-	                    console.log('inventory for ' + coin);
 	                    console.log(result);
 	                    resolve(result);
 	                }).catch(function (error) {
@@ -9817,10 +9823,10 @@ module.exports =
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'listunspent', coin: coin, address: address };
 	            var url = 'http://127.0.0.1:7783';
+	            console.log('listunspent for ' + coin);
 	
 	            return new Promise(function (resolve, reject) {
 	                return _this12.apiRequest({ data: data, url: url }).then(function (result) {
-	                    console.log('listunspent for ' + coin);
 	                    console.log(result);
 	                    resolve(result);
 	                }).catch(function (error) {

@@ -135,13 +135,23 @@ class Emitter extends EventEmitter {
                     const coinslist = fs.readJsonSync(defaultCoinsListFile, { throws: false });
                     fs.pathExists(coinsListFile, (err, exists) => {
                         if (exists === true) {
+                            fs.unlinkSync(coinsListFile);
+                            fs.copy(defaultCoinsListFile, coinsListFile)
+                            .then(() => {
+                                console.log('file copied!');
+                                return self.execMarketMaker({ coinslist, passphrase });
+                            })
+                            .catch(err => {
+                                console.error(err)
+                            })
+
                             self.execMarketMaker({ coinslist, passphrase });
                         } else if (exists === false) {
                             console.log('coinslist file doesn\'t exist');
                             fs.copy(defaultCoinsListFile, coinsListFile)
                             .then(() => {
                                 console.log('file copied!');
-                                self.execMarketMaker({ coinslist, passphrase });
+                                return self.execMarketMaker({ coinslist, passphrase });
                             })
                             .catch(err => {
                                 console.error(err)
