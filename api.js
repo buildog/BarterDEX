@@ -294,6 +294,8 @@ class Emitter extends EventEmitter {
             if (coin.electrum && !withoutBalance) {
                 return self.listunspent({ coin: coin.coin, address: coin.smartaddress }).then(() => self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
                     coin.balance = coinBalance.balance;
+                    console.log(`electurm balance updated ${coin.coin}`)
+
                     return coin;
                 }));
             }
