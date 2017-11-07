@@ -164,6 +164,8 @@ class Emitter extends EventEmitter {
 
 
     execMarketMaker(data) {
+        console.log('exec marketmaker');
+
         const self = this;
           // start marketmaker via exec
         let params = {
