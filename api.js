@@ -259,7 +259,7 @@ class Emitter extends EventEmitter {
 
             self.userpass = userpass;
             self.mypubkey = mypubkey;
-            self.getCoins().then((coinsList) => {
+            self.getCoins(false).then((coinsList) => {
                 // coinsList may return an object instead of an array if it's the first call which return the userpass.
                 self.emit('coinsList', coinsList.coins || coinsList);
                 self.emit('updateUserInfo', { userpass, mypubkey });
@@ -285,7 +285,7 @@ class Emitter extends EventEmitter {
     }
 
 
-    getCoins() {
+    getCoins(fetchBalance = true) {
         const self = this;
         const data = { userpass: self.userpass, method: 'getcoins' };
         const url = 'http://127.0.0.1:7783';
@@ -299,7 +299,7 @@ class Emitter extends EventEmitter {
 
 
         const updateBalance = (coinList) => coinList.map((coin) => {
-            if (coin.electrum) {
+            if (coin.electrum && fetchBalance) {
                 return self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
                     coin.balance = coinBalance.balance;
                     return coin;
@@ -343,7 +343,7 @@ class Emitter extends EventEmitter {
             if (result.error) {
                 return self.emit('notifier', { error: 3, desc: result.error })
             }
-            self.getCoins().then((coinsList) => {
+            self.getCoins(false).then((coinsList) => {
                 self.emit('coinsList', coinsList);
                 self.emit('coinEnabled', { coin });
                 if (type) {
@@ -379,10 +379,10 @@ class Emitter extends EventEmitter {
         });
     }
 
-    trade({ method = 'bot_sell', base, rel, price, volume }) {
+    trade({ method = 'bot_sell', base, rel, price, volume, smartaddress }) {
         const self = this;
 
-
+        console.log(smartaddress);
         const data = { userpass: self.userpass, method, base, rel };
 
         if (method === 'bot_sell') {
@@ -409,20 +409,20 @@ class Emitter extends EventEmitter {
         });
 
 
-        return self.inventory({ coin: rel }).then((inventor) => {
+        return self.inventory({ coin: rel }).then(() => {
             // volume/3 + 5*txfee <- 3 times and txfee 3 times
             const txfee = (volume / 3 + (2 * (volume / 100)));
             const mainSplit = volume + (5 * txfee);
             return self.withdraw({
-                address: inventor.alice[0].address,
-                coin: inventor.alice[0].coin,
+                address: smartaddress,
+                coin: rel,
                 amounts: [
-                    { [inventor.alice[0].address]: mainSplit },
-                    { [inventor.alice[0].address]: mainSplit },
-                    { [inventor.alice[0].address]: mainSplit },
-                    { [inventor.alice[0].address]: txfee },
-                    { [inventor.alice[0].address]: txfee },
-                    { [inventor.alice[0].address]: txfee }
+                    { [smartaddress]: mainSplit },
+                    { [smartaddress]: mainSplit },
+                    { [smartaddress]: mainSplit },
+                    { [smartaddress]: txfee },
+                    { [smartaddress]: txfee },
+                    { [smartaddress]: txfee }
                 ]
             }).then((withdrawResult) => {
                 self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(() => tradeRequest())

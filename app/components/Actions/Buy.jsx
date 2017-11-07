@@ -109,7 +109,8 @@ class Trade extends React.Component {
             base: tradeBase.coin,
             rel: tradeRel.coin,
             price: this.state.rate,
-            volume: this.state.amountRel * this.state.rate
+            volume: this.state.amountRel * this.state.rate,
+            smartaddress: tradeRel.smartaddress
         };
 
         trade(params);

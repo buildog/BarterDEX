@@ -64,7 +64,7 @@ const CONSTANTS = {
             critical: true
         },
         9: {
-            message: 'MarketMaker crash',
+            message: 'marketmaker stopped',
             critical: true
         },
         10: {

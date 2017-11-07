@@ -56,6 +56,11 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
 
     api.on('MMStatus', (status) => {
         // WIP:count and trigger and error if too much attemps
+
+        if (status === MMStates.close && mmsState === MMStates.open) {
+            emitter.send('notifier', { error: 9 });
+        }
+
         if (status === MMStates.close && mmsState !== MMStates.close) {
             emitter.send('loading', { type: 'add', key: 2 });
             mmsState = MMStates.close;
