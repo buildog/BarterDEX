@@ -299,7 +299,11 @@ class Emitter extends EventEmitter {
             return coin;
         })
 
-        return fetch.then((coinList) => Promise.all(updateBalance(coinList || [])))
+        return fetch.then((coinList) => {
+            if (coinList) {
+                return Promise.all(updateBalance(coinList))
+            }
+        })
     }
 
     disableCoin({ coin = '', type }) {

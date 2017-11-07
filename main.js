@@ -9373,7 +9373,7 @@ module.exports =
 	                params = params.replace(/"/g, '\\"');
 	                params = '"' + params + '"';
 	            }
-	            exec('"' + marketmakerDir + '" ' + params, {
+	            exec('"' + marketmakerBin + '" ' + params, {
 	                cwd: marketmakerDir
 	                // maxBuffer: 1024 * 10000 // 10 mb
 	            }, function (error, stdout, stderr) {
