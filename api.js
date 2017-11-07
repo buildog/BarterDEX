@@ -125,34 +125,31 @@ class Emitter extends EventEmitter {
         self.userLogout = false;
         const passphrase = data.passphrase.trim();
 
+        const coinsListFile = `${marketmakerDir}/coins.json`;
+        const coinslist = fs.readJsonSync(defaultCoinsListFile, { throws: false });
+
+        const copyFile = () => {
+            fs.copy(defaultCoinsListFile, coinsListFile)
+                .then(() => {
+                    console.log('file copied!');
+                    return self.execMarketMaker({ coinslist, passphrase });
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+        }
+
         portscanner.checkPortStatus(7783, '127.0.0.1', (error, status) => {
             // Status is 'open' if currently in use or 'closed' if available
             if (status === 'closed') {
-                const coinsListFile = `${marketmakerDir}/coins.json`;
-                const coinslist = fs.readJsonSync(defaultCoinsListFile, { throws: false });
                 fs.pathExists(coinsListFile, (err, exists) => {
                     if (exists === true) {
+                        console.log('coinslist file exist, updating');
                         fs.unlinkSync(coinsListFile);
-                        fs.copy(defaultCoinsListFile, coinsListFile)
-                            .then(() => {
-                                console.log('file copied!');
-                                return self.execMarketMaker({ coinslist, passphrase });
-                            })
-                            .catch(err => {
-                                console.error(err)
-                            })
-
-                        self.execMarketMaker({ coinslist, passphrase });
+                        copyFile();
                     } else if (exists === false) {
                         console.log('coinslist file doesn\'t exist');
-                        fs.copy(defaultCoinsListFile, coinsListFile)
-                            .then(() => {
-                                console.log('file copied!');
-                                return self.execMarketMaker({ coinslist, passphrase });
-                            })
-                            .catch(err => {
-                                console.error(err)
-                            })
+                        copyFile();
                     }
                     if (err) {
                         console.log(err) // => null
