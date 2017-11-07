@@ -331,6 +331,7 @@ class Emitter extends EventEmitter {
             data = { userpass: self.userpass, method: 'enable', coin };
         }
         const url = 'http://127.0.0.1:7783';
+        console.log(`enabling ${coin}`);
 
         this.apiRequest({ data, url }).then((result) => {
             if (result.error) {
@@ -507,9 +508,9 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: self.userpass, method: 'inventory', coin };
         const url = 'http://127.0.0.1:7783';
+        console.log(`inventory for ${coin}`);
 
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
-            console.log(`inventory for ${coin}`);
             console.log(result);
             resolve(result);
         }).catch((error) => {
@@ -522,9 +523,9 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: self.userpass, method: 'listunspent', coin, address };
         const url = 'http://127.0.0.1:7783';
+        console.log(`listunspent for ${coin}`);
 
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
-            console.log(`listunspent for ${coin}`);
             console.log(result);
             resolve(result);
         }).catch((error) => {
