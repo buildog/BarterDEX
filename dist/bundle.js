@@ -40714,7 +40714,7 @@ module.exports =
 	                tradeRel = _this$props$app$portf.tradeRel,
 	                tradeBase = _this$props$app$portf.tradeBase;
 
-	            _this.setState({ amountRel: 0, amountBase: 0, picker: false, rate: 0, orderBookMessage: 'Fetching ' + tradeBase.coin + '/' + tradeRel.coin + ' orderbook' });
+	            _this.setState({ amountRel: 0, amountBase: 0, picker: false, rate: 0 });
 	            _this.validation({});
 	        };
 
@@ -40881,7 +40881,7 @@ module.exports =
 	                            return _this.tradeWith(e, coin);
 	                        }, trade: true })
 	                ),
-	                _this.state.showOrderbook && _react2.default.createElement(_.Orderbook, { base: tradeBase.coin, rel: tradeRel.coin, type: 'asks', placeholder: _this.state.orderBookMessage, onSelected: function onSelected(params) {
+	                _this.state.showOrderbook && _react2.default.createElement(_.Orderbook, { base: tradeBase.coin, rel: tradeRel.coin, type: 'asks', onSelected: function onSelected(params) {
 	                        return _this.pickRate(params);
 	                    } })
 	            );
@@ -42515,11 +42515,11 @@ module.exports =
 	    };
 
 	    _this.renderDashboard = function () {
-	      // const { tradeBase, tradeRel, coinsList } = this.props.app.portfolio;
 	      var _this$props$app$portf = _this.props.app.portfolio,
 	          installedCoins = _this$props$app$portf.installedCoins,
 	          colors = _this$props$app$portf.colors,
-	          total = _this$props$app$portf.total;
+	          total = _this$props$app$portf.total,
+	          renderBalance = _this$props$app$portf.renderBalance;
 
 	      var hasRel = installedCoins.filter(function (coin) {
 	        return coin.rel > 0;
@@ -42549,7 +42549,7 @@ module.exports =
 	                    endAngle: 0,
 	                    isAnimationActive: false
 	                  },
-	                  installedCoins.map(function (coin) {
+	                  hasRel.map(function (coin) {
 	                    return _react2.default.createElement(_recharts.Cell, { key: coin.coin, stroke: 'transparent', fill: colors[coin.coin] });
 	                  })
 	                )
@@ -42580,6 +42580,7 @@ module.exports =
 	          { className: 'dashboard-wallets-list' },
 	          installedCoins.map(function (installed) {
 	            var isNative = !installed.electrum;
+
 	            return _react2.default.createElement(
 	              'li',
 	              { key: installed.coin, className: _this.getClassState(installed.coin) },
@@ -42605,9 +42606,8 @@ module.exports =
 	                  _react2.default.createElement(
 	                    'small',
 	                    null,
-	                    installed.balance,
-	                    ' ',
-	                    installed.coin
+	                    renderBalance(installed.balance, installed.coin),
+	                    ' '
 	                  ),
 	                  _react2.default.createElement(
 	                    'small',
@@ -43568,7 +43568,7 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _dec, _class;
+	var _dec, _class, _class2, _temp, _initialiseProps;
 
 	var _react = __webpack_require__(1);
 
@@ -43599,7 +43599,7 @@ module.exports =
 	    accessor: 'numutxos' // String-based value accessors!
 	}];
 
-	var Orderbook = (_dec = (0, _mobxReact.inject)('app'), _dec(_class = (0, _mobxReact.observer)(_class = function (_React$Component) {
+	var Orderbook = (_dec = (0, _mobxReact.inject)('app'), _dec(_class = (0, _mobxReact.observer)(_class = (_temp = _class2 = function (_React$Component) {
 	    _inherits(Orderbook, _React$Component);
 
 	    function Orderbook(props) {
@@ -43607,17 +43607,7 @@ module.exports =
 
 	        var _this = _possibleConstructorReturn(this, (Orderbook.__proto__ || Object.getPrototypeOf(Orderbook)).call(this, props));
 
-	        _this.componentDidMount = function () {
-	            var listenOrderbook = _this.props.app.orderbook.listenOrderbook;
-
-	            listenOrderbook({ base: _this.props.base, rel: _this.props.rel });
-	        };
-
-	        _this.componentWillUnmount = function () {
-	            var killListener = _this.props.app.orderbook.killListener;
-
-	            killListener();
-	        };
+	        _initialiseProps.call(_this);
 
 	        _this.state = {
 	            selected: ''
@@ -43644,7 +43634,7 @@ module.exports =
 	                    data: orderbookData,
 	                    columns: orderbookColumns,
 	                    defaultSorted: [{ id: 'price' }],
-	                    noDataText: this.props.placeholder,
+	                    noDataText: 'Fetching ' + this.props.base + '/' + this.props.rel + ' orderbook',
 	                    showPaginationBottom: false,
 	                    style: { height: '280px' },
 	                    getTrProps: function getTrProps(state, rowInfo) {
@@ -43663,7 +43653,30 @@ module.exports =
 	    }]);
 
 	    return Orderbook;
-	}(_react2.default.Component)) || _class) || _class);
+	}(_react2.default.Component), _initialiseProps = function _initialiseProps() {
+	    var _this2 = this;
+
+	    this.componentDidMount = function () {
+	        var listenOrderbook = _this2.props.app.orderbook.listenOrderbook;
+
+	        listenOrderbook({ base: _this2.props.base, rel: _this2.props.rel });
+	    };
+
+	    this.componentWillReceiveProps = function (props) {
+	        var _props$app$orderbook2 = _this2.props.app.orderbook,
+	            listenOrderbook = _props$app$orderbook2.listenOrderbook,
+	            killListener = _props$app$orderbook2.killListener;
+
+	        killListener();
+	        listenOrderbook({ base: props.base, rel: props.rel });
+	    };
+
+	    this.componentWillUnmount = function () {
+	        var killListener = _this2.props.app.orderbook.killListener;
+
+	        killListener();
+	    };
+	}, _temp)) || _class) || _class);
 	exports.default = Orderbook;
 	module.exports = exports['default'];
 
@@ -43790,9 +43803,7 @@ module.exports =
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'wallet-balance' },
-	                            tradeBase.balance,
-	                            ' ',
-	                            tradeBase.coin
+	                            renderBalance(tradeBase.balance, tradeBase.coin)
 	                        )
 	                    )
 	                ),
@@ -45128,23 +45139,28 @@ module.exports =
 	        var data = _ref.data;
 
 	        console.log('orderbook update');
-	        var asks = data.asks.filter(function (ask) {
-	            return ask.numutxos > 0;
-	        });
-	        var bids = data.bids.filter(function (bid) {
-	            return bid.numutxos > 0;
-	        });
-	        _this.asks = JSON.parse(JSON.stringify(asks));
-	        _this.bids = JSON.parse(JSON.stringify(bids));
+	        if (data.asks) {
+	            var asks = data.asks.filter(function (ask) {
+	                return ask.numutxos > 0;
+	            });
+	            _this.asks = JSON.parse(JSON.stringify(asks));
+	        }if (data.bids) {
+	            var bids = data.bids.filter(function (bid) {
+	                return bid.numutxos > 0;
+	            });
+	            _this.bids = JSON.parse(JSON.stringify(bids));
+	        }
 	    };
 
 	    this.listenOrderbook = function (_ref2) {
 	        var base = _ref2.base,
 	            rel = _ref2.rel;
 
-	        _this.listener = setInterval(function () {
-	            return _electron.ipcRenderer.send('orderbook', { base: base, rel: rel });
-	        }, 4000);
+	        if (base && rel) {
+	            _this.listener = setInterval(function () {
+	                return _electron.ipcRenderer.send('orderbook', { base: base, rel: rel });
+	            }, 4000);
+	        }
 	    };
 
 	    this.killListener = function () {
@@ -45423,6 +45439,13 @@ module.exports =
 	        return (total / _this.portfolioTotal(false) * 100).toFixed(2);
 	    };
 
+	    this.renderBalance = function (amount, code) {
+	        if (amount > 0) {
+	            return (0, _formatCurrency2.default)(amount, { format: '%v %c', code: code, maxFraction: 8 });
+	        }
+	        return '';
+	    };
+
 	    _initDefineProp(this, 'leave', _descriptor21, this);
 	}, _temp), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'portfolio', [_mobx.observable], {
 	    enumerable: true,
@@ -45548,6 +45571,13 @@ module.exports =
 	                    var market = self.getMarket(coin.coin);
 	                    if (market && coin.coin !== self.defaultCrypto && market.price) {
 	                        coin.rel = market.price / relMarket.price * coin.balance;
+	                    } else if (coin.KMDvalue) {
+	                        var KMDmarket = self.getMarket('KMD');
+	                        if (KMDmarket && coin.coin !== self.defaultCrypto) {
+	                            coin.rel = KMDmarket.price / relMarket.price * coin.KMDvalue;
+	                        }
+	                    } else {
+	                        coin.rel = 0;
 	                    }
 
 	                    return coin;
@@ -45557,7 +45587,7 @@ module.exports =
 	            _this6.installedCoins = addIcons(_this6.coinsList.filter(function (coin) {
 	                return coin.installed && coin.height > 0 || coin.electrum;
 	            }).sort(function (a, b) {
-	                return a.balance > 0 ? 0 : 1;
+	                return b.rel - a.rel;
 	            }));
 
 	            if (self.tradeRel) {
@@ -45577,8 +45607,10 @@ module.exports =
 	        return function (coin) {
 	            var electrumConf = _constants.electrumConfig.filter(function (svr) {
 	                return svr.coin === coin.coin;
-	            })[0];
-	            _electron.ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true, ipaddr: electrumConf.ipaddr, port: electrumConf.port });
+	            });
+	            electrumConf.map(function (conf) {
+	                return _electron.ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true, ipaddr: conf.ipaddr, port: conf.port });
+	            });
 	        };
 	    }
 	}), _descriptor18 = _applyDecoratedDescriptor(_class.prototype, 'setTrade', [_mobx.action], {
@@ -45589,7 +45621,7 @@ module.exports =
 	        return function (coin, type) {
 	            var ipaddr = void 0;
 	            var port = void 0;
-	            var electrum = !coin.installed || coin.height === 0;
+	            var electrum = !coin.installed;
 	            if (electrum) {
 	                var electrumConf = _constants.electrumConfig.filter(function (svr) {
 	                    return svr.coin === coin.coin;
@@ -45598,8 +45630,15 @@ module.exports =
 	                port = electrumConf.port;
 	            }
 
-	            if (!_this7.getCoin(coin.coin)) {
-	                _electron.ipcRenderer.send('enableCoin', { coin: coin.coin, type: type, electrum: electrum, ipaddr: ipaddr, port: port });
+	            var installedCoin = _this7.getCoin(coin.coin);
+
+	            if (!installedCoin || installedCoin.status !== 'active') {
+	                console.log('enable ' + coin.coin);
+	                if (!electrum) {
+	                    _electron.ipcRenderer.send('enableCoin', { coin: coin.coin, type: type, electrum: electrum, ipaddr: ipaddr, port: port });
+	                } else {
+	                    _this7.enableElectrum(coin);
+	                }
 	            } else {
 	                _this7.updateTrade(coin.coin, type);
 	            }

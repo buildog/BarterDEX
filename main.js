@@ -9461,7 +9461,7 @@ module.exports =
 	
 	                self.userpass = userpass;
 	                self.mypubkey = mypubkey;
-	                self.getCoins({}).then(function (coinsList) {
+	                self.getCoins({ withoutBalance: true }).then(function (coinsList) {
 	                    // coinsList may return an object instead of an array if it's the first call which return the userpass.
 	                    self.emit('coinsList', coinsList.coins || coinsList);
 	                    self.emit('updateUserInfo', { userpass: userpass, mypubkey: mypubkey });
@@ -9644,24 +9644,28 @@ module.exports =
 	
 	            var url = 'http://127.0.0.1:7783';
 	
-	            var tradeRequest = self.apiRequest({ data: data, url: url }).then(function (result) {
-	                console.log(method + ' submitted');
-	                console.log(result);
-	                if (!result.error) {
-	                    self.emit('trade', result);
-	                } else {
-	                    self.emit('notifier', { error: 7, desc: result.error });
-	                }
-	            }).catch(function (error) {
-	                self.emit('notifier', { error: 7 });
-	            });
+	            var tradeRequest = function tradeRequest() {
+	                return self.apiRequest({ data: data, url: url }).then(function (result) {
+	                    console.log(method + ' submitted');
+	                    console.log(result);
+	                    if (!result.error) {
+	                        self.emit('trade', result);
+	                    } else {
+	                        self.emit('notifier', { error: 7, desc: result.error });
+	                    }
+	                }).catch(function (error) {
+	                    self.emit('notifier', { error: 7 });
+	                });
+	            };
 	
 	            return self.inventory({ coin: rel }).then(function (inventor) {
-	                var txfee = volume / 777 + 2 * (volume / 100);
+	                // volume/3 + 5*txfee <- 3 times and txfee 3 times
+	                var txfee = volume / 3 + 2 * (volume / 100);
+	                var mainSplit = volume + 5 * txfee;
 	                return self.withdraw({
 	                    address: inventor.alice[0].address,
 	                    coin: inventor.alice[0].coin,
-	                    amounts: [_defineProperty({}, inventor.alice[0].address, volume + 5 * txfee), _defineProperty({}, inventor.alice[0].address, txfee)]
+	                    amounts: [_defineProperty({}, inventor.alice[0].address, mainSplit), _defineProperty({}, inventor.alice[0].address, mainSplit), _defineProperty({}, inventor.alice[0].address, mainSplit), _defineProperty({}, inventor.alice[0].address, txfee), _defineProperty({}, inventor.alice[0].address, txfee), _defineProperty({}, inventor.alice[0].address, txfee)]
 	                }).then(function (withdrawResult) {
 	                    self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(function () {
 	                        return tradeRequest();
@@ -9691,11 +9695,11 @@ module.exports =
 	        }
 	    }, {
 	        key: 'toggleBot',
-	        value: function toggleBot(_ref11) {
+	        value: function toggleBot(_ref15) {
 	            var _this8 = this;
 	
-	            var botid = _ref11.botid,
-	                method = _ref11.method;
+	            var botid = _ref15.botid,
+	                method = _ref15.method;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: method, botid: botid };
@@ -9719,12 +9723,12 @@ module.exports =
 	        }
 	    }, {
 	        key: 'sendrawtransaction',
-	        value: function sendrawtransaction(_ref12) {
+	        value: function sendrawtransaction(_ref16) {
 	            var _this9 = this;
 	
-	            var coin = _ref12.coin,
-	                signedtx = _ref12.signedtx,
-	                confirmation = _ref12.confirmation;
+	            var coin = _ref16.coin,
+	                signedtx = _ref16.signedtx,
+	                confirmation = _ref16.confirmation;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'sendrawtransaction', coin: coin, signedtx: signedtx };
@@ -9744,14 +9748,14 @@ module.exports =
 	        }
 	    }, {
 	        key: 'withdraw',
-	        value: function withdraw(_ref13) {
+	        value: function withdraw(_ref17) {
 	            var _this10 = this;
 	
-	            var address = _ref13.address,
-	                coin = _ref13.coin,
-	                amount = _ref13.amount,
-	                amounts = _ref13.amounts,
-	                confirmation = _ref13.confirmation;
+	            var address = _ref17.address,
+	                coin = _ref17.coin,
+	                amount = _ref17.amount,
+	                amounts = _ref17.amounts,
+	                confirmation = _ref17.confirmation;
 	
 	            var outputs = amounts || [_defineProperty({}, address, amount)];
 	            var self = this;
@@ -9781,10 +9785,10 @@ module.exports =
 	        }
 	    }, {
 	        key: 'inventory',
-	        value: function inventory(_ref15) {
+	        value: function inventory(_ref19) {
 	            var _this11 = this;
 	
-	            var coin = _ref15.coin;
+	            var coin = _ref19.coin;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'inventory', coin: coin };
@@ -9803,11 +9807,11 @@ module.exports =
 	        }
 	    }, {
 	        key: 'listunspent',
-	        value: function listunspent(_ref16) {
+	        value: function listunspent(_ref20) {
 	            var _this12 = this;
 	
-	            var coin = _ref16.coin,
-	                address = _ref16.address;
+	            var coin = _ref20.coin,
+	                address = _ref20.address;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'listunspent', coin: coin, address: address };

@@ -37,7 +37,6 @@ app.on('ready', async () => {
     mainWindow = new BrowserWindow({
         width: 400,
         height: 786,
-        minHeight: 786,
         minWidth: 400,
         show: false,
         backgroundColor: '#F8FAFF'
