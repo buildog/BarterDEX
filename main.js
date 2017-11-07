@@ -9009,7 +9009,6 @@ module.exports =
 	                    mainWindow = new _electron.BrowserWindow({
 	                        width: 400,
 	                        height: 786,
-	                        minHeight: 786,
 	                        minWidth: 400,
 	                        show: false,
 	                        backgroundColor: '#F8FAFF'

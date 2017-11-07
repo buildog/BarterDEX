@@ -75,7 +75,9 @@ ul[class*=list] > li.enabling {
 
 ul[class*=list] > li:hover .coin-colorized,
 ul[class*=list] > li:hover svg,
+ul[class*=list] > li:hover svg path,
 ul[class*=list] > li.enabling svg,
+ul[class*=list] > li.enabling svg path,
 ul[class*=list] > li.enabling .coin-colorized {
     color: #FFF !important;
     fill: #FFF !important;
