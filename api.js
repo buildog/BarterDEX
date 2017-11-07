@@ -347,7 +347,7 @@ class Emitter extends EventEmitter {
                 self.emit('coinsList', coinsList);
                 self.emit('coinEnabled', { coin });
                 if (type) {
-                    this.emit('updateTrade', { coin, type });
+                    self.emit('updateTrade', { coin, type });
                 }
             })
         }).catch((error) => {
