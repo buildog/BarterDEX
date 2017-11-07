@@ -184,7 +184,7 @@ class Emitter extends EventEmitter {
         }
 
         exec(`"${bin}" ${params}`, {
-            cwd: marketmakerDir
+            cwd: bin
             // maxBuffer: 1024 * 10000 // 10 mb
         }, (error, stdout, stderr) => {
             console.log(`stdout: ${stdout}`);
