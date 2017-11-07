@@ -167,8 +167,10 @@ export default class PortfolioStore {
             port = electrumConf.port;
         }
 
-        if (!this.getCoin(coin.coin) || coin.status !== 'active') {
-            console.log('enable');
+        const installedCoin = this.getCoin(coin.coin);
+
+        if (!installedCoin || installedCoin.status !== 'active') {
+            console.log(`enable ${coin.coin}`);
             if (!electrum) {
                 ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum, ipaddr, port })
             } else {

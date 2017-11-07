@@ -91,7 +91,7 @@ class Trade extends React.Component {
         // this.amountRelInput.focus();
         // this.amountRelInput.value = '';
         const { tradeRel, tradeBase } = this.props.app.portfolio;
-        this.setState({ amountRel: 0, amountBase: 0, picker: false, rate: 0, orderBookMessage: `Fetching ${tradeBase.coin}/${tradeRel.coin} orderbook` })
+        this.setState({ amountRel: 0, amountBase: 0, picker: false, rate: 0 })
         this.validation({});
     }
 
@@ -211,7 +211,7 @@ class Trade extends React.Component {
           <CoinPicker onSelected={(e, coin) => this.tradeWith(e, coin)} trade />
         </div>
 
-        { this.state.showOrderbook && <Orderbook base={tradeBase.coin} rel={tradeRel.coin} type="asks" placeholder={this.state.orderBookMessage} onSelected={(params) => this.pickRate(params)} /> }
+        { this.state.showOrderbook && <Orderbook base={tradeBase.coin} rel={tradeRel.coin} type="asks" onSelected={(params) => this.pickRate(params)} /> }
 
       </section>
 

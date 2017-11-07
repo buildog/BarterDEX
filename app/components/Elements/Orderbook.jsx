@@ -58,7 +58,7 @@ class Orderbook extends React.Component {
               data={orderbookData}
               columns={orderbookColumns}
               defaultSorted={[{ id: 'price' }]}
-              noDataText={this.props.placeholder}
+              noDataText={`Fetching ${this.props.base}/${this.props.rel} orderbook`}
               showPaginationBottom={false}
               style={{ height: '280px' }}
               getTrProps={(state, rowInfo) => ({

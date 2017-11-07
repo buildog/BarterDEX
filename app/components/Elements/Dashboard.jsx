@@ -82,7 +82,7 @@ class Dashboard extends React.Component {
             <ul className="dashboard-wallets-list">
               { installedCoins.map((installed) => {
                   const isNative = !installed.electrum;
-                  console.log(installed);
+
                   return (
                     <li key={installed.coin} className={this.getClassState(installed.coin)}>
                       <Link onClick={() => this.setCoinToEnable(installed.coin)} className={installed.coin} to={`/wallet/${installed.coin}/${isNative}`} activeClassName="active">
