@@ -146,8 +146,8 @@ export default class PortfolioStore {
     }
 
     @action enableElectrum = (coin) => {
-        const electrumConf = electrumConfig.filter((svr) => svr.coin === coin.coin)[0];
-        ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true, ipaddr: electrumConf.ipaddr, port: electrumConf.port })
+        const electrumConf = electrumConfig.filter((svr) => svr.coin === coin.coin);
+        electrumConf.map((conf) => ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true, ipaddr: conf.ipaddr, port: conf.port }));
     }
 
     @action setTrade = (coin, type) => {
@@ -161,8 +161,11 @@ export default class PortfolioStore {
         }
 
         if (!this.getCoin(coin.coin)) {
-            console.log('enable!')
-            ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum, ipaddr, port })
+            if (!electrum) {
+                ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum, ipaddr, port })
+            } else {
+                this.enableElectrum(coin)
+            }
         } else {
             this.updateTrade(coin.coin, type)
         }
