@@ -182,9 +182,9 @@ class Emitter extends EventEmitter {
             params = JSON.stringify(params);
             bin = bin.replace(/"/g, '\\"')
         }
-
+        console.log(`"${bin}" ${params}`);
         exec(`"${bin}" ${params}`, {
-            cwd: bin
+            cwd: marketmakerDir
             // maxBuffer: 1024 * 10000 // 10 mb
         }, (error, stdout, stderr) => {
             console.log(`stdout: ${stdout}`);
