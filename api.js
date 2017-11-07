@@ -487,8 +487,10 @@ class Emitter extends EventEmitter {
             console.log(result);
             if (result.complete) {
                 confirmation && self.emit('confirmWithdraw', result);
-            } else {
+            } else if (confirmation) {
                 self.emit('notifier', { error: 10 })
+            } else {
+                self.emit('notifier', { error: 11 })
             }
             resolve(result);
         }).catch((error) => {

@@ -6,7 +6,8 @@ const CONSTANTS = {
         3: 'Porfolio fetch',
         4: 'Coin activation',
         5: 'Processing trade order',
-        6: 'Processing withdraw'
+        6: 'Processing withdraw',
+        7: 'Generating UTXOs'
 
     },
     growler: {
@@ -69,6 +70,10 @@ const CONSTANTS = {
         10: {
             message: 'Withdraw failed',
             loadingKeys: [6]
+        },
+        11: {
+            message: 'Autosplit balance into UTXOs failed',
+            loadingKeys: [5, 7]
         }
     },
     colors: {
