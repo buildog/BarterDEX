@@ -289,7 +289,8 @@ class Emitter extends EventEmitter {
 
 
         const updateBalance = (coinList) => coinList.map((coin) => {
-            if (coin.electrum && !withoutBalance && coin) {
+            console.log(coin);
+            if (coin.electrum && !withoutBalance) {
                 return self.listunspent({ coin: coin.coin, address: coin.smartaddress }).then(() => self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
                     coin.balance = coinBalance.balance;
                     return coin;
@@ -299,11 +300,7 @@ class Emitter extends EventEmitter {
             return coin;
         })
 
-        return fetch.then((coinList) => {
-            if (coinList) {
-                return Promise.all(updateBalance(coinList))
-            }
-        })
+        return fetch.then((coinList) => Promise.all(updateBalance(coinList || [])))
     }
 
     disableCoin({ coin = '', type }) {
