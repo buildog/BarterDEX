@@ -49,7 +49,6 @@ class Dashboard extends React.Component {
     renderDashboard = () => {
         const { installedCoins, colors, total, renderBalance } = this.props.app.portfolio;
         const hasRel = installedCoins.filter((coin) => coin.rel > 0);
-
         return (
           <section className="dashboard-wallets">
             <header className="dashboard-wallets-header component-header">
@@ -82,6 +81,7 @@ class Dashboard extends React.Component {
             <ul className="dashboard-wallets-list">
               { installedCoins.map((installed) => {
                   const isNative = !installed.electrum;
+                  console.log(installed)
 
                   return (
                     <li key={installed.coin} className={this.getClassState(installed.coin)}>

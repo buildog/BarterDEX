@@ -299,15 +299,11 @@ class Emitter extends EventEmitter {
 
 
         const updateBalance = (coinList) => coinList.map((coin) => {
-            console.log(`balance check ${coin.coin}`)
-
             if (coin.electrum && !withoutBalance) {
-                return self.listunspent({ coin: coin.coin, address: coin.smartaddress }).then(() => self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
+                return self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
                     coin.balance = coinBalance.balance;
-                    console.log(`electurm balance updated ${coin.coin}`)
-
                     return coin;
-                }));
+                });
             }
 
             return coin;

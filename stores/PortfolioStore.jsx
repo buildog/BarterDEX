@@ -161,11 +161,6 @@ export default class PortfolioStore {
         let ipaddr;
         let port;
         const electrum = !coin.installed;
-        if (electrum) {
-            const electrumConf = electrumConfig.filter((svr) => svr.coin === coin.coin)[0];
-            ipaddr = electrumConf.ipaddr;
-            port = electrumConf.port;
-        }
 
         const installedCoin = this.getCoin(coin.coin);
 
