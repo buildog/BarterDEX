@@ -289,7 +289,8 @@ class Emitter extends EventEmitter {
 
 
         const updateBalance = (coinList) => coinList.map((coin) => {
-            console.log(coin);
+            console.log(`balance check ${coin.coin}`)
+
             if (coin.electrum && !withoutBalance) {
                 return self.listunspent({ coin: coin.coin, address: coin.smartaddress }).then(() => self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
                     coin.balance = coinBalance.balance;
@@ -330,14 +331,15 @@ class Emitter extends EventEmitter {
         const url = 'http://127.0.0.1:7783';
 
         this.apiRequest({ data, url }).then((result) => {
-            console.log(result);
             if (result.error) {
                 return self.emit('notifier', { error: 3, desc: result.error })
             }
             self.getCoins({ withoutBalance: true }).then((coinsList) => {
                 self.emit('coinsList', coinsList);
                 self.emit('coinEnabled', { coin });
-                type && this.emit('updateTrade', { coin, type });
+                if (type) {
+                    this.emit('updateTrade', { coin, type });
+                }
             })
         }).catch((error) => {
             self.emit('notifier', { error: 3 })
