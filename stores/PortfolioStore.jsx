@@ -125,6 +125,13 @@ export default class PortfolioStore {
                 const market = self.getMarket(coin.coin);
                 if (market && coin.coin !== self.defaultCrypto && market.price) {
                     coin.rel = (market.price / relMarket.price) * coin.balance;
+                } else if (coin.KMDvalue) {
+                    const KMDmarket = self.getMarket('KMD');
+                    if (KMDmarket && coin.coin !== self.defaultCrypto) {
+                        coin.rel = (KMDmarket.price / relMarket.price) * coin.KMDvalue;
+                    }
+                } else {
+                    coin.rel = 0;
                 }
 
                 return coin;
@@ -132,7 +139,7 @@ export default class PortfolioStore {
         }
 
 
-        this.installedCoins = addIcons(this.coinsList.filter((coin) => (coin.installed && coin.height > 0) || coin.electrum).sort((a, b) => a.balance > 0 ? 0 : 1));
+        this.installedCoins = addIcons(this.coinsList.filter((coin) => (coin.installed && coin.height > 0) || coin.electrum).sort((a, b) => b.rel - a.rel));
 
         if (self.tradeRel) {
             self.tradeRel.balance = self.getCoin(self.tradeRel.coin).balance
@@ -160,7 +167,8 @@ export default class PortfolioStore {
             port = electrumConf.port;
         }
 
-        if (!this.getCoin(coin.coin)) {
+        if (!this.getCoin(coin.coin) || coin.status !== 'active') {
+            console.log('enable');
             if (!electrum) {
                 ipcRenderer.send('enableCoin', { coin: coin.coin, type, electrum, ipaddr, port })
             } else {

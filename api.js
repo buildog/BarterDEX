@@ -383,7 +383,7 @@ class Emitter extends EventEmitter {
 
         const url = 'http://127.0.0.1:7783';
 
-        const tradeRequest = self.apiRequest({ data, url }).then((result) => {
+        const tradeRequest = () => self.apiRequest({ data, url }).then((result) => {
             console.log(`${method} submitted`);
             console.log(result);
             if (!result.error) {
@@ -395,14 +395,21 @@ class Emitter extends EventEmitter {
             self.emit('notifier', { error: 7 })
         });
 
+
         return self.inventory({ coin: rel }).then((inventor) => {
-            const txfee = (volume / 777 + (2 * (volume / 100)));
+            // volume/3 + 5*txfee <- 3 times and txfee 3 times
+            const txfee = (volume / 3 + (2 * (volume / 100)));
+            const mainSplit = volume + (5 * txfee);
             return self.withdraw({
                 address: inventor.alice[0].address,
                 coin: inventor.alice[0].coin,
                 amounts: [
-                        { [inventor.alice[0].address]: volume + (5 * txfee) },
-                        { [inventor.alice[0].address]: txfee }
+                    { [inventor.alice[0].address]: mainSplit },
+                    { [inventor.alice[0].address]: mainSplit },
+                    { [inventor.alice[0].address]: mainSplit },
+                    { [inventor.alice[0].address]: txfee },
+                    { [inventor.alice[0].address]: txfee },
+                    { [inventor.alice[0].address]: txfee }
                 ]
             }).then((withdrawResult) => {
                 self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(() => tradeRequest())

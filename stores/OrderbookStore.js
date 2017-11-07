@@ -14,14 +14,19 @@ export default class OrderbookStore {
 
     updateOrderbook = ({ data }) => {
         console.log('orderbook update');
-        const asks = data.asks.filter((ask) => ask.numutxos > 0);
-        const bids = data.bids.filter((bid) => bid.numutxos > 0);
-        this.asks = JSON.parse(JSON.stringify(asks));
-        this.bids = JSON.parse(JSON.stringify(bids));
+        if (data.asks) {
+            const asks = data.asks.filter((ask) => ask.numutxos > 0);
+            this.asks = JSON.parse(JSON.stringify(asks));
+        } if (data.bids) {
+            const bids = data.bids.filter((bid) => bid.numutxos > 0);
+            this.bids = JSON.parse(JSON.stringify(bids));
+        }
     }
 
     listenOrderbook = ({ base, rel }) => {
-        this.listener = setInterval(() => ipcRenderer.send('orderbook', { base, rel }), 4000);
+        if (base && rel) {
+            this.listener = setInterval(() => ipcRenderer.send('orderbook', { base, rel }), 4000);
+        }
     }
 
     killListener = () => {

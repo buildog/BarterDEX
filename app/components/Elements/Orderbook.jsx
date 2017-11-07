@@ -33,6 +33,13 @@ class Orderbook extends React.Component {
         listenOrderbook({ base: this.props.base, rel: this.props.rel });
     }
 
+    componentWillReceiveProps = (props) => {
+        const { listenOrderbook, killListener } = this.props.app.orderbook;
+        killListener();
+        listenOrderbook({ base: props.base, rel: props.rel });
+    }
+
+
     componentWillUnmount = () => {
         const { killListener } = this.props.app.orderbook;
         killListener();
