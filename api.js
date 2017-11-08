@@ -404,9 +404,12 @@ class Emitter extends EventEmitter {
 
         return self.inventory({ coin: rel }).then(({ alice }) => {
             // volume/3 + 5*txfee <- 3 times and txfee 3 times
-            if (alice.lenght < 6) {
+            if (alice.length < 6) {
                 const txfee = (volume / 3 + (2 * (volume / 100)));
                 const mainSplit = volume + (5 * txfee);
+
+                self.emit('loading', { type: 'add', key: 7 });
+
                 return self.withdraw({
                     address: smartaddress,
                     coin: rel,
@@ -419,7 +422,12 @@ class Emitter extends EventEmitter {
                         { [smartaddress]: txfee }
                     ]
                 }).then((withdrawResult) => {
-                    self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(() => tradeRequest())
+                    self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(() => {
+                        setTimeout(() => {
+                            self.emit('loading', { type: 'delete', key: 7 });
+                            tradeRequest();
+                        }, 6000);
+                    })
                 })
             }
 
