@@ -85,15 +85,6 @@ class Emitter extends EventEmitter {
                 })
         }
 
-        // Wait for endoint to respond before accepting others requests
-        self.endpointCheckInterval = setInterval(() => {
-            self.getUserpass(passphrase).then(() => {
-                clearInterval(self.endpointCheckInterval);
-            }).catch(() => {
-                console.log('login endpoint not yet ready')
-            });
-        }, 3000);
-
 
         return this.checkMMStatus().then((instance) => {
             if (instance === 0) {
@@ -114,6 +105,16 @@ class Emitter extends EventEmitter {
             } else {
                 console.log(`found ${instance} marketmaker process`);
             }
+
+
+            // Wait for endoint to respond before accepting others requests
+            self.endpointCheckInterval = setInterval(() => {
+                self.getUserpass(passphrase).then(() => {
+                    clearInterval(self.endpointCheckInterval);
+                }).catch(() => {
+                    console.log('login endpoint not yet ready')
+                });
+            }, 3000);
         });
     }
 
