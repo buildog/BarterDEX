@@ -211,10 +211,10 @@ class Emitter extends EventEmitter {
             console.log('logged in!');
             self.userpass = userpass;
             self.mypubkey = mypubkey;
-            self.emit('updateUserInfo', { userpass, mypubkey, passphrase });
 
 
             self.getCoins(false).then((coinsList) => {
+                self.emit('updateUserInfo', { userpass, mypubkey, passphrase });
                 // coinsList may return an object instead of an array if it's the first call which return the userpass.
                 self.emit('coinsList', coinsList.coins || coinsList);
             })
