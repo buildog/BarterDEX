@@ -100,8 +100,14 @@
 }
 
 .window__title h1 {
+    margin: 0;
     font-size: 1em;
     color: #FFF
+}
+
+.window-header-appversion {
+    text-transform: uppercase;
+    font-size: 10px
 }
 
 /* RIGHT SIDE */
