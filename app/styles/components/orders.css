@@ -37,8 +37,17 @@
 
 .orders-item-details-action-type {
     flex-grow: 1;
-    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
     color: $color-dark;
+}
+
+.orders-item-details-action-type-title {
+    text-transform: capitalize;
+}
+
+.orders-item-details-action-type small {
+    color: $color-primary
 }
 
 .orders-item-details-meta {
