@@ -50,7 +50,7 @@ class CoinPicker extends React.Component {
             const { tradeRel } = this.props.app.portfolio;
 
             if (this.props.trade && tradeRel) {
-                return (<button className="action arrow-down " onClick={(e) => clickable && this.toggle(e)}>
+                return (<button className="action noTransformTranslate arrow-down " onClick={(e) => clickable && this.toggle(e)}>
                   <span className={tradeRel.coin}>
                     <span className="trade-base-icon coin-colorized">{tradeRel.icon}</span>
                     <strong>{ tradeRel.name }</strong>
@@ -64,34 +64,38 @@ class CoinPicker extends React.Component {
               <i dangerouslySetInnerHTML={{ __html: plus }} />
             </button>)
         }
-        return (<button className="action danger" onClick={(e) => this.toggle(e)}>
+        return (<button className="action noTransformTranslate danger" onClick={(e) => this.toggle(e)}>
           <span>cancel</span>
           <i dangerouslySetInnerHTML={{ __html: close }} />
         </button>)
     }
 
-    renderList = (coins) => (<div className={this.getListState()}>
-      <ul className="coinList-list coin-colorized-reset">
-        {
-              coins.map((coin) => (
-                <li
-                  className={this.getCoinState(coin.coin)} onClick={(e) => {
-                      this.setState({ coinToEnable: coin.coin })
-                      this.props.onSelected(e, coin)
-                  }} key={coin.coin}
-                >
-                  <div className="coinList-coin_icon coin-colorized"> { coin.icon }</div>
-                  <div className={`coinList-coin_balance ${coin.coin}`}>
-                    <strong className="coin-colorized">{ coin.name }</strong>
-                    <small>{ coin.balance } { coin.coin }</small>
-                  </div>
-                  <span className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
-                  <span className="coinList-coin_action_loader" dangerouslySetInnerHTML={{ __html: circles }} />
-                </li>))
-                  }
-      </ul>
-    </div>
+    renderList = (coins) => {
+        const { renderBalance } = this.props.app.portfolio;
+        return (<div className={this.getListState()}>
+          <ul className="coinList-list coin-colorized-reset">
+            {
+                  coins.map((coin) => (
+                    <li
+                      className={this.getCoinState(coin.coin)} onClick={(e) => {
+                          this.setState({ coinToEnable: coin.coin })
+                          this.props.onSelected(e, coin)
+                      }} key={coin.coin}
+                    >
+                      <div className="coinList-coin_icon coin-colorized"> { coin.icon }</div>
+                      <div className={`coinList-coin_balance ${coin.coin}`}>
+                        <strong className="coinList-coin_name coin-colorized">{ coin.name }</strong>
+
+                        <small>{ renderBalance(coin.balance, coin.coin) }</small>
+                      </div>
+                      <span className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
+                      <span className="coinList-coin_action_loader" dangerouslySetInnerHTML={{ __html: circles }} />
+                    </li>))
+                      }
+          </ul>
+        </div>
         )
+    }
 
     render() {
         const { coinsList, installedCoins, tradeBase, tradeRel } = this.props.app.portfolio;

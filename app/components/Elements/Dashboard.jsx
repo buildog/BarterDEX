@@ -41,7 +41,7 @@ class Dashboard extends React.Component {
     }
     noticeBalance = () =>
          (<div className="dashboard-empty dashboard-empty-balance">
-           <h3>No funds</h3>
+           <h3>No funds detected</h3>
            <p>Your coins balances are empty, wait a minute to syncronize or deposit funds.</p>
          </div>)
 
@@ -87,15 +87,14 @@ class Dashboard extends React.Component {
             <ul className="dashboard-wallets-list">
               { installedCoins.map((installed) => {
                   const isNative = !installed.electrum;
-                  console.log(installed)
-
                   return (
                     <li key={installed.coin} className={this.getClassState(installed.coin)}>
                       <Link onClick={() => this.setCoinToEnable(installed.coin)} className={installed.coin} to={`/wallet/${installed.coin}/${isNative}`} activeClassName="active">
                         <div className="coinList-coin_icon coin-colorized"> { installed.icon }</div>
-                        <div className="coinList-coin_balance">
-                          <strong>{ installed.name }</strong>
-                          <small>{ renderBalance(installed.balance, installed.coin) } </small>
+                        <div className={`coinList-coin_balance ${installed.coin}`}>
+                          <strong className="coinList-coin_balance-name">{ installed.name }</strong>
+                          <strong className="coinList-coin_balance-amount">{ renderBalance(installed.balance, installed.coin) } </strong>
+                          { installed.balance === 0 && <strong className="coinList-coin_balance-amount">0 {installed.coin} (or not yet syncronized)</strong>}
                           <small>{ isNative ? 'Native mode' : 'Electrum mode' } </small>
                         </div>
                         <span className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />

@@ -110,8 +110,11 @@ button.link:hover {
 
 
 .action:hover {
-    transform: translateY(-2px);
     box-shadow: 0 12px 40px rgba(0,0,0,0.01)
+}
+
+.action:not(.noTransformTranslate):hover {
+    transform: translateY(-2px);
 }
 
 .action:hover > i {

@@ -34,7 +34,10 @@
 }
 
 .coinList-coin_balance small { color: $color-secondary }
-
+.coinList-coin_balance-amount {
+    color: $color-dark;
+    font-size: 13px
+}
 
 
 /* context */
@@ -49,7 +52,9 @@
 }
 
 .coinList-coin:hover .coinList-coin_balance small,
-.coinList-coin.enabling  .coinList-coin_balance small {
+.coinList-coin.enabling  .coinList-coin_balance small,
+.coinList-coin:hover .coinList-coin_balance-amount,
+.coinList-coin.enabling .coinList-coin_balance-amount {
     color: rgba(256,256,256,0.4)
 }
 
