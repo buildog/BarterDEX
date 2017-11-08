@@ -144,7 +144,7 @@ class Login extends React.Component {
 
 
                 { this.state.passphraseNotice ? <button onClick={() => this.setState({ passphraseNotice: false })} className="action align-left danger login-passphrase-notice">
-                  <span><strong>Backup your passpharase, <br /><u>it can't be retreiveid!</u></strong></span>
+                  <span><strong>Backup your passpharase, <br /><u>it can't be retrieved!</u></strong></span>
                   <i dangerouslySetInnerHTML={{ __html: check }} />
 
                 </button> :
