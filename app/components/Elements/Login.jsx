@@ -130,6 +130,7 @@ class Login extends React.Component {
                   <Clipboard copyLabel="Generate a new passphrase" value={PassPhraseGenerated} />
                 </div>
 
+
                 <textarea
                   autoFocus
                   name="form-field-name"
@@ -140,8 +141,10 @@ class Login extends React.Component {
                   onContextMenu={this.contextmenu}
                   onChange={(e) => this.updatePassphase(e.target.value)}
                 />
+
+
                 { this.state.passphraseNotice ? <button onClick={() => this.setState({ passphraseNotice: false })} className="action align-left danger login-passphrase-notice">
-                  <span><strong>I've keept a secure backup of the passpharase, <u>it can't be retreiveid!</u></strong></span>
+                  <span><strong>Backup your passpharase, <br /><u>it can't be retreiveid!</u></strong></span>
                   <i dangerouslySetInnerHTML={{ __html: check }} />
 
                 </button> :
