@@ -75,6 +75,13 @@
     border-radius: 30px;
 }
 
+.notifier-appversion {
+    opacity: .5;
+    text-transform: uppercase;
+
+}
+
+
 /* animation state */
 .notifier {
     position: fixed;

@@ -3,7 +3,7 @@ import { ipcRenderer } from 'electron';
 import CONSTANTS from '../constants';
 
 export default class NotifierStore {
-  @observable errors = [];
+    @observable errors = [];
 
 
     constructor() {

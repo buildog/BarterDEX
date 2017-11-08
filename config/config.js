@@ -5,6 +5,7 @@ import os from 'os';
 import fs from 'fs';
 import path from 'path';
 import { PassPhraseGenerator } from './passphrasegenerator'
+import pjson from '../package.json';
 
 const osPlatform = os.platform();
 
@@ -113,5 +114,6 @@ const defaultCoinsListFile = path.join(__dirname, './coins.json');
 
 export default {
     main: { homeDir, env, assetChainPorts, osPlatform, defaultCoinsListFile, marketmakerBin, marketmakerDir, marketmakerIcon },
-    PassPhraseGenerator
+    PassPhraseGenerator,
+    appVersion: pjson.version
 }

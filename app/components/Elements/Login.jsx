@@ -64,10 +64,10 @@ class Login extends React.Component {
     </div>)
 
     handleKeyPress = (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        this.login();
-      }
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.login();
+        }
     }
 
     contextmenu = (e) => {
@@ -76,28 +76,28 @@ class Login extends React.Component {
         const Menu = remote.Menu;
 
         const InputMenu = Menu.buildFromTemplate([{
-          label: 'Undo',
-          role: 'undo',
+            label: 'Undo',
+            role: 'undo'
         }, {
-          label: 'Redo',
-          role: 'redo',
+            label: 'Redo',
+            role: 'redo'
         }, {
-          type: 'separator',
+            type: 'separator'
         }, {
-          label: 'Cut',
-          role: 'cut',
+            label: 'Cut',
+            role: 'cut'
         }, {
-          label: 'Copy',
-          role: 'copy',
+            label: 'Copy',
+            role: 'copy'
         }, {
-          label: 'Paste',
-          role: 'paste',
+            label: 'Paste',
+            role: 'paste'
         }, {
-          type: 'separator',
+            type: 'separator'
         }, {
-          label: 'Select all',
-          role: 'selectall',
-        },
+            label: 'Select all',
+            role: 'selectall'
+        }
         ]);
         e.preventDefault();
         e.stopPropagation();
@@ -156,9 +156,13 @@ class Login extends React.Component {
 
             }
 
-
               </section>
+
+              <footer><small>{ this.props.app.appVersion }</small></footer>
+
             </section>
+
+
           </div>
         );
     }

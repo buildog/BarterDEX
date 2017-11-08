@@ -44,6 +44,12 @@
     font-size: 1em;
 }
 
+.login footer {
+    margin-top: 10px;
+    opacity: .5;
+    text-transform: uppercase;
+}
+
 .login textarea {
     margin-top: 10px;
     padding: 10px 10px;
