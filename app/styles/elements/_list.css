@@ -18,9 +18,12 @@ ul[class*=list] > li {
     box-shadow: 0 6px 20px rgba(0,0,0,.14);
     border-bottom: 1px solid $grey;
     transition: all .2s ease;
-    cursor: pointer;
     will-change: transform;
     overflow: hidden;
+}
+
+ul[class*=list]:not(.noHover) > li  {
+    cursor: pointer;
 
 }
 
@@ -63,8 +66,8 @@ ul[class*=list] [class*="_action_loader"] svg {
     height: 40px;
 }
 
-ul[class*=list] > li:hover,
-ul[class*=list] > li.enabling {
+ul[class*=list]:not(.noHover) > li:hover,
+ul[class*=list]:not(.noHover) > li.enabling {
     z-index: 1;
     background: $blue;
 }
@@ -73,21 +76,21 @@ ul[class*=list] > li.enabling {
     pointer-events: none
 }
 
-ul[class*=list] > li:hover .coin-colorized,
-ul[class*=list] > li:hover svg,
-ul[class*=list] > li:hover svg path,
-ul[class*=list] > li.enabling svg,
-ul[class*=list] > li.enabling svg path,
-ul[class*=list] > li.enabling .coin-colorized {
+ul[class*=list]:not(.noHover) > li:hover .coin-colorized,
+ul[class*=list]:not(.noHover) > li:hover svg,
+ul[class*=list]:not(.noHover) > li:hover svg path,
+ul[class*=list]:not(.noHover) > li.enabling svg,
+ul[class*=list]:not(.noHover) > li.enabling svg path,
+ul[class*=list]:not(.noHover) > li.enabling .coin-colorized {
     color: #FFF !important;
     fill: #FFF !important;
 }
 
-ul[class*=list] > li:hover code {
+ul[class*=list]:not(.noHover) > li:hover code {
     background: rgba(0,0,0,0.1)
 }
 
-ul[class*=list] > li.enabling [class*="_action_loader"] {
+ul[class*=list]:not(.noHover) > li.enabling [class*="_action_loader"] {
     display: flex;
     transform: translateY(0px);
     opacity: 1;

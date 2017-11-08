@@ -89,7 +89,7 @@ class Orders extends React.Component {
         return (
           <section className={this.getClassState()}>
             { hasBots ? (
-              <ul className="orders-list">
+              <ul className="orders-list noHover">
                 { listBots }
               </ul>
           ) : '' }

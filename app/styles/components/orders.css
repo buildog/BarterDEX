@@ -65,16 +65,3 @@
     height: 10px;
     fill: #000
 }
-
-.orders-item:hover {
-    background: #FFF !important;
-    cursor: default;
-}
-
-
-.orders-list .orders-item:hover,
-.orders-list .orders-item:hover svg,
-.orders-list .orders-item:hover .coin-colorized {
-    color: inherit !important;
-    fill: inherit !important;
-}
