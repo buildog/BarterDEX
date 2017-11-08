@@ -207,7 +207,7 @@ class Balance extends React.Component {
               { withdrawConfirm.tx.vout.map((key, i) => (
                 <li key={i}>
                   { i === 1 ? <strong>Fees</strong> : <strong>Total</strong> }
-                  { key.satoshis }
+                  { (key.satoshis * 0.00000001) }
                 </li>
                       ))}
               <li>
