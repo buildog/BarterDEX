@@ -23,8 +23,9 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
         case 'ping':
             break;
         case 'login':
+            checkMMInterval = setInterval(() => api.checkMMStatus(), 1000);
             emitter.send('loading', { type: 'add', key: 1 });
-            api.startMarketMaker({ passphrase: arg.passphrase });
+            api.bootstrap({ passphrase: arg.passphrase });
             break;
         case 'logout':
             api.logout();
@@ -42,21 +43,8 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
         }
     });
 
-    api.on('loginCallback', (data) => {
-        if (!data.error) {
-            // start to check if MMS is running
-            passphrase = data.passphrase;
-            stopMMStatus();
-            checkMMInterval = setInterval(() => api.checkMMStatus(), 1000);
-        } else {
-            // trigger login error
-            console.log('error login');
-        }
-    })
-
     api.on('MMStatus', (status) => {
         // WIP:count and trigger and error if too much attemps
-
         if (status === MMStates.close && mmsState === MMStates.open) {
             emitter.send('notifier', { error: 9 });
         }
@@ -64,12 +52,6 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
         if (status === MMStates.close && mmsState !== MMStates.close) {
             emitter.send('loading', { type: 'add', key: 2 });
             mmsState = MMStates.close;
-        }
-
-        if (status === MMStates.open && mmsState !== MMStates.open) {
-            // first market open > store userpass
-            api.getUserpass(passphrase);
-            mmsState = MMStates.open;
         }
     })
 

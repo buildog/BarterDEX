@@ -3,7 +3,7 @@ import request from 'request';
 import { main } from './config/config';
 import io from 'socket.io-client';
 import fs from 'fs-extra';
-import portscanner from 'portscanner';
+import ps from 'ps-node';
 
 const exec = require('child_process').exec;
 const EventEmitter = require('events');
@@ -58,60 +58,6 @@ class Emitter extends EventEmitter {
         });
     }
 
-
-    // kill rogue marketmaker copies on start
-    killMarketmaker(data) {
-        const self = this;
-        self.userLogout = true;
-        return new Promise(() => {
-            if (data === true) {
-                let marketmakerGrep;
-
-                switch (osPlatform) {
-                case 'darwin':
-                    marketmakerGrep = 'ps -p $(ps -A | grep -m1 marketmaker | awk \'{print $1}\') | grep -i marketmaker';
-                    break;
-                case 'linux':
-                    marketmakerGrep = 'ps -p $(pidof marketmaker) | grep -i marketmaker';
-                    break;
-                case 'win32':
-                    marketmakerGrep = 'tasklist';
-                    break;
-                default:
-                    break;
-                }
-
-                exec(marketmakerGrep, (error, stdout) => {
-                    if (stdout.indexOf('marketmaker') > -1) {
-                        const pkillCmd = osPlatform === 'win32' ? 'taskkill /f /im marketmaker.exe' : 'pkill -15 marketmaker';
-
-                        console.log('found another marketmaker process(es)');
-
-                        exec(pkillCmd, (error, stdout, stderr) => {
-                            console.log(`${pkillCmd} is issued`);
-
-                            if (error !== null) {
-                                console.log(`${pkillCmd} exec error: ${error}`);
-                                // self.emit('notifier', { error: 1 });
-                            }
-                        });
-                    }
-
-                    if (error !== null) {
-                        console.log(`${marketmakerGrep} exec error: ${error}`);
-                        // self.emit('notifier', { error: 1 });
-                    } else {
-                        // self.emit('logoutCallback', { type: 'success' });
-                        // self.userpass = '';
-                        // self.mypubkey = '';
-                        // self.coins = '';
-                        // resolve('killed marketmaker');
-                    }
-                });
-            }
-        });
-    }
-
     logout() {
         this.userpass = '';
         this.mypubkey = '';
@@ -120,7 +66,7 @@ class Emitter extends EventEmitter {
     }
 
 
-    startMarketMaker(data) {
+    bootstrap(data) {
         const self = this;
         self.userLogout = false;
         const passphrase = data.passphrase.trim();
@@ -139,9 +85,19 @@ class Emitter extends EventEmitter {
                 })
         }
 
-        portscanner.checkPortStatus(7783, '127.0.0.1', (error, status) => {
-            // Status is 'open' if currently in use or 'closed' if available
-            if (status === 'closed') {
+        // Wait for endoint to respond before accepting others requests
+        self.endpointCheckInterval = setInterval(() => {
+            self.getUserpass(passphrase).then(() => {
+                clearInterval(self.endpointCheckInterval);
+            }).catch(() => {
+                console.log('login endpoint not yet ready')
+            });
+        }, 1000);
+
+
+        return this.checkMMStatus().then((instance) => {
+            if (instance === 0) {
+                console.log('marketmaker not running')
                 fs.pathExists(coinsListFile, (err, exists) => {
                     if (exists === true) {
                         console.log('coinslist file exist, updating');
@@ -156,12 +112,26 @@ class Emitter extends EventEmitter {
                     }
                 })
             } else {
-                console.log(`port 7783 marketmaker is already in use`);
-                self.emit('loginCallback', { type: 'success', passphrase });
+                console.log(`found ${instance} marketmaker process`);
             }
         });
     }
 
+
+    checkMMStatus() {
+        const self = this;
+
+        return new Promise((resolve) => ps.lookup({}, (err, instances) => {
+            if (err) {
+                throw new Error(err);
+            }
+
+            const countInstances = instances.filter((instance) => instance.command.indexOf('marketmaker') !== -1).length;
+            self.emit('MMStatus', countInstances === 0 ? 'closed' : 'open');
+
+            return resolve(countInstances)
+        }));
+    }
 
     execMarketMaker(data) {
         console.log('exec marketmaker');
@@ -185,19 +155,14 @@ class Emitter extends EventEmitter {
             params = params.replace(/"/g, '\\"');
             params = `"${params}"`;
         }
-        exec(`"${marketmakerBin}" ${params}`, {
-            cwd: marketmakerDir
-            // maxBuffer: 1024 * 10000 // 10 mb
-        }, (error, stdout, stderr) => {
+
+        exec(`"${marketmakerBin}" ${params}`, { cwd: marketmakerDir }, (error, stdout, stderr) => {
             console.log(`stdout: ${stdout}`);
             if (stderr.length) {
                 console.log(`stderr: ${stderr}`);
                 !self.userLogout && self.emit('notifier', { error: 9, desc: stderr });
             }
-            console.log('exed');
         });
-
-        self.emit('loginCallback', { type: 'success', passphrase: data.passphrase });
     }
 
     fetchMarket() {
@@ -235,32 +200,26 @@ class Emitter extends EventEmitter {
         return fetch.then((botList) => Promise.all(getstatus(botList))).then((botlist) => self.emit('botstatus', botlist))
     }
 
-    checkMMStatus() {
-        const self = this;
-        portscanner.checkPortStatus(7783, '127.0.0.1', (error, status) => {
-            self.emit('MMStatus', status);
-        })
-    }
-
     getUserpass(passphrase) {
         const self = this;
         const data = { method: 'passphrase', passphrase };
         const url = 'http://127.0.0.1:7783';
 
-        this.apiRequest({ data, url }).then((result) => {
+        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             const { userpass, mypubkey } = result;
-
+            console.log('logged in!');
             self.userpass = userpass;
             self.mypubkey = mypubkey;
             self.getCoins(false).then((coinsList) => {
                 // coinsList may return an object instead of an array if it's the first call which return the userpass.
                 self.emit('coinsList', coinsList.coins || coinsList);
-                self.emit('updateUserInfo', { userpass, mypubkey });
+                self.emit('updateUserInfo', { userpass, mypubkey, passphrase });
             })
+
+            resolve('logged in');
         }).catch((error) => {
-            console.log(error);
-            self.emit('notifier', { error: 2, desc: error.code })
-        });
+            reject(error);
+        }));
     }
 
 
