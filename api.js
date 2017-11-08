@@ -336,7 +336,7 @@ class Emitter extends EventEmitter {
             if (result.error) {
                 return self.emit('notifier', { error: 3, desc: result.error })
             }
-            self.getCoins(false).then((coinsList) => {
+            self.getCoins().then((coinsList) => {
                 self.emit('coinsList', coinsList);
                 self.emit('coinEnabled', { coin });
                 if (type) {
@@ -388,7 +388,7 @@ class Emitter extends EventEmitter {
 
 
         const url = 'http://127.0.0.1:7783';
-        console.log(data);
+
         const tradeRequest = () => self.apiRequest({ data, url }).then((result) => {
             console.log(`${method} submitted`);
             console.log(result);

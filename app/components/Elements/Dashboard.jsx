@@ -42,7 +42,7 @@ class Dashboard extends React.Component {
     noticeBalance = () =>
          (<div className="dashboard-empty dashboard-empty-balance">
            <h3>No funds detected</h3>
-           <p>Your coins balances are empty, wait a minute to syncronize or deposit funds.</p>
+           <p className="dashboard-empty-centered">Wait a minute for syncronisation or add funds.</p>
          </div>)
 
     noticeNoCoin = () =>

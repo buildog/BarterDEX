@@ -54,3 +54,7 @@
 .dashboard-empty p {
     opacity: .8
 }
+
+.dashboard-empty-centered {
+    text-align: center;
+}
