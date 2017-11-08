@@ -426,7 +426,7 @@ class Emitter extends EventEmitter {
                         setTimeout(() => {
                             self.emit('loading', { type: 'delete', key: 7 });
                             tradeRequest();
-                        }, 6000);
+                        }, 80000);
                     })
                 })
             }

@@ -289,10 +289,17 @@ class Trade extends React.Component {
         )
     }
 
-    renderLoader = () => (<div className="trade-processing">
-      <i className="loader-svg" dangerouslySetInnerHTML={{ __html: circles }} />
-      <h3>PROCESSING YOUR ORDER</h3>
-    </div>)
+    renderLoader = () => {
+        const { loader } = this.props.app;
+        const orderLoader = loader.getLoader(5);
+        const utxosLoader = loader.getLoader(7);
+
+        return (<div className="trade-processing">
+          <i className="loader-svg" dangerouslySetInnerHTML={{ __html: circles }} />
+          { orderLoader && !utxosLoader && <h3>PROCESSING YOUR ORDER</h3> }
+          { utxosLoader && <h3>AUTO SPLITING BALANCE INTO UTXOS</h3> }
+        </div>)
+    }
 
     render() {
         // portfolio

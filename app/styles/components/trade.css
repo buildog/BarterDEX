@@ -22,7 +22,10 @@
     flex-direction: column;
 }
 
-.trade-processing h3 { font-weight: 200 }
+.trade-processing h3 {
+    font-weight: 400;
+    font-size: 1em
+}
 
 .trade,
 .trade-body {
