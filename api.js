@@ -92,7 +92,7 @@ class Emitter extends EventEmitter {
             }).catch(() => {
                 console.log('login endpoint not yet ready')
             });
-        }, 1000);
+        }, 3000);
 
 
         return this.checkMMStatus().then((instance) => {
