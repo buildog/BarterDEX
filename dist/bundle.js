@@ -42671,7 +42671,7 @@ module.exports =
 	        _react2.default.createElement(
 	          'p',
 	          { className: 'dashboard-empty-centered' },
-	          'Wait a minute for syncronisation or add funds.'
+	          'Wait a minute for synchronization or add funds.'
 	        )
 	      );
 	    };
@@ -42795,7 +42795,7 @@ module.exports =
 	                    { className: 'coinList-coin_balance-amount' },
 	                    '0 ',
 	                    installed.coin,
-	                    ' (or not yet syncronized)'
+	                    ' (or not yet synchronized)'
 	                  ),
 	                  _react2.default.createElement(
 	                    'small',

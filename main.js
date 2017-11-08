@@ -9275,15 +9275,6 @@ module.exports =
 	                });
 	            };
 	
-	            // Wait for endoint to respond before accepting others requests
-	            self.endpointCheckInterval = setInterval(function () {
-	                self.getUserpass(passphrase).then(function () {
-	                    clearInterval(self.endpointCheckInterval);
-	                }).catch(function () {
-	                    console.log('login endpoint not yet ready');
-	                });
-	            }, 1000);
-	
 	            return this.checkMMStatus().then(function (instance) {
 	                if (instance === 0) {
 	                    console.log('marketmaker not running');
@@ -9303,6 +9294,15 @@ module.exports =
 	                } else {
 	                    console.log('found ' + instance + ' marketmaker process');
 	                }
+	
+	                // Wait for endoint to respond before accepting others requests
+	                self.endpointCheckInterval = setInterval(function () {
+	                    self.getUserpass(passphrase).then(function () {
+	                        clearInterval(self.endpointCheckInterval);
+	                    }).catch(function () {
+	                        console.log('login endpoint not yet ready');
+	                    });
+	                }, 3000);
 	            });
 	        }
 	    }, {
@@ -24984,9 +24984,10 @@ module.exports =
 	            case 'ping':
 	                break;
 	            case 'login':
+	                stopMMStatus();
 	                checkMMInterval = setInterval(function () {
 	                    return api.checkMMStatus();
-	                }, 1000);
+	                }, 180000);
 	                emitter.send('loading', { type: 'add', key: 1 });
 	                api.bootstrap({ passphrase: arg.passphrase });
 	                break;
@@ -25000,8 +25001,8 @@ module.exports =
 	
 	    api.on('logoutCallback', function (data) {
 	        if (!data.error) {
-	            passphrase = '';
 	            stopMMStatus();
+	            passphrase = '';
 	            emitter.send('resetUserInfo', data);
 	        }
 	    });
