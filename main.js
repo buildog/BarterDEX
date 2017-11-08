@@ -9302,7 +9302,7 @@ module.exports =
 	                    }).catch(function () {
 	                        console.log('login endpoint not yet ready');
 	                    });
-	                }, 3000);
+	                }, 1000);
 	            });
 	        }
 	    }, {
@@ -9425,10 +9425,11 @@ module.exports =
 	                    console.log('logged in!');
 	                    self.userpass = userpass;
 	                    self.mypubkey = mypubkey;
+	                    self.emit('updateUserInfo', { userpass: userpass, mypubkey: mypubkey, passphrase: passphrase });
+	
 	                    self.getCoins(false).then(function (coinsList) {
 	                        // coinsList may return an object instead of an array if it's the first call which return the userpass.
 	                        self.emit('coinsList', coinsList.coins || coinsList);
-	                        self.emit('updateUserInfo', { userpass: userpass, mypubkey: mypubkey, passphrase: passphrase });
 	                    });
 	
 	                    resolve('logged in');
