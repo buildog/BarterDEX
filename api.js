@@ -114,7 +114,7 @@ class Emitter extends EventEmitter {
                 }).catch(() => {
                     console.log('login endpoint not yet ready')
                 });
-            }, 3000);
+            }, 1000);
         });
     }
 
