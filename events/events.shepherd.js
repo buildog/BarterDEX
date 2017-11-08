@@ -23,7 +23,8 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
         case 'ping':
             break;
         case 'login':
-            checkMMInterval = setInterval(() => api.checkMMStatus(), 1000);
+            stopMMStatus();
+            checkMMInterval = setInterval(() => api.checkMMStatus(), 3000);
             emitter.send('loading', { type: 'add', key: 1 });
             api.bootstrap({ passphrase: arg.passphrase });
             break;
@@ -37,8 +38,8 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
 
     api.on('logoutCallback', (data) => {
         if (!data.error) {
-            passphrase = '';
             stopMMStatus();
+            passphrase = '';
             emitter.send('resetUserInfo', data);
         }
     });
