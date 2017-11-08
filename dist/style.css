@@ -1610,8 +1610,14 @@ a {
 }
 
 .window__title h1 {
+    margin: 0;
     font-size: 1em;
     color: #FFF
+}
+
+.window-header-appversion {
+    text-transform: uppercase;
+    font-size: 10px
 }
 
 /* RIGHT SIDE */
@@ -1922,6 +1928,12 @@ a {
     margin: 20px;
     padding: 20px;
     border-radius: 30px;
+}
+
+.notifier-appversion {
+    opacity: .5;
+    text-transform: uppercase;
+
 }
 
 /* animation state */
@@ -3049,7 +3061,10 @@ hr {
             flex-direction: column;
 }
 
-.trade-processing h3 { font-weight: 200 }
+.trade-processing h3 {
+    font-weight: 400;
+    font-size: 1em
+}
 
 .trade, .trade-body {
     width: 100%;
@@ -3720,7 +3735,18 @@ hr {
 }
 
 .login-newpassphrase {
-    margin-top: 20px;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 100%;
+    text-decoration: underline;
 }
 
 .login-passphrase-notice {
@@ -3751,6 +3777,12 @@ hr {
     font-size: 1em;
 }
 
+.login footer {
+    margin-top: 10px;
+    opacity: .5;
+    text-transform: uppercase;
+}
+
 .login textarea {
     margin-top: 10px;
     padding: 10px 10px;
@@ -3759,6 +3791,10 @@ hr {
     width: 360px;
     height: 180px;
     resize: none;
+}
+
+.login-passphrase-notice, .login-button {
+    width: 100%
 }
 
 .Placeholder {

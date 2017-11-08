@@ -42,7 +42,7 @@ class Dashboard extends React.Component {
     noticeBalance = () =>
          (<div className="dashboard-empty dashboard-empty-balance">
            <h3>No funds detected</h3>
-           <p className="dashboard-empty-centered">Wait a minute for syncronisation or add funds.</p>
+           <p className="dashboard-empty-centered">Wait a minute for synchronization or add funds.</p>
          </div>)
 
     noticeNoCoin = () =>
@@ -94,7 +94,7 @@ class Dashboard extends React.Component {
                         <div className={`coinList-coin_balance ${installed.coin}`}>
                           <strong className="coinList-coin_balance-name">{ installed.name }</strong>
                           <strong className="coinList-coin_balance-amount">{ renderBalance(installed.balance, installed.coin) } </strong>
-                          { installed.balance === 0 && <strong className="coinList-coin_balance-amount">0 {installed.coin} (or not yet syncronized)</strong>}
+                          { installed.balance === 0 && <strong className="coinList-coin_balance-amount">0 {installed.coin} (or not yet synchronized)</strong>}
                           <small>{ isNative ? 'Native mode' : 'Electrum mode' } </small>
                         </div>
                         <span className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
