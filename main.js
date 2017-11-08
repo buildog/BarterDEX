@@ -9319,42 +9319,45 @@ module.exports =
 	            self.userLogout = false;
 	            var passphrase = data.passphrase.trim();
 	
-	            // console.log(data.passphrase);
-	            try {
-	                // check if marketmaker instance is already running
-	                _portscanner2.default.checkPortStatus(7783, '127.0.0.1', function (error, status) {
-	                    // Status is 'open' if currently in use or 'closed' if available
-	                    if (status === 'closed') {
-	                        var coinsListFile = marketmakerDir + '/coins.json';
-	                        var coinslist = _fsExtra2.default.readJsonSync(defaultCoinsListFile, { throws: false });
-	                        _fsExtra2.default.pathExists(coinsListFile, function (err, exists) {
-	                            if (exists === true) {
-	                                self.execMarketMaker({ coinslist: coinslist, passphrase: passphrase });
-	                            } else if (exists === false) {
-	                                console.log('coinslist file doesn\'t exist');
-	                                _fsExtra2.default.copy(defaultCoinsListFile, coinsListFile).then(function () {
-	                                    console.log('file copied!');
-	                                    self.execMarketMaker({ coinslist: coinslist, passphrase: passphrase });
-	                                }).catch(function (err) {
-	                                    console.error(err);
-	                                });
-	                            }
-	                            if (err) {
-	                                console.log(err); // => null
-	                            }
-	                        });
-	                    } else {
-	                        console.log('port 7783 marketmaker is already in use');
-	                        self.emit('loginCallback', { type: 'success', passphrase: passphrase });
-	                    }
+	            var coinsListFile = marketmakerDir + '/coins.json';
+	            var coinslist = _fsExtra2.default.readJsonSync(defaultCoinsListFile, { throws: false });
+	
+	            var copyFile = function copyFile() {
+	                _fsExtra2.default.copy(defaultCoinsListFile, coinsListFile).then(function () {
+	                    console.log('file copied!');
+	                    return self.execMarketMaker({ coinslist: coinslist, passphrase: passphrase });
+	                }).catch(function (err) {
+	                    console.error(err);
 	                });
-	            } catch (e) {
-	                console.log('failed to start marketmaker err: ' + e);
-	            }
+	            };
+	
+	            _portscanner2.default.checkPortStatus(7783, '127.0.0.1', function (error, status) {
+	                // Status is 'open' if currently in use or 'closed' if available
+	                if (status === 'closed') {
+	                    _fsExtra2.default.pathExists(coinsListFile, function (err, exists) {
+	                        if (exists === true) {
+	                            console.log('coinslist file exist, updating');
+	                            _fsExtra2.default.unlinkSync(coinsListFile);
+	                            copyFile();
+	                        } else if (exists === false) {
+	                            console.log('coinslist file doesn\'t exist');
+	                            copyFile();
+	                        }
+	                        if (err) {
+	                            console.log(err); // => null
+	                        }
+	                    });
+	                } else {
+	                    console.log('port 7783 marketmaker is already in use');
+	                    self.emit('loginCallback', { type: 'success', passphrase: passphrase });
+	                }
+	            });
 	        }
 	    }, {
 	        key: 'execMarketMaker',
 	        value: function execMarketMaker(data) {
+	            console.log('exec marketmaker');
+	
 	            var self = this;
 	            // start marketmaker via exec
 	            var params = {
@@ -9400,7 +9403,7 @@ module.exports =
 	        value: function fetchCoins() {
 	            var self = this;
 	
-	            self.getCoins({}).then(function (coinsList) {
+	            self.getCoins().then(function (coinsList) {
 	                self.emit('coinsList', coinsList);
 	            });
 	        }
@@ -9460,7 +9463,7 @@ module.exports =
 	
 	                self.userpass = userpass;
 	                self.mypubkey = mypubkey;
-	                self.getCoins({ withoutBalance: true }).then(function (coinsList) {
+	                self.getCoins(false).then(function (coinsList) {
 	                    // coinsList may return an object instead of an array if it's the first call which return the userpass.
 	                    self.emit('coinsList', coinsList.coins || coinsList);
 	                    self.emit('updateUserInfo', { userpass: userpass, mypubkey: mypubkey });
@@ -9493,10 +9496,10 @@ module.exports =
 	        }
 	    }, {
 	        key: 'getCoins',
-	        value: function getCoins(_ref4) {
+	        value: function getCoins() {
 	            var _this4 = this;
 	
-	            var withoutBalance = _ref4.withoutBalance;
+	            var fetchBalance = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'getcoins' };
@@ -9513,16 +9516,10 @@ module.exports =
 	
 	            var updateBalance = function updateBalance(coinList) {
 	                return coinList.map(function (coin) {
-	                    console.log('balance check ' + coin.coin);
-	
-	                    if (coin.electrum && !withoutBalance) {
-	                        return self.listunspent({ coin: coin.coin, address: coin.smartaddress }).then(function () {
-	                            return self.balance({ coin: coin.coin, address: coin.smartaddress }).then(function (coinBalance) {
-	                                coin.balance = coinBalance.balance;
-	                                console.log('electurm balance updated ' + coin.coin);
-	
-	                                return coin;
-	                            });
+	                    if (coin.electrum && fetchBalance) {
+	                        return self.balance({ coin: coin.coin, address: coin.smartaddress }).then(function (coinBalance) {
+	                            coin.balance = coinBalance.balance;
+	                            return coin;
 	                        });
 	                    }
 	
@@ -9536,12 +9533,12 @@ module.exports =
 	        }
 	    }, {
 	        key: 'disableCoin',
-	        value: function disableCoin(_ref5) {
+	        value: function disableCoin(_ref4) {
 	            var _this5 = this;
 	
-	            var _ref5$coin = _ref5.coin,
-	                coin = _ref5$coin === undefined ? '' : _ref5$coin,
-	                type = _ref5.type;
+	            var _ref4$coin = _ref4.coin,
+	                coin = _ref4$coin === undefined ? '' : _ref4$coin,
+	                type = _ref4.type;
 	
 	            var self = this;
 	
@@ -9559,16 +9556,14 @@ module.exports =
 	        }
 	    }, {
 	        key: 'enableCoin',
-	        value: function enableCoin(_ref6) {
-	            var _this6 = this;
-	
-	            var _ref6$coin = _ref6.coin,
-	                coin = _ref6$coin === undefined ? '' : _ref6$coin,
-	                type = _ref6.type,
-	                _ref6$electrum = _ref6.electrum,
-	                electrum = _ref6$electrum === undefined ? false : _ref6$electrum,
-	                ipaddr = _ref6.ipaddr,
-	                port = _ref6.port;
+	        value: function enableCoin(_ref5) {
+	            var _ref5$coin = _ref5.coin,
+	                coin = _ref5$coin === undefined ? '' : _ref5$coin,
+	                type = _ref5.type,
+	                _ref5$electrum = _ref5.electrum,
+	                electrum = _ref5$electrum === undefined ? false : _ref5$electrum,
+	                ipaddr = _ref5.ipaddr,
+	                port = _ref5.port;
 	
 	            var self = this;
 	            var data = void 0;
@@ -9585,11 +9580,11 @@ module.exports =
 	                if (result.error) {
 	                    return self.emit('notifier', { error: 3, desc: result.error });
 	                }
-	                self.getCoins({ withoutBalance: true }).then(function (coinsList) {
+	                self.getCoins(false).then(function (coinsList) {
 	                    self.emit('coinsList', coinsList);
 	                    self.emit('coinEnabled', { coin: coin });
 	                    if (type) {
-	                        _this6.emit('updateTrade', { coin: coin, type: type });
+	                        self.emit('updateTrade', { coin: coin, type: type });
 	                    }
 	                });
 	            }).catch(function (error) {
@@ -9612,9 +9607,9 @@ module.exports =
 	        }
 	    }, {
 	        key: 'orderbook',
-	        value: function orderbook(_ref7) {
-	            var base = _ref7.base,
-	                rel = _ref7.rel;
+	        value: function orderbook(_ref6) {
+	            var base = _ref6.base,
+	                rel = _ref6.rel;
 	
 	            var self = this;
 	            var data = { userpass: this.userpass, method: 'orderbook', base: base, rel: rel };
@@ -9627,16 +9622,18 @@ module.exports =
 	        }
 	    }, {
 	        key: 'trade',
-	        value: function trade(_ref8) {
-	            var _ref8$method = _ref8.method,
-	                method = _ref8$method === undefined ? 'bot_sell' : _ref8$method,
-	                base = _ref8.base,
-	                rel = _ref8.rel,
-	                price = _ref8.price,
-	                volume = _ref8.volume;
+	        value: function trade(_ref7) {
+	            var _ref7$method = _ref7.method,
+	                method = _ref7$method === undefined ? 'bot_sell' : _ref7$method,
+	                base = _ref7.base,
+	                rel = _ref7.rel,
+	                price = _ref7.price,
+	                volume = _ref7.volume,
+	                smartaddress = _ref7.smartaddress;
 	
 	            var self = this;
 	
+	            console.log(smartaddress);
 	            var data = { userpass: self.userpass, method: method, base: base, rel: rel };
 	
 	            if (method === 'bot_sell') {
@@ -9663,32 +9660,38 @@ module.exports =
 	                });
 	            };
 	
-	            return self.inventory({ coin: rel }).then(function (inventor) {
+	            return self.inventory({ coin: rel }).then(function (_ref8) {
+	                var alice = _ref8.alice;
+	
 	                // volume/3 + 5*txfee <- 3 times and txfee 3 times
-	                var txfee = volume / 3 + 2 * (volume / 100);
-	                var mainSplit = volume + 5 * txfee;
-	                return self.withdraw({
-	                    address: inventor.alice[0].address,
-	                    coin: inventor.alice[0].coin,
-	                    amounts: [_defineProperty({}, inventor.alice[0].address, mainSplit), _defineProperty({}, inventor.alice[0].address, mainSplit), _defineProperty({}, inventor.alice[0].address, mainSplit), _defineProperty({}, inventor.alice[0].address, txfee), _defineProperty({}, inventor.alice[0].address, txfee), _defineProperty({}, inventor.alice[0].address, txfee)]
-	                }).then(function (withdrawResult) {
-	                    self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(function () {
-	                        return tradeRequest();
+	                if (alice.lenght < 6) {
+	                    var txfee = volume / 3 + 2 * (volume / 100);
+	                    var mainSplit = volume + 5 * txfee;
+	                    return self.withdraw({
+	                        address: smartaddress,
+	                        coin: rel,
+	                        amounts: [_defineProperty({}, smartaddress, mainSplit), _defineProperty({}, smartaddress, mainSplit), _defineProperty({}, smartaddress, mainSplit), _defineProperty({}, smartaddress, txfee), _defineProperty({}, smartaddress, txfee), _defineProperty({}, smartaddress, txfee)]
+	                    }).then(function (withdrawResult) {
+	                        self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(function () {
+	                            return tradeRequest();
+	                        });
 	                    });
-	                });
+	                }
+	
+	                return tradeRequest();
 	            });
 	        }
 	    }, {
 	        key: 'botstatus',
 	        value: function botstatus(botid) {
-	            var _this7 = this;
+	            var _this6 = this;
 	
 	            var self = this;
 	            var data = { userpass: self.userpass, method: 'bot_status', botid: botid };
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this7.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this6.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log(botid + ' status');
 	                    console.log(result);
 	                    resolve(result);
@@ -9701,7 +9704,7 @@ module.exports =
 	    }, {
 	        key: 'toggleBot',
 	        value: function toggleBot(_ref15) {
-	            var _this8 = this;
+	            var _this7 = this;
 	
 	            var botid = _ref15.botid,
 	                method = _ref15.method;
@@ -9711,7 +9714,7 @@ module.exports =
 	            var url = 'http://127.0.0.1:7783';
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this8.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this7.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log(botid + ' ' + method);
 	                    if (method === 'bot_stop') {
 	                        self.emit('botStopped', result);
@@ -9729,7 +9732,7 @@ module.exports =
 	    }, {
 	        key: 'sendrawtransaction',
 	        value: function sendrawtransaction(_ref16) {
-	            var _this9 = this;
+	            var _this8 = this;
 	
 	            var coin = _ref16.coin,
 	                signedtx = _ref16.signedtx,
@@ -9740,7 +9743,7 @@ module.exports =
 	            var url = 'http://127.0.0.1:7783';
 	            console.log(data);
 	            return new Promise(function (resolve, reject) {
-	                return _this9.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this8.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log('sendWithdraw ' + coin);
 	                    console.log(result);
 	                    resolve(result);
@@ -9754,7 +9757,7 @@ module.exports =
 	    }, {
 	        key: 'withdraw',
 	        value: function withdraw(_ref17) {
-	            var _this10 = this;
+	            var _this9 = this;
 	
 	            var address = _ref17.address,
 	                coin = _ref17.coin,
@@ -9772,7 +9775,7 @@ module.exports =
 	            console.log(data);
 	            var url = 'http://127.0.0.1:7783';
 	            return new Promise(function (resolve, reject) {
-	                return _this10.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this9.apiRequest({ data: data, url: url }).then(function (result) {
 	                    confirmation && console.log('withdraw for ' + coin);
 	                    !confirmation && console.log('split balance into UTXOS for ' + coin);
 	                    console.log(result);
@@ -9793,7 +9796,7 @@ module.exports =
 	    }, {
 	        key: 'inventory',
 	        value: function inventory(_ref19) {
-	            var _this11 = this;
+	            var _this10 = this;
 	
 	            var coin = _ref19.coin;
 	
@@ -9803,7 +9806,7 @@ module.exports =
 	            console.log('inventory for ' + coin);
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this11.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this10.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log(result);
 	                    resolve(result);
 	                }).catch(function (error) {
@@ -9815,7 +9818,7 @@ module.exports =
 	    }, {
 	        key: 'listunspent',
 	        value: function listunspent(_ref20) {
-	            var _this12 = this;
+	            var _this11 = this;
 	
 	            var coin = _ref20.coin,
 	                address = _ref20.address;
@@ -9826,7 +9829,7 @@ module.exports =
 	            console.log('listunspent for ' + coin);
 	
 	            return new Promise(function (resolve, reject) {
-	                return _this12.apiRequest({ data: data, url: url }).then(function (result) {
+	                return _this11.apiRequest({ data: data, url: url }).then(function (result) {
 	                    console.log(result);
 	                    resolve(result);
 	                }).catch(function (error) {
@@ -25808,6 +25811,11 @@ module.exports =
 	
 	    api.on('MMStatus', function (status) {
 	        // WIP:count and trigger and error if too much attemps
+	
+	        if (status === MMStates.close && mmsState === MMStates.open) {
+	            emitter.send('notifier', { error: 9 });
+	        }
+	
 	        if (status === MMStates.close && mmsState !== MMStates.close) {
 	            emitter.send('loading', { type: 'add', key: 2 });
 	            mmsState = MMStates.close;

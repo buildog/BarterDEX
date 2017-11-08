@@ -7956,7 +7956,7 @@ module.exports =
 	            critical: true
 	        },
 	        9: {
-	            message: 'MarketMaker crash',
+	            message: 'marketmaker stopped',
 	            critical: true
 	        },
 	        10: {
@@ -40445,7 +40445,7 @@ module.exports =
 	                null,
 	                'Total'
 	              ),
-	              key.satoshis
+	              key.satoshis * 0.00000001
 	            );
 	          }),
 	          _react2.default.createElement(
@@ -40739,7 +40739,8 @@ module.exports =
 	                base: tradeBase.coin,
 	                rel: tradeRel.coin,
 	                price: _this.state.rate,
-	                volume: _this.state.amountRel * _this.state.rate
+	                volume: _this.state.amountRel * _this.state.rate,
+	                smartaddress: tradeRel.smartaddress
 	            };
 
 	            trade(params);
@@ -41382,7 +41383,7 @@ module.exports =
 
 	                    return accumulator;
 	                }, 0);
-	                var percent = amountProcessed / bot.totalbasevolume * 100;
+	                var percent = (amountProcessed / bot.totalbasevolume * 100).toFixed(2);
 	                return _react2.default.createElement(
 	                    'li',
 	                    { className: _this2.getBotClassState(bot.stopped), key: i },
@@ -41470,7 +41471,7 @@ module.exports =
 	                { className: this.getClassState() },
 	                hasBots ? _react2.default.createElement(
 	                    'ul',
-	                    { className: 'orders-list' },
+	                    { className: 'orders-list noHover' },
 	                    listBots
 	                ) : ''
 	            );
@@ -42274,7 +42275,7 @@ module.exports =
 	                if (_this.props.trade && tradeRel) {
 	                    return _react2.default.createElement(
 	                        'button',
-	                        { className: 'action arrow-down ', onClick: function onClick(e) {
+	                        { className: 'action noTransformTranslate arrow-down ', onClick: function onClick(e) {
 	                                return clickable && _this.toggle(e);
 	                            } },
 	                        _react2.default.createElement(
@@ -42310,7 +42311,7 @@ module.exports =
 	            }
 	            return _react2.default.createElement(
 	                'button',
-	                { className: 'action danger', onClick: function onClick(e) {
+	                { className: 'action noTransformTranslate danger', onClick: function onClick(e) {
 	                        return _this.toggle(e);
 	                    } },
 	                _react2.default.createElement(
@@ -42323,6 +42324,8 @@ module.exports =
 	        };
 
 	        _this.renderList = function (coins) {
+	            var renderBalance = _this.props.app.portfolio.renderBalance;
+
 	            return _react2.default.createElement(
 	                'div',
 	                { className: _this.getListState() },
@@ -42349,15 +42352,13 @@ module.exports =
 	                                { className: 'coinList-coin_balance ' + coin.coin },
 	                                _react2.default.createElement(
 	                                    'strong',
-	                                    { className: 'coin-colorized' },
+	                                    { className: 'coinList-coin_name coin-colorized' },
 	                                    coin.name
 	                                ),
 	                                _react2.default.createElement(
 	                                    'small',
 	                                    null,
-	                                    coin.balance,
-	                                    ' ',
-	                                    coin.coin
+	                                    renderBalance(coin.balance, coin.coin)
 	                                )
 	                            ),
 	                            _react2.default.createElement('span', { className: 'coinList-coin_action', dangerouslySetInnerHTML: { __html: _arrow2.default } }),
@@ -42502,6 +42503,23 @@ module.exports =
 	      enableElectrum(coin);
 	    };
 
+	    _this.noticeBalance = function () {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'dashboard-empty dashboard-empty-balance' },
+	        _react2.default.createElement(
+	          'h3',
+	          null,
+	          'No funds detected'
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          { className: 'dashboard-empty-centered' },
+	          'Wait a minute for syncronisation or add funds.'
+	        )
+	      );
+	    };
+
 	    _this.noticeNoCoin = function () {
 	      return _react2.default.createElement(
 	        'div',
@@ -42529,7 +42547,9 @@ module.exports =
 	      var hasRel = installedCoins.filter(function (coin) {
 	        return coin.rel > 0;
 	      });
-
+	      var hasBalance = installedCoins.filter(function (coin) {
+	        return coin.balance > 0;
+	      });
 	      return _react2.default.createElement(
 	        'section',
 	        { className: 'dashboard-wallets' },
@@ -42580,12 +42600,12 @@ module.exports =
 	            } })
 	        ),
 	        installedCoins.length === 0 && _this.noticeNoCoin(),
+	        hasBalance.length === 0 && installedCoins.length > 0 && _this.noticeBalance(),
 	        _react2.default.createElement(
 	          'ul',
 	          { className: 'dashboard-wallets-list' },
 	          installedCoins.map(function (installed) {
 	            var isNative = !installed.electrum;
-
 	            return _react2.default.createElement(
 	              'li',
 	              { key: installed.coin, className: _this.getClassState(installed.coin) },
@@ -42602,17 +42622,24 @@ module.exports =
 	                ),
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'coinList-coin_balance' },
+	                  { className: 'coinList-coin_balance ' + installed.coin },
 	                  _react2.default.createElement(
 	                    'strong',
-	                    null,
+	                    { className: 'coinList-coin_balance-name' },
 	                    installed.name
 	                  ),
 	                  _react2.default.createElement(
-	                    'small',
-	                    null,
+	                    'strong',
+	                    { className: 'coinList-coin_balance-amount' },
 	                    renderBalance(installed.balance, installed.coin),
 	                    ' '
+	                  ),
+	                  installed.balance === 0 && _react2.default.createElement(
+	                    'strong',
+	                    { className: 'coinList-coin_balance-amount' },
+	                    '0 ',
+	                    installed.coin,
+	                    ' (or not yet syncronized)'
 	                  ),
 	                  _react2.default.createElement(
 	                    'small',
@@ -45610,11 +45637,14 @@ module.exports =
 	    enumerable: true,
 	    initializer: function initializer() {
 	        return function (coin) {
+	            var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	            console.log('enbal' + coin);
 	            var electrumConf = _constants.electrumConfig.filter(function (svr) {
 	                return svr.coin === coin.coin;
 	            });
 	            electrumConf.map(function (conf) {
-	                return _electron.ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true, ipaddr: conf.ipaddr, port: conf.port });
+	                return _electron.ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true, ipaddr: conf.ipaddr, port: conf.port, type: type });
 	            });
 	        };
 	    }
@@ -45627,22 +45657,13 @@ module.exports =
 	            var ipaddr = void 0;
 	            var port = void 0;
 	            var electrum = !coin.installed;
-	            if (electrum) {
-	                var electrumConf = _constants.electrumConfig.filter(function (svr) {
-	                    return svr.coin === coin.coin;
-	                })[0];
-	                ipaddr = electrumConf.ipaddr;
-	                port = electrumConf.port;
-	            }
-
 	            var installedCoin = _this7.getCoin(coin.coin);
 
 	            if (!installedCoin || installedCoin.status !== 'active') {
-	                console.log('enable ' + coin.coin);
 	                if (!electrum) {
-	                    _electron.ipcRenderer.send('enableCoin', { coin: coin.coin, type: type, electrum: electrum, ipaddr: ipaddr, port: port });
+	                    _electron.ipcRenderer.send('enableCoin', { coin: coin.coin, type: type });
 	                } else {
-	                    _this7.enableElectrum(coin);
+	                    _this7.enableElectrum(coin, type);
 	                }
 	            } else {
 	                _this7.updateTrade(coin.coin, type);
