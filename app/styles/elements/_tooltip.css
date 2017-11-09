@@ -1,7 +1,8 @@
 .custom-tooltip {
     display: flex;
     flex-direction: column;
-    background: $background-jaguar;
+    background: #000;
+    color: #FFF;
     padding: 10px;
     border-radius: 6px;
     z-index: 100;

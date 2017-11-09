@@ -9,31 +9,45 @@
     padding: 10px;
     z-index: 2000;
     text-align: center;
-    pointer-events: none;
     transition: all .2s ease;
 
 }
 
-.growler .growler-success {
+.growler-success,
+.growler-fail {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
     background: $green;
     color: #FFF;
     padding: 10px;
     box-shadow: $box-shadow-inputs;
     border-radius: 4px;
+    margin-bottom: 20px;
+    cursor: pointer;
 }
 
+.growler-fail {
+    background: $orange;
+    cursor: pointer;
+}
 
-.growler .growler-success i,
-.growler .growler-success i svg {
+.growler-success i,
+.growler-fail i {
+    margin-right: 20px;
+}
+
+.growler-success i,
+.growler-success i svg,
+.growler-fail i,
+.growler-fail svg {
     width: 40px;
     height: 40px;
 }
 
-.growler .growler-success i svg {
+.growler-success i svg,
+.growler-fail i svg {
     fill: #FFF;
 }
 

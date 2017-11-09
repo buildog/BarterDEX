@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import QRCode from 'qrcode.react';
 
 
-import { CoinPicker, Clipboard, Orderbook } from '../';
+import { CoinPicker, Clipboard } from '../';
 
 import * as Icon from 'react-cryptocoins';
 import zoro from '../../static/zoro.svg';
@@ -52,21 +52,6 @@ class Trade extends React.Component {
     componentDidMount = () => {
         const self = this;
         self.resetForm();
-    }
-
-    pickRate = (info) => {
-        this.setState({
-            showOrderbook: false
-        })
-
-        const params = {
-            target: {
-                validity: { valid: true },
-                value: info.original.price
-            }
-        }
-
-        this.updateRate(params, info.index)
     }
 
     togglePrivate = () => {
@@ -189,13 +174,14 @@ class Trade extends React.Component {
     closeSelects = () => { this.setState({ picker: false, showOrderbook: false }) }
 
 
-    renderPrice = (tradeBase, tradeRel) => (
+    renderPrice = () => (
 
       <section className="trade-amount_input_price">
         <span className="label">
           <strong className="label-title">Price</strong>
           <small>
-            <button className="link" onClick={(e) => this.toggleOrderbook(e)}>{ this.state.showOrderbook ? 'Hide' : 'View'} orderbook</button>
+            <button className="link" onClick={(e) => this.toggleOrderbook(e)}>ask</button>
+            <button className="link" onClick={(e) => this.toggleOrderbook(e)}>bid</button>
           </small>
         </span>
         <div className="trade-amount_input-wrapper">
@@ -211,9 +197,6 @@ class Trade extends React.Component {
           />
           <CoinPicker onSelected={(e, coin) => this.tradeWith(e, coin)} trade />
         </div>
-
-        { this.state.showOrderbook && <Orderbook base={tradeBase.coin} rel={tradeRel.coin} type="asks" onSelected={(params) => this.pickRate(params)} /> }
-
       </section>
 
         )

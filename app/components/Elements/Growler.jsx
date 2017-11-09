@@ -14,7 +14,7 @@ class Growler extends React.Component {
     })
 
     render() {
-        const { store: loading } = this.props.app.growler;
+        const { store: loading, removeKey } = this.props.app.growler;
         const { errors } = this.props.app.notifier;
 
         if (errors.length > 0) {
@@ -22,7 +22,7 @@ class Growler extends React.Component {
             return null;
         }
 
-        const listItems = loading.map((key, i) => <li className={CONSTANTS.growler[key].type ? 'growler-success' : 'growler-fail'} key={i}>
+        const listItems = loading.map((key, i) => <li onClick={() => removeKey(key)} className={CONSTANTS.growler[key].type ? 'growler-success' : 'growler-fail'} key={i}>
           <i dangerouslySetInnerHTML={{ __html: CONSTANTS.growler[key].type ? check : close }} />
           <span>{ CONSTANTS.growler[key].message }</span>
         </li>);

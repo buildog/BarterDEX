@@ -1,5 +1,6 @@
 .balance-action {
-    padding: 20px 10px 10px;
+    padding: 20px;
+    background: #000
 }
 
 
@@ -25,8 +26,6 @@
 }
 
 .balance-deposit-address button {
-    background: #FFF;
-    box-shadow: $box-shadow-inputs;
     overflow-wrap: break-word;
     width: 100%;
     padding: 4 10px;

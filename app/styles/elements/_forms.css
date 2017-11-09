@@ -29,8 +29,7 @@
     margin-right: auto;
     font-weight: 400;
     font-size: 1.1em;
-    opacity: .5;
-    color: $color-dark
+    color: #FFF
 }
 
 .label .link {

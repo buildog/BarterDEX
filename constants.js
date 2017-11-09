@@ -22,7 +22,30 @@ const CONSTANTS = {
         2: {
             message: 'Bot resumed',
             type: 1
+        },
+        3: {
+            message: 'Portfolio fetch failled',
+            loadingKeys: [3]
+        },
+        4: {
+            message: 'Orderbook fetch failled'
+        },
+        5: {
+            message: 'Balance fetch failled'
+        },
+        6: {
+            message: 'Trade failled',
+            loadingKeys: [5]
+        },
+        7: {
+            message: 'Withdraw failed',
+            loadingKeys: [6]
+        },
+        8: {
+            message: 'Autospliting balance into UTXOs failed',
+            loadingKeys: [7]
         }
+
     },
     error: {
         1: {
@@ -41,39 +64,8 @@ const CONSTANTS = {
             critical: true
         },
         4: {
-            message: 'portfolio fetch failled',
-            loadingKeys: [1],
-            critical: true
-        },
-        5: {
-            message: 'orderbook fetch failled',
-            loadingKeys: [1],
-            critical: true
-        },
-        6: {
-            message: 'balance fetch failled',
-            loadingKeys: [1],
-            critical: true
-        },
-        7: {
-            message: 'trade failled',
-            loadingKeys: [5]
-        },
-        8: {
-            message: 'No active chain',
-            critical: true
-        },
-        9: {
             message: 'marketmaker stopped',
             critical: true
-        },
-        10: {
-            message: 'Withdraw failed',
-            loadingKeys: [6]
-        },
-        11: {
-            message: 'Autosplit balance into UTXOs failed',
-            loadingKeys: [5, 7]
         }
     },
     colors: {
@@ -220,7 +212,8 @@ const CONSTANTS = {
         YBC: '#D6C154',
         ZEC: '#e5a93d',
         ZEIT: '#ACACAC',
-        REVS: '#FF6600'
+        REVS: '#FF6600',
+        MNZ: '#B92484'
     },
     electrumConfig: [
         { coin: 'ARG', ipaddr: '173.212.225.176', port: '50081' },

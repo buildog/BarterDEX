@@ -3,12 +3,11 @@ import { ipcRenderer } from 'electron';
 import CONSTANTS from '../constants';
 
 export default class GrowlerStore {
-    @observable store = []; /* initial is pending Iguana bootstrap*/
+    @observable store = [];
 
     constructor() {
           // listener for loading state change
         ipcRenderer.on('growler', (e, arg) => {
-            console.log('growler!')
             this.updateGrowler(arg);
         });
     }
@@ -29,7 +28,11 @@ export default class GrowlerStore {
 
         this.store = ghost;
 
-        console.log(this.store);
+        if (CONSTANTS.growler[key].loadingKeys) {
+            CONSTANTS.growler[key].loadingKeys.forEach((loadingKey) => {
+                ipcRenderer.send('loading', { type: 'delete', key: loadingKey });
+            });
+        }
 
         setTimeout(() => {
             self.removeKey(key)

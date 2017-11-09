@@ -1,6 +1,6 @@
 .ReactTable {
     border: 0;
-    background: $color-dark;
+    background: $background-dark;
     color: #FFF;
     width: 100%;
 }
@@ -65,7 +65,7 @@
 .ReactTable .-pageJump input,
 .ReactTable .-pageSizeOptions select {
     background-color: rgba(256,256,256,0.1);
-    color: $color-dark;
+    color: $background-dark;
     font-weight: 200;
 }
 
@@ -76,4 +76,9 @@
 
 .ReactTable .-pagination .-pageSizeOptions {
     display: none
+}
+
+.ReactTable .rt-noData {
+    background: $background-dark;
+    color: #FFF;
 }

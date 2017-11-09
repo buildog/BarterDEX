@@ -87,21 +87,24 @@
     left: 0;
     bottom: 0;
     width: 100%;
+    height: 100vh;
     opacity: 0;
     pointer-events: none;
-    padding: 110px 10px 10px;
     transform: translateY(-20px) scale(.95);
     will-change: transform;
     transition: all .1s ease;
-    pointer-events: none
+    pointer-events: none;
 }
 
 .modal-content-overlay > ul {
     overflow: auto;
     max-height: calc(100% - 100px);
-    box-shadow: $box-shadow-inputs;
     border-radius: 6px;
     will-change: transform;
+}
+
+.modal ul[class*=list] {
+
 }
 
 /* animation state */

@@ -50,7 +50,7 @@ class CoinPicker extends React.Component {
             const { tradeRel } = this.props.app.portfolio;
 
             if (this.props.trade && tradeRel) {
-                return (<button className="action noTransformTranslate arrow-down " onClick={(e) => clickable && this.toggle(e)}>
+                return (<button className="action noTransformTranslate arrow-down" onClick={(e) => clickable && this.toggle(e)}>
                   <span className={tradeRel.coin}>
                     <span className="trade-base-icon coin-colorized">{tradeRel.icon}</span>
                     <strong>{ tradeRel.name }</strong>
@@ -83,8 +83,8 @@ class CoinPicker extends React.Component {
                       }} key={coin.coin}
                     >
                       <div className="coinList-coin_icon coin-colorized"> { coin.icon }</div>
-                      <div className={`coinList-coin_balance ${coin.coin}`}>
-                        <strong className="coinList-coin_name coin-colorized">{ coin.name }</strong>
+                      <div className={`coinList-coin_balance`}>
+                        <strong className="coinList-coin_name">{ coin.name }</strong>
 
                         <small>{ renderBalance(coin.balance, coin.coin) }</small>
                       </div>

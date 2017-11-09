@@ -68,8 +68,8 @@
     justify-content: center;
     height: 60px;
     -webkit-user-select: none !important;
-    background: $color-dark;
-    box-shadow: 0px 0px 100px 100px $color-dark;
+    background: $background-dark;
+    box-shadow: 0px 0px 100px 100px $background-dark;
     will-change: transform;
 
 }

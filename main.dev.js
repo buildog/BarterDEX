@@ -35,11 +35,11 @@ app.on('ready', async () => {
     await installExtensions()
 
     mainWindow = new BrowserWindow({
-        width: 420,
+        width: 900,
         height: 786,
-        minWidth: 400,
+        minWidth: 720,
         show: false,
-        backgroundColor: '#F8FAFF'
+        backgroundColor: '#25282A'
     })
 
     // Bootstrap listeners

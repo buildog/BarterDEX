@@ -1,14 +1,42 @@
+.wallet-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.wallet-orderbooks {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    background: $background-dark
+}
+
+.wallet-orderbooks-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+}
+
+.wallet-orderbooks-chart h3 {
+    font-weight: 200
+}
+
 .wallet {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     flex-direction: column;
-    background: #FFF;
+    background: $background-dark;
     height: 100vh;
+    width: 600px;
     transition: all .2s ease;
     transform: translateY(0);
     opacity: 1;
 }
+
 
 .wallet-icon {
     width: 100px;
@@ -35,13 +63,13 @@
 
 .wallet-wallets-header {
     flex-shrink: 0;
-    padding-bottom: 20px;
-    padding-top: 30px;
     align-items: center;
     justify-content: center;
     text-align: center;
     transition: all .2s ease;
     transform: translateY(0);
+    background: $background-dark;
+    height: 230px;
 }
 
 
@@ -84,4 +112,4 @@
 /* context */
 
 
-.wallet:not(.wallet-ready) .wallet-wallets-header { transform: translateY(300px) }
+/* .wallet:not(.wallet-ready) .wallet-wallets-header { transform: translateY(300px) } */

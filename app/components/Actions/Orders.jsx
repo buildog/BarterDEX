@@ -6,6 +6,8 @@ import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import buy from '../../static/buy.svg';
 import sell from '../../static/sell.svg';
 import stop from '../../static/stop.svg';
+import play from '../../static/play.svg';
+import pause from '../../static/pause.svg';
 
 const formatNumber = (str) => str;
 
@@ -23,6 +25,13 @@ class Orders extends React.Component {
 
     getClassState = () => classNames({
         'balance-action': true
+    })
+
+    getBtn = (type) => classNames({
+        'order-stop action align-left onlyIcon danger': true,
+        orange: type === 'pause',
+        green: type === 'resume'
+
     })
 
     getBotClassState = (stopped) => classNames({
@@ -63,11 +72,14 @@ class Orders extends React.Component {
                   <small className="coin-colorized"><strong>Total</strong> { bot.totalrelvolume } { bot.rel }</small>
                 </div>
 
-                { bot.stopped ? <strong>STOPPED</strong> : <button onClick={() => this.toggleBot({ botid: bot.botid, method: 'bot_stop' })}className="order-stop action align-left danger">
-                  <span>stop</span>
-                  <i dangerouslySetInnerHTML={{ __html: stop }} />
+
+                { !bot.stopped && <button onClick={() => this.toggleBot({ botid: bot.botid, method: bot.paused ? 'bot_resume' : 'bot_pause' })} className={this.getBtn(bot.paused ? 'resume' : 'pause')}>
+                  <i dangerouslySetInnerHTML={{ __html: bot.paused ? play : pause }} />
                 </button> }
 
+                { bot.stopped ? <strong>STOPPED</strong> : <button onClick={() => this.toggleBot({ botid: bot.botid, method: 'bot_stop' })} className={this.getBtn('stop')}>
+                  <i dangerouslySetInnerHTML={{ __html: stop }} />
+                </button> }
 
               </div>
             </div>
@@ -82,7 +94,7 @@ class Orders extends React.Component {
         return (
           <section className={this.getClassState()}>
             { hasBots ? (
-              <ul className="orders-list noHover">
+              <ul className="orders-list singleColumn noHover">
                 { listBots }
               </ul>
           ) : '' }

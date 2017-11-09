@@ -1,16 +1,25 @@
 import React from 'react'
+import windowSize from 'react-window-size';
 
 import { observer, inject } from 'mobx-react';
 import ReactTable from 'react-table'
 
-const orderbookColumns = [
+const orderbookColumns = (type) => [
     {
-        Header: 'Ask Price',
+        Header: `${type}`,
         accessor: 'price' // String-based value accessors!
     },
     {
         Header: 'Max Volume',
         accessor: 'maxvolume' // String-based value accessors!
+    },
+    {
+        Header: 'Min Volume',
+        accessor: 'minvolume' // String-based value accessors!
+    },
+    {
+        Header: 'Age',
+        accessor: 'age' // String-based value accessors!
     },
     {
         Header: 'UTXOs',
@@ -49,18 +58,18 @@ class Orderbook extends React.Component {
         const self = this;
         const { asks, bids } = this.props.app.orderbook;
         const orderbook = { asks, bids };
-        const orderbookData = orderbook[this.props.type];
+        const height = (this.props.windowHeight - 300) / 2;
 
         return (
           <section className="trade-orderbook">
             <ReactTable
               className="-striped -highlight"
-              data={orderbookData}
-              columns={orderbookColumns}
+              data={orderbook.asks}
+              columns={orderbookColumns('asks')}
               defaultSorted={[{ id: 'price' }]}
-              noDataText={`Fetching ${this.props.base}/${this.props.rel} orderbook`}
+              noDataText={`${this.props.base}/${this.props.rel} orderbook`}
               showPaginationBottom={false}
-              style={{ height: '280px' }}
+              style={{ height }}
               getTrProps={(state, rowInfo) => ({
                   onClick: e => {
                       self.props.onSelected(rowInfo);
@@ -68,10 +77,27 @@ class Orderbook extends React.Component {
                   },
                   className: rowInfo && rowInfo.index === self.state.selected ? 'selected coin-colorized' : ''
               })}
-            /> </section>
+            />
+            <ReactTable
+              className="-striped -highlight"
+              data={orderbook.bids}
+              columns={orderbookColumns('bids')}
+              defaultSorted={[{ id: 'price' }]}
+              noDataText={`${this.props.base}/${this.props.rel} orderbook`}
+              showPaginationBottom={false}
+              style={{ height }}
+              getTrProps={(state, rowInfo) => ({
+                  onClick: e => {
+                      self.props.onSelected(rowInfo);
+                      // self.setState({ selected: rowInfo.index })
+                  },
+                  className: rowInfo && rowInfo.index === self.state.selected ? 'selected coin-colorized' : ''
+              })}
+            />
+          </section>
         )
     }
 }
 
 
-export default Orderbook
+export default windowSize(Orderbook)

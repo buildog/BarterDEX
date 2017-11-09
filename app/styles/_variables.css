@@ -6,7 +6,7 @@
 */
 
 /* Colors */
-$blue: #4C84FF;
+$blue: #8A0EFB;
 $blue-dark: #2D91FC;
 $danger: #F33C3C;
 
@@ -27,21 +27,21 @@ $orange: orange;
 $font-size-default:    1em;
 
 /* Backgrounds */
-$background-primary:   #F8FAFF;
-$background-jaguar:    #F4F5F9;
-$background-light:     #2E3137;
-$background-dark:      rgba(0,0,0,0.01);
-$background-app:       #F8FAFF;
+$background-primary:   #1D2022;
+$background-jaguar:    #1D2022;
+$background-light:     #3A3D3F;
+$background-dark:      #1B1D23;
+$background-app:       #25282A;
 
 /* Typography */
-$color-primary:        #777F8A;
+$color-primary:        #FFF;
 $color-secondary:      #959CAE;
-$color-dark:           #04050A;
+$color-dark:           #FFF;
 $divider-color:        $grey-dark;
 
 $box-shadow-inputs:    0 1px 1px 0 rgba(0, 0, 0, .2),
                        0 0 0 1px rgba(0, 0, 0, .1),
-                       0 12px 24px 0 rgba(31, 31, 31, 0.05);
+                       0 12px 24px 0 rgba(0,0,0, 0.05);
 
 /* Borders */
 $window-border-radius: 5px;
@@ -49,11 +49,3 @@ $window-border-radius: 5px;
 /* height */
 $footer-height: 100px;
 $action-size: 110px;
-
-
-$color-KMD: rgb(50,100,100);
-$color-BTC: rgb(247,147,26);
-$color-ETH: rgb(76,116,148);
-$color-LTC: rgba(184, 184, 184, 1);
-$color-NEO: rgba(90, 193, 0, 1);
-$color-MNZ: #903984;

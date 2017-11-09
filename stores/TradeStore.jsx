@@ -3,7 +3,8 @@ import { ipcRenderer } from 'electron';
 
 export default class TradeStore {
 
-     @observable bots = [];
+    @observable bots = [];
+    // @observable status = [];
 
     constructor() {
         const self = this;
@@ -11,9 +12,17 @@ export default class TradeStore {
         ipcRenderer.on('botstatus', (e, result) => { self.botstatus(result) });
     }
 
-    botstatus = (botstatus) => {
-        const bots = botstatus.sort((a, b) => b.started - a.started);
-        this.bots = JSON.parse(JSON.stringify(bots));
+
+    botstatus = (update) => {
+        const ghost = JSON.parse(JSON.stringify(this.bots));
+
+        const bot = ghost.filter((item) => item.botid === update.botid);
+        if (bot.length > 0) {
+            bot[0] = update;
+        } else {
+            ghost.push(update);
+        }
+        this.bots = ghost.sort((a, b) => b.started - a.started);
     }
 
     @action toggleBot = ({ botid, method }) => {

@@ -34,5 +34,7 @@ export const tradeEvents = ({ api, emitter, listener }) => {
         emitter.send('growler', { key: 2 });
     })
 
+
+    api.on('botlist', (result) => emitter.send('botlist', result))
     api.on('botstatus', (result) => emitter.send('botstatus', result))
 }

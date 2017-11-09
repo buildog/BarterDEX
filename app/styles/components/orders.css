@@ -65,6 +65,16 @@
     flex-grow: 1
 }
 
+.orders-item-details-meta button:first-of-type {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.orders-item-details-meta button:last-of-type {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
 .order-stop {
     padding: 5px 5px 5px 10px;
 }

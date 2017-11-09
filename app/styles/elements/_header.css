@@ -2,9 +2,9 @@
     display: flex;
     position: relative;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 20px;
-    background: $background-jaguar;
+    background: $background-app;
     color: $color-dark;
     width: 100%
 }
@@ -20,8 +20,8 @@
 
 .wallet-wallets-header-back i,
 .wallet-wallets-header-back i svg {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
 }
 
 .wallet-wallets-header-back i svg {

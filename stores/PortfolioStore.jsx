@@ -45,6 +45,10 @@ export default class PortfolioStore {
      @observable installedCoins = [];
      @observable tradeBase = false;
      @observable tradeRel = false;
+     @observable rates = {
+         ask: '',
+         bid: ''
+     };
      @observable withdrawConfirm = false;
      @observable tx = false;
      @observable total = {
@@ -93,6 +97,10 @@ export default class PortfolioStore {
     /* @params { method, base, rel, price, relvolume }
     */
 
+    @action updateRate = ({ price, type }, index) => {
+        this.rates[type] = price
+    }
+
     @action resetTX = () => {
         this.tx = false;
     }
@@ -114,7 +122,7 @@ export default class PortfolioStore {
         const self = this;
         const withIcons = addIcons(coins);
         const byIcon = withIcons.slice(0);
-        byIcon.sort((a, b) => a.hasSVGIcon ? 0 : 1);
+        byIcon.sort((a, b) => b.balance - a.balance);
         this.coinsList = byIcon;
 
         const relMarket = self.getMarket(self.defaultCrypto);

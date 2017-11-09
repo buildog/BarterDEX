@@ -81,8 +81,16 @@ button.link:hover {
     font-size: 14px;
 }
 
+.action.onlyIcon {
+    padding: 10px;
+}
+
 .action:not(.normaltext) {
     text-transform: uppercase;
+}
+
+.action.normaltext {
+    padding: 0
 }
 
 .action > span {
@@ -102,6 +110,8 @@ button.link:hover {
     padding: 6px;
     border-radius: 4px
 }
+
+.action.onlyIcon > i { margin: 0 }
 
 .action > i svg {
     width: 20px;
@@ -130,13 +140,13 @@ button.link:hover {
 .action.primary {
     background: $blue;
     color: #FFF;
-    box-shadow: 0px 10px 20px #B2C8FC
+    box-shadow: 0px 10px 20px rgba(0,0,0,0.2)
 }
 .action.primary i svg { fill: #FFF }
 
 .action.primary > i { background-color: rgba(0,0,0,0.2) }
 .action.primary > span { font-weight: 600; }
-.action.primary:hover > i { background: $color-dark }
+.action.primary:hover > i { background: #000 }
 
 
 /* danger */
@@ -146,24 +156,28 @@ button.link:hover {
     color: #FFF;
     box-shadow: 0px 10px 20px rgba(0,0,0,0.1)
 }
+
+.action.danger.green { background: green }
+.action.danger.orange { background: $orange }
+
 .action.danger i svg { fill: #FFF }
 
 .action.danger > i { background-color: rgba(0,0,0,0.2) }
 .action.danger > span { font-weight: 600; }
-.action.danger:hover > i { background: $color-dark }
+.action.danger:hover > i { background: #000 }
 
 /* dark */
 
 .action.dark {
     background-color: transparent;
-    color: $color-dark;
+    color: #FFF;
     box-shadow: none
 }
 .action.dark:hover {
     opacity: 1
 }
 .action.dark > i {
-    background: $color-dark;
+    background: #000
 }
 .action.dark > i svg { fill: #FFF }
 
@@ -179,8 +193,8 @@ button.link:hover {
 }
 
 .action[disabled] {
-    background-color: rgba(0,0,0,0.1) !important;
-    color: rgba(0,0,0,0.22);
+    background-color: rgba(0,0,0,0.2) !important;
+    color: rgba(256,256,256,0.42);
     box-shadow: none
 }
 
@@ -193,6 +207,15 @@ button.link:hover {
 /* arrow down */
 .action.arrow-down > i {
     transform: rotate(90deg);
+    background: rgba(256,256,256,0.1)
+}
+
+.action.arrow-down > i svg {
+    fill: #FFF
+}
+
+.action.arrow-down:hover > i {
+    background: rgba(256,256,256,0.2)
 }
 
 /* danger */

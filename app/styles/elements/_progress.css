@@ -13,7 +13,7 @@
   transition: .12s ease-in-out;
   margin-bottom: 20px;
   &::-webkit-progress-bar {
-      background-color: $grey-lighter;
+      background-color: #000;
       border-radius: 3px;
 
   }

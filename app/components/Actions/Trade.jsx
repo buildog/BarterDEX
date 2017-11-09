@@ -40,14 +40,6 @@ class Trade extends React.Component {
             <section className="trade-body">
 
               <ul className="trade-type">
-                <li className="trade-type-item trade-type-item-charts">
-                  <button onClick={() => this.setFlow({ flow: 'charts' })}>
-                    <div>
-                      <i dangerouslySetInnerHTML={{ __html: charts }} />
-                      <small>Charts</small>
-                    </div>
-                  </button>
-                </li>
                 <li className="trade-type-item trade-type-item-buy">
                   <button onClick={() => this.setFlow({ flow: 'buy' })}>
                     <div>
@@ -78,14 +70,9 @@ class Trade extends React.Component {
               { this.state.flow === 'trade-wallet' && <Balance /> }
               { this.state.flow === 'trade-orders' && <Orders /> }
 
-              { (this.state.flow === 'trade-charts') && <div className="trade-view-charts">
-                <h3>{ '😰' }</h3>
-                <h4>sorry!</h4>
-                <p>this feature is not yet available</p>
-                </div> }
-
 
             </section>
+
           </div>
         );
     }

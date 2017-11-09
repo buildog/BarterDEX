@@ -7,6 +7,7 @@ import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { CoinPicker } from '../';
 import circles from '../../static/circlesWhite.svg';
 import arrow from '../../static/arrow.svg';
+import logo from '../../static/favicon.svg';
 
 @inject('app')
 @observer
@@ -41,51 +42,58 @@ class Dashboard extends React.Component {
     }
     noticeBalance = () =>
          (<div className="dashboard-empty dashboard-empty-balance">
+           <i className="dashboard-empty-logo" dangerouslySetInnerHTML={{ __html: logo }} />
+
            <h3>No funds detected</h3>
            <p className="dashboard-empty-centered">Wait a minute for synchronization or add funds.</p>
          </div>)
 
     noticeNoCoin = () =>
          (<div className="dashboard-empty">
+           <i className="dashboard-empty-logo" dangerouslySetInnerHTML={{ __html: logo }} />
+
            <h3>No active coin detected</h3>
-           <p>We didn't detected any coin wallet running on your machine. Run a coin wallet or add electrum coin via the top right button.</p>
+           <p>We didn't detected any coin wallet running on your machine.</p>
+           <p>Run a coin wallet or add electrum coin via the top right button.</p>
          </div>)
 
     renderDashboard = () => {
-        const { installedCoins, colors, total, renderBalance } = this.props.app.portfolio;
+        const { installedCoins, coinsList, colors, total, renderBalance } = this.props.app.portfolio;
         const hasRel = installedCoins.filter((coin) => coin.rel > 0);
         const hasBalance = installedCoins.filter((coin) => coin.balance > 0);
         return (
           <section className="dashboard-wallets">
+
             <header className="dashboard-wallets-header component-header">
-              <h2>
-                { hasRel.length > 0 && <ResponsiveContainer className="dashboard-balances-pie">
-                  <PieChart>
-                    <Pie
-                      data={hasRel}
-                      dataKey="rel"
-                      startAngle={180}
-                      endAngle={0}
-                      isAnimationActive={false}
-                    >
-                      {hasRel.map((coin) => <Cell key={coin.coin} stroke="transparent" fill={colors[coin.coin]} />)}
-                    </Pie>
-                  </PieChart>
+              <i className="dashboard-empty-logo" dangerouslySetInnerHTML={{ __html: logo }} />
+
+              { hasRel.length > 0 && <ResponsiveContainer className="dashboard-balances-pie">
+                <PieChart>
+                  <Pie
+                    data={hasRel}
+                    dataKey="rel"
+                    startAngle={180}
+                    endAngle={0}
+                    isAnimationActive={false}
+                  >
+                    {hasRel.map((coin) => <Cell key={coin.coin} stroke="transparent" fill={colors[coin.coin]} />)}
+                  </Pie>
+                </PieChart>
                 </ResponsiveContainer> }
+              { total.rel && <h1>
+                <label>Total balance</label>
+                <span>{ total.rel }</span>
+                <small>{ total.fiat }</small>
+              </h1> }
 
-                <div>Portfolio</div>
-                <small><span>{ total.rel }</span></small>
+              { installedCoins.length === 0 && this.noticeNoCoin() }
+              { (hasBalance.length === 0 && installedCoins.length > 0) && this.noticeBalance() }
 
-              </h2>
-              <CoinPicker onlyElectrum onSelected={(e, coin) => this.enableCoin(e, coin)} />
             </header>
 
-
-            { installedCoins.length === 0 && this.noticeNoCoin() }
-            { (hasBalance.length === 0 && installedCoins.length > 0) && this.noticeBalance() }
-
             <ul className="dashboard-wallets-list">
-              { installedCoins.map((installed) => {
+
+              { coinsList.map((installed) => {
                   const isNative = !installed.electrum;
                   return (
                     <li key={installed.coin} className={this.getClassState(installed.coin)}>
@@ -94,7 +102,7 @@ class Dashboard extends React.Component {
                         <div className={`coinList-coin_balance ${installed.coin}`}>
                           <strong className="coinList-coin_balance-name">{ installed.name }</strong>
                           <strong className="coinList-coin_balance-amount">{ renderBalance(installed.balance, installed.coin) } </strong>
-                          { installed.balance === 0 && <strong className="coinList-coin_balance-amount">0 {installed.coin} (or not yet synchronized)</strong>}
+                          { installed.balance === 0 && <strong className="coinList-coin_balance-amount">0 {installed.coin}</strong>}
                           <small>{ isNative ? 'Native mode' : 'Electrum mode' } </small>
                         </div>
                         <span className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
@@ -106,6 +114,8 @@ class Dashboard extends React.Component {
               }
             )}
             </ul>
+
+
           </section>
 
         )
@@ -116,6 +126,7 @@ class Dashboard extends React.Component {
         return (
           <section className="dashboard">
             { this.renderDashboard() }
+
           </section>
         )
     }
