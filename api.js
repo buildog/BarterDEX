@@ -355,46 +355,57 @@ class Emitter extends EventEmitter {
             console.log(`${method} submitted`);
             console.log(result);
             if (!result.error) {
-                self.emit('trade', result);
-            } else {
-                self.emit('notifier', { error: 7, desc: result.error })
+                return self.emit('trade', result);
             }
+
+            if (result.withdraw.complete === true) {
+                self.emit('loading', { type: 'add', key: 7 });
+
+                return self.sendrawtransaction({ coin: rel, signedtx: result.withdraw.hex }).then(() => {
+                    setTimeout(() => {
+                        self.emit('loading', { type: 'delete', key: 7 });
+                        tradeRequest();
+                    }, 80000);
+                })
+            }
+
+            return self.emit('notifier', { error: 7, desc: result.error });
         }).catch((error) => {
             self.emit('notifier', { error: 7 })
         });
 
+        return tradeRequest();
 
-        return self.inventory({ coin: rel }).then(({ alice }) => {
-            // volume/3 + 5*txfee <- 3 times and txfee 3 times
-            if (alice.length < 6) {
-                const txfee = (volume / 3 + (2 * (volume / 100)));
-                const mainSplit = volume + (5 * txfee);
-
-                self.emit('loading', { type: 'add', key: 7 });
-
-                return self.withdraw({
-                    address: smartaddress,
-                    coin: rel,
-                    amounts: [
-                        { [smartaddress]: mainSplit },
-                        { [smartaddress]: mainSplit },
-                        { [smartaddress]: mainSplit },
-                        { [smartaddress]: txfee },
-                        { [smartaddress]: txfee },
-                        { [smartaddress]: txfee }
-                    ]
-                }).then((withdrawResult) => {
-                    self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(() => {
-                        setTimeout(() => {
-                            self.emit('loading', { type: 'delete', key: 7 });
-                            tradeRequest();
-                        }, 80000);
-                    })
-                })
-            }
-
-            return tradeRequest();
-        })
+        // return self.inventory({ coin: rel }).then(({ alice }) => {
+        //     // volume/3 + 5*txfee <- 3 times and txfee 3 times
+        //     if (alice.length < 6) {
+        //         const txfee = (volume / 3 + (2 * (volume / 100)));
+        //         const mainSplit = volume + (5 * txfee);
+        //
+        //         self.emit('loading', { type: 'add', key: 7 });
+        //
+        //         return self.withdraw({
+        //             address: smartaddress,
+        //             coin: rel,
+        //             amounts: [
+        //                 { [smartaddress]: mainSplit },
+        //                 { [smartaddress]: mainSplit },
+        //                 { [smartaddress]: mainSplit },
+        //                 { [smartaddress]: txfee },
+        //                 { [smartaddress]: txfee },
+        //                 { [smartaddress]: txfee }
+        //             ]
+        //         }).then((withdrawResult) => {
+        //             self.sendrawtransaction({ coin: rel, signedtx: withdrawResult.hex }).then(() => {
+        //                 setTimeout(() => {
+        //                     self.emit('loading', { type: 'delete', key: 7 });
+        //                     tradeRequest();
+        //                 }, 80000);
+        //             })
+        //         })
+        //     }
+        // return tradeRequest();
+        // })
     }
 
 
