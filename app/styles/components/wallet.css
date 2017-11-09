@@ -68,7 +68,7 @@
     text-align: center;
     transition: all .2s ease;
     transform: translateY(0);
-    background: $background-dark;
+    background: $background-app;
     height: 230px;
 }
 

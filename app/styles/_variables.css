@@ -27,11 +27,11 @@ $orange: orange;
 $font-size-default:    1em;
 
 /* Backgrounds */
-$background-primary:   #1D2022;
-$background-jaguar:    #1D2022;
+$background-primary:   #1B1D23;
+$background-jaguar:    #1B1D23;
 $background-light:     #3A3D3F;
 $background-dark:      #1B1D23;
-$background-app:       #25282A;
+$background-app:       #282C34;
 
 /* Typography */
 $color-primary:        #FFF;
