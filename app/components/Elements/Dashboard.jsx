@@ -42,7 +42,6 @@ class Dashboard extends React.Component {
     }
     noticeBalance = () =>
          (<div className="dashboard-empty dashboard-empty-balance">
-           <i className="dashboard-empty-logo" dangerouslySetInnerHTML={{ __html: logo }} />
 
            <h3>No funds detected</h3>
            <p className="dashboard-empty-centered">Wait a minute for synchronization or add funds.</p>
@@ -50,7 +49,6 @@ class Dashboard extends React.Component {
 
     noticeNoCoin = () =>
          (<div className="dashboard-empty">
-           <i className="dashboard-empty-logo" dangerouslySetInnerHTML={{ __html: logo }} />
 
            <h3>No active coin detected</h3>
            <p>We didn't detected any coin wallet running on your machine.</p>

@@ -6,11 +6,10 @@ ul[class*=list] {
     padding: 0;
     margin: 0;
     overflow: auto;
-    background: $background-app;
     padding: 20px;
 }
 
-ul[class*=list]:after {
+ul[class*=list]:not(.singleColumn):after {
     content: "";
     position: fixed;
     width: 100%;
@@ -30,20 +29,27 @@ ul[class*=list] {
 ul[class*=list].singleColumn {
     padding: 0;
     grid-template-columns: repeat(1, 1fr);
+}
 
+ul[class*=list]:not(.singleColumn) {
+    background: $background-app;
 }
 
 ul[class*=list] > li {
     display: flex;
     height: 140px;
     flex-shrink: 0;
-    box-shadow: 0 6px 20px rgba(0,0,0,.14);
     border-bottom: 1px solid $grey;
     transition: all .2s ease;
     will-change: transform;
     overflow: hidden;
     border-radius: 4px;
     background: $background-jaguar
+}
+
+ul[class*=list]:not(.singleColumn) > li {
+    box-shadow: 0 6px 20px rgba(0,0,0,.14);
+
 }
 
 ul[class*=list]:not(.noHover) > li  {

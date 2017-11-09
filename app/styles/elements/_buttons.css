@@ -85,6 +85,11 @@ button.link:hover {
     padding: 10px;
 }
 
+.action.onlyIcon i {
+    padding: 0 !important;
+    background: transparent !important
+}
+
 .action:not(.normaltext) {
     text-transform: uppercase;
 }

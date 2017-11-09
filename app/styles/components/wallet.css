@@ -9,7 +9,7 @@
     flex-direction: column;
     width: 100%;
     height: 100vh;
-    background: $background-dark
+    background: #000
 }
 
 .wallet-orderbooks-chart {
