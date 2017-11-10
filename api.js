@@ -58,7 +58,7 @@ class Emitter extends EventEmitter {
                     json: true,
                     maxAttempts: data.attempts || 5,
                     retryDelay: data.delay || 8000,
-                    timeout: 400
+                    timeout: 2000
                 }, (error, response, body) => {
                 if (error) {
                     return reject(error);
