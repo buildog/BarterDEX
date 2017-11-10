@@ -20,11 +20,12 @@ export default class GrowlerStore {
 
 
     updateGrowler = (args) => {
+        console.log(args);
         const self = this;
         const { key } = args;
         const ghost = JSON.parse(JSON.stringify(this.store));
 
-        ghost.push(key);
+        ghost.indexOf(key) === -1 && ghost.push(key);
 
         this.store = ghost;
 
@@ -36,7 +37,7 @@ export default class GrowlerStore {
 
         setTimeout(() => {
             self.removeKey(key)
-        }, 1500)
+        }, 4000)
     }
 
     getLoader = (key) => {

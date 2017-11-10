@@ -90,6 +90,8 @@
     height: 100vh;
     opacity: 0;
     pointer-events: none;
+    background: $background-dark;
+
     transform: translateY(-20px) scale(.95);
     will-change: transform;
     transition: all .1s ease;
@@ -98,8 +100,7 @@
 
 .modal-content-overlay > ul {
     overflow: auto;
-    max-height: calc(100% - 100px);
-    border-radius: 6px;
+    max-height: calc(100% - 300px);
     will-change: transform;
 }
 

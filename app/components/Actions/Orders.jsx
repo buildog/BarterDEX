@@ -59,7 +59,7 @@ class Orders extends React.Component {
                   <span className="orders-item-details-action-type-title">{bot.action}</span>
                   { bot.trades.length > 0 && <small>{bot.trades.length} attempts </small> }
                 </span>
-                <span className="coin-colorized orders-item-details_action" dangerouslySetInnerHTML={{ __html: bot.action === 'buy' ? buy : sell }} />
+                <span className="coin-colorized orders-item-details_icon" dangerouslySetInnerHTML={{ __html: bot.action === 'buy' ? buy : sell }} />
                 <span>{ bot.totalbasevolume } { bot.base }</span>
               </div>
 

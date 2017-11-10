@@ -46,8 +46,12 @@ export default class PortfolioStore {
      @observable tradeBase = false;
      @observable tradeRel = false;
      @observable rates = {
-         ask: '',
-         bid: ''
+         ask: 0,
+         bid: 0,
+         indexes: {
+             ask: '',
+             bid: ''
+         }
      };
      @observable withdrawConfirm = false;
      @observable tx = false;
@@ -98,7 +102,8 @@ export default class PortfolioStore {
     */
 
     @action updateRate = ({ price, type }, index) => {
-        this.rates[type] = price
+        this.rates[type] = parseFloat(price);
+        this.rates.indexes[type] = index;
     }
 
     @action resetTX = () => {
@@ -118,11 +123,14 @@ export default class PortfolioStore {
         this.withdrawConfirm = false
     }
 
-    @action prepareCoinsList = (coins) => {
+    @action prepareCoinsList = (coins = this.coinsList || []) => {
         const self = this;
         const withIcons = addIcons(coins);
         const byIcon = withIcons.slice(0);
-        byIcon.sort((a, b) => b.balance - a.balance);
+        byIcon.sort((a, b) => {
+            const x = a.hasSVGIcon;
+            return x ? a.balance - b.balance : -1;
+        }).reverse();
         this.coinsList = byIcon;
 
         const relMarket = self.getMarket(self.defaultCrypto);
@@ -147,7 +155,7 @@ export default class PortfolioStore {
         }
 
 
-        this.installedCoins = addIcons(this.coinsList.filter((coin) => (coin.installed && coin.height > 0) || coin.electrum).sort((a, b) => b.rel - a.rel));
+        this.installedCoins = this.coinsList.filter((coin) => (coin.installed && coin.height > 0) || electrumConfig[coin.coin]);
 
         if (self.tradeRel) {
             self.tradeRel.balance = self.getCoin(self.tradeRel.coin).balance
@@ -161,25 +169,25 @@ export default class PortfolioStore {
     }
 
     @action enableElectrum = (coin, type = false) => {
-        console.log(`enbal${coin}`)
-        const electrumConf = electrumConfig.filter((svr) => svr.coin === coin.coin);
-        electrumConf.map((conf) => ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true, ipaddr: conf.ipaddr, port: conf.port, type }));
+        const electrumConf = electrumConfig[coin.coin];
+        electrumConf.map((svr) => ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true, ipaddr: Object.keys(svr)[0], port: svr[Object.keys(svr)], type }));
     }
 
     @action setTrade = (coin, type) => {
-        let ipaddr;
-        let port;
-        const electrum = !coin.installed;
         const installedCoin = this.getCoin(coin.coin);
 
-        if (!installedCoin || installedCoin.status !== 'active') {
+        if (installedCoin.height === 0) {
+            const electrum = !coin.installed;
             if (!electrum) {
+                console.log(`activate native coin ${coin.coin}`)
                 ipcRenderer.send('enableCoin', { coin: coin.coin, type })
             } else {
+                console.log(`activate electrum coin ${coin.coin}`)
                 this.enableElectrum(coin, type)
             }
         } else {
-            this.updateTrade(coin.coin, type)
+            console.log(`trade ${coin.coin} as ${type} `)
+            type && this.updateTrade(coin.coin, type)
         }
     }
 
@@ -187,11 +195,14 @@ export default class PortfolioStore {
         // activate the coin and set as rradeBase
         this.setTrade(coin, 'Base');
         // search for the highest balance and activate as tradeRel
-        let firstNotSelf = this.installedCoins.filter((installed) => installed.coin !== coin.coin)[0];
-        if (!firstNotSelf) {
-            firstNotSelf = this.coinsList.filter((item) => CONSTANTS.availableElectrum.indexOf(item.coin) !== -1 && item.coin !== coin.coin)[0];
+        let Rel;
+        if (coin.coin === 'KMD') {
+            Rel = this.getCoin('MNZ')
+        } else {
+            // default coin
+            Rel = this.getCoin('KMD')
         }
-        this.setTrade(firstNotSelf, 'Rel');
+        this.setTrade(Rel, 'Rel');
     }
 
 
@@ -227,12 +238,7 @@ export default class PortfolioStore {
         return ((total / this.portfolioTotal(false)) * 100).toFixed(2);
     }
 
-    renderBalance = (amount, code) => {
-        if (amount > 0) {
-            return formatCurrency(amount, { format: '%v %c', code, maxFraction: 8 });
-        }
-        return '';
-    }
+    renderBalance = (amount, code) => formatCurrency(amount, { format: '%v %c', code, maxFraction: 8 })
 
 
     @action leave = () => {

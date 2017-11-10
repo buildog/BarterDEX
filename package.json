@@ -135,6 +135,7 @@
     "react-window-size": "^1.0.1",
     "recharts": "^1.0.0-apha.5",
     "request": "^2.81.0",
+    "request-promise": "^4.2.2",
     "requestretry": "^1.12.2",
     "rimraf": "^2.6.1",
     "shelljs": "^0.7.8",

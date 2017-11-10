@@ -56,7 +56,7 @@ class Dashboard extends React.Component {
          </div>)
 
     renderDashboard = () => {
-        const { installedCoins, coinsList, colors, total, renderBalance } = this.props.app.portfolio;
+        const { installedCoins, colors, total, renderBalance } = this.props.app.portfolio;
         const hasRel = installedCoins.filter((coin) => coin.rel > 0);
         const hasBalance = installedCoins.filter((coin) => coin.balance > 0);
         return (
@@ -84,24 +84,24 @@ class Dashboard extends React.Component {
                 <small>{ total.fiat }</small>
               </h1> }
 
-              { installedCoins.length === 0 && this.noticeNoCoin() }
               { (hasBalance.length === 0 && installedCoins.length > 0) && this.noticeBalance() }
 
             </header>
 
             <ul className="dashboard-wallets-list">
 
-              { coinsList.map((installed) => {
-                  const isNative = !installed.electrum;
+              { installedCoins.map((installed) => {
+                  const isElectrum = installed.electrum;
+                  const isNative = !installed.electrum && installed.installed && installed.height > 0;
                   return (
                     <li key={installed.coin} className={this.getClassState(installed.coin)}>
                       <Link onClick={() => this.setCoinToEnable(installed.coin)} className={installed.coin} to={`/wallet/${installed.coin}/${isNative}`} activeClassName="active">
                         <div className="coinList-coin_icon coin-colorized"> { installed.icon }</div>
                         <div className={`coinList-coin_balance ${installed.coin}`}>
                           <strong className="coinList-coin_balance-name">{ installed.name }</strong>
-                          <strong className="coinList-coin_balance-amount">{ renderBalance(installed.balance, installed.coin) } </strong>
-                          { installed.balance === 0 && <strong className="coinList-coin_balance-amount">0 {installed.coin}</strong>}
-                          <small>{ isNative ? 'Native mode' : 'Electrum mode' } </small>
+                          { (isElectrum || isNative) ? <strong className="coinList-coin_balance-amount">{ renderBalance(installed.balance, installed.coin) } </strong> : ''}
+                          { isElectrum && <small>Electrum mode</small> }
+                          { isNative && <small>Native mode</small> }
                         </div>
                         <span className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
                         <span className="coinList-coin_action_loader" dangerouslySetInnerHTML={{ __html: circles }} />

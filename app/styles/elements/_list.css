@@ -2,7 +2,6 @@
 ul[class*=list] {
     position: relative;
     list-style: none;
-    grid-gap: 10px;
     padding: 0;
     margin: 0;
     overflow: auto;
@@ -22,7 +21,6 @@ ul[class*=list]:not(.singleColumn):after {
 ul[class*=list] {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-columns: 1fr auto auto;
 
 }
 
@@ -31,24 +29,27 @@ ul[class*=list].singleColumn {
     grid-template-columns: repeat(1, 1fr);
 }
 
+
 ul[class*=list]:not(.singleColumn) {
     background: $background-app;
+    grid-gap: 10px;
 }
 
 ul[class*=list] > li {
+    position: relative;
     display: flex;
-    height: 140px;
     flex-shrink: 0;
-    border-bottom: 1px solid $grey;
+    margin: 0;
+    border-bottom: 1px solid $background-app;
     transition: all .2s ease;
     will-change: transform;
     overflow: hidden;
-    border-radius: 4px;
     background: $background-jaguar
 }
 
 ul[class*=list]:not(.singleColumn) > li {
     box-shadow: 0 6px 20px rgba(0,0,0,.14);
+    border-radius: 4px;
 
 }
 
@@ -72,7 +73,12 @@ ul[class*=list] [class*="_action"] {
     display: flex;
     align-items: center;
     width: 30px;
-    background: transparent
+    background: transparent;
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    height: 100%;
+
 }
 
 ul[class*=list] [class*="_action"] svg {

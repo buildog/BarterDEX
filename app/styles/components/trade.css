@@ -57,7 +57,7 @@
 }
 
 .trade-type-item {
-    height: 70px;
+    height: 80px;
     padding: 10px 8px 2px 8px;
     flex-grow: 1;
     border: 1px solid transparent;
@@ -406,6 +406,7 @@
 /* deposit */
 
 .trade-deposit {
+    background: $background-app;
     box-shadow: $box-shadow-inputs;
     border-radius: 4px;
     padding: 0 10px 10px

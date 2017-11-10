@@ -1,7 +1,6 @@
 import log from 'electron-log';
 import request from 'requestretry';
 import { main } from './config/config';
-import io from 'socket.io-client';
 import fs from 'fs-extra';
 import ps from 'ps-node';
 
@@ -34,36 +33,42 @@ class Emitter extends EventEmitter {
         super();
         this.config = config;
         this.userLogout = false;
+        this.loginAttempts = 0;
     }
 
     apiRequest({ data, url }) {
-        const self = this;
         data.gui = 'buildog';
         const jsonData = JSON.stringify(data);
         // Custom Header pass
         const headersOpt = {
             'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(jsonData)
+            'Content-Length': Buffer.byteLength(jsonData),
+            'Cache-Control': 'no-cache',
+            Connection: 'keep-alive',
+            Pragma: 'no-cache'
         };
 
         return new Promise((resolve, reject) => {
             request(
                 {
-                    method: 'post',
+                    method: 'POST',
                     url,
                     form: jsonData,
                     headers: headersOpt,
-                    json: true
+                    json: true,
+                    maxAttempts: data.attempts || 5,
+                    retryDelay: data.delay || 8000
                 }, (error, response, body) => {
                 if (error) {
                     return reject(error);
                 }
-
+                // console.log(body);
                 return resolve(body);
             });
         }).catch((e) => {
             console.log(`endpoint ${data.method} failed`)
             console.log(e);
+            // self.emit('notifier', { error: 5 })
         });
     }
 
@@ -71,6 +76,8 @@ class Emitter extends EventEmitter {
         this.userpass = '';
         this.mypubkey = '';
         this.coins = '';
+        this.autosplitLoop && clearTimeout(this.autosplitLoop);
+        this.endpointCheckInterval && clearInterval(this.endpointCheckInterval);
         this.emit('logoutCallback', { type: 'success' });
     }
 
@@ -96,7 +103,7 @@ class Emitter extends EventEmitter {
 
 
         return this.checkMMStatus().then((instance) => {
-            if (instance === 0) {
+            if (instance === 10) {
                 console.log('marketmaker not running')
                 fs.pathExists(coinsListFile, (err, exists) => {
                     if (exists === true) {
@@ -118,12 +125,21 @@ class Emitter extends EventEmitter {
 
             // Wait for endoint to respond before accepting others requests
             self.endpointCheckInterval = setInterval(() => {
-                self.getUserpass(passphrase).then(() => {
+                self.loginAttempts += 1;
+                if (self.loginAttempts < 10) {
+                    self.getUserpass(passphrase).then(() => {
+                        clearInterval(self.endpointCheckInterval);
+                    }).catch((e) => {
+                        console.log(e)
+                        console.log('login endpoint not yet ready');
+                        self.emit('growler', { key: 9, desc: e })
+                    });
+                } else {
+                    self.loginAttempts = 0;
                     clearInterval(self.endpointCheckInterval);
-                }).catch(() => {
-                    console.log('login endpoint not yet ready')
-                });
-            }, 1000);
+                    self.bootstrap(data);
+                }
+            }, 3000);
         });
     }
 
@@ -227,21 +243,30 @@ class Emitter extends EventEmitter {
         const data = { method: 'passphrase', passphrase };
         const url = 'http://127.0.0.1:7783';
 
-        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
-            const { userpass, mypubkey } = result;
-            console.log('logged in!');
-            self.userpass = userpass;
-            self.mypubkey = mypubkey;
+        return new Promise((resolve, reject) => this.apiRequest({ data, url, attempts: 1 }).then((result) => {
+            if (!result.error) {
+                const { userpass, mypubkey } = result;
+
+                console.log('logged in!');
+                self.userpass = userpass;
+                self.mypubkey = mypubkey;
 
 
-            self.getCoins(false).then((coinsList) => {
-                self.emit('updateUserInfo', { userpass, mypubkey, passphrase });
-                // coinsList may return an object instead of an array if it's the first call which return the userpass.
-                self.emit('coinsList', coinsList.coins || coinsList);
-            })
+                self.getCoins(false).then((coinsList) => {
+                    self.emit('updateUserInfo', { userpass, mypubkey, passphrase });
+                    // coinsList may return an object instead of an array if it's the first call which return the userpass.
+                    self.emit('coinsList', coinsList.coins || coinsList);
+                })
 
-            resolve('logged in');
+                resolve('logged in');
+            } else {
+                console.log('error login')
+                console.log(result.error);
+                reject(result.error);
+            }
         }).catch((error) => {
+            console.log('error login')
+            console.log(error)
             reject(error);
         }));
     }
@@ -266,35 +291,13 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: self.userpass, method: 'getcoins' };
         const url = 'http://127.0.0.1:7783';
-
-        const fetch = new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
+        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             resolve(result);
         }).catch((error) => {
-            // console.log(`error getcoins`);
+            console.log(`error getcoins`);
             // console.log(error)
             reject(error);
         }));
-
-
-        const updateBalance = (coinList) => coinList.map((coin) => {
-            if (coin.electrum && fetchBalance) {
-                return self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
-                    // console.log(`electrum balance update ${coin.coin}`)
-                    coin.balance = coinBalance.balance;
-                    return coin;
-                }).catch(() => coin);
-            }
-
-            return coin;
-        })
-
-        return fetch.then((coinList) => {
-            if (coinList) {
-                return Promise.all(updateBalance(coinList || []));
-            }
-
-            return [];
-        })
     }
 
     disableCoin({ coin = '', type }) {
@@ -322,9 +325,9 @@ class Emitter extends EventEmitter {
             data = { userpass: self.userpass, method: 'enable', coin };
         }
         const url = 'http://127.0.0.1:7783';
-        console.log(`enabling ${coin}`);
 
         this.apiRequest({ data, url }).then((result) => {
+            console.log(result)
             self.getCoins(false).then((coinsList) => {
                 self.emit('coinsList', coinsList);
                 self.emit('coinEnabled', { coin });
@@ -391,7 +394,7 @@ class Emitter extends EventEmitter {
                     if (confirm.error) {
                         return self.emit('growler', { key: 8 })
                     }
-                    setTimeout(() => {
+                    self.autosplitLoop = setTimeout(() => {
                         self.emit('loading', { type: 'delete', key: 7 });
                         tradeRequest();
                     }, 40000);

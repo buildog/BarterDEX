@@ -52,6 +52,11 @@
     overflow: auto;
 }
 
+.dashboard-wallets .dashboard-wallets-list  li {
+    height: 140px;
+
+}
+
 
 
 /* context */

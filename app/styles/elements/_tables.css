@@ -40,7 +40,8 @@
 }
 
 .ReactTable.-striped .rt-tr.selected {
-    color: $blue;
+    color: #FFF;
+    background: $blue !important;
 }
 
 .ReactTable .rt-thead .rt-th.-sort-asc:before,
@@ -81,4 +82,27 @@
 .ReactTable .rt-noData {
     background: $background-dark;
     color: #FFF;
+}
+
+.rt-tr-group {
+    position: relative;
+}
+
+.rt-resizable-header-content {
+    text-transform: capitalize;
+}
+.depth {
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: .3;
+}
+
+.asks .depth {
+    background: $green;
+}
+
+.bids .depth {
+    background: red;
 }

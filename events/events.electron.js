@@ -20,6 +20,9 @@ export const electronEvents = ({ app, mainWindow, api, listener, emitter }) => {
         emitter.send('notifier', args);
     })
 
+    api.on('growler', (args) => {
+        emitter.send('growler', args);
+    })
 
     // Close properly
     const close = (event) => {
