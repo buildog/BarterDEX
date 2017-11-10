@@ -175,8 +175,8 @@ export default class PortfolioStore {
 
     @action setTrade = (coin, type) => {
         const installedCoin = this.getCoin(coin.coin);
-
-        if (installedCoin.height === 0) {
+        console.log(installedCoin.height <= 0 && !installedCoin.electrum);
+        if (installedCoin.height <= 0) {
             const electrum = !coin.installed;
             if (!electrum) {
                 console.log(`activate native coin ${coin.coin}`)
