@@ -42,10 +42,7 @@ class Emitter extends EventEmitter {
         // Custom Header pass
         const headersOpt = {
             'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(jsonData),
-            'Cache-Control': 'no-cache',
-            Connection: 'keep-alive',
-            Pragma: 'no-cache'
+            'Content-Length': Buffer.byteLength(jsonData)
         };
 
         return new Promise((resolve, reject) => {
@@ -103,7 +100,7 @@ class Emitter extends EventEmitter {
 
 
         return this.checkMMStatus().then((instance) => {
-            if (instance === 10) {
+            if (instance === 0) {
                 console.log('marketmaker not running')
                 fs.pathExists(coinsListFile, (err, exists) => {
                     if (exists === true) {
