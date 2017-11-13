@@ -24,12 +24,13 @@ export default class GrowlerStore {
         const code = args.key;
         let desc;
         const ghost = JSON.parse(JSON.stringify(this.store));
+
+        const item = { code };
         if (args.desc) {
-            desc = args.desc;
+            item.desc = args.desc;
         }
-        console.log(args);
         const hasError = ghost.filter((error) => error.code === code)
-        hasError.length === 0 && ghost.push({ code, desc });
+        hasError.length === 0 && ghost.push(item);
         this.store = ghost;
 
         if (CONSTANTS.growler[code].loadingKeys) {

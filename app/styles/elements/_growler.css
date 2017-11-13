@@ -15,12 +15,12 @@
 .growler-success,
 .growler-fail {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
     width: 100%;
     background: $green;
     color: #FFF;
-    padding: 10px 20px;
+    padding: 10px 40px 10px 20px;
     box-shadow: $box-shadow-inputs;
     border-radius: 4px;
     margin-bottom: 20px;
@@ -47,7 +47,7 @@
 
 .growler-success i,
 .growler-fail i {
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .growler-success i,

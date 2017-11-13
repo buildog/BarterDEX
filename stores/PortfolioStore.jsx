@@ -109,7 +109,7 @@ export default class PortfolioStore {
         byIcon.sort((a, b) => {
             const x = a.hasSVGIcon;
             const fix = a.electrum ? -1 : 0;
-            return x ? a.balance - b.balance - fix : -1;
+            return a.balance - b.balance - fix;
         }).reverse();
         this.coinsList = byIcon;
 

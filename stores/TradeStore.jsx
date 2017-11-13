@@ -33,6 +33,22 @@ export default class TradeStore {
         ipcRenderer.on('updateTrade', (e, { coin, type }) => { self.updateTrade(coin, type) });
     }
 
+    @action reset = () => {
+        this.rates = {
+            ask: { price: 0 },
+            bid: { price: 0 }
+        };
+
+        this.amounts = {
+            rel: 0,
+            base: 0,
+            isMax: false,
+            autoMax: false
+        };
+
+        this.validation = 'enter amount to continue';
+    }
+
 
     botstatus = (update) => {
         const ghost = JSON.parse(JSON.stringify(this.bots));

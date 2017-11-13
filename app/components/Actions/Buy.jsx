@@ -51,7 +51,8 @@ class Trade extends React.Component {
 
 
     resetForm = () => {
-
+        const { reset } = this.props.app.trade;
+        reset();
     }
 
     //
@@ -73,7 +74,7 @@ class Trade extends React.Component {
         };
 
         trade(params);
-        // this.resetForm();
+        this.resetForm();
     }
 
 

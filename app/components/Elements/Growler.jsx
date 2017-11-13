@@ -26,7 +26,7 @@ class Growler extends React.Component {
           <i dangerouslySetInnerHTML={{ __html: CONSTANTS.growler[code].type ? check : close }} />
           <div className="growler-title">
             <span>{ CONSTANTS.growler[code].message }</span>
-            { desc && <small className="growler-desc">{ desc }</small> }
+            <small className="growler-desc">{ desc }</small>
           </div>
 
         </li>);

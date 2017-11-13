@@ -87,7 +87,6 @@ export default class AppStore {
       // send login passphrase
       clearInterval(self.autorefresh);
       self.orderbook.killListener();
-      self.portfolio.leave();
       shepherdIPC({ command: 'logout' });
   }
 
