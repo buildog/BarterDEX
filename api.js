@@ -311,13 +311,33 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: self.userpass, method: 'getcoins' };
         const url = 'http://127.0.0.1:7783';
-        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
+        const fetch = new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             resolve(result);
         }).catch((error) => {
             console.log(`error getcoins`);
             // console.log(error)
             reject(error);
         }));
+
+        const updateBalance = (coinList) => coinList.map((coin) => {
+            if (coin.electrum) {
+                return self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
+            // console.log(`electrum balance update ${coin.coin}`)
+                    coin.balance = coinBalance.balance;
+                    return coin;
+                }).catch(() => coin);
+            }
+
+            return coin;
+        })
+
+        return fetch.then((coinList) => {
+            if (coinList) {
+                return Promise.all(updateBalance(coinList || []));
+            }
+
+            return [];
+        })
     }
 
     disableCoin({ coin = '', type }) {
