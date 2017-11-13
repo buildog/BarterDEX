@@ -76,7 +76,7 @@ class Wallet extends React.Component {
         const { autoSetTrade } = stores.app.trade;
         autoSetTrade({ coin, installed: installed === 'true' });
         /* wait for callaback?*/
-        const loop = setTimeout(() => {
+        const loop = setInterval(() => {
             const { tradeBase, tradeRel } = stores.app.trade;
             if (tradeBase && tradeRel) {
                 clearInterval(loop);
