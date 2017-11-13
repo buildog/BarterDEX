@@ -36,10 +36,15 @@ export default class AppStore {
         });
 
         /* set userpass */
-        ipcRenderer.on('updateUserInfo', (e, { userpass, mypubkey }) => {
+        ipcRenderer.on('updateUserInfo', (e, { userpass }) => {
+            if (typeof (Storage) !== 'undefined') {
+                // Code for localStorage/sessionStorage.
+                localStorage.setItem('userpass', userpass);
+            }
+
             self.userpass = userpass;
-            self.mypubkey = mypubkey;
             // start autorefresh of portfolio
+            self.portfolio.refresh();
             self.portfolio.autorefresh = setInterval(() => self.portfolio.refresh(), 6000)
         });
 
@@ -53,24 +58,26 @@ export default class AppStore {
             this.logout();
             ipcRenderer.send('readyToQuit');
         })
+
+        // if (typeof (Storage) !== 'undefined') {
+        //     // Code for localStorage/sessionStorage.
+        //     const userpass = localStorage.getItem('userpass');
+        //     if (userpass) {
+        //         self.userpass = userpass;
+        //     }
+        // }
     }
 
-  @action login = (passphrase) => {
+  @action login = ({ passphrase, userpass }) => {
       // send login passphrase
-
-      if (typeof (Storage) !== 'undefined') {
-          // Code for localStorage/sessionStorage.
-          localStorage.setItem('passphrase', passphrase);
-      }
-
-      shepherdIPC({ command: 'login', passphrase });
+      shepherdIPC({ command: 'login', passphrase, userpass });
   }
 
   @action logout = () => {
       const self = this;
       if (typeof (Storage) !== 'undefined') {
           // Code for localStorage/sessionStorage.
-          localStorage.removeItem('passphrase');
+          localStorage.removeItem('userpass');
       }
 
       // send login passphrase

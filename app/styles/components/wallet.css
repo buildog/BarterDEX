@@ -54,6 +54,7 @@
     border-radius: 50%;
     box-shadow: $box-shadow-inputs;
     transform: rotate(10deg);
+    padding: 4px;
 }
 
 

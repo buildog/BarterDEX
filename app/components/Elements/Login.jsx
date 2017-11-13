@@ -41,10 +41,10 @@ class Login extends React.Component {
     componentDidMount = () => {
         if (typeof (Storage) !== 'undefined') {
             // Code for localStorage/sessionStorage.
-            const passphrase = localStorage.getItem('passphrase');
-            if (passphrase) {
-                this.setState({ passphrase, localStorage: true });
-                setTimeout(() => this.login(), 400);
+            const userpass = localStorage.getItem('userpass');
+            if (userpass) {
+                this.setState({ localStorage: true });
+                setTimeout(() => this.login(userpass), 400);
             }
         }
     }
@@ -53,9 +53,9 @@ class Login extends React.Component {
         this.setState({ passphrase });
     }
 
-    login = () => {
+    login = (userpass = false) => {
         this.setState({ clicked: true })
-        this.props.app.login(this.state.passphrase)
+        this.props.app.login({ passphrase: this.state.passphrase, userpass })
     }
 
     renderLoader = () => (<div className="login-processing">

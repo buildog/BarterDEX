@@ -54,12 +54,16 @@ class Emitter extends EventEmitter {
                     headers: headersOpt,
                     json: true,
                     maxAttempts: data.attempts || 5,
-                    retryDelay: data.delay || 8000
+                    retryDelay: data.delay || 200
                 }, (error, response, body) => {
                 if (error) {
                     return reject(error);
                 }
-                // console.log(body);
+
+                if (data.method !== 'getcoins' && data.method !== 'passphrase') {
+                    console.log(`${data.method} >>>`)
+                    console.log(body);
+                }
                 return resolve(body);
             });
         }).catch((e) => {
@@ -82,6 +86,16 @@ class Emitter extends EventEmitter {
     bootstrap(data) {
         const self = this;
         self.userLogout = false;
+        const userpass = data.userpass;
+
+        if (userpass) {
+            /* already logged in*/
+            self.userpass = userpass;
+
+            self.emit('updateUserInfo', { userpass });
+            return;
+        }
+
         const passphrase = data.passphrase.trim();
 
         const coinsListFile = `${marketmakerDir}/coins.json`;
@@ -124,7 +138,7 @@ class Emitter extends EventEmitter {
             self.endpointCheckInterval = setInterval(() => {
                 self.loginAttempts += 1;
                 if (self.loginAttempts < 10) {
-                    self.getUserpass(passphrase).then(() => {
+                    self.getUserpass({ passphrase, userpass }).then(() => {
                         clearInterval(self.endpointCheckInterval);
                     }).catch((e) => {
                         console.log(e)
@@ -235,7 +249,7 @@ class Emitter extends EventEmitter {
         // }).catch(() => []);
     }
 
-    getUserpass(passphrase) {
+    getUserpass({ passphrase }) {
         const self = this;
         const data = { method: 'passphrase', passphrase };
         const url = 'http://127.0.0.1:7783';
@@ -248,12 +262,7 @@ class Emitter extends EventEmitter {
                 self.userpass = userpass;
                 self.mypubkey = mypubkey;
 
-
-                self.getCoins(false).then((coinsList) => {
-                    self.emit('updateUserInfo', { userpass, mypubkey, passphrase });
-                    // coinsList may return an object instead of an array if it's the first call which return the userpass.
-                    self.emit('coinsList', coinsList.coins || coinsList);
-                })
+                self.emit('updateUserInfo', { userpass, mypubkey, passphrase });
 
                 resolve('logged in');
             } else {
@@ -284,17 +293,37 @@ class Emitter extends EventEmitter {
     }
 
 
-    getCoins(fetchBalance = true) {
+    getCoins() {
         const self = this;
         const data = { userpass: self.userpass, method: 'getcoins' };
         const url = 'http://127.0.0.1:7783';
-        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
+        const fetch = new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             resolve(result);
         }).catch((error) => {
             console.log(`error getcoins`);
             // console.log(error)
             reject(error);
         }));
+
+        const updateBalance = (coinList) => coinList.map((coin) => {
+            if (coin.electrum) {
+                return self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
+                    console.log(`electrum balance update ${coin.coin} - ${coinBalance.balance}`)
+                    coin.balance = coinBalance.balance;
+                    return coin;
+                }).catch(() => coin);
+            }
+
+            return coin;
+        })
+
+        return fetch.then((coinList) => {
+            if (coinList) {
+                return Promise.all(updateBalance(coinList || []));
+            }
+
+            return [];
+        })
     }
 
     disableCoin({ coin = '', type }) {
@@ -324,7 +353,6 @@ class Emitter extends EventEmitter {
         const url = 'http://127.0.0.1:7783';
 
         this.apiRequest({ data, url }).then((result) => {
-            console.log(result)
             self.getCoins(false).then((coinsList) => {
                 self.emit('coinsList', coinsList);
                 self.emit('coinEnabled', { coin });

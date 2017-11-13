@@ -26,7 +26,7 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
             stopMMStatus();
             checkMMInterval = setInterval(() => api.checkMMStatus(), 180000);
             emitter.send('loading', { type: 'add', key: 1 });
-            api.bootstrap({ passphrase: arg.passphrase });
+            api.bootstrap({ passphrase: arg.passphrase, userpass: arg.userpass });
             break;
         case 'logout':
             api.logout();
