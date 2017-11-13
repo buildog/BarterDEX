@@ -176,16 +176,16 @@ export default class PortfolioStore {
 
     @action setTrade = (coin, type) => {
         const installedCoin = this.getCoin(coin.coin);
-        console.log(installedCoin.height <= 0 && !installedCoin.electrum);
-        if (installedCoin.height <= 0) {
-            const electrum = !coin.installed;
-            if (!electrum) {
-                console.log(`activate native coin ${coin.coin}`)
-                ipcRenderer.send('enableCoin', { coin: coin.coin, type })
-            } else {
-                console.log(`activate electrum coin ${coin.coin}`)
-                this.enableElectrum(coin, type)
-            }
+
+        if (!installedCoin.electrum) {
+            // const electrum = !coin.installed;
+            // if (!electrum) {
+            //     console.log(`activate native coin ${coin.coin}`)
+            //     ipcRenderer.send('enableCoin', { coin: coin.coin, type })
+            // } else {
+            console.log(`activate electrum coin ${coin.coin}`)
+            this.enableElectrum(coin, type)
+            // }
         } else {
             console.log(`trade ${coin.coin} as ${type} `)
             type && this.updateTrade(coin.coin, type)

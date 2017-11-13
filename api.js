@@ -305,6 +305,8 @@ class Emitter extends EventEmitter {
             reject(error);
         }));
 
+        return fetch;
+
         const updateBalance = (coinList) => coinList.map((coin) => {
             if (coin.electrum) {
                 return self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {

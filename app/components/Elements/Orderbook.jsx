@@ -28,9 +28,9 @@ const orderbookColumns = (type, maxDepth, rel, coin) => [
     {
         Header: 'Depth',
         accessor: 'depth',
-        Cell: props => <span className={type}><span
+        Cell: props => <span className={type}>{props.value}<span
           className="depth" style={{
-              width: `${maxDepth / props.value}%`
+              width: `${(props.value / maxDepth) * 30}%`
           }}
         /> </span>// Custom cell components!
     }
