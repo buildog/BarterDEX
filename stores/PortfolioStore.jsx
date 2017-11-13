@@ -43,16 +43,6 @@ export default class PortfolioStore {
      @observable portfolio = [];
      @observable coinsList = [];
      @observable installedCoins = [];
-     @observable tradeBase = false;
-     @observable tradeRel = false;
-     @observable rates = {
-         ask: 0,
-         bid: 0,
-         indexes: {
-             ask: '',
-             bid: ''
-         }
-     };
      @observable withdrawConfirm = false;
      @observable tx = false;
      @observable total = {
@@ -77,12 +67,9 @@ export default class PortfolioStore {
         this.formatFIAT = { format: '%s%v', symbol: this.defaultCurrency.symbol }
         this.formatCrypto = { format: '%v %c', code: defaultCrypto, maxFraction: 8 };
 
-        this.initializedtradeRel = false;
-
         const self = this;
 
         ipcRenderer.on('coinsList', (e, coinsList) => { self.prepareCoinsList(coinsList) });
-        ipcRenderer.on('updateTrade', (e, { coin, type }) => { self.updateTrade(coin, type) });
         ipcRenderer.on('confirmWithdraw', (e, result) => { self.withdrawConfirm = result });
         ipcRenderer.on('sendrawtransaction', (e, result) => {
             self.withdrawConfirm = false;
@@ -94,17 +81,9 @@ export default class PortfolioStore {
 
     @action getCoin = (short) => this.installedCoins.filter((asset) => asset.coin === short)[0];
 
-    updateTrade = (coin, type) => {
-        this[`trade${type}`] = this.getCoin(coin);
-    }
 
     /* @params { method, base, rel, price, relvolume }
     */
-
-    @action updateRate = ({ price, type }, index) => {
-        this.rates[type] = parseFloat(price);
-        this.rates.indexes[type] = index;
-    }
 
     @action resetTX = () => {
         this.tx = false;
@@ -174,41 +153,6 @@ export default class PortfolioStore {
         electrumConf.map((svr) => ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true, ipaddr: Object.keys(svr)[0], port: svr[Object.keys(svr)], type }));
     }
 
-    @action setTrade = (coin, type) => {
-        const installedCoin = this.getCoin(coin.coin);
-
-        if (!installedCoin.electrum) {
-            // const electrum = !coin.installed;
-            // if (!electrum) {
-            //     console.log(`activate native coin ${coin.coin}`)
-            //     ipcRenderer.send('enableCoin', { coin: coin.coin, type })
-            // } else {
-            console.log(`activate electrum coin ${coin.coin}`)
-            this.enableElectrum(coin, type)
-            // }
-        } else {
-            console.log(`trade ${coin.coin} as ${type} `)
-            type && this.updateTrade(coin.coin, type)
-        }
-    }
-
-    @action autoSetTrade = (coin) => {
-        // activate the coin and set as rradeBase
-        this.setTrade(coin, 'Base');
-        // search for the highest balance and activate as tradeRel
-        let Rel;
-        if (coin.coin === 'KMD') {
-            Rel = this.getCoin('MNZ')
-        } else {
-            // default coin
-            Rel = this.getCoin('KMD')
-        }
-        this.setTrade(Rel, 'Rel');
-    }
-
-
-    @action refresh = () => { ipcRenderer.send('refreshPortfolio') }
-
 
     portfolioTotal = () => {
         const self = this;
@@ -241,11 +185,5 @@ export default class PortfolioStore {
 
     renderBalance = (amount, code) => formatCurrency(amount, { format: '%v %c', code, maxFraction: 8 })
 
-
-    @action leave = () => {
-        const self = this;
-        self.tradeBase = false;
-        self.tradeRel = false;
-    }
 
 }

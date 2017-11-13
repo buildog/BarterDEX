@@ -18,6 +18,15 @@ const stopMMStatus = () => {
 }
 
 export const shepherdEvents = ({ api, emitter, listener }) => {
+    listener.on('refresh', () => {
+        api.fetchMarket();
+        api.fetchCoins();
+        api.fetchRecentSwaps();
+        api.fetchSwaps();
+        api.fetchBots();
+    });
+
+
     listener.on('shepherd-command', (event, arg) => {
         switch (arg.command) {
         case 'ping':

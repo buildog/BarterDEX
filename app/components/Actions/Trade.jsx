@@ -43,8 +43,8 @@ class Trade extends React.Component {
                 <li className="trade-type-item trade-type-item-buy">
                   <button onClick={() => this.setFlow({ flow: 'buy' })}>
                     <div>
-                      <i dangerouslySetInnerHTML={{ __html: buy }} />
-                      <small>Buy</small>
+                      <i dangerouslySetInnerHTML={{ __html: shuffle }} />
+                      <small>Exchange</small>
                     </div>
                   </button>
                 </li>

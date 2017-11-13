@@ -27,7 +27,8 @@ class Balance extends React.Component {
     }
 
     getClassState = () => {
-        const { tradeBase, tx } = this.props.app.portfolio;
+        const { tradeBase } = this.props.app.trade;
+        const { tx } = this.props.app.portfolio;
         const self = this;
         return classNames({
             'balance-action': true,
@@ -38,7 +39,7 @@ class Balance extends React.Component {
 
 
     setMax = () => {
-        const { tradeBase } = this.props.app.portfolio;
+        const { tradeBase } = this.props.app.trade;
         const params = {
             target: {
                 validity: { valid: true },
@@ -62,7 +63,7 @@ class Balance extends React.Component {
         if (e.target.validity.valid) {
             const amount = e.target.value;
             const parsed = formatNumber(amount);
-            const { tradeBase } = this.props.app.portfolio;
+            const { tradeBase } = this.props.app.trade;
 
             if (amount === tradeBase.balance) {
                 this.setState({ autoMax: true })
@@ -79,7 +80,7 @@ class Balance extends React.Component {
 
     validation = (params) => {
         let validation = false;
-        const { tradeBase } = this.props.app.portfolio;
+        const { tradeBase } = this.props.app.trade;
         const amount = params.amount;
         const address = params.address;
 
@@ -96,7 +97,8 @@ class Balance extends React.Component {
 
 
     withdraw = () => {
-        const { withdraw, tradeBase } = this.props.app.portfolio;
+        const { tradeBase } = this.props.app.trade;
+        const { withdraw } = this.props.app.portfolio;
 
         const params = {
             address: this.state.address,
@@ -119,7 +121,7 @@ class Balance extends React.Component {
     }
 
     renderDeposit = () => {
-        const { tradeBase } = this.props.app.portfolio;
+        const { tradeBase } = this.props.app.trade;
         return (
           <section className="balance-deposit">
             <div className={`balance-deposit-body ${tradeBase.coin}`}>
@@ -142,7 +144,7 @@ class Balance extends React.Component {
     renderButton = () => {
         const { loader } = this.props.app;
         const orderLoader = loader.getLoader(6);
-        const { tradeBase } = this.props.app.portfolio;
+        const { tradeBase } = this.props.app.trade;
         return (
           <section className={`trade-button-wrapper ${tradeBase.coin}`}>
             <button className="trade-button withBorder action primary coin-bg" disabled={orderLoader} onClick={() => this.withdraw()} disabled={this.state.validation}>
@@ -175,7 +177,7 @@ class Balance extends React.Component {
       </section>)
 
     renderAmount = () => {
-        const { tradeBase } = this.props.app.portfolio;
+        const { tradeBase } = this.props.app.trade;
         return (
           <section className="trade-amount_input_amount">
             <span className="label">
@@ -264,7 +266,8 @@ class Balance extends React.Component {
     </div>)
 
     render() {
-        const { tradeBase, withdrawConfirm, tx } = this.props.app.portfolio;
+        const { withdrawConfirm, tx } = this.props.app.portfolio;
+        const { tradeBase } = this.props.app.trade;
         const { loader } = this.props.app;
         const withdrawLoader = loader.getLoader(6);
 

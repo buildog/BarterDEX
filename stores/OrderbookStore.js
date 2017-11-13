@@ -6,7 +6,6 @@ export default class OrderbookStore {
      @observable asks = [];
      @observable bids = [];
 
-
     constructor() {
         const self = this;
         ipcRenderer.on('orderbook', (e, data) => { self.updateOrderbook(data) });

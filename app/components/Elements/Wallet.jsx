@@ -73,11 +73,11 @@ class Wallet extends React.Component {
 
     static preload({ params, stores }, callback) {
         const { coin, installed } = params;
-        const { autoSetTrade } = stores.app.portfolio;
+        const { autoSetTrade } = stores.app.trade;
         autoSetTrade({ coin, installed: installed === 'true' });
         /* wait for callaback?*/
         const loop = setTimeout(() => {
-            const { tradeBase, tradeRel } = stores.app.portfolio;
+            const { tradeBase, tradeRel } = stores.app.trade;
             if (tradeBase && tradeRel) {
                 clearInterval(loop);
                 callback();
@@ -87,7 +87,7 @@ class Wallet extends React.Component {
 
     getClassState = () => {
         const self = this;
-        const { tradeBase, tradeRel } = this.props.app.portfolio;
+        const { tradeBase, tradeRel } = this.props.app.trade;
 
         return classNames({
             wallet: true,
@@ -96,12 +96,12 @@ class Wallet extends React.Component {
     }
 
     componentWillUnmount = () => {
-        const { leave } = this.props.app.portfolio;
+        const { leave } = this.props.app.trade;
         leave();
     }
 
     renderTrade = () => {
-        const { tradeBase, tradeRel } = this.props.app.portfolio;
+        const { tradeBase, tradeRel } = this.props.app.trade;
         if (tradeBase && tradeRel) {
             return (<div className={`wallet-exchange`}>
               <Trade />
@@ -110,22 +110,10 @@ class Wallet extends React.Component {
         }
     }
 
-    pickRate = (info) => {
-        const { updateRate } = this.props.app.portfolio;
-
-        // const params = {
-        //     target: {
-        //         validity: { valid: true },
-        //         value: info.original.price
-        //     }
-        // }
-
-        updateRate({ price: info.original.price, type: 'ask' }, info.index)
-    }
-
 
     render() {
-        const { tradeBase, tradeRel, renderBalance } = this.props.app.portfolio;
+        const { renderBalance } = this.props.app.portfolio;
+        const { tradeBase, tradeRel } = this.props.app.trade;
 
         return (
           <section className="wallet-wrapper">
@@ -152,7 +140,7 @@ class Wallet extends React.Component {
                 { /* <TinyAreaChart /> */ }
                 <h3>no chart data</h3>
               </section>
-              <Orderbook base={tradeBase.coin} rel={tradeRel.coin} type="asks" onSelected={(params) => this.pickRate(params)} />
+              <Orderbook base={tradeBase.coin} rel={tradeRel.coin} type="asks" />
             </section>
           </section>
         )

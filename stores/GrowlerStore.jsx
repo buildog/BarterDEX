@@ -12,31 +12,34 @@ export default class GrowlerStore {
         });
     }
 
-    removeKey = (key) => {
-        const ghost = JSON.parse(JSON.stringify(this.store));
-        ghost.splice(ghost.indexOf(key), 1);
+    removeKey = (code) => {
+        let ghost = JSON.parse(JSON.stringify(this.store));
+        ghost = ghost.filter((error) => error.code !== code)
         this.store = ghost;
     }
 
 
     updateGrowler = (args) => {
-        console.log(args);
         const self = this;
-        const { key } = args;
+        const code = args.key;
+        let desc;
         const ghost = JSON.parse(JSON.stringify(this.store));
-
-        ghost.indexOf(key) === -1 && ghost.push(key);
-
+        if (args.desc) {
+            desc = args.desc;
+        }
+        console.log(args);
+        const hasError = ghost.filter((error) => error.code === code)
+        hasError.length === 0 && ghost.push({ code, desc });
         this.store = ghost;
 
-        if (CONSTANTS.growler[key].loadingKeys) {
-            CONSTANTS.growler[key].loadingKeys.forEach((loadingKey) => {
+        if (CONSTANTS.growler[code].loadingKeys) {
+            CONSTANTS.growler[code].loadingKeys.forEach((loadingKey) => {
                 ipcRenderer.send('loading', { type: 'delete', key: loadingKey });
             });
         }
 
         setTimeout(() => {
-            self.removeKey(key)
+            self.removeKey(code)
         }, 4000)
     }
 

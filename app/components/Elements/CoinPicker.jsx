@@ -47,7 +47,7 @@ class CoinPicker extends React.Component {
 
     renderBtn = (clickable) => {
         if (!this.state.isPickerOpen) {
-            const { tradeRel } = this.props.app.portfolio;
+            const { tradeRel } = this.props.app.trade;
 
             return (<button className="action noTransformTranslate arrow-down" onClick={(e) => clickable && this.toggle(e)}>
               <span className={tradeRel.coin}>
@@ -65,7 +65,8 @@ class CoinPicker extends React.Component {
     }
 
     renderList = (coins) => {
-        const { renderBalance, tradeBase } = this.props.app.portfolio;
+        const { renderBalance } = this.props.app.portfolio;
+        const { tradeBase } = this.props.app.trade;
         return (<div className={this.getListState()}>
           <ul className="coinList-list singleColumn coin-colorized-reset">
             {

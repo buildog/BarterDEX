@@ -266,10 +266,11 @@
     display: flex;
     align-items: center;
     color: $grey;
-    border: 1px solid $grey;
+    border: 1px solid #FFF;
+    color: #FFF;
     padding: 7px 10px;
     border-radius: 4px;
-    margin-right: 10px;
+    margin-right: 6px;
 }
 
 .trade-amount_input-wrapper .trade-setMax:hover {
@@ -279,6 +280,7 @@
 
 .trade-action-max .trade-amount_input-wrapper .trade-setMax {
     background: $blue;
+    border-color: $blue;
     color: #FFF;
     pointer-events: none
 }

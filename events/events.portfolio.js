@@ -13,13 +13,6 @@ export const portfolioEvents = ({ api, emitter, listener }) => {
         api.disableCoin(params);
     });
 
-    listener.on('refreshPortfolio', () => {
-        api.fetchMarket();
-        api.fetchCoins();
-        api.fetchBots();
-    });
-
-
     listener.on('withdraw', (e, params) => {
         emitter.send('loading', { type: 'add', key: 6 });
         api.withdraw(params)

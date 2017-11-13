@@ -24,37 +24,21 @@ const formatNumber = (str) => str;
 class Trade extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            privateTransaction: false,
-            amountRel: 0,
-            amountBase: 0,
-            autoMax: false,
-            picker: false,
-            flow: 'buy',
-            showOrderbook: false,
-            validation: `enter amount to continue`
-
-        }
     }
 
     getClassState = () => {
         const self = this;
         return classNames({
             'trade-action': true,
-            'trade-action-max': this.state.autoMax
+            'trade-action-max': this.props.app.trade.amounts.autoMax
         })
     }
-
 
     componentDidMount = () => {
         const self = this;
         self.resetForm();
     }
 
-    togglePrivate = () => {
-        this.setState({ privateTransaction: !this.state.privateTransaction })
-    }
 
     getRate = () => {
         const { asks } = this.props.app.orderbook;
@@ -65,114 +49,58 @@ class Trade extends React.Component {
         return 0;
     }
 
-    toggleOrderbook = (e) => {
-        this.setState({ showOrderbook: !this.state.showOrderbook });
-        e.stopPropagation()
-    }
 
     resetForm = () => {
-        // this.amountRelInput.focus();
-        // this.amountRelInput.value = '';
-        const { tradeRel, tradeBase } = this.props.app.portfolio;
-        this.setState({ amountRel: 0, amountBase: 0, picker: false })
-        this.validation({});
+
     }
 
-
-    componentWillReact = () => {
-        this.validation({ amountRel: this.state.amountRel, rate: this.props.app.portfolio.rates.ask });
-    }
+    //
+    // componentWillReact = () => {
+    //     this.validation({ amountRel: this.state.amountRel, rate: this.props.app.trade.rates.ask.price });
+    // }
 
     trade = () => {
-        const { tradeRel, tradeBase } = this.props.app.portfolio;
+        const { tradeRel, tradeBase, amounts, rates, method } = this.props.app.trade;
         const { trade } = this.props.app.trade;
 
         const params = {
-            method: 'bot_buy',
+            method,
             base: tradeBase.coin,
             rel: tradeRel.coin,
-            price: this.props.app.portfolio.rates.ask,
-            volume: this.state.amountRel * this.props.app.portfolio.rates.ask,
+            price: rates.ask.price,
+            volume: amounts.rel * rates.ask.price,
             smartaddress: tradeRel.smartaddress
         };
 
         trade(params);
-
-        this.resetForm();
+        // this.resetForm();
     }
 
-    validation = ({ amountRel, rate }) => {
-        let validation = false;
-        const { tradeRel } = this.props.app.portfolio;
-
-
-        const amount = amountRel != null ? amountRel : this.state.amountRel;
-        const price = rate != null ? rate : this.props.app.portfolio.rates.ask;
-
-        if (!price) {
-            validation = `price is empty`;
-        } else if ((tradeRel.balance / price) < amount) {
-            validation = (<div className="validation"><span>not enough {tradeRel.coin}</span><small>(max {tradeRel.balance})</small></div>);
-        } else if (!amount) {
-            validation = `${tradeRel.coin} amount is empty`;
-        }
-
-        this.setState({ validation });
-    }
-
-
-    setMax = () => {
-        const { tradeRel } = this.props.app.portfolio;
-        const params = {
-            target: {
-                validity: { valid: true },
-                value: tradeRel.balance / this.props.app.portfolio.rates.ask
-            }
-        }
-        this.updateAmountRel(params);
-    }
 
     updateRate = (e) => {
-        if (e.target.validity.valid) {
-            const { updateRate } = this.props.app.portfolio;
-
-            const rate = e.target.value;
-            const parsed = formatNumber(rate);
-            updateRate({ price: parsed, type: 'ask' });
-
-            this.validation({ rate: parsed });
-
-            this.state.autoMax && setTimeout(() => this.setMax())
-        }
+    //    if (e.target.validity.valid) {
+        const { updateRate, updateMethod } = this.props.app.trade;
+        const rate = e.target.value;
+        updateMethod('bot_buy');
+        updateRate({ price: rate }, 'ask');
+    //    }
     }
 
-    updateAmountRel = (e) => {
-        if (e.target.validity.valid) {
-            const amountRel = e.target.value;
-            const parsed = formatNumber(amountRel);
-            const { tradeRel } = this.props.app.portfolio;
-
-            if (amountRel * this.props.app.portfolio.rates.ask === tradeRel.balance) {
-                this.setState({ autoMax: true })
-            } else {
-                this.setState({ autoMax: false })
-            }
-
-
-            this.setState({ amountRel: parsed });
-            this.validation({ amountRel: parsed });
-        }
+    updateAmount = (e) => {
+    //    if (e.target.validity.valid) {
+        const { updateAmount, updateMethod } = this.props.app.trade;
+        const amount = e.target.value;
+        updateMethod('bot_buy');
+        updateAmount({ amount });
+    //    }
     }
 
     tradeWith = (e, coin) => {
-        const { setTrade } = this.props.app.portfolio;
+        const { setTrade } = this.props.app.trade;
         setTrade(coin, 'Rel');
         // autoclose after selection
         this.props.onClose && this.props.onClose();
     }
-
-
-    closeSelects = () => { this.setState({ picker: false, showOrderbook: false }) }
 
 
     renderPrice = () => (
@@ -180,10 +108,6 @@ class Trade extends React.Component {
       <section className="trade-amount_input_price">
         <span className="label">
           <strong className="label-title">Max Price</strong>
-          <small>
-            <button className="link" onClick={(e) => this.toggleOrderbook(e)}>ask</button>
-            <button className="link" onClick={(e) => this.toggleOrderbook(e)}>bid</button>
-          </small>
         </span>
         <div className="trade-amount_input-wrapper">
           <input
@@ -193,7 +117,7 @@ class Trade extends React.Component {
             step="any"
             placeholder="0.00"
             style={{ fontSize: 18 }}
-            value={this.props.app.portfolio.rates.ask}
+            value={this.props.app.trade.rates.ask.price}
             onChange={(e) => this.updateRate(e)}
           />
           <CoinPicker onSelected={(e, coin) => this.tradeWith(e, coin)} trade />
@@ -204,7 +128,7 @@ class Trade extends React.Component {
 
 
     renderAmount = () => {
-        const { tradeRel } = this.props.app.portfolio;
+        const { tradeRel, setMax } = this.props.app.trade;
         return (
           <section className="trade-amount_input_amount">
             <span className="label">
@@ -218,10 +142,10 @@ class Trade extends React.Component {
                 step="any"
                 placeholder="0.00"
                 style={{ fontSize: 18 }}
-                value={this.state.amountRel}
-                onChange={(e) => this.updateAmountRel(e)}
+                value={this.props.app.trade.amounts.rel}
+                onChange={(e) => this.updateAmount(e)}
               />
-              { tradeRel.balance > 0 && this.props.app.portfolio.rates.ask > 0 && <button className="trade-setMax" onClick={() => this.setMax()}>Max</button> }
+              { tradeRel.balance > 0 && this.props.app.trade.rates.ask.price > 0 && <button className="trade-setMax" onClick={() => setMax()}>Max</button> }
             </div>
 
           </section>
@@ -232,14 +156,14 @@ class Trade extends React.Component {
     renderButton = () => {
         const { loader } = this.props.app;
         const orderLoader = loader.getLoader(5);
-        const { tradeBase, tradeRel } = this.props.app.portfolio;
+        const { tradeBase, tradeRel, rates, amounts, validation } = this.props.app.trade;
         return (
           <section className={`trade-button-wrapper ${tradeBase.coin}`}>
-            <button className="trade-button withBorder action primary coin-bg" disabled={orderLoader} onClick={() => this.trade()} disabled={this.state.validation}>
+            <button className="trade-button withBorder action primary coin-bg" disabled={orderLoader} onClick={() => this.trade()} disabled={validation}>
               <div className="trade-action-amountRel">
-                <small className="trade-action-amountRel-title"> { this.state.validation ? 'VALIDATION' : 'BUY' }</small>
-                { this.state.validation ? this.state.validation : <span>{this.state.amountRel} {tradeBase.coin}</span> }
-                { this.state.validation ? '' : <small>(for {this.state.amountRel * this.props.app.portfolio.rates.ask } {tradeRel.coin})</small> }
+                <small className="trade-action-amountRel-title"> { validation ? 'VALIDATION' : 'BUY' }</small>
+                { validation || <span>{amounts.rel} {tradeBase.coin}</span> }
+                { validation ? '' : <small>(for {amounts.rel * rates.ask.price } {tradeRel.coin})</small> }
               </div>
               <i dangerouslySetInnerHTML={{ __html: shuffle }} />
             </button>
@@ -248,8 +172,8 @@ class Trade extends React.Component {
     }
 
     renderDeposit = () => {
-        const { tradeRel } = this.props.app.portfolio;
-        console.log(this.state.amountRel * this.props.app.portfolio.rates.ask)
+        const { tradeRel, amounts, rates } = this.props.app.trade;
+
         return (
           <section className="trade-deposit">
             <div className={`trade-deposit-body`}>
@@ -258,7 +182,7 @@ class Trade extends React.Component {
                   <span>Awaiting {tradeRel.name} deposit</span>
                 </p>
                   <p className="coin-colorized">
-                    <strong>{ (this.state.amountRel * this.props.app.portfolio.rates.ask) - tradeRel.balance } { tradeRel.coin }</strong>
+                    <strong>{ (amounts.rel * rates.ask.price) - tradeRel.balance } { tradeRel.coin }</strong>
                     <i>{tradeRel.icon}</i>
                   </p>
                   <p className="trade-deposit-amount-left-balance"><small>current balance <br /> {tradeRel.balance} {tradeRel.coin} </small></p>
@@ -290,16 +214,13 @@ class Trade extends React.Component {
         // portfolio
         const { loader } = this.props.app;
         const orderLoader = loader.getLoader(5);
-        const { tradeBase, tradeRel } = this.props.app.portfolio;
+        const { tradeBase, tradeRel } = this.props.app.trade;
 
         let action = null;
 
         if (!orderLoader) {
-            action = tradeRel.balance >= (this.state.amountRel * this.props.app.portfolio.rates.ask) ? this.renderButton() : this.renderDeposit()
+            action = tradeRel.balance >= (this.props.app.trade.amounts.rel * this.props.app.trade.rates.ask.price) ? this.renderButton() : this.renderDeposit()
         }
-
-        console.log(this.props.app.portfolio.rates.ask)
-
 
         return (
           <section className={this.getClassState()}>

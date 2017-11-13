@@ -60,7 +60,7 @@ class Emitter extends EventEmitter {
                     return reject(error);
                 }
 
-                if (data.method !== 'getcoins' && data.method !== 'passphrase') {
+                if (data.method !== 'getcoins' && data.method !== 'passphrase' && data.method !== 'orderbook') {
                     console.log(`${data.method} >>>`)
                     console.log(body);
                 }
@@ -232,21 +232,35 @@ class Emitter extends EventEmitter {
             // console.log(`error fetch botid`)
             reject(error);
         }));
+    }
+
+    fetchRecentSwaps() {
+        const self = this;
+        const data = { userpass: self.userpass, method: 'recentswaps', limit: 20 };
+        const url = 'http://127.0.0.1:7783';
+
+        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((swapsList) => {
+            self.emit('recentswaps', swapsList)
+            resolve(swapsList);
+        }).catch((error) => {
+            reject(error);
+        }));
+    }
 
 
-        // const getstatus = (botList) => botList.map((botID) => self.botstatus(botID).then((botStatus) => botStatus))
-        //
-        // return fetch.then((botList) => {
-        //     if (botList) {
-        //         return Promise.all(getstatus(botList).then((botlist) => {
-        //             console.log('botstats');
-        //             console.log(botlist);
-        //             return self.emit('botstatus', botlist)
-        //         }).catch(() => console.log('cant get botlist')));
-        //     }
-        //
-        //     return [];
-        // }).catch(() => []);
+    fetchSwaps() {
+        const self = this;
+        const data = { userpass: self.userpass, method: 'swapstatus', limit: 20 };
+        const url = 'http://127.0.0.1:7783';
+
+        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((swapsList) => {
+            self.emit('swaps', swapsList)
+            swapsList.swaps.map((swap) => self.swapstatus(swap));
+
+            resolve(swapsList);
+        }).catch((error) => {
+            reject(error);
+        }));
     }
 
     getUserpass({ passphrase }) {
@@ -297,35 +311,13 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: self.userpass, method: 'getcoins' };
         const url = 'http://127.0.0.1:7783';
-        const fetch = new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
+        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             resolve(result);
         }).catch((error) => {
             console.log(`error getcoins`);
             // console.log(error)
             reject(error);
         }));
-
-        return fetch;
-
-        const updateBalance = (coinList) => coinList.map((coin) => {
-            if (coin.electrum) {
-                return self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
-                    console.log(`electrum balance update ${coin.coin} - ${coinBalance.balance}`)
-                    coin.balance = coinBalance.balance;
-                    return coin;
-                }).catch(() => coin);
-            }
-
-            return coin;
-        })
-
-        return fetch.then((coinList) => {
-            if (coinList) {
-                return Promise.all(updateBalance(coinList || []));
-            }
-
-            return [];
-        })
     }
 
     disableCoin({ coin = '', type }) {
@@ -400,9 +392,21 @@ class Emitter extends EventEmitter {
         if (method === 'bot_sell') {
             data.basevolume = volume;
             data.minprice = price;
-        } else {
+        }
+
+        if (method === 'sell') {
+            data.basevolume = volume;
+            data.price = price;
+        }
+
+        if (method === 'bot_buy') {
             data.relvolume = volume;
             data.maxprice = price;
+        }
+
+        if (method === 'buy') {
+            data.relvolume = volume;
+            data.price = price;
         }
 
         const url = 'http://127.0.0.1:7783';
@@ -414,23 +418,26 @@ class Emitter extends EventEmitter {
                 return self.emit('trade', result);
             }
 
-            if (result.withdraw.complete === true) {
-                self.emit('loading', { type: 'add', key: 7 });
+            if (result.withdraw) {
+                if (result.withdraw.complete === true) {
+                    self.emit('loading', { type: 'add', key: 7 });
 
-                return self.sendrawtransaction({ coin: rel, signedtx: result.withdraw.hex }).then((confirm) => {
-                    if (confirm.error) {
-                        return self.emit('growler', { key: 8 })
-                    }
-                    self.autosplitLoop = setTimeout(() => {
-                        self.emit('loading', { type: 'delete', key: 7 });
-                        tradeRequest();
-                    }, 40000);
-                })
+                    return self.sendrawtransaction({ coin: rel, signedtx: result.withdraw.hex }).then((confirm) => {
+                        if (confirm.error) {
+                            return self.emit('growler', { key: 8, desc: confirm.error })
+                        }
+                        self.autosplitLoop = setTimeout(() => {
+                            self.emit('loading', { type: 'delete', key: 7 });
+                            tradeRequest();
+                        }, 40000);
+                    })
+                }
+            } else {
+                return self.emit('growler', { key: 6, desc: result.error });
             }
-
-            return self.emit('growler', { key: 6, desc: result.error });
-        }).catch((error) => {
-            self.emit('growler', { key: 6, desc: error })
+        }).catch((e) => {
+            console.log('yo');
+            self.emit('growler', { key: 6 })
         });
 
         return tradeRequest();
@@ -450,19 +457,6 @@ class Emitter extends EventEmitter {
             // console.log(`error botstatus ${botid}`)
             reject(error);
         }));
-
-        // const getstatus = (status) => new Promise((resolve) => {
-        //     const swaps = status.trades.filter((trade) => trade.requestid && trade.quoteid)
-        //     if (swaps.length > 0) {
-        //         status.swapstatus = swaps.map(({ requestid, quoteid }) => self.swapstatus({ requestid, quoteid }).then((swapstatus) => swapstatus).catch(() => status))
-        //     }
-        //     resolve(status);
-        // })
-        //
-        // return fetch.then((status) => Promise.all(getstatus(status)).then((result) => result).catch(() => status)).catch(() => {
-        //     console.log(status);
-        //     return status
-        // })
     }
 
     swapstatus({ requestid, quoteid }) {

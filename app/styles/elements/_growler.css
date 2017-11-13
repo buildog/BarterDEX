@@ -1,7 +1,6 @@
 .growler {
     position: fixed;
     top: 0px;
-    width: 100%;
     display: flex;
     flex-direction: column;
     list-style: none;
@@ -16,12 +15,12 @@
 .growler-success,
 .growler-fail {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
     background: $green;
     color: #FFF;
-    padding: 10px;
+    padding: 10px 20px;
     box-shadow: $box-shadow-inputs;
     border-radius: 4px;
     margin-bottom: 20px;
@@ -31,6 +30,19 @@
 .growler-fail {
     background: $orange;
     cursor: pointer;
+}
+
+.growler-title {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+}
+
+.growler-desc {
+    font-weight: bold;
 }
 
 .growler-success i,
@@ -55,5 +67,5 @@
 
 .growler:empty {
     opacity: 0;
-    transform: translateX(-20px);
+    transform: translateY(-20px);
 }

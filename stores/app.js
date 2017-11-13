@@ -23,7 +23,6 @@ export default class AppStore {
         this.loader = new LoaderStore();
         this.orderbook = new OrderbookStore();
         this.market = new MarketStore();
-        this.trade = new TradeStore();
         this.growler = new GrowlerStore();
 
         this.appVersion = `version ${appVersion}`;
@@ -35,6 +34,11 @@ export default class AppStore {
             marketStore: this.market
         });
 
+        this.trade = new TradeStore({
+            portfolioStore: this.portfolio
+        });
+
+
         /* set userpass */
         ipcRenderer.on('updateUserInfo', (e, { userpass }) => {
             if (typeof (Storage) !== 'undefined') {
@@ -44,8 +48,8 @@ export default class AppStore {
 
             self.userpass = userpass;
             // start autorefresh of portfolio
-            self.portfolio.refresh();
-            self.portfolio.autorefresh = setInterval(() => self.portfolio.refresh(), 6000)
+            ipcRenderer.send('refresh')
+            self.autorefresh = setInterval(() => ipcRenderer.send('refresh'), 6000)
         });
 
         ipcRenderer.on('resetUserInfo', () => {
@@ -81,7 +85,7 @@ export default class AppStore {
       }
 
       // send login passphrase
-      clearInterval(self.portfolio.autorefresh);
+      clearInterval(self.autorefresh);
       self.orderbook.killListener();
       self.portfolio.leave();
       shepherdIPC({ command: 'logout' });

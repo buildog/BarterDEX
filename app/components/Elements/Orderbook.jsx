@@ -65,8 +65,9 @@ class Orderbook extends React.Component {
 
     render() {
         const self = this;
-        const { updateRate, rates, tradeRel, tradeBase } = this.props.app.portfolio;
+        const { tradeRel, tradeBase } = this.props.app.trade;
         const { asks, bids } = this.props.app.orderbook;
+        const { updateRate, rates, updateMethod } = this.props.app.trade;
         const orderbook = { asks, bids };
         const height = (this.props.windowHeight - 300) / 2;
 
@@ -82,10 +83,10 @@ class Orderbook extends React.Component {
               style={{ height }}
               getTrProps={(state, rowInfo) => ({
                   onClick: e => {
-                      console.log(rowInfo)
-                      updateRate({ price: rowInfo.original.price, type: 'ask' })
+                      updateMethod('buy');
+                      updateRate(rowInfo.original, 'ask')
                   },
-                  className: rowInfo && rowInfo.original.price === rates.ask ? 'selected coin-colorized' : ''
+                  className: rowInfo && rowInfo.original === rates.ask ? 'selected coin-colorized' : ''
               })}
             />
             <ReactTable
@@ -98,10 +99,10 @@ class Orderbook extends React.Component {
               style={{ height }}
               getTrProps={(state, rowInfo) => ({
                   onClick: e => {
-                      console.log(rowInfo)
-                      updateRate({ price: rowInfo.original.price, type: 'ask' })
+                      updateMethod('buy');
+                      updateRate(rowInfo.original, 'bid')
                   },
-                  className: rowInfo && rowInfo.original.price === rates.ask ? 'selected coin-colorized' : ''
+                  className: rowInfo && rowInfo.original === rates.bid ? 'selected coin-colorized' : ''
               })}
             />
           </section>

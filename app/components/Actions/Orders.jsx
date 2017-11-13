@@ -46,7 +46,7 @@ class Orders extends React.Component {
 
 
     render() {
-        const { tradeBase } = this.props.app.portfolio;
+        const { tradeBase } = this.props.app.trade;
         let { bots } = this.props.app.trade;
         bots = bots.filter((bot) => bot.base === tradeBase.coin);
 
