@@ -1,5 +1,6 @@
 import { observable, action } from 'mobx';
 import { ipcRenderer } from 'electron';
+import React from 'react'
 
 const removeTrailingZeros = (value) => value
 
