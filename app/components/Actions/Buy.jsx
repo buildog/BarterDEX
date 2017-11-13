@@ -183,7 +183,7 @@ class Trade extends React.Component {
                   <span>Awaiting {tradeRel.name} deposit</span>
                 </p>
                   <p className="coin-colorized">
-                    <strong>{ (amounts.rel * rates.ask.price) - tradeRel.balance } { tradeRel.coin }</strong>
+                    <strong>{ (amounts.rel * rates.ask.price).toFixed(8) - tradeRel.balance } { tradeRel.coin }</strong>
                     <i>{tradeRel.icon}</i>
                   </p>
                   <p className="trade-deposit-amount-left-balance"><small>current balance <br /> {tradeRel.balance} {tradeRel.coin} </small></p>

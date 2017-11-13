@@ -408,7 +408,7 @@
 /* deposit */
 
 .trade-deposit {
-    background: $background-app;
+    background: #FFF;
     box-shadow: $box-shadow-inputs;
     border-radius: 4px;
     padding: 0 10px 10px
@@ -452,6 +452,7 @@
     max-width: calc(100% - 80px);
     text-align: left;
     font-size: .8em;
+    color: $background-dark
 
 }
 
@@ -498,7 +499,7 @@
 
 
 .trade-deposit-amount-left-balance {
-    color: $color-dark;
+    color: $background-dark;
     opacity: .5
 }
 
