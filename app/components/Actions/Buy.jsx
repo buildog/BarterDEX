@@ -82,7 +82,7 @@ class Trade extends React.Component {
     //    if (e.target.validity.valid) {
         const { updateRate, updateMethod } = this.props.app.trade;
         const rate = e.target.value;
-        updateMethod('bot_buy');
+        updateMethod('buy');
         updateRate({ price: rate }, 'ask');
     //    }
     }
@@ -91,7 +91,7 @@ class Trade extends React.Component {
     //    if (e.target.validity.valid) {
         const { updateAmount, updateMethod } = this.props.app.trade;
         const amount = e.target.value;
-        updateMethod('bot_buy');
+        updateMethod('buy');
         updateAmount({ amount });
     //    }
     }
