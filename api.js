@@ -311,7 +311,7 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: self.userpass, method: 'getcoins' };
         const url = 'http://127.0.0.1:7783';
-        const fetch = new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
+        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             resolve(result);
         }).catch((error) => {
             console.log(`error getcoins`);
@@ -321,11 +321,12 @@ class Emitter extends EventEmitter {
 
         const updateBalance = (coinList) => coinList.map((coin) => {
             if (coin.electrum) {
-                return self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
-            // console.log(`electrum balance update ${coin.coin}`)
+                return self.listunspent({ coin: coin.coin, address: coin.smartaddress }).then(() =>
+                self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
+                // console.log(`electrum balance update ${coin.coin}`)
                     coin.balance = coinBalance.balance;
                     return coin;
-                }).catch(() => coin);
+                }).catch(() => coin))
             }
 
             return coin;
