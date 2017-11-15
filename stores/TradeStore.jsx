@@ -84,7 +84,6 @@ export default class TradeStore {
         const bot = ghost.filter((item) => item.botid === update.botid);
         if (bot.length > 0) {
             ghost[ghost.indexOf(bot)] = update;
-            console.log(ghost[ghost.indexOf(bot)]);
         } else {
             ghost.push(update);
         }

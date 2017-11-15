@@ -11,7 +11,7 @@ const CONSTANTS = {
     },
     growler: {
         0: {
-            message: 'Trade bot launched',
+            message: 'Trade request sent',
             type: 1
         },
         1: {
