@@ -81,6 +81,14 @@ export default class PortfolioStore {
 
     @action getCoin = (short) => this.installedCoins.filter((asset) => asset.coin === short)[0];
 
+    @action getIcon = (short) => {
+        const coin = this.getCoin(short);
+        if (coin) {
+            return coin.icon
+        }
+        return short
+    }
+
 
     /* @params { method, base, rel, price, relvolume }
     */

@@ -4,6 +4,8 @@
 
 .orders-item {
     display: flex;
+    flex-direction: column;
+    padding: 20px 20px 10px 20px;
 }
 
 .order-item-stopped {
@@ -16,10 +18,76 @@
 .orders-item-details {
     flex-grow: 1;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 10px;
+    width: 100%;
 }
+
+.orders-item-details-coins {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.orders-item-details-coin {
+    display: flex;
+    align-items: center;
+    width: 120px;
+}
+
+.orders-item-details-coins .orders-item-details-coin:first-of-type {
+    justify-content: flex-end;
+
+}
+
+
+
+.orders-item-details-coin-amount {
+    font-size: 14px
+}
+
+.orders-item-details-coin > * {
+    margin-right: 5px
+}
+
+
+
+.orders-item-details-coins {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.orders-item-details-coin-icon i,
+.orders-item-details-coin-icon svg,
+.orders-item-details-coin-icon .coin-icon-placeholder {
+    width: 24px;
+    height: 24px;
+    font-size: 13px;
+    display: flex;
+}
+
+
+.orders-item-details-type {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+}
+
+.orders-item-details-type-label {
+    text-transform: capitalize;
+}
+
+.orders-item-details-coins-tradeType svg {
+    fill: #FFF;
+    width: 20px;
+    height: 20px;
+}
+
+
+
 
 .orders-item-details-action {
     display: flex;
@@ -42,9 +110,6 @@
     color: $color-dark;
 }
 
-.orders-item-details-action-type-title {
-    text-transform: capitalize;
-}
 
 .orders-item-details-action-type small {
     color: $color-primary
@@ -53,24 +118,28 @@
 .orders-item-details-meta {
     width: 100%;
     display: flex;
+    flex-direction: column;
 }
 
-.orders-item-details-meta div {
+.orders-item-details-meta-more {
+    display: flex;
+    width: 100%;
+    display: none;
+}
+
+.orders-item-details-meta-more-data {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-}
-
-.orders-item-details-meta div:first-child {
     flex-grow: 1
 }
 
-.orders-item-details-meta button:first-of-type {
+.orders-item-details-meta-more button:first-of-type {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
 
-.orders-item-details-meta button:last-of-type {
+.orders-item-details-meta-more button:last-of-type {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }

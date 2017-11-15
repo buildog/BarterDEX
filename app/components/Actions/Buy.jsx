@@ -183,7 +183,7 @@ class Trade extends React.Component {
             <div className={`trade-deposit-body`}>
               <section className="trade-deposit-amount">
                 <section className={`trade-deposit-amount-left ${tradeRel.coin}`}><p>
-                  <span>Awaiting {tradeRel.name} deposit</span>
+                  <span>Awaiting deposit of</span>
                 </p>
                   <p className="coin-colorized">
                     <strong>{ formatSatoshi((amounts.rel * rates.ask.price) - tradeRel.balance) } { tradeRel.coin }</strong>
@@ -191,7 +191,7 @@ class Trade extends React.Component {
                   </p>
                   <p className="trade-deposit-amount-left-balance"><small>current balance <br /> {tradeRel.balance} {tradeRel.coin} </small></p>
                 </section>
-                <QRCode size={88} value={tradeRel.smartaddress} />
+                <QRCode className="deposit-qr" size={88} value={tradeRel.smartaddress} />
               </section>
               <section className="trade-deposit-address">
                 <Clipboard copyLabel={tradeRel.smartaddress} value={tradeRel.smartaddress} />

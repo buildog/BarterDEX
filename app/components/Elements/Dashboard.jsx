@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import classNames from 'classnames';
 import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
-import { CoinPicker } from '../';
+import { Orders } from '../';
 import circles from '../../static/circlesWhite.svg';
 import arrow from '../../static/arrow.svg';
 import logo from '../../static/favicon.svg';
@@ -56,7 +56,8 @@ class Dashboard extends React.Component {
          </div>)
 
     renderDashboard = () => {
-        const { installedCoins, colors, total, renderBalance } = this.props.app.portfolio;
+        const { installedCoins, colors, total, renderBalance, getCoin } = this.props.app.portfolio;
+        const { swaps } = this.props.app.trade;
         const hasRel = installedCoins.filter((coin) => coin.rel > 0);
         const hasBalance = installedCoins.filter((coin) => coin.balance > 0);
         return (
@@ -77,7 +78,7 @@ class Dashboard extends React.Component {
                     {hasRel.map((coin) => <Cell key={coin.coin} stroke="transparent" fill={colors[coin.coin]} />)}
                   </Pie>
                 </PieChart>
-                </ResponsiveContainer> }
+              </ResponsiveContainer> }
               { total.rel && <h1>
                 <label>Estimated balance</label>
                 <span>{ total.rel }</span>
@@ -86,7 +87,12 @@ class Dashboard extends React.Component {
 
               { (hasBalance.length === 0 && installedCoins.length > 0) && this.noticeBalance() }
 
+              <button>view swaps</button>
+
             </header>
+
+            { installedCoins.length > 0 && <Orders /> }
+
 
             <ul className="dashboard-wallets-list">
 

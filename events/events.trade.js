@@ -28,4 +28,7 @@ export const tradeEvents = ({ api, emitter, listener }) => {
 
     api.on('botlist', (result) => emitter.send('botlist', result))
     api.on('botstatus', (result) => emitter.send('botstatus', result))
+    api.on('swaps', (result) => emitter.send('swaps', result))
+    api.on('recentswaps', (result) => emitter.send('recentswaps', result))
+    api.on('swapstatus', (result) => emitter.send('swapstatus', result))
 }

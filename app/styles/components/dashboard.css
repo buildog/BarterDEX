@@ -43,8 +43,16 @@
 }
 
 .dashboard-balances-pie svg {
-    transform: scale(2.8);
-    transform-origin: center 20%
+    transform: scale(3.8);
+    transform-origin: center 33%
+}
+
+.dashboard-swaps {
+    position: relative;
+}
+
+.dashboard-swaps-list {
+    position: absolute;
 }
 
 .dashboard-wallets .dashboard-wallets-list {
@@ -83,9 +91,9 @@
 
 .dashboard-empty-logo svg {
     position: absolute;
-    top: 0;
-    left: -20px;
-    transform: scale(3);
+    top: -60px;
+    left: -10px;
+    transform: scale(2.2);
     transform-origin: center 90%;
     opacity: .2
 }

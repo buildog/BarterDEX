@@ -12,6 +12,8 @@ export default class TradeStore {
     @observable tradeBase = false;
     @observable tradeRel = false;
     @observable bots = [];
+    @observable swaps = [];
+
     // @observable status = [];
     @observable rates = {
         ask: {
@@ -40,6 +42,9 @@ export default class TradeStore {
         ipcRenderer.on('trade', (e, result) => { self.tradeCb(result) });
         ipcRenderer.on('botstatus', (e, result) => { self.botstatus(result) });
         ipcRenderer.on('updateTrade', (e, { coin, type }) => { self.updateTrade(coin, type) });
+        ipcRenderer.on('swaps', (e, { swaps }) => { self.updateSwaps(swaps) });
+        ipcRenderer.on('recentswaps', (e, result) => { self.updateRecentSwaps(result) });
+        ipcRenderer.on('swapstatus', (e, result) => { self.updateSwapStatus(result) });
     }
 
     @action reset = () => {
@@ -78,16 +83,36 @@ export default class TradeStore {
     }
 
 
-    botstatus = (update) => {
-        const ghost = JSON.parse(JSON.stringify(this.bots));
+    updateSwaps = () => {
+        // this.swaps = swaps;
+    }
 
-        const bot = ghost.filter((item) => item.botid === update.botid);
-        if (bot.length > 0) {
-            ghost[ghost.indexOf(bot)] = update;
+    updateRecentSwaps = (recents) => {
+
+    }
+
+    updateSwapStatus = (update) => {
+        const swap = this.swaps.filter((item) => item.quoteid === update.quoteid);
+        if (swap.length > 0) {
+            const index = this.swaps.indexOf(swap[0]);
+            this.swaps[index] = update;
         } else {
-            ghost.push(update);
+            this.swaps.push(update);
         }
-        this.bots = ghost.sort((a, b) => b.started - a.started);
+    }
+
+    botstatus = (update) => {
+        const bot = this.bots.filter((item) => item.botid === update.botid);
+        if (bot.length > 0) {
+            const index = this.bots.indexOf(bot[0]);
+            if (update.stopped) {
+                this.bots.splice(index);
+                return;
+            }
+            this.bots[index] = update;
+        } else if (!update.stopped) {
+            this.bots.push(update);
+        }
     }
 
     updateTrade = (coin, type) => {
@@ -175,8 +200,8 @@ export default class TradeStore {
 
     @action updateRate = (values, type) => {
         values.pricefree = values.price;
-        values.fees = (values.price * 0.01).toFixed(8);
-        values.price = (values.price * 1.01).toFixed(8);
+        values.fees = (values.price * 0.0111).toFixed(8);
+        values.price = (values.price * 1.0111).toFixed(8);
         this.rates[type] = JSON.parse(JSON.stringify(values));
         this.validator({ rate: values.price, amount: values.maxvolume });
         this.amounts.autoMax && setTimeout(() => this.setMax())

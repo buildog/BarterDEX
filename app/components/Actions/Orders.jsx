@@ -8,6 +8,7 @@ import sell from '../../static/sell.svg';
 import stop from '../../static/stop.svg';
 import play from '../../static/play.svg';
 import pause from '../../static/pause.svg';
+import shuffle from '../../static/shuffle.svg';
 
 const formatNumber = (str) => str;
 
@@ -45,59 +46,100 @@ class Orders extends React.Component {
     }
 
 
-    render() {
-        const { tradeBase } = this.props.app.trade;
-        let { bots } = this.props.app.trade;
-        bots = bots.filter((bot) => bot.base === tradeBase.coin);
+    renderBotState = (bot) => (<div className={`orders-item-details-meta ${bot.base}`}>
+      <progress className="progress_bar" value={bot.percentage || 0} data-amount={`${bot.volume || 0} ${bot.base}`} max="100" />
 
-        const listBots = bots.map((bot, i) => (
-          <li className={this.getBotClassState(bot.stopped)} key={i}>
-            <div className={`orders-item-details`}>
+      <hr />
 
-              <div className={`orders-item-details-action progress-container ${bot.base}`}>
-                <span className="orders-item-details-action-type">
-                  <span className="orders-item-details-action-type-title">{bot.action}</span>
-                  { bot.trades.length > 0 && <small>{bot.trades.length} attempts </small> }
-                </span>
-                <span className="coin-colorized orders-item-details_icon" dangerouslySetInnerHTML={{ __html: bot.action === 'buy' ? buy : sell }} />
-                <span>{ bot.totalbasevolume } { bot.base }</span>
+      <div className="orders-item-details-meta-more">
+        <div className="orders-item-details-meta-more-data">
+          <small>{ bot.trades.length > 0 && <small>{bot.trades.length} attempts </small> }</small>
+          <small className="coin-colorized"><strong>Max Price</strong> { bot.maxprice } { bot.rel }</small>
+          <small className="coin-colorized"><strong>Total</strong> { bot.totalrelvolume } { bot.rel }</small>
+        </div>
+
+        <div>
+
+          { !bot.stopped && <button onClick={() => this.toggleBot({ botid: bot.botid, method: bot.paused ? 'bot_resume' : 'bot_pause' })} className={this.getBtn(bot.paused ? 'resume' : 'pause')}>
+            <i dangerouslySetInnerHTML={{ __html: bot.paused ? play : pause }} />
+          </button> }
+
+          { bot.stopped ? <strong>STOPPED</strong> : <button onClick={() => this.toggleBot({ botid: bot.botid, method: 'bot_stop' })} className={this.getBtn('stop')}>
+            <i dangerouslySetInnerHTML={{ __html: stop }} />
+          </button> }
+        </div>
+      </div>
+
+    </div>
+    )
+
+    renderBot = (bot, i) => {
+        const { getIcon } = this.props.app.portfolio;
+
+        return (
+          <li className={this.getBotClassState(bot.stopped)} key={i}><div className={`orders-item-details`}>
+
+            <div className={`orders-item-details-coins`}>
+              <section className={`orders-item-details-coin ${bot.rel}`}>
+                <span className="orders-item-details-coin-amount">{ bot.totalrelvolume }</span>
+                <div className="orders-item-details-coin-icon coin-colorized"> { getIcon(bot.rel) }</div>
+              </section>
+              <div className={`orders-item-details-type`}>
+                <span className="orders-item-details-type-label">Bot { bot.action }</span>
+                <i className="orders-item-details-coins-tradeType" dangerouslySetInnerHTML={{ __html: shuffle }} />
               </div>
+              <section className={`orders-item-details-coin ${bot.base}`}>
+                <div className="orders-item-details-coin-icon coin-colorized"> { getIcon(bot.base) }</div>
+                <span className="orders-item-details-coin-amount"> { bot.totalbasevolume }</span>
+              </section>
 
-              <progress className="progress_bar" value={bot.percentage || 0} data-amount={`${bot.volume || 0} ${bot.base}`} max="100" />
+            </div>
 
-              <hr />
-              <div className={`orders-item-details-meta ${bot.base}`}>
-                <div>
-                  <small className="coin-colorized"><strong>Max Price</strong> { bot.maxprice } { bot.rel }</small>
-                  <small className="coin-colorized"><strong>Total</strong> { bot.totalrelvolume } { bot.rel }</small>
+          </div>
+            {this.renderBotState(bot)}
+
+          </li>
+        )
+    }
+
+    renderSwap = (swap, i) => {
+        const { getIcon } = this.props.app.portfolio;
+        return (
+          <li className={this.getBotClassState(swap.iambob)} key={i}>
+            <div className={`orders-item-details`}>
+              <div className={`orders-item-details-coins`}>
+                <section className={`orders-item-details-coin ${swap.iambob ? swap.bob : swap.alice}`}>
+                  <span className="orders-item-details-coin-amount"> { swap.iambob ? swap.srcamount : swap.destamount }</span>
+                  <div className="orders-item-details-coin-icon coin-colorized"> { swap.iambob ? getIcon(swap.bob) : getIcon(swap.alice) }</div>
+                </section>
+                <div className={`orders-item-details-type`}>
+                  <span className="orders-item-details-type-label">{ swap.status }</span>
+                  <i className="orders-item-details-coins-tradeType" dangerouslySetInnerHTML={{ __html: shuffle }} />
                 </div>
-
-
-                { !bot.stopped && <button onClick={() => this.toggleBot({ botid: bot.botid, method: bot.paused ? 'bot_resume' : 'bot_pause' })} className={this.getBtn(bot.paused ? 'resume' : 'pause')}>
-                  <i dangerouslySetInnerHTML={{ __html: bot.paused ? play : pause }} />
-                </button> }
-
-                { bot.stopped ? <strong>STOPPED</strong> : <button onClick={() => this.toggleBot({ botid: bot.botid, method: 'bot_stop' })} className={this.getBtn('stop')}>
-                  <i dangerouslySetInnerHTML={{ __html: stop }} />
-                </button> }
-
+                <section className={`orders-item-details-coin ${swap.iambob ? swap.alice : swap.bob}`}>
+                  <div className="orders-item-details-coin-icon coin-colorized"> { swap.iambob ? getIcon(swap.alice) : getIcon(swap.bob) }</div>
+                  <span className="orders-item-details-coin-amount"> { swap.iambob ? swap.destamount : swap.srcamount }</span>
+                </section>
               </div>
             </div>
           </li>
-            )
+        )
+    }
 
+    render() {
+        const { bots, swaps, tradeBase } = this.props.app.trade;
+        const filteredBots = bots.filter((bot) => bot.base === tradeBase.coin);
 
-    );
+        const filteredSwaps = swaps.filter((swap) => swap.bob === tradeBase.coin || swap.alice === tradeBase.coin);
+        const elements = filteredBots.concat(filteredSwaps)
 
-        const hasBots = bots.length > 0;
+        const list = elements.map((data, i) => (data.botid ? this.renderBot(data, i) : this.renderSwap(data, i)));
 
         return (
           <section className={this.getClassState()}>
-            { hasBots ? (
-              <ul className="orders-list singleColumn noHover">
-                { listBots }
-              </ul>
-          ) : '' }
+            { list.length > 0 ? (<ul className="orders-list singleColumn noHover">
+              { list }
+            </ul>) : '' }
           </section>
         );
     }

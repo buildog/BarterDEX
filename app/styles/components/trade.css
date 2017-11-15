@@ -408,10 +408,12 @@
 /* deposit */
 
 .trade-deposit {
+    padding: 0 20px 10px 20px;
     background: #FFF;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
     box-shadow: $box-shadow-inputs;
-    border-radius: 4px;
-    padding: 0 10px 10px
 }
 
 .trade-deposit,
@@ -427,6 +429,11 @@
     width: 100%;
 }
 
+.trade-deposit canvas {
+    padding: 4px;
+    background: #FFF;
+    border-radius: 4px;
+}
 
 .trade-deposit-address {
     display: flex;
@@ -439,7 +446,7 @@
 .trade-deposit-address button {
     text-align: left;
     box-shadow: $box-shadow-inputs;
-    color: $color-dark;
+    color: #000;
     margin-top: 10px;
     background: #FFF;
     width: 100%;
@@ -452,7 +459,9 @@
     max-width: calc(100% - 80px);
     text-align: left;
     font-size: .8em;
-    color: $background-dark
+    color: #000;
+    font-weight: bold;
+
 
 }
 
@@ -499,7 +508,6 @@
 
 
 .trade-deposit-amount-left-balance {
-    color: $background-dark;
     opacity: .5
 }
 

@@ -87,8 +87,13 @@ button.link:hover {
 
 .action.onlyIcon i {
     padding: 0 !important;
-    background: transparent !important
+    background: transparent !important;
 }
+
+.action.onlyIcon i svg {
+    transform: scale(1.6);
+}
+
 
 .action:not(.normaltext) {
     text-transform: uppercase;
@@ -162,7 +167,7 @@ button.link:hover {
     box-shadow: 0px 10px 20px rgba(0,0,0,0.1)
 }
 
-.action.danger.green { background: green }
+.action.danger.green { background: $green }
 .action.danger.orange { background: $orange }
 
 .action.danger i svg { fill: #FFF }

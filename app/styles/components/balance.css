@@ -1,5 +1,4 @@
 .balance-action {
-    padding: 20px;
     background: $background-dark
 }
 
@@ -8,6 +7,15 @@
     display: flex;
 }
 
+.balance-deposit { padding: 20px 20px 0px }
+
+.deposit-withdraw { padding: 0px 20px  20px }
+
+.balance-deposit canvas {
+    padding: 4px;
+    border-radius: 4px;
+    background: #FFF;
+}
 
 .balance-deposit-address {
     display: flex;
