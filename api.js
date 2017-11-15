@@ -407,7 +407,7 @@ class Emitter extends EventEmitter {
 
     trade({ method = 'bot_sell', base, rel, price, volume }) {
         const self = this;
-        const data = { userpass: self.userpass, method, base, rel };
+        const data = { userpass: self.userpass, method, base, rel, timeout: 30 };
 
         if (method === 'bot_sell') {
             data.basevolume = volume;
@@ -456,7 +456,6 @@ class Emitter extends EventEmitter {
                 return self.emit('growler', { key: 6, desc: result.error });
             }
         }).catch((e) => {
-            console.log('yo');
             self.emit('growler', { key: 6 })
         });
 
@@ -503,10 +502,12 @@ class Emitter extends EventEmitter {
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             console.log(`${botid} ${method}`);
             if (method === 'bot_stop') {
-                self.emit('botStopped', result);
+                self.emit('growler', { key: 1 });
             } else {
-                self.emit('botResumed', result);
+                self.emit('growler', { key: 2 });
             }
+
+            self.emit('botstatus', result)
 
             resolve(result);
         }).catch((error) => {
@@ -519,7 +520,7 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: self.userpass, method: 'sendrawtransaction', coin, signedtx };
         const url = 'http://127.0.0.1:7783';
-        console.log(data);
+
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             console.log(`sendWithdraw ${coin}`);
             console.log(result);
@@ -580,7 +581,6 @@ class Emitter extends EventEmitter {
         console.log(`listunspent for ${coin}`);
 
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
-            console.log(result);
             resolve(result);
         }).catch((error) => {
             // console.log('error listunspent')

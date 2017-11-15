@@ -14,8 +14,16 @@ export default class TradeStore {
     @observable bots = [];
     // @observable status = [];
     @observable rates = {
-        ask: { price: 0 },
-        bid: { price: 0 }
+        ask: {
+            price: 0,
+            pricefree: 0,
+            fees: 0
+        },
+        bid: {
+            price: 0,
+            pricefree: 0,
+            fees: 0
+        }
     };
 
     @observable amounts = {
@@ -36,8 +44,16 @@ export default class TradeStore {
 
     @action reset = () => {
         this.rates = {
-            ask: { price: 0 },
-            bid: { price: 0 }
+            ask: {
+                price: 0,
+                pricefree: 0,
+                fees: 0
+            },
+            bid: {
+                price: 0,
+                pricefree: 0,
+                fees: 0
+            }
         };
 
         this.amounts = {
@@ -50,13 +66,25 @@ export default class TradeStore {
         this.validation = 'enter amount to continue';
     }
 
+    formatSatoshi = (input) => input.toFixed(8);
+
+    totalfee = (format) => {
+        const fees = this.amounts.rel * this.rates.ask.fees;
+        if (format) {
+            return this.formatSatoshi(fees)
+        }
+
+        return fees
+    }
+
 
     botstatus = (update) => {
         const ghost = JSON.parse(JSON.stringify(this.bots));
 
         const bot = ghost.filter((item) => item.botid === update.botid);
         if (bot.length > 0) {
-            bot[0] = update;
+            ghost[ghost.indexOf(bot)] = update;
+            console.log(ghost[ghost.indexOf(bot)]);
         } else {
             ghost.push(update);
         }
@@ -147,6 +175,9 @@ export default class TradeStore {
     }
 
     @action updateRate = (values, type) => {
+        values.pricefree = values.price;
+        values.fees = (values.price * 0.01).toFixed(8);
+        values.price = (values.price * 1.01).toFixed(8);
         this.rates[type] = JSON.parse(JSON.stringify(values));
         this.validator({ rate: values.price, amount: values.maxvolume });
         this.amounts.autoMax && setTimeout(() => this.setMax())

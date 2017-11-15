@@ -156,20 +156,12 @@ export default class PortfolioStore {
 
     portfolioTotal = () => {
         const self = this;
-        const amount = self.installedCoins.reduce((accumulator, coin) => {
-            const market = self.getMarket(coin.coin);
-            if (market) {
-                return accumulator + (market.price * coin.balance)
-            }
-
-            return accumulator
-        }, 0);
-
+        const amount = self.installedCoins.reduce((accumulator, coin) => accumulator + coin.rel, 0);
         if (amount > 0) {
-            self.total.fiat = formatCurrency(amount, self.formatFIAT);
             const relMarket = self.getMarket(self.defaultCrypto);
+            self.total.fiat = formatCurrency(amount * relMarket.price, self.formatFIAT);
             if (relMarket) {
-                self.total.rel = formatCurrency(amount / relMarket.price, self.formatCrypto);
+                self.total.rel = formatCurrency(amount, self.formatCrypto);
             }
         } else {
             self.total.fiat = '';

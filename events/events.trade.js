@@ -26,15 +26,6 @@ export const tradeEvents = ({ api, emitter, listener }) => {
         emitter.send('trade', params);
     })
 
-    api.on('botStopped', () => {
-        emitter.send('growler', { key: 1 });
-    })
-
-    api.on('botResumed', () => {
-        emitter.send('growler', { key: 2 });
-    })
-
-
     api.on('botlist', (result) => emitter.send('botlist', result))
     api.on('botstatus', (result) => emitter.send('botstatus', result))
 }

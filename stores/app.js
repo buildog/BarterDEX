@@ -84,7 +84,6 @@ export default class AppStore {
           localStorage.removeItem('userpass');
       }
 
-      // send login passphrase
       clearInterval(self.autorefresh);
       self.orderbook.killListener();
       shepherdIPC({ command: 'logout' });

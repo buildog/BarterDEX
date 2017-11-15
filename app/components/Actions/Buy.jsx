@@ -82,7 +82,7 @@ class Trade extends React.Component {
     //    if (e.target.validity.valid) {
         const { updateRate, updateMethod } = this.props.app.trade;
         const rate = e.target.value;
-        updateMethod('buy');
+        updateMethod('bot_buy');
         updateRate({ price: rate }, 'ask');
     //    }
     }
@@ -91,7 +91,7 @@ class Trade extends React.Component {
     //    if (e.target.validity.valid) {
         const { updateAmount, updateMethod } = this.props.app.trade;
         const amount = e.target.value;
-        updateMethod('buy');
+        updateMethod('bot_buy');
         updateAmount({ amount });
     //    }
     }
@@ -108,7 +108,7 @@ class Trade extends React.Component {
 
       <section className="trade-amount_input_price">
         <span className="label">
-          <strong className="label-title">Max Price</strong>
+          <strong className="label-title">Price</strong>
         </span>
         <div className="trade-amount_input-wrapper">
           <input
@@ -118,7 +118,7 @@ class Trade extends React.Component {
             step="any"
             placeholder="0.00"
             style={{ fontSize: 18 }}
-            value={this.props.app.trade.rates.ask.price}
+            value={this.props.app.trade.rates.ask.pricefree}
             onChange={(e) => this.updateRate(e)}
           />
           <CoinPicker onSelected={(e, coin) => this.tradeWith(e, coin)} trade />
@@ -129,11 +129,13 @@ class Trade extends React.Component {
 
 
     renderAmount = () => {
-        const { tradeRel, setMax } = this.props.app.trade;
+        const { tradeRel, setMax, totalfee } = this.props.app.trade;
         return (
           <section className="trade-amount_input_amount">
             <span className="label">
-              <strong className="label-title">Max Amount</strong>
+              <strong className="label-title">Amount</strong>
+              { totalfee() > 0 && <small>fees { totalfee(true) } { tradeRel.coin }</small> }
+
             </span>
             <div className="trade-amount_input-wrapper">
               <input
@@ -157,14 +159,15 @@ class Trade extends React.Component {
     renderButton = () => {
         const { loader } = this.props.app;
         const orderLoader = loader.getLoader(5);
-        const { tradeBase, tradeRel, rates, amounts, validation } = this.props.app.trade;
+        const { tradeBase, tradeRel, rates, amounts, validation, formatSatoshi } = this.props.app.trade;
+
         return (
           <section className={`trade-button-wrapper ${tradeBase.coin}`}>
             <button className="trade-button withBorder action primary coin-bg" disabled={orderLoader} onClick={() => this.trade()} disabled={validation}>
               <div className="trade-action-amountRel">
                 <small className="trade-action-amountRel-title"> { validation ? 'VALIDATION' : 'BUY' }</small>
                 { validation || <span>{amounts.rel} {tradeBase.coin}</span> }
-                { validation ? '' : <small>(for {amounts.rel * rates.ask.price } {tradeRel.coin})</small> }
+                { validation ? '' : <small>(for { formatSatoshi(amounts.rel * rates.ask.price) } {tradeRel.coin})</small> }
               </div>
               <i dangerouslySetInnerHTML={{ __html: shuffle }} />
             </button>
@@ -173,7 +176,7 @@ class Trade extends React.Component {
     }
 
     renderDeposit = () => {
-        const { tradeRel, amounts, rates } = this.props.app.trade;
+        const { tradeRel, amounts, rates, formatSatoshi } = this.props.app.trade;
 
         return (
           <section className="trade-deposit">
@@ -183,7 +186,7 @@ class Trade extends React.Component {
                   <span>Awaiting {tradeRel.name} deposit</span>
                 </p>
                   <p className="coin-colorized">
-                    <strong>{ (amounts.rel * rates.ask.price).toFixed(8) - tradeRel.balance } { tradeRel.coin }</strong>
+                    <strong>{ formatSatoshi((amounts.rel * rates.ask.price) - tradeRel.balance) } { tradeRel.coin }</strong>
                     <i>{tradeRel.icon}</i>
                   </p>
                   <p className="trade-deposit-amount-left-balance"><small>current balance <br /> {tradeRel.balance} {tradeRel.coin} </small></p>

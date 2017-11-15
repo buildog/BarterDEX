@@ -79,7 +79,7 @@ class Dashboard extends React.Component {
                 </PieChart>
                 </ResponsiveContainer> }
               { total.rel && <h1>
-                <label>Total balance</label>
+                <label>Estimated balance</label>
                 <span>{ total.rel }</span>
                 <small>{ total.fiat }</small>
               </h1> }
