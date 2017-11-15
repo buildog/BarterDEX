@@ -66,9 +66,8 @@ class Orderbook extends React.Component {
 
     render() {
         const self = this;
-        const { tradeRel, tradeBase } = this.props.app.trade;
         const { asks, bids } = this.props.app.orderbook;
-        const { updateRate, rates, updateMethod } = this.props.app.trade;
+        const { tradeRel, tradeBase, updateRate, rates, updateMethod, amounts } = this.props.app.trade;
         const orderbook = { asks, bids };
         const height = (this.props.windowHeight - 300) / 2;
 
@@ -87,7 +86,7 @@ class Orderbook extends React.Component {
                       updateMethod('buy');
                       updateRate(rowInfo.original, 'ask')
                   },
-                  className: rowInfo && rowInfo.original.price === rates.ask.pricefree && rowInfo.original.maxvolume === rates.ask.maxvolume ? 'selected coin-colorized' : ''
+                  className: rowInfo && rowInfo.original.price === rates.ask.pricefree && rowInfo.original.maxvolume === amounts.rel ? 'selected coin-colorized' : ''
               })}
             />
             <ReactTable
@@ -103,7 +102,7 @@ class Orderbook extends React.Component {
                       updateMethod('buy');
                       updateRate(rowInfo.original, 'bid')
                   },
-                  className: rowInfo && rowInfo.original.price === rates.bid.pricefree && rowInfo.original.maxvolume === rates.bid.maxvolume ? 'selected coin-colorized' : ''
+                  className: rowInfo && rowInfo.original.price === rates.bid.pricefree && rowInfo.original.maxvolume === amounts.rel ? 'selected coin-colorized' : ''
               })}
             />
           </section>
