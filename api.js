@@ -114,6 +114,7 @@ class Emitter extends EventEmitter {
 
 
         return this.checkMMStatus().then((instance) => {
+            // HOTFIX: marketmaker launched via terminal
             if (instance === 1000) {
                 console.log('marketmaker not running')
                 fs.pathExists(coinsListFile, (err, exists) => {
