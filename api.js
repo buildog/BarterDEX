@@ -499,17 +499,19 @@ class Emitter extends EventEmitter {
         const data = { userpass: self.userpass, method, botid };
         const url = 'http://127.0.0.1:7783';
 
-        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
+        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((botstatus) => {
             console.log(`${botid} ${method}`);
             if (method === 'bot_stop') {
                 self.emit('growler', { key: 1 });
-            } else {
+            } else if (method === 'bot_resume') {
                 self.emit('growler', { key: 2 });
+            } else if (method === 'bot_start') {
+                self.emit('growler', { key: 10 });
             }
 
             self.emit('botstatus', botstatus)
 
-            resolve(result);
+            resolve(botstatus);
         }).catch((error) => {
             // console.log(`error botstop ${botid}`)
             reject(error);

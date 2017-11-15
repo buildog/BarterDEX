@@ -29,15 +29,15 @@ class Orders extends React.Component {
     })
 
     getBtn = (type) => classNames({
-        'order-stop action align-left onlyIcon danger': true,
+        'order-stop action align-left danger': true,
         orange: type === 'pause',
         green: type === 'resume'
 
     })
 
-    getBotClassState = (stopped) => classNames({
+    getBotClassState = (paused) => classNames({
         'orders-item': true,
-        'order-item-stopped': stopped
+        'order-item-stopped': paused
     })
 
     toggleBot = ({ botid, method }) => {
@@ -53,19 +53,15 @@ class Orders extends React.Component {
 
       <div className="orders-item-details-meta-more">
         <div className="orders-item-details-meta-more-data">
-          <small>{ bot.trades.length > 0 && <small>{bot.trades.length} attempts </small> }</small>
+          <small>{ bot.trades.length > 0 && <small>{bot.trades.length} attempt{bot.trades.length > 1 && 's'} </small> }</small>
           <small className="coin-colorized"><strong>Max Price</strong> { bot.maxprice } { bot.rel }</small>
           <small className="coin-colorized"><strong>Total</strong> { bot.totalrelvolume } { bot.rel }</small>
         </div>
 
         <div>
-
           { !bot.stopped && <button onClick={() => this.toggleBot({ botid: bot.botid, method: bot.paused ? 'bot_resume' : 'bot_pause' })} className={this.getBtn(bot.paused ? 'resume' : 'pause')}>
+            <span>{ bot.paused ? 'resume' : 'pause' }</span>
             <i dangerouslySetInnerHTML={{ __html: bot.paused ? play : pause }} />
-          </button> }
-
-          { bot.stopped ? <strong>STOPPED</strong> : <button onClick={() => this.toggleBot({ botid: bot.botid, method: 'bot_stop' })} className={this.getBtn('stop')}>
-            <i dangerouslySetInnerHTML={{ __html: stop }} />
           </button> }
         </div>
       </div>
@@ -75,29 +71,26 @@ class Orders extends React.Component {
 
     renderBot = (bot, i) => {
         const { getIcon } = this.props.app.portfolio;
-
         return (
-          <li className={this.getBotClassState(bot.stopped)} key={i}><div className={`orders-item-details`}>
-
-            <div className={`orders-item-details-coins`}>
-              <section className={`orders-item-details-coin ${bot.rel}`}>
-                <span className="orders-item-details-coin-amount">{ bot.totalrelvolume }</span>
-                <div className="orders-item-details-coin-icon coin-colorized"> { getIcon(bot.rel) }</div>
-              </section>
-              <div className={`orders-item-details-type`}>
-                <span className="orders-item-details-type-label">Max { bot.action }</span>
-                <i className="orders-item-details-coins-tradeType" dangerouslySetInnerHTML={{ __html: shuffle }} />
+          <li className={this.getBotClassState(bot.paused)} key={i}><div className={`orders-item-details`}>
+            <div className="orders-item-wrapper">
+              <div className={`orders-item-details-coins`}>
+                <section className={`orders-item-details-coin ${bot.rel}`}>
+                  <span className="orders-item-details-coin-amount">{ bot.totalrelvolume }</span>
+                  <div className="orders-item-details-coin-icon coin-colorized"> { getIcon(bot.rel) }</div>
+                </section>
+                <div className={`orders-item-details-type`}>
+                  <span className="orders-item-details-type-label">Max { bot.action }</span>
+                  <i className="orders-item-details-coins-tradeType" dangerouslySetInnerHTML={{ __html: shuffle }} />
+                </div>
+                <section className={`orders-item-details-coin ${bot.base}`}>
+                  <div className="orders-item-details-coin-icon coin-colorized"> { getIcon(bot.base) }</div>
+                  <span className="orders-item-details-coin-amount"> { bot.totalbasevolume }</span>
+                </section>
               </div>
-              <section className={`orders-item-details-coin ${bot.base}`}>
-                <div className="orders-item-details-coin-icon coin-colorized"> { getIcon(bot.base) }</div>
-                <span className="orders-item-details-coin-amount"> { bot.totalbasevolume }</span>
-              </section>
-
+              {this.renderBotState(bot)}
             </div>
-
           </div>
-            {this.renderBotState(bot)}
-
           </li>
         )
     }
@@ -106,20 +99,22 @@ class Orders extends React.Component {
         const { getIcon } = this.props.app.portfolio;
         return (
           <li className={this.getBotClassState(swap.iambob)} key={i}>
-            <div className={`orders-item-details`}>
-              <div className={`orders-item-details-coins`}>
-                <section className={`orders-item-details-coin ${swap.iambob ? swap.bob : swap.alice}`}>
-                  <span className="orders-item-details-coin-amount"> { swap.iambob ? swap.srcamount : swap.destamount }</span>
-                  <div className="orders-item-details-coin-icon coin-colorized"> { swap.iambob ? getIcon(swap.bob) : getIcon(swap.alice) }</div>
-                </section>
-                <div className={`orders-item-details-type`}>
-                  <span className="orders-item-details-type-label">{ swap.status }</span>
-                  <i className="orders-item-details-coins-tradeType" dangerouslySetInnerHTML={{ __html: shuffle }} />
+            <div className="orders-item-wrapper">
+              <div className={`orders-item-details`}>
+                <div className={`orders-item-details-coins`}>
+                  <section className={`orders-item-details-coin ${swap.iambob ? swap.bob : swap.alice}`}>
+                    <span className="orders-item-details-coin-amount"> { swap.iambob ? swap.srcamount : swap.destamount }</span>
+                    <div className="orders-item-details-coin-icon coin-colorized"> { swap.iambob ? getIcon(swap.bob) : getIcon(swap.alice) }</div>
+                  </section>
+                  <div className={`orders-item-details-type`}>
+                    <span className="orders-item-details-type-label">{ swap.status }</span>
+                    <i className="orders-item-details-coins-tradeType" dangerouslySetInnerHTML={{ __html: shuffle }} />
+                  </div>
+                  <section className={`orders-item-details-coin ${swap.iambob ? swap.alice : swap.bob}`}>
+                    <div className="orders-item-details-coin-icon coin-colorized"> { swap.iambob ? getIcon(swap.alice) : getIcon(swap.bob) }</div>
+                    <span className="orders-item-details-coin-amount"> { swap.iambob ? swap.destamount : swap.srcamount }</span>
+                  </section>
                 </div>
-                <section className={`orders-item-details-coin ${swap.iambob ? swap.alice : swap.bob}`}>
-                  <div className="orders-item-details-coin-icon coin-colorized"> { swap.iambob ? getIcon(swap.alice) : getIcon(swap.bob) }</div>
-                  <span className="orders-item-details-coin-amount"> { swap.iambob ? swap.destamount : swap.srcamount }</span>
-                </section>
               </div>
             </div>
           </li>

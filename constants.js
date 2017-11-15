@@ -46,6 +46,10 @@ const CONSTANTS = {
         },
         9: {
             message: 'Login error, retrying...'
+        },
+        10: {
+            message: 'Bot paused',
+            type: 1
         }
 
     },
