@@ -509,8 +509,6 @@ class Emitter extends EventEmitter {
                 self.emit('growler', { key: 10 });
             }
 
-            self.emit('botstatus', botstatus)
-
             resolve(botstatus);
         }).catch((error) => {
             // console.log(`error botstop ${botid}`)
