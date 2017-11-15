@@ -114,7 +114,7 @@ class Emitter extends EventEmitter {
 
 
         return this.checkMMStatus().then((instance) => {
-            if (instance === 0) {
+            if (instance === 1000) {
                 console.log('marketmaker not running')
                 fs.pathExists(coinsListFile, (err, exists) => {
                     if (exists === true) {
