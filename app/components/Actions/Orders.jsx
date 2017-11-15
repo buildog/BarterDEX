@@ -85,7 +85,7 @@ class Orders extends React.Component {
                 <div className="orders-item-details-coin-icon coin-colorized"> { getIcon(bot.rel) }</div>
               </section>
               <div className={`orders-item-details-type`}>
-                <span className="orders-item-details-type-label">Bot { bot.action }</span>
+                <span className="orders-item-details-type-label">Max { bot.action }</span>
                 <i className="orders-item-details-coins-tradeType" dangerouslySetInnerHTML={{ __html: shuffle }} />
               </div>
               <section className={`orders-item-details-coin ${bot.base}`}>
@@ -128,10 +128,16 @@ class Orders extends React.Component {
 
     render() {
         const { bots, swaps, tradeBase } = this.props.app.trade;
-        const filteredBots = bots.filter((bot) => bot.base === tradeBase.coin);
+        let elements;
 
-        const filteredSwaps = swaps.filter((swap) => swap.bob === tradeBase.coin || swap.alice === tradeBase.coin);
-        const elements = filteredBots.concat(filteredSwaps)
+        if (this.props.all) {
+            elements = bots.concat(swaps)
+        } else {
+            const filteredBots = bots.filter((bot) => bot.base === tradeBase.coin);
+            const filteredSwaps = swaps.filter((swap) => swap.bob === tradeBase.coin || swap.alice === tradeBase.coin);
+            elements = filteredBots.concat(filteredSwaps)
+        }
+
 
         const list = elements.map((data, i) => (data.botid ? this.renderBot(data, i) : this.renderSwap(data, i)));
 

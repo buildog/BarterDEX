@@ -47,15 +47,8 @@
     transform-origin: center 33%
 }
 
+.dashboard-wallets .dashboard-wallets-list,
 .dashboard-swaps {
-    position: relative;
-}
-
-.dashboard-swaps-list {
-    position: absolute;
-}
-
-.dashboard-wallets .dashboard-wallets-list {
     height: calc(100vh - 400px);
     overflow: auto;
 }

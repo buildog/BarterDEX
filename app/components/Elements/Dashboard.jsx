@@ -8,6 +8,7 @@ import { Orders } from '../';
 import circles from '../../static/circlesWhite.svg';
 import arrow from '../../static/arrow.svg';
 import logo from '../../static/favicon.svg';
+import history from '../../static/history.svg';
 
 @inject('app')
 @observer
@@ -17,7 +18,8 @@ class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            coinToEnable: ''
+            coinToEnable: '',
+            viewSwap: false
         }
     }
 
@@ -87,14 +89,18 @@ class Dashboard extends React.Component {
 
               { (hasBalance.length === 0 && installedCoins.length > 0) && this.noticeBalance() }
 
-              <button>view swaps</button>
+              <button className="action dark" onClick={() => this.setState({ viewSwap: !this.state.viewSwap })}>
+                { this.state.viewSwap ? <span>close history</span> : <span>swap history</span> }
+                <i dangerouslySetInnerHTML={{ __html: history }} />
+              </button>
 
             </header>
 
-            { installedCoins.length > 0 && <Orders /> }
+
+            { installedCoins.length > 0 && this.state.viewSwap && <section className="dashboard-swaps"><Orders all /></section>}
 
 
-            <ul className="dashboard-wallets-list">
+            { !this.state.viewSwap && <ul className="dashboard-wallets-list">
 
               { installedCoins.map((installed) => {
                   const isElectrum = installed.electrum;
@@ -117,7 +123,7 @@ class Dashboard extends React.Component {
                   )
               }
             )}
-            </ul>
+            </ul> }
 
 
           </section>
