@@ -18,22 +18,23 @@ const orderbookColumns = (type, maxDepth, rel, coin) => [
         accessor: 'minvolume'
     },
     {
-        Header: 'Age',
-        accessor: 'age'
-    },
-    {
-        Header: 'UTXOs',
-        accessor: 'numutxos'
-    },
-    {
-        Header: 'Depth',
+        Header: 'Total KMD',
         accessor: 'depth',
         Cell: props => <span className={type}>{props.value}<span
           className="depth" style={{
               width: `${(props.value / maxDepth) * 30}%`
           }}
         /> </span>// Custom cell components!
+    },
+    {
+        Header: 'Age',
+        accessor: 'age'
+    },
+    {
+        Header: 'UTXOs',
+        accessor: 'numutxos'
     }
+
 ];
 
 @inject('app')

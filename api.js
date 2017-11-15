@@ -61,8 +61,8 @@ class Emitter extends EventEmitter {
                 }
 
                 if (data.method !== 'getcoins' && data.method !== 'passphrase' && data.method !== 'orderbook') {
-                    console.log(`${data.method} >>>`)
-                    console.log(body);
+                    // console.log(`${data.method} >>>`)
+                    // console.log(body);
                 }
                 return resolve(body);
             });
@@ -311,7 +311,7 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: self.userpass, method: 'getcoins' };
         const url = 'http://127.0.0.1:7783';
-        return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
+        const fetch = new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             resolve(result);
         }).catch((error) => {
             console.log(`error getcoins`);
@@ -323,7 +323,6 @@ class Emitter extends EventEmitter {
             if (coin.electrum) {
                 return self.listunspent({ coin: coin.coin, address: coin.smartaddress }).then(() =>
                 self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
-                // console.log(`electrum balance update ${coin.coin}`)
                     coin.balance = coinBalance.balance;
                     return coin;
                 }).catch(() => coin))
@@ -471,7 +470,7 @@ class Emitter extends EventEmitter {
         const url = 'http://127.0.0.1:7783';
 
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((botstatus) => {
-            console.log(`botstatus ${botid}`);
+            // console.log(`botstatus ${botid}`);
             self.emit('botstatus', botstatus)
             resolve(botstatus);
         }).catch((error) => {
@@ -486,8 +485,8 @@ class Emitter extends EventEmitter {
         const url = 'http://127.0.0.1:7783';
 
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
-            console.log(`swap ${requestid} status`);
-            console.log(result);
+            // console.log(`swap ${requestid} status`);
+            // console.log(result);
             resolve(result);
             self.emit('swapstatus', result)
         }).catch((error) => {
