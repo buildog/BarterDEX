@@ -87,7 +87,7 @@ class Orderbook extends React.Component {
                       updateMethod('buy');
                       updateRate(rowInfo.original, 'ask')
                   },
-                  className: rowInfo && rowInfo.original === rates.ask ? 'selected coin-colorized' : ''
+                  className: rowInfo && rowInfo.original.price === rates.ask.pricefree && rowInfo.original.maxvolume === rates.ask.maxvolume ? 'selected coin-colorized' : ''
               })}
             />
             <ReactTable
@@ -103,7 +103,7 @@ class Orderbook extends React.Component {
                       updateMethod('buy');
                       updateRate(rowInfo.original, 'bid')
                   },
-                  className: rowInfo && rowInfo.original === rates.bid ? 'selected coin-colorized' : ''
+                  className: rowInfo && rowInfo.original.price === rates.bid.pricefree && rowInfo.original.maxvolume === rates.bid.maxvolume ? 'selected coin-colorized' : ''
               })}
             />
           </section>
