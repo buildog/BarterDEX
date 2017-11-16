@@ -85,7 +85,7 @@
 .dashboard-empty-logo svg {
     position: absolute;
     top: -60px;
-    left: -10px;
+    left: -20px;
     transform: scale(2.2);
     transform-origin: center 90%;
     opacity: .2

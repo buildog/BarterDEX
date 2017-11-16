@@ -92,6 +92,11 @@ export default class TradeStore {
     }
 
     updateSwapStatus = (update) => {
+        if (!update) {
+            console.log('not found');
+            console.log(update);
+            return
+        }
         const swap = this.swaps.filter((item) => item.quoteid === update.quoteid);
         if (swap.length > 0) {
             const index = this.swaps.indexOf(swap[0]);

@@ -89,10 +89,10 @@ class Dashboard extends React.Component {
 
               { (hasBalance.length === 0 && installedCoins.length > 0) && this.noticeBalance() }
 
-              <button className="action dark" onClick={() => this.setState({ viewSwap: !this.state.viewSwap })}>
+              { installedCoins.length > 0 && <button className="action dark" onClick={() => this.setState({ viewSwap: !this.state.viewSwap })}>
                 { this.state.viewSwap ? <span>close history</span> : <span>swap history</span> }
                 <i dangerouslySetInnerHTML={{ __html: history }} />
-              </button>
+              </button> }
 
             </header>
 
