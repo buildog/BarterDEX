@@ -1,12 +1,6 @@
 import log from 'electron-log';
-import request from 'request';
+import request from 'requestretry';
 
-const throttledRequest = require('throttled-request')(request);
-
-throttledRequest.configure({
-    requests: 1,
-    milliseconds: 1000
-});
 
 import { main } from './config/config';
 import { electrumConfig } from './constants'
@@ -56,13 +50,16 @@ class Emitter extends EventEmitter {
         };
 
         return new Promise((resolve, reject) => {
-            throttledRequest(
+            request(
                 {
                     method: 'POST',
                     url,
                     form: jsonData,
                     headers: headersOpt,
-                    json: true
+                    json: true,
+                    maxAttempts: data.attempts || 10,
+                    retryDelay: data.delay || 200,
+                    timeout: 5000
                 }, (error, response, body) => {
                 if (error) {
                     return reject(error);
