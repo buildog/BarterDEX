@@ -49,7 +49,8 @@ export default class AppStore {
             self.userpass = userpass;
 
             ipcRenderer.send('refresh')
-            self.autorefresh = setInterval(() => ipcRenderer.send('refresh'), 60000)
+            self.autorefresh = setInterval(() => ipcRenderer.send('refresh'), 30000)
+            self.metafresh = setInterval(() => ipcRenderer.send('metarefresh'), 1000)
         });
 
 
@@ -86,6 +87,7 @@ export default class AppStore {
       }
 
       clearInterval(self.autorefresh);
+      clearInterval(self.metafresh);
       self.orderbook.killListener();
       shepherdIPC({ command: 'logout' });
   }

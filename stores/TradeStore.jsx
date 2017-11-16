@@ -127,7 +127,8 @@ export default class TradeStore {
 
 
     @action updateTrade = (coin, type) => {
-        this[`trade${type}`] = this.portfolio.getCoin(coin);
+        this[`trade${type}`] = this.portfolio.getCoin(coin.coin);
+        console.log(this[`trade${type}`])
     }
 
     @action autoSetTrade = (coin) => {

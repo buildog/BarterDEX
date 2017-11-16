@@ -19,12 +19,15 @@ const stopMMStatus = () => {
 
 export const shepherdEvents = ({ api, emitter, listener }) => {
     listener.on('refresh', () => {
-        api.fetchMarket();
         api.fetchCoins();
+    });
+
+    listener.on('metarefresh', () => {
+        api.fetchMarket();
         api.fetchRecentSwaps();
         api.fetchSwaps();
         api.fetchBots();
-    });
+    })
 
 
     listener.on('shepherd-command', (event, arg) => {

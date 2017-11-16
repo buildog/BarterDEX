@@ -143,7 +143,7 @@ export default class PortfolioStore {
         }
 
 
-        this.installedCoins = this.coinsList.filter((coin) => (coin.installed && coin.height > 0) || electrumConfig[coin.coin]);
+        this.installedCoins = this.coinsList.filter((coin) => coin.electrum);
 
         if (self.tradeRel) {
             self.tradeRel.balance = self.getCoin(self.tradeRel.coin).balance
