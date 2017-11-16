@@ -6,6 +6,7 @@ import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 import { Orders } from '../';
 import circles from '../../static/circles.svg';
+import circlesW from '../../static/circlesWhite.svg';
 import arrow from '../../static/arrow.svg';
 import logo from '../../static/favicon.svg';
 import history from '../../static/history.svg';
@@ -123,7 +124,7 @@ class Dashboard extends React.Component {
                           { isNative && <small>Native mode</small> }
                         </div>
                         <span className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
-                        <span className="coinList-coin_action_loader" dangerouslySetInnerHTML={{ __html: circles }} />
+                        <span className="coinList-coin_action_loader" dangerouslySetInnerHTML={{ __html: circlesW }} />
 
                       </Link>
                     </li>
