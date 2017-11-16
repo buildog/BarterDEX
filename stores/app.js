@@ -47,12 +47,15 @@ export default class AppStore {
             }
 
             self.userpass = userpass;
+        });
 
+
+        ipcRenderer.on('coinsActivated', () => {
+            ipcRenderer.send('metarefresh');
             ipcRenderer.send('refresh')
             self.autorefresh = setInterval(() => ipcRenderer.send('refresh'), 30000)
             self.metafresh = setInterval(() => ipcRenderer.send('metarefresh'), 1000)
-        });
-
+        })
 
         ipcRenderer.on('resetUserInfo', () => {
             self.coins = '';

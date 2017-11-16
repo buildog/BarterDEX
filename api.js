@@ -54,7 +54,7 @@ class Emitter extends EventEmitter {
             'Content-Type': 'application/json',
             'Content-Length': Buffer.byteLength(jsonData)
         };
-        console.log(data);
+
         return new Promise((resolve, reject) => {
             throttledRequest(
                 {
@@ -215,7 +215,6 @@ class Emitter extends EventEmitter {
 
         self.looping.coins = true;
         self.getCoins().then((coinsList) => {
-            console.log('gotcoins')
             self.looping.coins = false;
             self.emit('coinsList', coinsList);
         })
@@ -224,33 +223,19 @@ class Emitter extends EventEmitter {
 
     fetchMarket() {
         const self = this;
-        if (self.looping.market) {
-            return
-        }
-
-        self.looping.market = true;
         request('http://coincap.io/front', (error, response, body) => {
             isJsonString(body) && self.emit('marketUpdate', { data: JSON.parse(body) });
-            self.looping.market = false;
         });
     }
 
     fetchBots() {
         const self = this;
-
-        if (self.looping.bots || self.looping.coins) {
-            return
-        }
-
-        self.looping.bots = true;
-
         const data = { userpass: self.userpass, method: 'bot_list' };
         const url = 'http://127.0.0.1:7783';
 
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((botList) => {
             self.emit('botlist', botList)
             botList.map((botID) => self.botstatus(botID));
-            self.looping.bots = false;
             resolve(botList);
         }).catch((error) => {
             // console.log(`error fetch botid`)
@@ -260,19 +245,11 @@ class Emitter extends EventEmitter {
 
     fetchRecentSwaps() {
         const self = this;
-
-        if (self.looping.recentswaps || self.looping.coins) {
-            return
-        }
-
-        self.looping.recentswaps = true;
-
         const data = { userpass: self.userpass, method: 'recentswaps', limit: 20 };
         const url = 'http://127.0.0.1:7783';
 
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((swapsList) => {
             self.emit('recentswaps', swapsList)
-            self.looping.recentswaps = false;
             resolve(swapsList);
         }).catch((error) => {
             reject(error);
@@ -282,21 +259,12 @@ class Emitter extends EventEmitter {
 
     fetchSwaps() {
         const self = this;
-
-        if (self.looping.swaps || self.looping.coins) {
-            return
-        }
-
-        self.looping.swaps = true;
-
         const data = { userpass: self.userpass, method: 'swapstatus', limit: 20 };
         const url = 'http://127.0.0.1:7783';
 
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((swapsList) => {
             self.emit('swaps', swapsList)
             swapsList.swaps.map((swap) => self.swapstatus(swap));
-            self.looping.swaps = false;
-
             resolve(swapsList);
         }).catch((error) => {
             reject(error);
@@ -326,7 +294,10 @@ class Emitter extends EventEmitter {
                     });
                 })
 
-        return Promise.all(electrums()).then(() => self.emit('coinsActivated'));
+        return Promise.all(electrums()).then(() => {
+            console.log('all electrums ready')
+            self.emit('coinsActivated')
+        });
     }
 
     getUserpass({ passphrase }) {
