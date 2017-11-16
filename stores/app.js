@@ -54,7 +54,7 @@ export default class AppStore {
             ipcRenderer.send('metarefresh');
             ipcRenderer.send('refresh')
             self.autorefresh = setInterval(() => ipcRenderer.send('refresh'), 30000)
-            self.metafresh = setInterval(() => ipcRenderer.send('metarefresh'), 1000)
+            self.metafresh = setInterval(() => ipcRenderer.send('metarefresh'), 6000)
         })
 
         ipcRenderer.on('resetUserInfo', () => {

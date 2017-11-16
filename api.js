@@ -214,7 +214,7 @@ class Emitter extends EventEmitter {
         }
 
         self.looping.coins = true;
-        self.getCoins().then((coinsList) => {
+        self.getCoins(false).then((coinsList) => {
             self.looping.coins = false;
             self.emit('coinsList', coinsList);
         })
@@ -380,21 +380,6 @@ class Emitter extends EventEmitter {
             return [];
         })
     }
-
-    disableCoin({ coin = '', type }) {
-        const self = this;
-
-        const data = { userpass: self.userpass, method: 'disable', coin };
-
-        const url = 'http://127.0.0.1:7783';
-
-        this.apiRequest({ data, url }).then((result) => {
-            self.fetchPortfolio(() => this.emit('updateTrade', { coin, type }));
-        }).catch((error) => {
-            self.emit('notifier', { error: 3 })
-        });
-    }
-
 
     enableCoin({ coin, type, electrum = false, ipaddr, port }) {
         const self = this;
