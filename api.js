@@ -95,7 +95,7 @@ class Emitter extends EventEmitter {
         if (userpass) {
             /* already logged in*/
             self.userpass = userpass;
-
+            self.prepareElectrum();
             self.emit('updateUserInfo', { userpass });
             return;
         }
@@ -214,7 +214,7 @@ class Emitter extends EventEmitter {
         }
 
         self.looping.coins = true;
-        self.getCoins(false).then((coinsList) => {
+        self.getCoins().then((coinsList) => {
             console.log('gotcoins')
             self.looping.coins = false;
             self.emit('coinsList', coinsList);
@@ -303,6 +303,15 @@ class Emitter extends EventEmitter {
         }));
     }
 
+
+    prepareElectrum() {
+        const self = this;
+        self.getCoins(false).then((coins) => {
+            const alreadyActivated = coins.filter((coin) => coin.electrum).map((coin) => coin.coin);
+            self.activateElectums(alreadyActivated);
+        })
+    }
+
     activateElectums(alreadyActivated) {
         const self = this;
         const electrums = () =>
@@ -334,12 +343,7 @@ class Emitter extends EventEmitter {
                 self.mypubkey = mypubkey;
 
                 self.emit('updateUserInfo', { userpass, mypubkey, passphrase })
-
-                self.getCoins(false).then((coins) => {
-                    const alreadyActivated = coins.filter((coin) => coin.electrum).map((coin) => coin.coin);
-                    self.activateElectums(alreadyActivated);
-                })
-
+                self.prepareElectrum();
 
                 resolve('logged in');
             } else {

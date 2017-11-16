@@ -64,14 +64,6 @@ export default class AppStore {
             this.logout();
             ipcRenderer.send('readyToQuit');
         })
-
-        // if (typeof (Storage) !== 'undefined') {
-        //     // Code for localStorage/sessionStorage.
-        //     const userpass = localStorage.getItem('userpass');
-        //     if (userpass) {
-        //         self.userpass = userpass;
-        //     }
-        // }
     }
 
   @action login = ({ passphrase, userpass }) => {
