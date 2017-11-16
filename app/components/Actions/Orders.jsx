@@ -29,7 +29,7 @@ class Orders extends React.Component {
     })
 
     getBtn = (type) => classNames({
-        'order-stop action align-left danger': true,
+        'order-stop action align-left onlyIcon danger': true,
         orange: type === 'pause',
         green: type === 'resume'
 
@@ -58,11 +58,14 @@ class Orders extends React.Component {
           <small className="coin-colorized"><strong>Total</strong> { bot.totalrelvolume } { bot.rel }</small>
         </div>
 
-        <div>
+        <div className="orders-item-details-meta-more-data-buttons">
           { !bot.stopped && <button onClick={() => this.toggleBot({ botid: bot.botid, method: bot.paused ? 'bot_resume' : 'bot_pause' })} className={this.getBtn(bot.paused ? 'resume' : 'pause')}>
-            <span>{ bot.paused ? 'resume' : 'pause' }</span>
             <i dangerouslySetInnerHTML={{ __html: bot.paused ? play : pause }} />
           </button> }
+
+          <button onClick={() => this.toggleBot({ botid: bot.botid, method: 'bot_stop' })} className={this.getBtn('stop')}>
+            <i dangerouslySetInnerHTML={{ __html: stop }} />
+          </button>
         </div>
       </div>
 

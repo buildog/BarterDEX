@@ -143,7 +143,7 @@ export default class PortfolioStore {
         }
 
 
-        this.installedCoins = this.coinsList.filter((coin) => (coin.installed && coin.height > 0) || electrumConfig[coin.coin]);
+        this.installedCoins = this.coinsList.filter((coin) => coin.electrum);
 
         if (self.tradeRel) {
             self.tradeRel.balance = self.getCoin(self.tradeRel.coin).balance
@@ -155,12 +155,6 @@ export default class PortfolioStore {
 
         self.portfolioTotal();
     }
-
-    @action enableElectrum = (coin, type = false) => {
-        const electrumConf = electrumConfig[coin.coin];
-        electrumConf.map((svr) => ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true, ipaddr: Object.keys(svr)[0], port: svr[Object.keys(svr)], type }));
-    }
-
 
     portfolioTotal = () => {
         const self = this;

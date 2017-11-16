@@ -5,7 +5,8 @@ import classNames from 'classnames';
 import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 import { Orders } from '../';
-import circles from '../../static/circlesWhite.svg';
+import circles from '../../static/circles.svg';
+import circlesW from '../../static/circlesWhite.svg';
 import arrow from '../../static/arrow.svg';
 import logo from '../../static/favicon.svg';
 import history from '../../static/history.svg';
@@ -27,8 +28,19 @@ class Dashboard extends React.Component {
         this.setState({ coinToEnable })
     }
 
+    getDashboardState = (hasCoin) => {
+        const self = this;
+        const { installedCoins } = this.props.app.portfolio;
+
+        return classNames({
+            dashboard: true,
+            enabling: installedCoins.length === 0
+        })
+    }
+
     getClassState = (coin) => {
         const self = this;
+
         // const { loader } = this.props.app;
         // const activationLoader = loader.getLoader(4);
         return classNames({
@@ -38,10 +50,6 @@ class Dashboard extends React.Component {
         })
     }
 
-    enableCoin = (e, coin) => {
-        const { enableElectrum } = this.props.app.portfolio;
-        enableElectrum(coin);
-    }
     noticeBalance = () =>
          (<div className="dashboard-empty dashboard-empty-balance">
 
@@ -52,9 +60,9 @@ class Dashboard extends React.Component {
     noticeNoCoin = () =>
          (<div className="dashboard-empty">
 
-           <h3>No active coin detected</h3>
-           <p>We didn't detected any coin wallet running on your machine.</p>
-           <p>Run a coin wallet or add electrum coin via the top right button.</p>
+           <i className="loader-svg" dangerouslySetInnerHTML={{ __html: circles }} />
+           <p>Getting your coins ready.</p>
+           <p>it could take up to a minute.</p>
          </div>)
 
     renderDashboard = () => {
@@ -96,7 +104,7 @@ class Dashboard extends React.Component {
 
             </header>
 
-
+            { installedCoins.length === 0 && this.noticeNoCoin() }
             { installedCoins.length > 0 && this.state.viewSwap && <section className="dashboard-swaps"><Orders all /></section>}
 
 
@@ -116,7 +124,7 @@ class Dashboard extends React.Component {
                           { isNative && <small>Native mode</small> }
                         </div>
                         <span className="coinList-coin_action" dangerouslySetInnerHTML={{ __html: arrow }} />
-                        <span className="coinList-coin_action_loader" dangerouslySetInnerHTML={{ __html: circles }} />
+                        <span className="coinList-coin_action_loader" dangerouslySetInnerHTML={{ __html: circlesW }} />
 
                       </Link>
                     </li>
@@ -134,7 +142,7 @@ class Dashboard extends React.Component {
 
     render() {
         return (
-          <section className="dashboard">
+          <section className={this.getDashboardState()}>
             { this.renderDashboard() }
 
           </section>

@@ -79,7 +79,6 @@
     position: relative;
     width: 200px;
     height: 200px;
-    fill: #FFF !important;
 }
 
 .dashboard-empty-logo svg {
@@ -92,6 +91,11 @@
 }
 
 .dashboard-empty-logo svg g { fill: #000 }
+
+.dashboard.enabling .dashboard-empty-logo svg  {
+    transform: scale(4);
+    transform-origin: center center
+}
 
 .dashboard-empty h3 {
     text-align: center;

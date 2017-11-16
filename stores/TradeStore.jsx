@@ -120,35 +120,20 @@ export default class TradeStore {
         }
     }
 
-    updateTrade = (coin, type) => {
-        this[`trade${type}`] = this.portfolio.getCoin(coin);
-    }
 
     @action updateMethod = (method) => {
         this.method = method;
     }
 
-    @action setTrade = (coin, type) => {
-        const installedCoin = this.portfolio.getCoin(coin.coin);
 
-        if (!installedCoin.electrum) {
-            // const electrum = !coin.installed;
-            // if (!electrum) {
-            //     console.log(`activate native coin ${coin.coin}`)
-            //     ipcRenderer.send('enableCoin', { coin: coin.coin, type })
-            // } else {
-            console.log(`activate electrum coin ${coin.coin}`)
-            this.portfolio.enableElectrum(coin, type)
-            // }
-        } else {
-            console.log(`trade ${coin.coin} as ${type} `)
-            type && this.updateTrade(coin.coin, type)
-        }
+    @action updateTrade = (coin, type) => {
+        this[`trade${type}`] = this.portfolio.getCoin(coin.coin);
+        console.log(this[`trade${type}`])
     }
 
     @action autoSetTrade = (coin) => {
         // activate the coin and set as rradeBase
-        this.setTrade(coin, 'Base');
+        this.updateTrade(coin, 'Base');
         // search for the highest balance and activate as tradeRel
         let Rel;
         if (coin.coin === 'KMD') {
@@ -157,7 +142,7 @@ export default class TradeStore {
             // default coin
             Rel = this.portfolio.getCoin('KMD')
         }
-        this.setTrade(Rel, 'Rel');
+        this.updateTrade(Rel, 'Rel');
     }
 
     @action validator = ({ amount, rate }) => {

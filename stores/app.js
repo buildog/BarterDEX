@@ -47,10 +47,15 @@ export default class AppStore {
             }
 
             self.userpass = userpass;
-            // start autorefresh of portfolio
-            ipcRenderer.send('refresh')
-            self.autorefresh = setInterval(() => ipcRenderer.send('refresh'), 6000)
         });
+
+
+        ipcRenderer.on('coinsActivated', () => {
+            ipcRenderer.send('metarefresh');
+            ipcRenderer.send('refresh')
+            self.autorefresh = setInterval(() => ipcRenderer.send('refresh'), 30000)
+            self.metafresh = setInterval(() => ipcRenderer.send('metarefresh'), 1000)
+        })
 
         ipcRenderer.on('resetUserInfo', () => {
             self.coins = '';
@@ -62,14 +67,6 @@ export default class AppStore {
             this.logout();
             ipcRenderer.send('readyToQuit');
         })
-
-        // if (typeof (Storage) !== 'undefined') {
-        //     // Code for localStorage/sessionStorage.
-        //     const userpass = localStorage.getItem('userpass');
-        //     if (userpass) {
-        //         self.userpass = userpass;
-        //     }
-        // }
     }
 
   @action login = ({ passphrase, userpass }) => {
@@ -85,6 +82,7 @@ export default class AppStore {
       }
 
       clearInterval(self.autorefresh);
+      clearInterval(self.metafresh);
       self.orderbook.killListener();
       shepherdIPC({ command: 'logout' });
   }
