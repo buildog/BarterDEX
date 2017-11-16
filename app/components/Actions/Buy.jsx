@@ -97,8 +97,8 @@ class Trade extends React.Component {
     }
 
     tradeWith = (e, coin) => {
-        const { setTrade } = this.props.app.trade;
-        setTrade(coin, 'Rel');
+        const { updateTrade } = this.props.app.trade;
+        updateTrade(coin, 'Rel');
         // autoclose after selection
         this.props.onClose && this.props.onClose();
     }

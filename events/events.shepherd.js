@@ -21,10 +21,13 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
     listener.on('refresh', () => {
         api.fetchMarket();
         api.fetchCoins();
+    });
+
+    listener.on('metarefresh', () => {
         api.fetchRecentSwaps();
         api.fetchSwaps();
         api.fetchBots();
-    });
+    })
 
 
     listener.on('shepherd-command', (event, arg) => {
@@ -70,4 +73,6 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
         emitter.send('loading', { type: 'delete', key: 1 });
         emitter.send('loading', { type: 'delete', key: 2 });
     })
+
+    api.on('coinsActivated', () => emitter.send('coinsActivated'))
 }
