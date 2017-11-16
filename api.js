@@ -276,25 +276,28 @@ class Emitter extends EventEmitter {
         const self = this;
         self.getCoins(false).then((coins) => {
             const alreadyActivated = coins.filter((coin) => coin.electrum).map((coin) => coin.coin);
-            self.activateElectums(alreadyActivated);
+            return self.activateElectums(alreadyActivated);
         })
     }
 
     activateElectums(alreadyActivated) {
         const self = this;
-        const electrums = () =>
-                Object.keys(electrumConfig).map((key) => {
-                    if (alreadyActivated.indexOf(key) > -1) {
-                        console.log(`${key} already activated`)
-                        return true;
-                    }
-                    return electrumConfig[key].map((svr) => {
-                        console.log(`activating ${key}`)
-                        return self.enableCoin({ coin: key, electrum: true, ipaddr: Object.keys(svr)[0], port: svr[Object.keys(svr)] });
-                    });
-                })
+        const toActivate = [];
+        Object.keys(electrumConfig).map((key) => {
+            if (alreadyActivated.indexOf(key) > -1) {
+                console.log(`${key} already activated`)
+                return false;
+            }
+            return electrumConfig[key].map((svr) => {
+                console.log(`activating ${key}`)
+                return toActivate.push({ coin: key, electrum: true, ipaddr: Object.keys(svr)[0], port: svr[Object.keys(svr)] });
+            });
+        })
 
-        return Promise.all(electrums()).then(() => {
+
+        const promises = () => toActivate.map((svr) => self.enableCoin(svr));
+
+        return Promise.all(promises()).then(() => {
             console.log('all electrums ready')
             self.emit('coinsActivated')
         });
@@ -405,7 +408,7 @@ class Emitter extends EventEmitter {
         const url = 'http://127.0.0.1:7783';
 
 
-        this.apiRequest({ data, url }).then((result) => {
+        return this.apiRequest({ data, url }).then((result) => {
             console.log(result);
             self.emit('coinEnabled', { coin });
             if (type) {
@@ -423,7 +426,7 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: self.userpass, method: 'portfolio' };
         const url = 'http://127.0.0.1:7783';
-        this.apiRequest({ data, url }).then((result) => {
+        return this.apiRequest({ data, url }).then((result) => {
             // body.portfolio.map((item) => item.balance = self.balance({ coin: item.coin, address: item.address }))
 
             self.emit('setPortfolio', { portfolio: result.portfolio });
@@ -436,7 +439,7 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: this.userpass, method: 'orderbook', base, rel };
         const url = 'http://127.0.0.1:7783';
-        this.apiRequest({ data, url }).then((result) => {
+        return this.apiRequest({ data, url }).then((result) => {
             self.emit('orderbook', { base, rel, data: result })
         }).catch((error) => {
             self.emit('growler', { key: 4 })
