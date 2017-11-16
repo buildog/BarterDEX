@@ -38,10 +38,6 @@ class Dashboard extends React.Component {
         })
     }
 
-    enableCoin = (e, coin) => {
-        const { enableElectrum } = this.props.app.portfolio;
-        enableElectrum(coin);
-    }
     noticeBalance = () =>
          (<div className="dashboard-empty dashboard-empty-balance">
 

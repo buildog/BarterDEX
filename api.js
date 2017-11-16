@@ -1,6 +1,15 @@
 import log from 'electron-log';
-import request from 'requestretry';
+import request from 'request';
+
+const throttledRequest = require('throttled-request')(request);
+
+throttledRequest.configure({
+    requests: 1,
+    milliseconds: 1000
+});
+
 import { main } from './config/config';
+import { electrumConfig } from './constants'
 import fs from 'fs-extra';
 import ps from 'ps-node';
 
@@ -44,27 +53,20 @@ class Emitter extends EventEmitter {
             'Content-Type': 'application/json',
             'Content-Length': Buffer.byteLength(jsonData)
         };
-
+        console.log(data);
         return new Promise((resolve, reject) => {
-            request(
+            throttledRequest(
                 {
                     method: 'POST',
                     url,
                     form: jsonData,
                     headers: headersOpt,
-                    json: true,
-                    maxAttempts: data.attempts || 20,
-                    retryDelay: data.delay || 200,
-                    timeout: 5000
+                    json: true
                 }, (error, response, body) => {
                 if (error) {
                     return reject(error);
                 }
 
-                if (data.method !== 'getcoins' && data.method !== 'passphrase' && data.method !== 'orderbook') {
-                    // console.log(`${data.method} >>>`)
-                    // console.log(body);
-                }
                 return resolve(body);
             });
         }).catch((e) => {
@@ -206,15 +208,16 @@ class Emitter extends EventEmitter {
 
     fetchMarket() {
         const self = this;
-        request('http://coincap.io/front', (error, response, body) => {
+        return request('http://coincap.io/front', (error, response, body) => {
             isJsonString(body) && self.emit('marketUpdate', { data: JSON.parse(body) });
         });
     }
 
     fetchCoins() {
         const self = this;
-
-        self.getCoins().then((coinsList) => {
+        console.log('getcoins')
+        self.getCoins(false).then((coinsList) => {
+            console.log('gotcoins')
             self.emit('coinsList', coinsList);
         })
     }
@@ -265,6 +268,23 @@ class Emitter extends EventEmitter {
         }));
     }
 
+    activateElectums(alreadyActivated) {
+        const self = this;
+        const electrums = () =>
+                Object.keys(electrumConfig).map((key) => {
+                    if (alreadyActivated.indexOf(key) > -1) {
+                        console.log(`${key} already activated`)
+                        return false;
+                    }
+                    return electrumConfig[key].map((svr) => {
+                        console.log(`activating ${key}`)
+                        return self.enableCoin({ coin: key, electrum: true, ipaddr: Object.keys(svr)[0], port: svr[Object.keys(svr)] });
+                    });
+                })
+
+        return Promise.all(electrums()).then(() => self.emit('coinsActivated'));
+    }
+
     getUserpass({ passphrase }) {
         const self = this;
         const data = { method: 'passphrase', passphrase };
@@ -278,7 +298,13 @@ class Emitter extends EventEmitter {
                 self.userpass = userpass;
                 self.mypubkey = mypubkey;
 
-                self.emit('updateUserInfo', { userpass, mypubkey, passphrase });
+                self.emit('updateUserInfo', { userpass, mypubkey, passphrase })
+
+                self.getCoins(false).then((coins) => {
+                    const alreadyActivated = coins.filter((coin) => coin.electrum).map((coin) => coin.coin);
+                    self.activateElectums(alreadyActivated);
+                })
+
 
                 resolve('logged in');
             } else {
@@ -309,7 +335,7 @@ class Emitter extends EventEmitter {
     }
 
 
-    getCoins() {
+    getCoins(listunspent = true) {
         const self = this;
         const data = { userpass: self.userpass, method: 'getcoins' };
         const url = 'http://127.0.0.1:7783';
@@ -322,7 +348,7 @@ class Emitter extends EventEmitter {
         }));
 
         const updateBalance = (coinList) => coinList.map((coin) => {
-            if (coin.electrum) {
+            if (coin.electrum && listunspent) {
                 return self.listunspent({ coin: coin.coin, address: coin.smartaddress }).then(() =>
                 self.balance({ coin: coin.coin, address: coin.smartaddress }).then((coinBalance) => {
                     coin.balance = coinBalance.balance;
@@ -368,17 +394,17 @@ class Emitter extends EventEmitter {
         }
         const url = 'http://127.0.0.1:7783';
 
+
         this.apiRequest({ data, url }).then((result) => {
-            self.getCoins(false).then((coinsList) => {
-                self.emit('coinsList', coinsList);
-                self.emit('coinEnabled', { coin });
-                if (type) {
-                    self.emit('updateTrade', { coin, type });
-                }
-            })
+            console.log(result);
+            self.emit('coinEnabled', { coin });
+            if (type) {
+                self.emit('updateTrade', { coin, type });
+            }
         }).catch((error) => {
             // retry
-            this.enableCoin({ coin, type, electrum, ipaddr, port });
+            console.log(error)
+            // this.enableCoin({ coin, type, electrum, ipaddr, port });
             // self.emit('notifier', { error: 3, desc: error })
         });
     }
@@ -580,8 +606,6 @@ class Emitter extends EventEmitter {
         const self = this;
         const data = { userpass: self.userpass, method: 'listunspent', coin, address };
         const url = 'http://127.0.0.1:7783';
-        console.log(`listunspent for ${coin}`);
-
         return new Promise((resolve, reject) => this.apiRequest({ data, url }).then((result) => {
             resolve(result);
         }).catch((error) => {

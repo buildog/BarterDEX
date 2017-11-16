@@ -70,4 +70,6 @@ export const shepherdEvents = ({ api, emitter, listener }) => {
         emitter.send('loading', { type: 'delete', key: 1 });
         emitter.send('loading', { type: 'delete', key: 2 });
     })
+
+    api.on('coinsActivated', () => emitter.send('coinsActivated'))
 }

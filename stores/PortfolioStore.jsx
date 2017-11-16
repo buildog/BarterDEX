@@ -156,12 +156,6 @@ export default class PortfolioStore {
         self.portfolioTotal();
     }
 
-    @action enableElectrum = (coin, type = false) => {
-        const electrumConf = electrumConfig[coin.coin];
-        electrumConf.map((svr) => ipcRenderer.send('enableCoin', { coin: coin.coin, electrum: true, ipaddr: Object.keys(svr)[0], port: svr[Object.keys(svr)], type }));
-    }
-
-
     portfolioTotal = () => {
         const self = this;
         const amount = self.installedCoins.reduce((accumulator, coin) => accumulator + coin.rel, 0);

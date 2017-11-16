@@ -140,6 +140,15 @@
     flex-grow: 1
 }
 
+.orders-item-details-meta-more-data-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.orders-item-details-meta-more-data-buttons button {
+    margin-left: 4px;
+}
+
 
 .order-stop {
     padding: 5px 5px 5px 10px;
