@@ -83,7 +83,7 @@ class Orderbook extends React.Component {
               style={{ height }}
               getTrProps={(state, rowInfo) => ({
                   onClick: e => {
-                      updateMethod('bot_buy');
+                      updateMethod('buy');
                       updateRate(rowInfo.original, 'ask')
                   },
                   className: rowInfo && rowInfo.original.price === rates.ask.pricefree && rowInfo.original.maxvolume === amounts.rel ? 'selected coin-colorized' : ''
@@ -99,7 +99,7 @@ class Orderbook extends React.Component {
               style={{ height }}
               getTrProps={(state, rowInfo) => ({
                   onClick: e => {
-                      updateMethod('bot_buy');
+                      updateMethod('buy');
                       updateRate(rowInfo.original, 'bid')
                   },
                   className: rowInfo && rowInfo.original.price === rates.bid.pricefree && rowInfo.original.maxvolume === amounts.rel ? 'selected coin-colorized' : ''
