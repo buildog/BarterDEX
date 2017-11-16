@@ -224,7 +224,7 @@ class Emitter extends EventEmitter {
 
     fetchMarket() {
         const self = this;
-        if (self.looping.market || self.looping.coins) {
+        if (self.looping.market) {
             return
         }
 
