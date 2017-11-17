@@ -1,5 +1,6 @@
 import log from 'electron-log';
-import request from 'requestretry';
+import curl from 'curlrequest';
+import request from 'request';
 
 
 import { main } from './config/config';
@@ -42,36 +43,26 @@ class Emitter extends EventEmitter {
 
     apiRequest({ data, url }) {
         data.gui = 'buildog';
+
         const jsonData = JSON.stringify(data);
-        // Custom Header pass
-        const headersOpt = {
-            'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(jsonData)
-        };
 
-        return new Promise((resolve, reject) => {
-            request(
-                {
-                    method: 'POST',
-                    url,
-                    form: jsonData,
-                    headers: headersOpt,
-                    json: true,
-                    maxAttempts: data.attempts || 10,
-                    retryDelay: data.delay || 200,
-                    timeout: 5000
-                }, (error, response, body) => {
-                if (error) {
-                    return reject(error);
-                }
+        const options = { url,
+            data: jsonData,
+            headers: {
+                'Content-Length': Buffer.byteLength(jsonData),
+                'Content-Type': 'application/json'
+            } };
+        // console.log(options);
 
-                return resolve(body);
-            });
-        }).catch((e) => {
-            console.log(`endpoint ${data.method} failed`)
-            console.log(e);
-            // self.emit('notifier', { error: 5 })
-        });
+        return new Promise((resolve, reject) => curl.request(options, (error, response) => {
+            if (error || response.error) {
+                console.log(`endpoint ${data.method} failed`)
+                console.log(error || response.error);
+                return reject(error || response.error);
+            }
+            console.log(response)
+            return resolve(JSON.parse(response));
+        }))
     }
 
     logout() {

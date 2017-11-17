@@ -113,6 +113,7 @@
   "dependencies": {
     "cross-spawn": "^5.1.0",
     "cryptocoins-icons": "^2.6.0",
+    "curlrequest": "^1.0.1",
     "electron-log": "^2.2.7",
     "fix-path": "^2.1.0",
     "format-currency": "^1.0.0",
