@@ -211,7 +211,7 @@ class Emitter extends EventEmitter {
         }
 
         self.looping.coins = true;
-        self.getCoins(false).then((coinsList) => {
+        self.getCoins().then((coinsList) => {
             self.looping.coins = false;
             self.emit('coinsList', coinsList);
         })
